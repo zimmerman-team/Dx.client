@@ -196,9 +196,14 @@ function ReportEditView(props: ReportEditViewProps) {
     return {
       title: reportData.title,
       showHeader: reportData.showHeader,
-      description: reportData?.subTitle
+      heading: reportData?.heading
         ? EditorState.createWithContent(
-            convertFromRaw(reportData?.subTitle as RawDraftContentState)
+            convertFromRaw(reportData?.heading as RawDraftContentState)
+          )
+        : EditorState.createEmpty(),
+      description: reportData?.description
+        ? EditorState.createWithContent(
+            convertFromRaw(reportData?.description as RawDraftContentState)
           )
         : EditorState.createEmpty(),
       backgroundColor: reportData.backgroundColor,
@@ -247,7 +252,7 @@ function ReportEditView(props: ReportEditViewProps) {
       return;
     }
     if (JSON.parse(persistedReportState.framesArray || "[]").length < 1) {
-      props.setHasSubHeaderTitleFocused(reportData.name !== "Untitled report");
+      props.setHasReportNameFocused(reportData.name !== "Untitled report");
       props.setReportName(reportData.name);
       props.setHeaderDetails(headerDetailsFromReportData());
       props.setFramesArray(framesArrayFromReportData());
@@ -310,8 +315,8 @@ function ReportEditView(props: ReportEditViewProps) {
         }}
         reportName={reportData.name}
         setReportName={props.setReportName}
-        hasSubHeaderTitleFocused={props.hasSubHeaderTitleFocused}
-        setHasSubHeaderTitleFocused={props.setHasSubHeaderTitleFocused}
+        hasReportNameFocused={props.hasReportNameFocused}
+        sethasReportNameFocused={props.setHasReportNameFocused}
         setHeaderDetails={props.setHeaderDetails}
         setPlugins={props.setPlugins}
       />
