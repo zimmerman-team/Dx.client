@@ -7,6 +7,7 @@ import { AppDialogs } from "app/components/Dialogs";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import { CookieDialog } from "app/components/Dialogs/CookieDialog";
 import { MobileBottomNavigation } from "app/components/Mobile/BottomNavigation";
+import { PlanDialog } from "./components/Dialogs/PlanDialog";
 import { matchPath } from "react-router-dom";
 
 export function App() {
@@ -21,6 +22,7 @@ export function App() {
     <Providers>
       <AppDialogs />
       <CookieDialog open data-testid="cookie-dialog" />
+      <PlanDialog />
       <MainRoutes />
       {isMobile && match === null && <MobileBottomNavigation />}
     </Providers>
