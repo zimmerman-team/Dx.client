@@ -20,46 +20,41 @@ export default function DesktopFooter() {
   return (
     <div css={homeFootercss}>
       <Container maxWidth="lg" data-cy="home-footer">
+        <p
+          data-cy="footer-logo"
+          css={`
+            margin-bottom: 40px;
+          `}
+        >
+          <Link to="/">
+            <LogoIcon />
+          </Link>
+        </p>
         <Grid
           container
           alignContent="space-between"
-          alignItems="center"
+          alignItems="flex-start"
           spacing={2}
         >
-          <Grid
-            item
-            lg={3}
-            md={3}
-            sm={2}
-            css={`
-              a {
-                font-size: 16px;
-                text-decoration: none;
-                color: #000;
-                font-family: "GothamNarrow-Medium", sans-serif;
-              }
-            `}
-          >
+          <Grid item lg={3} md={3} sm={2}>
             <ul
               css={`
                 display: flex;
                 flex-direction: column;
-                gap: 18px;
-                li {
+                gap: 16px;
+                margin: 0;
+                a {
                   font-size: 16px;
-                  font-weight: 350;
+                  @media (max-width: 945px) {
+                    font-size: 14px;
+                  }
+                  text-decoration: none;
+                  font-weight: 400;
                   color: #000;
-                }
-                li:first-child {
-                  margin-bottom: 20px;
+                  font-family: "GothamNarrow-Bold", sans-serif;
                 }
               `}
             >
-              <li data-cy="footer-logo">
-                <Link to="/">
-                  <LogoIcon />
-                </Link>
-              </li>
               <li>
                 <Link to="/">Explore</Link>{" "}
               </li>
@@ -87,12 +82,11 @@ export default function DesktopFooter() {
             sm={4}
             css={`
               ul {
-                margin-top: 20px;
                 color: #000;
                 font-weight: 325;
                 font-family: "GothamNarrow-Medium", sans-serif;
                 @media (max-width: 945px) {
-                  padding-left: 40px;
+                  /* padding-left: 40px; */
                 }
               }
               a {
@@ -101,10 +95,6 @@ export default function DesktopFooter() {
               }
               li {
                 font-size: 12px;
-                :nth-child(1),
-                :nth-child(2) {
-                  margin-bottom: 17px;
-                }
                 p {
                   margin: 0px;
                   line-height: normal;
@@ -112,7 +102,14 @@ export default function DesktopFooter() {
               }
             `}
           >
-            <ul>
+            <ul
+              css={`
+                margin: 0;
+                display: flex;
+                flex-direction: column;
+                gap: 16px;
+              `}
+            >
               <li>Tel: +3185 401 5241</li>
               <li>
                 {" "}
@@ -133,10 +130,12 @@ export default function DesktopFooter() {
           <Grid item lg={6} md={6} sm={6}>
             <p
               css={`
-                font-size: 16px;
-                font-weight: 350;
+                font-size: 18px;
+                font-weight: 400;
                 color: #000;
-                font-family: "GothamNarrow-Medium", sans-serif;
+                font-family: "GothamNarrow-Bold", sans-serif;
+                margin: 0;
+                margin-bottom: 16px;
               `}
             >
               Stay Up To Date
@@ -168,7 +167,8 @@ export default function DesktopFooter() {
                   outline: none;
                   border: none;
                   border-radius: 34.5px 0 0 34.5px;
-                  width: 70%;
+                  flex: 1;
+                  font-size: 18px;
                   padding-left: 24px;
                   background: #f7f7f7;
                   font-family: "GothamNarrow-Book", "Helvetica Neue", sans-serif;
@@ -188,8 +188,8 @@ export default function DesktopFooter() {
                   text-transform: uppercase;
                   color: #fff;
                   font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
-                  font-size: 14px;
-                  width: 30%;
+                  font-size: 16px;
+                  padding: 0 24px;
                   font-weight: 400;
                   cursor: pointer;
                 }
@@ -219,7 +219,7 @@ export default function DesktopFooter() {
         <div
           css={`
             display: flex;
-            gap: 38px;
+            gap: 16px;
             align-items: center;
             border-top: 1px solid #d9d9d9;
             padding-top: 4px;

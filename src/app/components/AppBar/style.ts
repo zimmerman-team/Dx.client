@@ -11,7 +11,7 @@ export const headercss = css`
     color: #231d2c;
     font-size: 14px;
     :hover {
-      color: #cea8bc;
+      color: #6061e5;
     }
   }
   button {
@@ -42,6 +42,6 @@ export const logocss = css`
 
 export const navLinkcss = (display: string, location: string) => css`
   a {
-    color: ${display === location ? "#CEA8BC !important" : "#231D2C"};
+    color: ${display === location ? "#6061E5 !important" : "#231D2C"};
   }
 `;
