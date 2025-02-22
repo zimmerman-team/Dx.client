@@ -175,10 +175,10 @@ export default function AboutModule() {
         to={"/contact"}
         css={`
           margin-top: 32px;
-          font-family: "Inter", sans-serif;
+          font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
           font-size: 20px;
           font-style: normal;
-          font-weight: 700;
+          font-weight: 400;
           line-height: normal;
           text-transform: uppercase;
           border-radius: 30px;
@@ -673,10 +673,11 @@ export default function AboutModule() {
                   to={"/contact"}
                   css={`
                     margin-top: 32px;
-                    font-family: Inter;
+                    font-family: "GothamNarrow-Bold", "Helvetica Neue",
+                      sans-serif;
                     font-size: 20px;
                     font-style: normal;
-                    font-weight: 700;
+                    font-weight: 400;
                     line-height: normal;
                     text-transform: uppercase;
                     border-radius: 30px;

@@ -45,9 +45,9 @@ export const styles = {
     text-transform: uppercase;
     color: white;
     text-decoration: none;
-    font-weight: 500;
+    font-weight: 325;
     font-size: 8.43px;
-    font-family: "Inter", sans-serif;
+    font-family: "GothamNarrow-Book", "Helvetica Neue", sans-serif;
   `,
   sharePopup: css`
     width: 170px;
@@ -98,11 +98,11 @@ export const styles = {
   nameInput: css`
     color: #262c34;
     font-size: 24px;
-    font-weight: 700;
+    font-weight: 400;
     border-style: none;
     background: transparent;
     transition: background 0.2s ease-in-out;
-    font-family: "Inter", sans-serif;
+    font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
     position: relative;
     z-index: 2;
     padding-left: 0px;
@@ -144,7 +144,7 @@ export const styles = {
   `,
 
   autoResizeSpan: css`
-    font-family: "Inter", sans-serif;
+    font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
     font-size: 24px;
     position: absolute;
     z-index: 1;
@@ -152,7 +152,7 @@ export const styles = {
     padding: 5px;
     white-space: pre;
     font-size: 24px;
-    font-weight: 700;
+    font-weight: 400;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;

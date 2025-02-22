@@ -57,7 +57,7 @@ export const uploadAreacss = (isDragActive: boolean, disabled?: boolean) => css`
     p {
       font-weight: 500;
       font-size: 14px;
-      font-family: "Inter", sans-serif;
+      font-family: "GothamNarrow-Book", "Helvetica Neue", sans-serif;
       text-transform: uppercase;
     }
   }
@@ -71,9 +71,9 @@ export const uploadAreacss = (isDragActive: boolean, disabled?: boolean) => css`
 export const metaDatacss = css`
   width: 100%;
   h1 {
-    font-weight: 500;
+    font-weight: 400;
     font-size: 48px;
-    font-family: "Inter", sans-serif;
+    font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
 
     margin-bottom: 4.5rem;
     @media (min-width: 768px) {

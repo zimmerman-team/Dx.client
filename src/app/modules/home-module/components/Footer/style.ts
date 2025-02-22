@@ -11,7 +11,7 @@ export const homeFootercss = css`
     padding: 0;
     color: #000;
 
-    font-family: "Inter", sans-serif;
+    font-family: "GothamNarrow-Book", "Helvetica Neue", sans-serif;
   }
 
   li {

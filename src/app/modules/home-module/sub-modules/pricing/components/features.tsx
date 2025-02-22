@@ -236,10 +236,10 @@ const Features = () => {
           margin: 0;
           padding: 0px 12px;
           line-height: normal;
-          font-family: "Inter", sans-serif;
+          font-family: "GothamNarrow-Book", "Helvetica Neue", sans-serif;
           font-size: 13px;
           font-style: normal;
-          font-weight: 500;
+          font-weight: 325;
           white-space: pre-line;
           button {
             border: none;
@@ -302,10 +302,10 @@ const Features = () => {
             css={`
               margin: 0;
               line-height: normal;
-              font-family: "Inter", sans-serif;
+              font-family: "GothamNarrow-Book", "Helvetica Neue", sans-serif;
               font-size: 14px;
               font-style: normal;
-              font-weight: 500;
+              font-weight: 325;
               color: #252c34;
               display: flex;
               justify-content: center;
@@ -385,10 +385,11 @@ const Features = () => {
                     margin: 0;
                     padding: 0;
                     color: #787f88;
-                    font-family: Inter;
+                    font-family: "GothamNarrow-Book", "Helvetica Neue",
+                      sans-serif;
                     font-size: 12px;
                     font-style: normal;
-                    font-weight: 500;
+                    font-weight: 325;
                     white-space: pre-line;
                     line-height: normal;
                     margin-top: 8px;

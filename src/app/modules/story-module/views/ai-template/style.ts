@@ -101,7 +101,7 @@ export const notSubscribedcss = (error: boolean) => css`
     padding-left: 24px;
     width: 70%;
     font-size: 16px;
-    font-family: "Inter", sans-serif;
+    font-family: "GothamNarrow-Book", "Helvetica Neue", sans-serif;
     color: #000000;
   }
   button {
@@ -109,7 +109,7 @@ export const notSubscribedcss = (error: boolean) => css`
     border-radius: 0px 34.5px 34.5px 0px;
     outline: none;
     border: none;
-    font-family: "Inter", sans-serif;
+    font-family: "GothamNarrow-Book", "Helvetica Neue", sans-serif;
     font-size: 16px;
     line-height: 19px;
     color: #ffffff;

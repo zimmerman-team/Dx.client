@@ -33,7 +33,7 @@ export default function NewsletterBlock(props: {
       {props.formError.email && (
         <label
           css={`
-            font-family: "Inter", sans-serif;
+            font-family: "GothamNarrow-Book", "Helvetica Neue", sans-serif;
             font-size: 12px;
             text-align: left;
             width: 100%;
@@ -59,11 +59,11 @@ export default function NewsletterBlock(props: {
             width: 70%;
             padding-left: 24px;
             background: #f7f7f7;
-            font-family: "Roboto", sans-serif;
-            font-weight: 400;
+            font-family: "GothamNarrow-Book", "Helvetica Neue", sans-serif;
+            font-weight: 325;
             ::placeholder {
-              font-family: "Roboto", sans-serif;
-              font-weight: 400;
+              font-family: "GothamNarrow-Book", "Helvetica Neue", sans-serif;
+              font-weight: 325;
               color: #000;
             }
           }
@@ -74,10 +74,10 @@ export default function NewsletterBlock(props: {
             background: #6061e5;
             text-transform: uppercase;
             color: #fff;
-            font-family: "Inter", sans-serif;
+            font-family: "GothamNarrow-Book", "Helvetica Neue", sans-serif;
             font-size: 12px;
             width: 50%;
-            font-weight: 400;
+            font-weight: 325;
             cursor: pointer;
           }
         `}

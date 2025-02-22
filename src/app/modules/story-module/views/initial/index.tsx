@@ -67,9 +67,9 @@ function StoryInitialView(props: Readonly<StoryInitialViewProps>) {
       <div>
         <h4
           css={`
-            font-family: "Inter", sans-serif;
+            font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
             font-size: 24px;
-            font-weight: 700;
+            font-weight: 400;
             color: #231d2c;
             margin: 0;
           `}

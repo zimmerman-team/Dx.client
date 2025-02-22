@@ -96,8 +96,8 @@ export const empowercss = (view: string) => css`
       outline: none;
       border: none;
       color: #ffffff;
-      font-family: "Inter", sans-serif;
-      font-weight: 700;
+      font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
+      font-weight: 400;
       font-size: 14px;
       text-transform: uppercase;
       text-decoration: none;
@@ -252,8 +252,8 @@ export const ClimateButton = styled.button`
   outline: none;
   border: none;
   color: #ffffff;
-  font-family: "Inter", sans-serif;
-  font-weight: 700;
+  font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
+  font-weight: 400;
   font-size: 14px;
   text-transform: uppercase;
   background: ${(props) => (props.color ? props.color : "inherit")};

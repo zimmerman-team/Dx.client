@@ -207,7 +207,7 @@ export default function ContactModule() {
                   margin-top: 20px;
                 }
                 input {
-                  font-family: "Inter", sans-serif;
+                  font-family: "GothamNarrow-Book", "Helvetica Neue", sans-serif;
                   color: #231d2c;
                 }
                 @media (max-width: 1024px) {

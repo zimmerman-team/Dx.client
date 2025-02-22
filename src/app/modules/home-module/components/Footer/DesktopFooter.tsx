@@ -144,7 +144,7 @@ export default function DesktopFooter() {
             {formError.email && (
               <label
                 css={`
-                  font-family: "Inter", sans-serif;
+                  font-family: "GothamNarrow-Book", "Helvetica Neue", sans-serif;
                   font-size: 12px;
                   text-align: left;
                   width: 100%;
@@ -171,11 +171,12 @@ export default function DesktopFooter() {
                   width: 70%;
                   padding-left: 24px;
                   background: #f7f7f7;
-                  font-family: "Roboto", sans-serif;
-                  font-weight: 400;
+                  font-family: "GothamNarrow-Book", "Helvetica Neue", sans-serif;
+                  font-weight: 325;
                   ::placeholder {
-                    font-family: "Roboto", sans-serif;
-                    font-weight: 400;
+                    font-family: "GothamNarrow-Book", "Helvetica Neue",
+                      sans-serif;
+                    font-weight: 325;
                     color: #000;
                   }
                 }
@@ -186,10 +187,10 @@ export default function DesktopFooter() {
                   background: #231d2c;
                   text-transform: uppercase;
                   color: #fff;
-                  font-family: "Inter", sans-serif;
+                  font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
                   font-size: 14px;
                   width: 30%;
-                  font-weight: 700;
+                  font-weight: 400;
                   cursor: pointer;
                 }
               `}

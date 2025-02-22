@@ -92,8 +92,8 @@ function StoryUsePanel() {
                 border-radius: 30px;
                 outline: none;
                 border: none;
-                font-family: "Inter", sans-serif;
-                font-weight: 700;
+                font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
+                font-weight: 400;
                 font-size: 14px;
                 text-decoration: none;
 

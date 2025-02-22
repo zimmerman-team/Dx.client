@@ -31,10 +31,10 @@ const Button = styled.button`
   height: 48px;
   outline: none;
   border: none;
-  font-family: "Inter", sans-serif;
+  font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
   font-size: 14px;
   font-style: normal;
-  font-weight: 700;
+  font-weight: 400;
   line-height: normal;
   text-transform: capitalize;
   cursor: pointer;

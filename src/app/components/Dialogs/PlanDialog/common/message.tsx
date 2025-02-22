@@ -27,10 +27,10 @@ const MessageContainer = styled((props) => <Box {...props} />)`
     }
   }
   p {
-    font-family: "Inter", sans-serif;
+    font-family: "GothamNarrow-Book", "Helvetica Neue", sans-serif;
     font-size: 14px;
     font-style: normal;
-    font-weight: 500;
+    font-weight: 350;
     line-height: normal;
     color: #231d2c;
     cursor: pointer;

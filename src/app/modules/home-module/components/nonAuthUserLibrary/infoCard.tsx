@@ -83,9 +83,9 @@ export default function InfoCard() {
               align-items: center;
               gap: 10px;
               color: #6061e5;
-              font-family: "Inter", sans-serif;
+              font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
               font-size: 14px;
-              font-weight: 700;
+              font-weight: 400;
               cursor: pointer;
               svg {
                 path,

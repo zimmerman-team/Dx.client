@@ -1524,7 +1524,7 @@ function EditHeaderPanelView(props: Props) {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            font-family: "Roboto", sans-serif;
+            font-family: "GothamNarrow-Book", "Helvetica Neue", sans-serif;
             svg {
               transform: rotate(${displayColorsList ? "180" : "0"}deg);
             }

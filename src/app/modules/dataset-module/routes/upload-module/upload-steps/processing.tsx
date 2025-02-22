@@ -77,7 +77,7 @@ export default function Processing(props: ProcessingMetaDataProps) {
               border-radius: 30px;
               font-weight: 500;
               font-size: 14px;
-              font-family: "Inter";
+              font-family: "GothamNarrow-Book", "Helvetica Neue", sans-serif;
               cursor: pointer;
               :hover {
                 opacity: 0.8;

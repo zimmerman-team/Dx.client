@@ -46,8 +46,8 @@ export function NotAuthorizedMessageModule(props: {
               css={`
                 font-size: 24px;
                 margin: 0;
-                font-family: Inter;
-                font-weight: 700;
+                font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
+                font-weight: 400;
                 color: #231d2c;
                 max-width: 100%;
                 white-space: nowrap;
@@ -129,8 +129,8 @@ export function NotAuthorizedMessageModule(props: {
                 border-radius: 30px;
                 outline: none;
                 border: none;
-                font-family: "Inter", sans-serif;
-                font-weight: 700;
+                font-family: "GothamNarrow-Book", "Helvetica Neue", sans-serif;
+                font-weight: 400;
                 font-size: 14px;
                 text-transform: uppercase;
                 text-decoration: none;

@@ -169,8 +169,8 @@ function MobileHeader(props: { navLocation: string }) {
                   align-items: center;
                   gap: 8.16px;
                   color: var(--Primary-Dark, #231d2c);
-                  font-family: "Inter", sans-serif;
-                  font-size: 11.424px;
+                  font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
+                  font-size: 16px;
                   font-weight: 500;
                   text-decoration: none;
                   white-space: nowrap;
@@ -456,7 +456,7 @@ const ActionMenu = () => {
                 gap: 8px;
                 align-items: center;
                 font-weight: 500;
-                font-family: "Inter", sans-serif;
+                font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
               }
 
               &:hover,

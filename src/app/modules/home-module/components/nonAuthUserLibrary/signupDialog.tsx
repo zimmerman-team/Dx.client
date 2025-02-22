@@ -131,9 +131,9 @@ export default function SignupDialog(props: Props) {
                 gap: 10px;
                 border: none;
                 color: #fff;
-                font-family: "Inter", sans-serif;
+                font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
                 font-size: 14px;
-                font-weight: 700;
+                font-weight: 400;
                 cursor: pointer;
               }
             `}

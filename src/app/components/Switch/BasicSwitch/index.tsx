@@ -20,6 +20,9 @@ export default function BasicSwitch(props: Props) {
     setActiveIndex(index);
     props.handleSwitch(key);
   };
+
+  const gothamNarrowBold = "GothamNarrow-Bold";
+  const gothamNarrowBook = "GothamNarrow-Book";
   return (
     <div
       css={`
@@ -40,7 +43,7 @@ export default function BasicSwitch(props: Props) {
           align-items: center;
           gap: 10px;
           text-transform: uppercase;
-          font-family: "Inter", sans-serif;
+          font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
           font-size: 14px;
           border: none;
           justify-content: center;
