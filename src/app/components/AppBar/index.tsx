@@ -247,6 +247,7 @@ export function AppBar() {
             display: flex;
             background-color: #f2f7fd;
           `}
+          data-cy="app-bar"
         >
           <Toolbar
             disableGutters
@@ -290,6 +291,7 @@ export function AppBar() {
                       display: flex;
                       align-items: center;
                     `}
+                    data-cy="header-logo"
                   >
                     <NavLink to="/" css={logocss}>
                       <img src="/logo.svg" alt="logo" />
@@ -383,6 +385,7 @@ const ActionMenu = () => {
         {isAuthenticated && (
           <button
             onClick={() => history.push("/user-management/profile")}
+            data-cy="navbar-profile-btn"
             css={`
               min-width: 33px;
               height: 33px;
