@@ -29,6 +29,7 @@ function StoryInitialView(props: Readonly<StoryInitialViewProps>) {
   );
   const [openSearch, setOpenSearch] = React.useState(false);
   const [sortValue, setSortValue] = React.useState("updatedDate");
+  const [filterValue, setFilterValue] = React.useState("allAssets");
 
   const storyCreateSuccess = useStoreState(
     (state) => state.stories.StoryCreate.success
@@ -143,6 +144,8 @@ function StoryInitialView(props: Readonly<StoryInitialViewProps>) {
             openSearch={openSearch}
             setOpenSearch={setOpenSearch}
             searchIconCypressId="open-search-button"
+            filterValue={filterValue}
+            setFilterValue={setFilterValue}
           />
         </Grid>
       </Grid>

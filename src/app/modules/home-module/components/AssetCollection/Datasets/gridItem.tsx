@@ -2,6 +2,7 @@ import React from "react";
 import moment from "moment";
 import IconButton from "@material-ui/core/IconButton";
 import { ReactComponent as ClockIcon } from "app/modules/home-module/assets/clock-icon.svg";
+import { ReactComponent as OwnerIcon } from "app/modules/home-module/assets/owner-icon.svg";
 import { ReactComponent as MenuIcon } from "app/modules/home-module/assets/menu.svg";
 import { ReactComponent as DataCardImg } from "app/modules/home-module/assets/data-card-img.svg";
 import { ReactComponent as InfoIcon } from "app/modules/home-module/assets/info-icon.svg";
@@ -76,7 +77,7 @@ export default function GridItem(props: Readonly<Props>) {
         <div
           css={`
             width: 100%;
-            height: 161.59px;
+            height: 162px;
             display: flex;
             color: #262c34;
             background: #fff;
@@ -89,6 +90,7 @@ export default function GridItem(props: Readonly<Props>) {
             &:hover {
               box-shadow: 0px 7px 22px 0px rgba(0, 0, 0, 0.1);
             }
+            overflow: hidden;
           `}
         >
           <div
@@ -157,14 +159,13 @@ export default function GridItem(props: Readonly<Props>) {
           <div
             css={`
               display: flex;
-              flex-direction: row;
-              align-items: flex-end;
-              justify-content: space-between;
+              position: relative;
             `}
           >
             <div
               css={`
-                margin-top: 8px;
+                position: absolute;
+                bottom: -14px;
                 svg {
                   width: 119.084px;
                   height: 69.761px;
@@ -175,20 +176,36 @@ export default function GridItem(props: Readonly<Props>) {
             </div>
             <div
               css={`
-                display: flex;
-                font-size: 12px;
-                justify-content: flex-end;
-                align-items: center;
-                gap: 3px;
-
-                > p {
+                position: absolute;
+                bottom: 4px;
+                right: 3%;
+                p {
                   margin: 0;
-                  font-size: 8.814px;
+                  font-size: 10px;
+                  line-height: normal;
                 }
               `}
             >
-              <ClockIcon />
-              <p>{moment(props.date).format("MMMM YYYY")}</p>
+              <div
+                css={`
+                  display: flex;
+                  align-items: center;
+                  gap: 3px;
+                `}
+              >
+                <OwnerIcon />
+                <p>Owner</p>
+              </div>
+              <div
+                css={`
+                  display: flex;
+                  align-items: center;
+                  gap: 3px;
+                `}
+              >
+                <ClockIcon width={12} height={12} />
+                <p>{moment(props.date).format("MMMM YYYY")}</p>
+              </div>
             </div>
           </div>
         </div>
@@ -213,7 +230,7 @@ export default function GridItem(props: Readonly<Props>) {
                 color: #ffffff;
                 font-family: "GothamNarrow-Book", "Helvetica Neue", sans-serif;
                 right: 8px;
-                bottom: 30px;
+                bottom: 40px;
                 z-index: 2;
                 border: none;
                 outline: none;

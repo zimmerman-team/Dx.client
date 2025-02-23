@@ -2,7 +2,7 @@ import { css } from "styled-components/macro";
 
 export const homeFootercss = css`
   background: #fff;
-  padding-top: 27px;
+
   bottom: 0;
   left: 0;
   right: 0;

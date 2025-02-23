@@ -13,12 +13,11 @@ export default function DatasetCategoryList(props: Readonly<Props>) {
       css={`
         gap: ${customCss ? customCss.gap : "18px"};
         width: 100%;
-        height: 55px;
         display: flex;
         max-width: 100%;
         overflow-x: auto;
         flex-direction: row;
-        margin: 40px 0 20px 0;
+        margin: 16px 0 16px 0;
 
         &::-webkit-scrollbar {
           height: 5px;
@@ -66,7 +65,7 @@ export default function DatasetCategoryList(props: Readonly<Props>) {
               ? {
                   color: "#fff",
                   background: "#6061E5",
-                  border: "none",
+                  border: "1px solid #6061E5",
                   fontWeight: "bold",
                 }
               : {}
