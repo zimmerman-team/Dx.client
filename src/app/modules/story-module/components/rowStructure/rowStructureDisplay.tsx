@@ -222,7 +222,8 @@ export default function RowstructureDisplay(
             width: 100%;
             height: 100%;
             display: flex;
-            overflow: hidden;
+            overflow-x: scroll;
+            overflow-y: hidden;
             gap: ${props.gap};
             border: ${border};
             @media (max-width: 767px) {

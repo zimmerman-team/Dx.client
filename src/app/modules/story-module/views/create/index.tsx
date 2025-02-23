@@ -181,6 +181,7 @@ function StoryCreateView(props: Readonly<StoryCreateViewProps>) {
               updateFramesArray={props.updateFramesArray}
               setRowStructureType={setRowStructuretype}
               endTour={() => {}}
+              rightPanelOpen={props.rightPanelOpen}
             />
           }
           <Box height={45} />
