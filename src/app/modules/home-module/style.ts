@@ -49,7 +49,6 @@ export const turnsDataCss = css`
     justify-content: center;
   }
 
-  button,
   a {
     padding: 8px 27px;
     height: 41px;

@@ -27,7 +27,7 @@ import { datasetCategories } from "app/modules/dataset-module/routes/upload-modu
 import AssetsGrid from "app/modules/home-module/components/AssetCollection/All/assetsGrid";
 import BreadCrumbs from "app/modules/home-module/components/Breadcrumbs";
 import Filter from "app/modules/home-module/components/Filter";
-import { useCheckUserPlan } from "app/hooks/useCheckUserPlan";
+import AddAssetDropdown from "app/modules/home-module/components/AddAssetDropdown";
 
 function AssetsCollection() {
   const { isAuthenticated, user } = useAuth0();
@@ -38,10 +38,6 @@ function AssetsCollection() {
   const [sortValue, setSortValue] = useRecoilState(allAssetsSortBy);
   const [display, setDisplay] = useRecoilState(homeDisplayAtom);
   const [tabPrevPosition, setTabPrevPosition] = React.useState("");
-
-  const { handleClick } = useCheckUserPlan();
-
-  const history = useHistory();
 
   const handleChange = (newValue: "all" | "data" | "charts" | "stories") => {
     setDisplay(newValue);
@@ -134,64 +130,10 @@ function AssetsCollection() {
               <div
                 css={`
                   display: flex;
-                  width: 100%;
-                  justify-content: flex-end;
-                  align-items: center;
-                  gap: 8px;
-                  a,
-                  button {
-                    padding: 8px 24px;
-                    white-space: nowrap;
-                    @media (max-width: 700px) {
-                      font-size: 12px;
-                      padding: 8px 19px;
-                    }
-                  }
+                  justify-self: flex-end;
                 `}
               >
-                <button
-                  css={`
-                    background: #e492bd;
-                  `}
-                  data-cy="home-connect-dataset-button"
-                  onClick={() =>
-                    handleClick("dataset", () =>
-                      history.push(
-                        `/dataset/new/upload${
-                          window.location.pathname === "/"
-                            ? "?fromHome=true"
-                            : ""
-                        }`
-                      )
-                    )
-                  }
-                >
-                  CONNECT DATASET
-                </button>
-                <button
-                  css={`
-                    background: #64afaa;
-                  `}
-                  data-cy="home-create-chart-button"
-                  onClick={() =>
-                    handleClick("chart", () => history.push("/chart/new/data"))
-                  }
-                >
-                  CREATE CHART
-                </button>
-                <button
-                  css={`
-                    background: #6061e5;
-                  `}
-                  data-cy="home-create-story-button"
-                  onClick={() =>
-                    handleClick("story", () =>
-                      history.push("/story/new/initial")
-                    )
-                  }
-                >
-                  CREATE STORY
-                </button>
+                <AddAssetDropdown />
               </div>
             </Grid>
           </Grid>
