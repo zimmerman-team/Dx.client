@@ -26,7 +26,7 @@ const BaseSnackbar = styled((props) => (
   & [class*="MuiSnackbarContent-root"] {
     background-color: white;
     width: 1280px;
-    border-radius: 12;
+    border-radius: 12px;
     box-shadow: 0 8px 17px -4px rgba(130, 142, 148, 0.35),
       0 0 4px 0 rgba(130, 142, 148, 0.16), 0 0 2px 0 rgba(130, 142, 148, 0.12);
     flex-wrap: nowrap;
