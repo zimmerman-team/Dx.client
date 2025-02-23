@@ -8,8 +8,13 @@ import HeroEllipsesMobile from "app/modules/home-module/assets/hero-ellipses-mob
 
 import { socialAuth } from "app/utils/socialAuth";
 import { Box, Container } from "@material-ui/core";
+import { useAuth0 } from "@auth0/auth0-react";
+import AddAssetDropdown from "app/modules/home-module/components/AddAssetDropdown";
+import { Link } from "react-router-dom";
+import { PrimaryButton } from "app/components/Styled/button";
 
 export default function Hero() {
+  const { isAuthenticated } = useAuth0();
   return (
     <div
       css={`
@@ -73,29 +78,6 @@ export default function Hero() {
             }
           }
         }
-        button {
-          gap: 8px;
-          color: #231d2c;
-          display: flex;
-          padding: 12px 24px !important;
-          height: 48px;
-          border-radius: 12px;
-          outline: none;
-          border: none;
-          background: #a1a2ff;
-          align-items: center;
-          justify-content: center;
-          font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
-          white-space: nowrap;
-          font-size: 16px;
-          > svg {
-            transform: scale(0.8);
-          }
-          :hover {
-            opacity: 0.8;
-            cursor: pointer;
-          }
-        }
       `}
     >
       <Container
@@ -121,26 +103,76 @@ export default function Hero() {
           <h1>
             Create high impact data driven <b>stories</b>
           </h1>
-          <Box>
-            <p>Sign in for free to unlock data visualisation tools with</p>
+          {isAuthenticated ? (
             <Box
               display={"flex"}
-              gridColumnGap={"16px"}
+              gridColumnGap={"24px"}
               gridRowGap={"8px"}
               justifyContent={"center"}
               flexDirection={{ xs: "column", sm: "row" }}
+              marginTop={"40px"}
             >
-              <button onClick={() => socialAuth("google-oauth2")}>
-                <GoogleIcon /> Google
-              </button>
-              <button onClick={() => socialAuth("linkedin")}>
-                <LinkedInIcon /> LinkedIn
-              </button>
-              <button onClick={() => socialAuth("windowslive")}>
-                <MicrosoftIcon /> Microsoft
-              </button>
+              <AddAssetDropdown />
+              <Link
+                to="/"
+                data-cy="empower-block-explore-stories-link"
+                css={`
+                  text-decoration: none;
+                `}
+              >
+                <PrimaryButton size="big" bg="light" type="button">
+                  Explore the Dashboard
+                </PrimaryButton>
+              </Link>
             </Box>
-          </Box>
+          ) : (
+            <div
+              css={`
+                button {
+                  gap: 8px;
+                  color: #231d2c;
+                  display: flex;
+                  padding: 12px 24px !important;
+                  height: 48px;
+                  border-radius: 12px;
+                  outline: none;
+                  border: none;
+                  background: #a1a2ff;
+                  align-items: center;
+                  justify-content: center;
+                  font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
+                  white-space: nowrap;
+                  font-size: 16px;
+                  > svg {
+                    transform: scale(0.8);
+                  }
+                  :hover {
+                    opacity: 0.8;
+                    cursor: pointer;
+                  }
+                }
+              `}
+            >
+              <p>Sign in for free to unlock data visualisation tools with</p>
+              <Box
+                display={"flex"}
+                gridColumnGap={"16px"}
+                gridRowGap={"8px"}
+                justifyContent={"center"}
+                flexDirection={{ xs: "column", sm: "row" }}
+              >
+                <button onClick={() => socialAuth("google-oauth2")}>
+                  <GoogleIcon /> Google
+                </button>
+                <button onClick={() => socialAuth("linkedin")}>
+                  <LinkedInIcon /> LinkedIn
+                </button>
+                <button onClick={() => socialAuth("windowslive")}>
+                  <MicrosoftIcon /> Microsoft
+                </button>
+              </Box>
+            </div>
+          )}
         </div>
       </Container>
     </div>

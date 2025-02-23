@@ -12,7 +12,7 @@ export default function KeyFeaturesBlock() {
   const isTablet = useMediaQuery("(max-width:1024px)");
   const isMobile = useMediaQuery("(max-width:600px)");
 
-  let spacing: GridSpacing = 9;
+  let spacing: GridSpacing = 8;
   if (isTablet) {
     spacing = 6;
   }
@@ -39,7 +39,14 @@ export default function KeyFeaturesBlock() {
         `}
       >
         <Grid item lg={6} md={9} sm={12} xs={12}>
-          <SearchImg />
+          <SearchImg
+            css={`
+              border-radius: 16px;
+              box-shadow: 0px 13.449px 20.173px 0px rgba(0, 0, 0, 0.05),
+                0px 4.035px 6.724px 0px rgba(0, 0, 0, 0.05),
+                0px 0.672px 6.724px 0px rgba(0, 0, 0, 0.05);
+            `}
+          />
         </Grid>
         <Grid item lg={6} md={9} sm={12} xs={12}>
           <div css={keyfeaturescss.text}>
@@ -58,12 +65,12 @@ export default function KeyFeaturesBlock() {
       </Grid>
       <div
         css={`
-          height: 120px;
+          height: 80px;
           @media (max-width: 1024px) {
-            height: 73px;
+            height: 80px;
           }
           @media (max-width: 600px) {
-            height: 48px;
+            height: 32px;
           }
         `}
       />
@@ -99,19 +106,22 @@ export default function KeyFeaturesBlock() {
         <Grid item lg={6} md={9} sm={12} xs={12}>
           <AIPoweredImg
             css={`
-              margin-left: -30px;
+              box-shadow: 0px 14.97px 22.455px 0px rgba(0, 0, 0, 0.05),
+                0px 4.491px 7.485px 0px rgba(0, 0, 0, 0.05),
+                0px 0.749px 7.485px 0px rgba(0, 0, 0, 0.05);
+              border-radius: 16px;
             `}
           />
         </Grid>
       </Grid>
       <div
         css={`
-          height: 100px;
+          height: 80px;
           @media (max-width: 1024px) {
-            height: 73px;
+            height: 80px;
           }
           @media (max-width: 600px) {
-            height: 48px;
+            height: 32px;
           }
         `}
       />
@@ -134,7 +144,11 @@ export default function KeyFeaturesBlock() {
         <Grid item lg={6} md={9} sm={12} xs={12}>
           <CharVizImg
             css={`
-              margin-left: -30px;
+              border-radius: 16px;
+              background: #fbfbfb;
+              box-shadow: 0px 18.798px 28.197px 0px rgba(0, 0, 0, 0.05),
+                0px 5.639px 9.399px 0px rgba(0, 0, 0, 0.05),
+                0px 0.94px 9.399px 0px rgba(0, 0, 0, 0.05);
             `}
           />
         </Grid>
@@ -154,9 +168,12 @@ export default function KeyFeaturesBlock() {
       </Grid>
       <div
         css={`
-          height: 111px;
+          height: 80px;
+          @media (max-width: 1024px) {
+            height: 80px;
+          }
           @media (max-width: 600px) {
-            height: 48px;
+            height: 32px;
           }
         `}
       />
@@ -191,14 +208,25 @@ export default function KeyFeaturesBlock() {
           </div>
         </Grid>
         <Grid item lg={6} md={9} sm={12} xs={12}>
-          <OpenSourceImg />
+          <OpenSourceImg
+            css={`
+              border-radius: 16px;
+              background: #fbfbfb;
+              box-shadow: 0px 13.449px 20.173px 0px rgba(0, 0, 0, 0.05),
+                0px 4.035px 6.724px 0px rgba(0, 0, 0, 0.05),
+                0px 0.672px 6.724px 0px rgba(0, 0, 0, 0.05);
+            `}
+          />
         </Grid>
       </Grid>
       <div
         css={`
-          height: 85px;
+          height: 80px;
+          @media (max-width: 1024px) {
+            height: 80px;
+          }
           @media (max-width: 600px) {
-            height: 48px;
+            height: 32px;
           }
         `}
       />
@@ -221,7 +249,11 @@ export default function KeyFeaturesBlock() {
         <Grid item lg={6} md={9} sm={12} xs={12}>
           <StoriesImg
             css={`
-              margin-left: -30px;
+              border-radius: 16px;
+              background: #fbfbfb;
+              box-shadow: 0px 14.97px 22.455px 0px rgba(0, 0, 0, 0.05),
+                0px 4.491px 7.485px 0px rgba(0, 0, 0, 0.05),
+                0px 0.749px 7.485px 0px rgba(0, 0, 0, 0.05);
             `}
           />
         </Grid>

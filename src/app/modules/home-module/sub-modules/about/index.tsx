@@ -4,7 +4,6 @@ import { Box, Container } from "@material-ui/core";
 import { ReactComponent as MissionImg } from "app/modules/home-module/assets/about-mission.svg";
 import { ReactComponent as DXImg } from "app/modules/home-module/assets/about-dx.svg";
 import { ReactComponent as StoryImg } from "app/modules/home-module/assets/about-story.svg";
-import EllipsesMobile from "app/modules/home-module/assets/about-page-ellipses-mobile.svg";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 import { Carousel } from "react-responsive-carousel";
 import HomeFooter from "app/modules/home-module/components/Footer";
@@ -17,6 +16,9 @@ import { socialAuth } from "app/utils/socialAuth";
 import { ReactComponent as GoogleIcon } from "app/modules/onboarding-module/asset/google-img.svg";
 import { ReactComponent as LinkedInIcon } from "app/modules/onboarding-module/asset/linkedIn-img.svg";
 import { ReactComponent as MicrosoftIcon } from "app/modules/onboarding-module/asset/microsoft-img.svg";
+import HeroEllipses from "app/modules/home-module/assets/hero-ellipses.svg";
+import HeroEllipsesTablet from "app/modules/home-module/assets/hero-ellipses-tablet.svg";
+import HeroEllipsesMobile from "app/modules/home-module/assets/hero-ellipses-mobile.svg";
 import SiemAvi from "app/modules/home-module/assets/team/siem.png";
 import JohnAvi from "app/modules/home-module/assets/team/john.png";
 import KennyAvi from "app/modules/home-module/assets/team/kenny.png";
@@ -210,16 +212,16 @@ export default function AboutModule() {
         display: flex;
         flex-direction: column;
         justify-content: space-between;
-        min-height: 100vh;
+        margin-top: 50px;
+        min-height: calc(100vh - 50px);
       `}
     >
       <section
         css={`
-          background-image: url(${EllipsesMobile});
-          background-repeat: no-repeat;
-          background-position: 40% 0%;
-          height: 100%;
-          padding-bottom: 80px;
+          padding-bottom: 120px;
+          @media (max-width: 960px) {
+            padding-bottom: 40px;
+          }
           background-color: linear-gradient(
             180deg,
             rgba(255, 255, 255, 0) 0%,
@@ -227,198 +229,221 @@ export default function AboutModule() {
           );
         `}
       >
-        <Box height={48} />
         <div
           css={`
-            height: 77px;
+            padding: 77px 0;
             @media (max-width: 600px) {
-              height: 48px;
+              padding: 48px 0;
+            }
+
+            background: url(${HeroEllipses}),
+              linear-gradient(180deg, rgba(255, 255, 255, 0) 0%, #f2f7fd 100%);
+            background-color: #f2f7fd;
+            background-repeat: no-repeat;
+            background-size: contain;
+            background-position: bottom;
+            @media (max-width: 960px) {
+              background: url(${HeroEllipsesTablet}),
+                linear-gradient(180deg, rgba(255, 255, 255, 0) 0%, #f2f7fd 100%);
+              background-repeat: no-repeat;
+              background-size: cover;
+              background-position: bottom right;
+            }
+            @media (max-width: 744px) {
+              background: url(${HeroEllipsesMobile}),
+                linear-gradient(180deg, rgba(255, 255, 255, 0) 0%, #f2f7fd 100%);
+              background-repeat: no-repeat;
+              background-size: cover;
+              background-position: bottom right;
             }
           `}
-        />
-
-        <Container maxWidth="lg">
-          <div
-            css={`
-              display: flex;
-              justify-content: space-between;
-              align-items: center;
-              @media (max-width: 805px) {
-                flex-direction: column;
-              }
-            `}
-          >
+        >
+          {" "}
+          <Container maxWidth="lg">
             <div
               css={`
-                width: 518px;
-                @media (max-width: 1200px) {
-                  width: 62%;
-                }
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
                 @media (max-width: 805px) {
-                  width: 100%;
-                }
-                @media (max-width: 500px) {
-                  p {
-                    font-size: 16px;
-                  }
-                  h1 {
-                    font-size: 40px;
-                  }
+                  flex-direction: column;
                 }
               `}
             >
-              <h1
+              <div
                 css={`
-                  font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
-                  font-size: 64px;
-                  font-style: normal;
-                  font-weight: 400;
-                  line-height: 130%;
-                  margin: 0;
-                `}
-              >
-                Our Story
-              </h1>
-
-              <p
-                css={`
-                  margin: 0;
-                  margin-top: 37.38px;
-                  font-size: 20px;
-                  font-style: normal;
-                  font-weight: 350;
-                  line-height: normal;
-                  font-family: "GothamNarrow-Medium", "Helvetica Neue",
-                    sans-serif;
-                  @media (max-width: 1024px) {
-                    font-family: "GothamNarrow-Book", "Helvetica Neue",
-                      sans-serif;
+                  width: 518px;
+                  @media (max-width: 1200px) {
+                    width: 62%;
+                  }
+                  @media (max-width: 805px) {
+                    width: 100%;
+                  }
+                  @media (max-width: 500px) {
+                    p {
+                      font-size: 16px;
+                    }
+                    h1 {
+                      font-size: 40px;
+                    }
                   }
                 `}
               >
-                With 20+ years combined experience in data and global health
-                development, we empower organisations with innovative data
-                solutions to enhance their communication. Our decade-long
-                commitment drives us to advance data communication continually.
-                <br />
-                <br />
-                Discover the true potential of your data with Dataxplorer. Let
-                us help you harness its power!
-              </p>
+                <h1
+                  css={`
+                    font-family: "GothamNarrow-Bold", "Helvetica Neue",
+                      sans-serif;
+                    font-size: 64px;
+                    font-style: normal;
+                    font-weight: 400;
+                    line-height: 130%;
+                    margin: 0;
+                  `}
+                >
+                  Our Story
+                </h1>
+
+                <p
+                  css={`
+                    margin: 0;
+                    margin-top: 37.38px;
+                    font-size: 20px;
+                    font-style: normal;
+                    font-weight: 350;
+                    line-height: normal;
+                    font-family: "GothamNarrow-Medium", "Helvetica Neue",
+                      sans-serif;
+                    @media (max-width: 1024px) {
+                      font-family: "GothamNarrow-Book", "Helvetica Neue",
+                        sans-serif;
+                    }
+                  `}
+                >
+                  With 20+ years combined experience in data and global health
+                  development, we empower organisations with innovative data
+                  solutions to enhance their communication. Our decade-long
+                  commitment drives us to advance data communication
+                  continually.
+                  <br />
+                  <br />
+                  Discover the true potential of your data with Dataxplorer. Let
+                  us help you harness its power!
+                </p>
+
+                <div
+                  css={`
+                    margin-top: 59px;
+                    @media (max-width: 500px) {
+                      margin-top: 24px;
+                    }
+                  `}
+                >
+                  {isAuthenticated && (
+                    <div
+                      css={`
+                        display: flex;
+                        column-gap: 20px;
+                        a {
+                          text-decoration: none;
+                          :nth-of-type(1) {
+                            @media (max-width: 767px) {
+                              display: none;
+                            }
+                          }
+                        }
+                        @media (max-width: 425px) {
+                          flex-direction: column;
+                          gap: 10px;
+                          justify-content: center;
+                          align-items: center;
+                        }
+                      `}
+                    >
+                      <AddAssetDropdown />
+
+                      <Link to="/" data-cy="empower-block-explore-stories-link">
+                        <PrimaryButton size="big" bg="light" type="button">
+                          Explore the Dashboard
+                        </PrimaryButton>
+                      </Link>
+                    </div>
+                  )}
+                  {!isAuthenticated && (
+                    <div
+                      css={`
+                        display: flex;
+                        gap: 16px;
+                        > button {
+                          gap: 8px;
+                          color: #231d2c;
+                          display: flex;
+                          padding: 9px 17px !important;
+                          height: 48px;
+                          border-radius: 12px;
+                          outline: none;
+                          border: none;
+                          background: #a1a2ff;
+                          align-items: center;
+                          justify-content: center;
+                          font-family: "GothamNarrow-Bold", "Helvetica Neue",
+                            sans-serif;
+                          white-space: nowrap;
+                          font-size: 16px;
+                          > svg {
+                            transform: scale(0.8);
+                          }
+                          :hover {
+                            opacity: 0.8;
+                            cursor: pointer;
+                          }
+                        }
+                        @media (max-width: 500px) {
+                          flex-direction: column;
+                          justify-content: center;
+                          align-items: center;
+                          gap: 8px;
+
+                          button {
+                            width: 95%;
+                          }
+                        }
+                      `}
+                    >
+                      <button onClick={() => socialAuth("google-oauth2")}>
+                        <GoogleIcon /> Google
+                      </button>
+                      <button onClick={() => socialAuth("linkedin")}>
+                        <LinkedInIcon /> LinkedIn
+                      </button>
+                      <button onClick={() => socialAuth("windowslive")}>
+                        <MicrosoftIcon /> Microsoft
+                      </button>
+                    </div>
+                  )}
+                </div>
+              </div>
 
               <div
                 css={`
-                  margin-top: 59px;
+                  margin-right: -41px;
+                  @media (max-width: 1200px) {
+                    margin-right: unset;
+                    svg {
+                      width: 100%;
+                      height: 100%;
+                    }
+                  }
                   @media (max-width: 500px) {
-                    margin-top: 24px;
+                    margin-top: 40px;
                   }
                 `}
               >
-                {isAuthenticated && (
-                  <div
-                    css={`
-                      display: flex;
-                      column-gap: 20px;
-                      a {
-                        text-decoration: none;
-                        :nth-of-type(1) {
-                          @media (max-width: 767px) {
-                            display: none;
-                          }
-                        }
-                      }
-                      @media (max-width: 425px) {
-                        flex-direction: column;
-                        gap: 10px;
-                        justify-content: center;
-                        align-items: center;
-                      }
-                    `}
-                  >
-                    <AddAssetDropdown />
-
-                    <Link to="/" data-cy="empower-block-explore-stories-link">
-                      <PrimaryButton size="big" bg="light" type="button">
-                        Explore the Dashboard
-                      </PrimaryButton>
-                    </Link>
-                  </div>
-                )}
-                {!isAuthenticated && (
-                  <div
-                    css={`
-                      display: flex;
-                      gap: 16px;
-                      > button {
-                        gap: 8px;
-                        color: #231d2c;
-                        display: flex;
-                        padding: 9px 17px !important;
-                        height: 48px;
-                        border-radius: 12px;
-                        outline: none;
-                        border: none;
-                        background: #a1a2ff;
-                        align-items: center;
-                        justify-content: center;
-                        font-family: "GothamNarrow-Bold", "Helvetica Neue",
-                          sans-serif;
-                        white-space: nowrap;
-                        font-size: 16px;
-                        > svg {
-                          transform: scale(0.8);
-                        }
-                        :hover {
-                          opacity: 0.8;
-                          cursor: pointer;
-                        }
-                      }
-                      @media (max-width: 500px) {
-                        flex-direction: column;
-                        justify-content: center;
-                        align-items: center;
-                        gap: 8px;
-
-                        button {
-                          width: 95%;
-                        }
-                      }
-                    `}
-                  >
-                    <button onClick={() => socialAuth("google-oauth2")}>
-                      <GoogleIcon /> Google
-                    </button>
-                    <button onClick={() => socialAuth("linkedin")}>
-                      <LinkedInIcon /> LinkedIn
-                    </button>
-                    <button onClick={() => socialAuth("windowslive")}>
-                      <MicrosoftIcon /> Microsoft
-                    </button>
-                  </div>
-                )}
+                <StoryImg />
               </div>
             </div>
+          </Container>
+        </div>
 
-            <div
-              css={`
-                margin-right: -41px;
-                @media (max-width: 1200px) {
-                  margin-right: unset;
-                  svg {
-                    width: 100%;
-                    height: 100%;
-                  }
-                }
-                @media (max-width: 500px) {
-                  margin-top: 40px;
-                }
-              `}
-            >
-              <StoryImg />
-            </div>
-          </div>
-        </Container>
-        <Box height={77} />
         <div
           css={`
             background-color: #6061e5;
@@ -653,7 +678,7 @@ export default function AboutModule() {
                 </p>
               </div>
             ))}
-            {Array.from({ length: 2 }).map((_, index) => (
+            {Array.from({ length: 1 }).map((_, index) => (
               <div key={index}>
                 <img
                   src={EmptyAvi}
@@ -694,9 +719,9 @@ export default function AboutModule() {
           </div>
           <div
             css={`
-              height: 77px;
-              @media (max-width: 500px) {
-                height: 56px;
+              height: 120px;
+              @media (max-width: 960px) {
+                height: 72px;
               }
             `}
           />
@@ -705,15 +730,16 @@ export default function AboutModule() {
               <h3 id="ab-mobile">
                 <b>Mission</b>
               </h3>
-              <div
-                css={`
-                  margin-left: -28px;
-                  @media (max-width: 1024px) {
-                    margin-left: unset;
-                  }
-                `}
-              >
-                <MissionImg />
+              <div css={``}>
+                <MissionImg
+                  css={`
+                    border-radius: 16px;
+                    background: #fbfbfb;
+                    box-shadow: 0px 14.97px 22.455px 0px rgba(0, 0, 0, 0.05),
+                      0px 4.491px 7.485px 0px rgba(0, 0, 0, 0.05),
+                      0px 0.749px 7.485px 0px rgba(0, 0, 0, 0.05);
+                  `}
+                />
               </div>
               <div>
                 <h3 id="ab-desktop">
@@ -739,9 +765,9 @@ export default function AboutModule() {
           </div>
           <div
             css={`
-              height: 77px;
-              @media (max-width: 500px) {
-                height: 56px;
+              height: 120px;
+              @media (max-width: 960px) {
+                height: 72px;
               }
             `}
           />
@@ -776,7 +802,15 @@ export default function AboutModule() {
               </div>
 
               <div>
-                <DXImg />
+                <DXImg
+                  css={`
+                    border-radius: 16px;
+                    background: #fbfbfb;
+                    box-shadow: 0px 4.035px 6.724px 0px rgba(0, 0, 0, 0.05),
+                      0px 13.449px 20.173px 0px rgba(0, 0, 0, 0.05),
+                      0px 0.672px 6.724px 0px rgba(0, 0, 0, 0.05);
+                  `}
+                />
               </div>
               <h3 id="ab-mobile">
                 <b>Dataxplorer</b>
@@ -784,7 +818,6 @@ export default function AboutModule() {
             </div>
           </div>
         </Container>
-        <Box height={56} />
       </section>
       <HomeFooter />
     </div>
