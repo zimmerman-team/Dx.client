@@ -140,7 +140,7 @@ export default function PlanCard({
             margin: 0;
             padding: 0;
             margin-top: 18.08px;
-            font-size: 16px;
+            font-size: 14px;
             font-weight: 325;
             font-family: "GothamNarrow-Book", "Helvetica Neue", sans-serif;
             white-space: pre-line;
@@ -168,7 +168,7 @@ export default function PlanCard({
             line-height: normal;
             color: ${plan.recommended ? "#FFFFFF" : "#262C34"};
             background: ${plan.recommended ? "#2C2C79" : "#FFFFFF"};
-            height: 41px;
+            height: 48px;
             width: 175px;
             display: flex;
             justify-content: center;
@@ -200,7 +200,7 @@ export default function PlanCard({
           data-cy="plan-button"
         >
           {plan.current
-            ? "Current Plan"
+            ? "Active"
             : !plan.available
             ? "Coming soon"
             : plan.buttonText}

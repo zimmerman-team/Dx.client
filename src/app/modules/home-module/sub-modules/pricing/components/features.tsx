@@ -237,7 +237,7 @@ const Features = () => {
           padding: 0px 12px;
           line-height: normal;
           font-family: "GothamNarrow-Book", "Helvetica Neue", sans-serif;
-          font-size: 13px;
+          font-size: 14px;
           font-style: normal;
           font-weight: 325;
           white-space: pre-line;
@@ -374,7 +374,7 @@ const Features = () => {
                       line-height: normal;
                       font-family: "GothamNarrow-Bold", "Helvetica Neue",
                         sans-serif;
-                      font-size: 20px;
+                      font-size: 24px;
                     `}
                   >
                     {feature.title}
