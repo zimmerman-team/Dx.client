@@ -10,7 +10,7 @@ import { Carousel } from "react-responsive-carousel";
 import HomeFooter from "app/modules/home-module/components/Footer";
 import { subParagraphcss } from "./style";
 import { useTitle } from "react-use";
-import { HomePrimaryButton, PrimaryButton } from "app/components/Styled/button";
+import { PrimaryButton } from "app/components/Styled/button";
 import { Link } from "react-router-dom";
 import { useAuth0 } from "@auth0/auth0-react";
 import { socialAuth } from "app/utils/socialAuth";
@@ -28,6 +28,7 @@ import EmmanuellaAvi from "app/modules/home-module/assets/team/emmanuella.png";
 import SamuelAvi from "app/modules/home-module/assets/team/samuel.png";
 import AnsonAvi from "app/modules/home-module/assets/team/anson.png";
 import EmptyAvi from "app/modules/home-module/assets/team/empty.png";
+import AddAssetDropdown from "app/modules/home-module/components/AddAssetDropdown";
 
 export default function AboutModule() {
   useTitle("DX Dataxplorer - About");
@@ -334,14 +335,8 @@ export default function AboutModule() {
                       }
                     `}
                   >
-                    <Link
-                      to="/story/new/initial"
-                      data-cy="empower-block-create-story-link"
-                    >
-                      <HomePrimaryButton color="#6061E5" type="button">
-                        CREATE STORY
-                      </HomePrimaryButton>
-                    </Link>
+                    <AddAssetDropdown />
+
                     <Link to="/" data-cy="empower-block-explore-stories-link">
                       <PrimaryButton size="big" bg="light" type="button">
                         Explore the Dashboard
