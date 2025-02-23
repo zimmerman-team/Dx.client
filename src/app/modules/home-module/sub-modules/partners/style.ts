@@ -142,19 +142,18 @@ export const quotesEllipseCss = css`
 export const useDXcss = css`
   color: #231d2c;
   width: 100%;
-  margin-top: 40px;
   p:nth-of-type(1) {
     font-size: 40px;
-    line-height: 48px;
+    line-height: normal;
     text-align: center;
-    font-family: "GothamNarrow-Medium", "Helvetica Neue", sans-serif;
+    font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
     margin-top: 0;
     @media (max-width: 1024px) {
       font-family: "GothamNarrow-Bold", sans-serif;
+      font-size: 36px;
     }
     @media (max-width: 600px) {
-      font-size: 32px;
-      line-height: 38.4px;
+      font-size: 24px;
     }
   }
   h3 {
@@ -164,6 +163,13 @@ export const useDXcss = css`
     text-align: center;
     margin-bottom: 0;
     margin-top: 48px;
+    @media (max-width: 1024px) {
+      font-family: "GothamNarrow-Bold", sans-serif;
+      font-size: 24px;
+    }
+    @media (max-width: 600px) {
+      font-size: 18px;
+    }
   }
   p {
     font-size: 20px;
@@ -173,12 +179,12 @@ export const useDXcss = css`
     width: 85%;
     margin: 16px auto 0 auto;
     @media (max-width: 1024px) {
-      font-size: 16px;
-      line-height: 19.24px;
-      width: 67%;
+      margin: 16px 0 0 0;
+      font-size: 18px;
+      width: 100%;
       font-family: "GothamNarrow-Book", sans-serif;
       @media (max-width: 600px) {
-        width: 97%;
+        font-size: 18px;
       }
     }
   }
@@ -196,7 +202,7 @@ export const quotecss = css`
     font-size: 40px;
     line-height: 48px;
     text-align: center;
-    font-family: "GothamNarrow-Medium", "Helvetica Neue", sans-serif;
+    font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
     margin: 0;
     @media (max-width: 1024px) {
       font-size: 34px;

@@ -9,7 +9,6 @@ import withStyles from "@material-ui/core/styles/withStyles";
 import HomeFooter from "app/modules/home-module/components/Footer";
 import DXBlock from "app/modules/home-module/sub-modules/partners/components/useDXBlock";
 import QuoteBlock from "app/modules/home-module/sub-modules/partners/components/quoteBlock";
-import EmpowerBlock from "app/modules/home-module/sub-modules/partners/components/empowerBlock";
 import OurPartnersBlock from "app/modules/home-module/sub-modules/partners/components/ourPartnersBlock";
 import BestDecisionBlock from "app/modules/home-module/sub-modules/partners/components/bestDecisionBlock";
 import {
@@ -19,6 +18,7 @@ import {
   PerformanceTabCard,
 } from "app/modules/home-module/sub-modules/partners/components/tabCard";
 import { useTitle } from "react-use";
+import Hero from "app/modules/home-module/components/hero";
 
 const StyledTab = withStyles(() => ({
   root: {
@@ -100,8 +100,11 @@ const Pagination = (props: {
           width: 8px;
           height: 8px;
           border-radius: 50%;
-          background: ${props.index === i ? "#DADAF8" : "#fff"};
+          background: ${props.index === i ? "#6061E5" : "#fff"};
           cursor: pointer;
+
+          /* Tooltip */
+          box-shadow: 0px 0px 10px 0px rgba(152, 161, 170, 0.6);
         `}
         onClick={() => props.onChangeIndex(i)}
       />
@@ -127,6 +130,17 @@ export default function PartnersModule() {
     <PerformanceTabCard />,
   ];
 
+  const gap = (
+    <div
+      css={`
+        height: 120px;
+        @media (max-width: 960px) {
+          height: 72px;
+        }
+      `}
+    />
+  );
+
   return (
     <>
       <div
@@ -134,11 +148,12 @@ export default function PartnersModule() {
           display: flex;
           justify-content: space-between;
           flex-direction: column;
-          min-height: 100vh;
+          margin-top: 50px;
+          min-height: calc(100vh - 50px);
         `}
       >
         <div>
-          <EmpowerBlock view="partners" />
+          <Hero />
           <Container maxWidth="lg">
             <Grid
               container
@@ -149,14 +164,17 @@ export default function PartnersModule() {
                 width: 100%;
               `}
             >
+              {gap}
               <OurPartnersBlock />
+              {gap}
               <DXBlock />
+
+              {gap}
               <div
                 onMouseEnter={() => setAutoPlay(false)}
                 onMouseLeave={() => setAutoPlay(true)}
                 css={`
                   width: 100%;
-                  margin-top: 78px;
                   position: relative;
                   height: 639px;
                   @media (max-width: 1129px) {
@@ -222,7 +240,7 @@ export default function PartnersModule() {
                 </div>
                 <div
                   css={`
-                    height: 55px;
+                    height: 32px;
                     @media (max-width: 1024px) {
                       height: 32px;
                     }
@@ -231,12 +249,12 @@ export default function PartnersModule() {
                 <div
                   css={`
                     position: relative;
-                    background: linear-gradient(
-                      180deg,
-                      #a4a0ff -61.62%,
-                      #f8fcfc 114.5%
-                    );
+                    background: #dadaf8;
                     border-radius: 29px;
+                    height: 622px;
+                    @media (max-width: 1179px) {
+                      height: 100%;
+                    }
                   `}
                 >
                   <AutoPlaySwipeableViews
@@ -253,40 +271,36 @@ export default function PartnersModule() {
                       </div>
                     ))}
                   </AutoPlaySwipeableViews>
+
                   <Pagination
                     dots={4}
                     index={displayTab}
                     onChangeIndex={(index) => handleChange(null, index)}
                   />
                 </div>
-                <div
-                  css={`
-                    height: 110px;
-                    @media (max-width: 1129px) {
-                      display: none;
-                    }
-                  `}
-                />
               </div>
-              <div
-                css={`
-                  height: 75px;
-                `}
-              />
+              {gap}
               <QuoteBlock />
             </Grid>
             <div
               css={`
-                height: 150px;
-                @media (max-width: 1129px) {
-                  height: 130px;
+                height: 120px;
+                @media (max-width: 960px) {
+                  height: 120px;
                 }
               `}
             />
             <BestDecisionBlock />
           </Container>
 
-          <div css="width: 100%;height: 148px;" />
+          <div
+            css={`
+              height: 120px;
+              @media (max-width: 960px) {
+                height: 120px;
+              }
+            `}
+          />
         </div>
         <HomeFooter />
       </div>
