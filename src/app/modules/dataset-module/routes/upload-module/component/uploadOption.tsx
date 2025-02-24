@@ -198,6 +198,7 @@ const UploadOption = (props: {
               gap: 8px;
               height: 24px;
               align-items: center;
+              font-size: 12px;
             `}
           >
             {props.formats.map((f) => (

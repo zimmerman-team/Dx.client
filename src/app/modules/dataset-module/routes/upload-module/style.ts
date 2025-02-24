@@ -3,17 +3,17 @@ import { css } from "styled-components/macro";
 
 export const stepcss = css`
   left: 0;
-  top: 47px;
+  /* top: 50px; */
   z-index: 10;
-  width: 100vw;
-  height: 50px;
+  /* width: 100vw; */
+  height: 90px;
 
   display: flex;
   align-items: center;
-  position: fixed;
+  /* position: fixed; */
   justify-content: center;
-  background: #f4f4f4;
-  gap: 1rem;
+  gap: 8px;
+  padding: 16px 0;
   @media (min-width: 768px) {
     @media (max-width: 881px) {
       top: 66px;

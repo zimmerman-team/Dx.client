@@ -16,8 +16,8 @@ import { ReactComponent as MenuIcon } from "app/modules/home-module/assets/menu.
 
 export default function Filter(
   props: Readonly<{
-    searchValue: string;
-    setSearchValue: (value: React.SetStateAction<string | undefined>) => void;
+    searchValue?: string;
+    setSearchValue?: (value: React.SetStateAction<string | undefined>) => void;
     setSortValue: (value: "updatedDate" | "createdDate" | "name") => void;
     sortValue: string;
     setFilterValue?: (value: "allAssets" | "myAssets") => void;
@@ -26,8 +26,8 @@ export default function Filter(
     assetsView: "table" | "grid";
     terminateSearch?: () => void;
     searchInputWidth?: string;
-    openSearch: boolean;
-    setOpenSearch: React.Dispatch<React.SetStateAction<boolean>>;
+    openSearch?: boolean;
+    setOpenSearch?: React.Dispatch<React.SetStateAction<boolean>>;
     searchIconCypressId: string;
   }>
 ) {
@@ -58,7 +58,7 @@ export default function Filter(
   ];
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     props.terminateSearch && props.terminateSearch();
-    props.setSearchValue(e.target.value);
+    props.setSearchValue?.(e.target.value);
   };
   const handleIconsDisplay = () => {
     setDisplayIcons(!displayIcons);
@@ -87,7 +87,7 @@ export default function Filter(
             gap: 8px;
           `}
         >
-          <div css={searchInputCss(props.openSearch, props.searchInputWidth)}>
+          <div css={searchInputCss(!!props.openSearch, props.searchInputWidth)}>
             <input
               type="text"
               ref={inputRef}
@@ -102,9 +102,9 @@ export default function Filter(
 
             <IconButton
               onClick={() => {
-                props.setSearchValue("");
+                props.setSearchValue?.("");
                 props.terminateSearch && props.terminateSearch();
-                props.setOpenSearch(false);
+                props.setOpenSearch?.(false);
               }}
               aria-label="close-search"
               css={`
@@ -120,19 +120,21 @@ export default function Filter(
               />
             </IconButton>
           </div>{" "}
-          <Tooltip title="Search" placement="bottom">
-            <IconButton
-              data-cy={props.searchIconCypressId}
-              onClick={() => {
-                props.setOpenSearch(true);
-                inputRef.current?.focus();
-              }}
-              css={iconButtonCss(props.openSearch)}
-              aria-label="search-button"
-            >
-              <SearchIcon />
-            </IconButton>
-          </Tooltip>
+          {props.searchValue && (
+            <Tooltip title="Search" placement="bottom">
+              <IconButton
+                data-cy={props.searchIconCypressId}
+                onClick={() => {
+                  props.setOpenSearch?.(true);
+                  inputRef.current?.focus();
+                }}
+                css={iconButtonCss(props.openSearch)}
+                aria-label="search-button"
+              >
+                <SearchIcon />
+              </IconButton>
+            </Tooltip>
+          )}
         </div>
         {props.filterValue && (
           <>

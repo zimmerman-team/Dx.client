@@ -81,25 +81,25 @@ export const DropZone = (props: DropzoneProps) => {
                   font-weight: 500;
                   font-size: 12px;
                   color: #231d2c;
-                  margin-top: 5px;
                   font-family: "Inter", sans-serif;
                   margin: 0;
                   padding: 0;
-                  margin-top: 18px;
+                  margin-top: 8px;
+                  line-height: 16px;
                 `}
               >
                 Supports: XML, XLSX, CSV, JSON, ODS
               </p>
               <p
                 css={`
-                  font-size: 20px;
+                  font-size: 18px;
                   line-height: normal;
                   font-style: normal;
                   font-family: "GothamNarrow-Book", "Helvetica Neue", sans-serif;
                   font-weight: 325;
                   margin: 0;
                   padding: 0;
-                  margin-top: 18px;
+                  margin-top: 8px;
                 `}
               >
                 Drag and Drop Spreadsheets File here

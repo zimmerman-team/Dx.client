@@ -21,8 +21,6 @@ export default function BasicSwitch(props: Props) {
     props.handleSwitch(key);
   };
 
-  const gothamNarrowBold = "GothamNarrow-Bold";
-  const gothamNarrowBook = "GothamNarrow-Book";
   return (
     <div
       css={`
@@ -42,7 +40,6 @@ export default function BasicSwitch(props: Props) {
           display: flex;
           align-items: center;
           gap: 10px;
-          text-transform: uppercase;
           font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
           font-size: 14px;
           border: none;
