@@ -183,7 +183,17 @@ export function ChartBuilderPreviewTheme(props: ChartBuilderPreviewThemeProps) {
                 height: 40px;
               `}
             />
-            <div>
+            <div
+              css={`
+                @media (max-width: 450px) {
+                  border-radius: 10px;
+                  background: #fff;
+                  padding: 24px 16px;
+                  box-shadow: 0px 0px 8px 0px rgba(0, 0, 0, 0.1);
+                  margin-bottom: 24px;
+                }
+              `}
+            >
               <div
                 ref={props.containerRef}
                 css={`

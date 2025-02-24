@@ -61,7 +61,9 @@ import {
 } from "app/state/recoil/atoms";
 import { IDatasetDetails } from "./components/toolbox/steps/panels-content/SelectDataset";
 import { APPLICATION_JSON } from "app/state/api";
+import HomeFooter from "app/modules/home-module/components/Footer";
 
+// eslint-disable-next-line sonarjs/cognitive-complexity
 export default function ChartModule() {
   const { user, isLoading, isAuthenticated } = useAuth0();
   const token = useStoreState((state) => state.AuthToken.value);
@@ -576,161 +578,167 @@ export default function ChartModule() {
 
               <div
                 css={`
-                  height: 50px;
+                  margin-top: 100px;
+                  min-height: calc(100vh - 100px);
+                  display: flex;
+                  flex-direction: column;
+                  justify-content: space-between;
                 `}
-              />
-              <Container>
-                <div
-                  css={`
-                    top: 50px;
-                    position: relative;
-                    width: ${toolboxOpen
-                      ? "calc(100vw - ((100vw - 1280px) / 2) - 400px - 50px)"
-                      : "100%"};
+              >
+                <Container>
+                  <div
+                    css={`
+                      position: relative;
+                      width: ${toolboxOpen
+                        ? "calc(100vw - ((100vw - 1280px) / 2) - 400px - 50px)"
+                        : "100%"};
 
-                    transition: width 225ms cubic-bezier(0, 0, 0.2, 1) 0ms;
-                    @media (min-width: 768px) {
-                      @media (max-width: 1024px) {
-                        width: 100%;
-                      }
-                    }
-                  `}
-                  ref={ref}
-                >
-                  <Switch>
-                    <Route exact path={chartPaths.customize}>
-                      <ChartBuilderCustomize
-                        loading={loading}
-                        dimensions={dimensions}
-                        mappedData={mappedData}
-                        containerRef={containerRef}
-                        renderedChart={content}
-                        visualOptions={visualOptions}
-                        setVisualOptions={setVisualOptions}
-                        renderedChartMappedData={renderedChartMappedData}
-                        renderedChartType={chartType as ChartType}
-                        setChartErrorMessage={setChartErrorMessage}
-                        setChartError={setChartError}
-                        isAIAssistedChart={editChartCrudData?.isAIAssisted}
-                        dataError={dataError}
-                        chartError={chartError}
-                        chartErrorMessage={chartErrorMessage}
-                      />
-                    </Route>
-
-                    <Route exact path={chartPaths.filters}>
-                      <ChartBuilderFilters
-                        loading={loading}
-                        renderedChart={content}
-                        dimensions={dimensions}
-                        visualOptions={visualOptions}
-                        containerRef={containerRef}
-                        setVisualOptions={setVisualOptions}
-                        renderedChartMappedData={renderedChartMappedData}
-                        renderedChartType={chartType as ChartType}
-                        setChartErrorMessage={setChartErrorMessage}
-                        setChartError={setChartError}
-                        isAIAssistedChart={editChartCrudData?.isAIAssisted}
-                        dataError={dataError}
-                        chartError={chartError}
-                        chartErrorMessage={chartErrorMessage}
-                      />
-                    </Route>
-                    <Route exact path={chartPaths.mapping}>
-                      <ChartBuilderMapping
-                        loading={loading}
-                        visualOptions={visualOptions}
-                        setVisualOptions={setVisualOptions}
-                        dimensions={dimensions}
-                        renderedChart={content}
-                        containerRef={containerRef}
-                        renderedChartMappedData={renderedChartMappedData}
-                        renderedChartType={chartType as ChartType}
-                        setChartErrorMessage={setChartErrorMessage}
-                        setChartError={setChartError}
-                        isAIAssistedChart={editChartCrudData?.isAIAssisted}
-                        dataError={dataError}
-                        chartError={chartError}
-                        chartErrorMessage={chartErrorMessage}
-                      />
-                    </Route>
-                    <Route exact path={chartPaths.chartType}>
-                      <ChartBuilderChartType
-                        loading={loading}
-                        loadDataset={loadDataset}
-                        setChartFromAPI={setChartFromAPI}
-                        setVisualOptions={setVisualOptions}
-                        dataTypes={dataTypes2}
-                        setVisualOptionsOnChange={setVisualOptionsOnChange}
-                      />
-                    </Route>
-                    <Route exact path={chartPaths.previewData}>
-                      <ChartBuilderPreview
-                        loading={loading}
-                        data={sampleData}
-                        loadDataset={loadDataset}
-                        stats={dataStats}
-                        dataTypes={dataTypes2}
-                        filterOptionGroups={filterOptionGroups}
-                        dataError={dataError}
-                        chartError={chartError}
-                        chartErrorMessage={chartErrorMessage}
-                      />
-                    </Route>
-                    <Route exact path={chartPaths.data}>
-                      <ChartModuleDataView
-                        loadDataset={loadDataset}
-                        toolboxOpen={toolboxOpen}
-                        setChartFromAPI={setChartFromAPI}
-                      />
-                    </Route>
-                    <Route exact path={chartPaths.preview}>
-                      <ChartBuilderPreviewTheme
-                        loading={loading || isChartLoading}
-                        visualOptions={visualOptions}
-                        renderedChart={renderedChart}
-                        setVisualOptions={setVisualOptions}
-                        renderedChartMappedData={renderedChartMappedData}
-                        editable={!isPreviewMode || (page === "new" && !view)}
-                        setIsPreviewView={setIsPreviewView}
-                        containerRef={containerRef}
-                        loadedChart={loadedChart}
-                        isMappingValid={isMappingValid}
-                        view={view}
-                        isAIAssistedChart={editChartCrudData?.isAIAssisted}
-                        dataError={dataError}
-                        chartError={chartError}
-                        chartErrorMessage={chartErrorMessage}
-                      />
-                    </Route>
-                    <Route exact path={chartPaths.detail}>
-                      <ChartBuilderPreviewTheme
-                        loading={loading || isChartLoading}
-                        visualOptions={visualOptions}
-                        renderedChart={renderedChart}
-                        setVisualOptions={setVisualOptions}
-                        renderedChartMappedData={renderedChartMappedData}
-                        editable={!isPreviewMode}
-                        setIsPreviewView={setIsPreviewView}
-                        containerRef={containerRef}
-                        loadedChart={loadedChart}
-                        isMappingValid={isMappingValid}
-                        view={view}
-                        isAIAssistedChart={
-                          editChartCrudData?.isAIAssisted ??
-                          loadedChart?.isAIAssisted
+                      transition: width 225ms cubic-bezier(0, 0, 0.2, 1) 0ms;
+                      @media (min-width: 768px) {
+                        @media (max-width: 1024px) {
+                          width: 100%;
                         }
-                        dataError={dataError}
-                        chartError={chartError}
-                        chartErrorMessage={chartErrorMessage}
-                      />
-                    </Route>
-                    <Route path="*">
-                      <NoMatchPage />
-                    </Route>
-                  </Switch>
-                </div>
-              </Container>
+                      }
+                    `}
+                    ref={ref}
+                  >
+                    <Switch>
+                      <Route exact path={chartPaths.customize}>
+                        <ChartBuilderCustomize
+                          loading={loading}
+                          dimensions={dimensions}
+                          mappedData={mappedData}
+                          containerRef={containerRef}
+                          renderedChart={content}
+                          visualOptions={visualOptions}
+                          setVisualOptions={setVisualOptions}
+                          renderedChartMappedData={renderedChartMappedData}
+                          renderedChartType={chartType as ChartType}
+                          setChartErrorMessage={setChartErrorMessage}
+                          setChartError={setChartError}
+                          isAIAssistedChart={editChartCrudData?.isAIAssisted}
+                          dataError={dataError}
+                          chartError={chartError}
+                          chartErrorMessage={chartErrorMessage}
+                        />
+                      </Route>
+
+                      <Route exact path={chartPaths.filters}>
+                        <ChartBuilderFilters
+                          loading={loading}
+                          renderedChart={content}
+                          dimensions={dimensions}
+                          visualOptions={visualOptions}
+                          containerRef={containerRef}
+                          setVisualOptions={setVisualOptions}
+                          renderedChartMappedData={renderedChartMappedData}
+                          renderedChartType={chartType as ChartType}
+                          setChartErrorMessage={setChartErrorMessage}
+                          setChartError={setChartError}
+                          isAIAssistedChart={editChartCrudData?.isAIAssisted}
+                          dataError={dataError}
+                          chartError={chartError}
+                          chartErrorMessage={chartErrorMessage}
+                        />
+                      </Route>
+                      <Route exact path={chartPaths.mapping}>
+                        <ChartBuilderMapping
+                          loading={loading}
+                          visualOptions={visualOptions}
+                          setVisualOptions={setVisualOptions}
+                          dimensions={dimensions}
+                          renderedChart={content}
+                          containerRef={containerRef}
+                          renderedChartMappedData={renderedChartMappedData}
+                          renderedChartType={chartType as ChartType}
+                          setChartErrorMessage={setChartErrorMessage}
+                          setChartError={setChartError}
+                          isAIAssistedChart={editChartCrudData?.isAIAssisted}
+                          dataError={dataError}
+                          chartError={chartError}
+                          chartErrorMessage={chartErrorMessage}
+                        />
+                      </Route>
+                      <Route exact path={chartPaths.chartType}>
+                        <ChartBuilderChartType
+                          loading={loading}
+                          loadDataset={loadDataset}
+                          setChartFromAPI={setChartFromAPI}
+                          setVisualOptions={setVisualOptions}
+                          dataTypes={dataTypes2}
+                          setVisualOptionsOnChange={setVisualOptionsOnChange}
+                        />
+                      </Route>
+                      <Route exact path={chartPaths.previewData}>
+                        <ChartBuilderPreview
+                          loading={loading}
+                          data={sampleData}
+                          loadDataset={loadDataset}
+                          stats={dataStats}
+                          dataTypes={dataTypes2}
+                          filterOptionGroups={filterOptionGroups}
+                          dataError={dataError}
+                          chartError={chartError}
+                          chartErrorMessage={chartErrorMessage}
+                        />
+                      </Route>
+                      <Route exact path={chartPaths.data}>
+                        <ChartModuleDataView
+                          loadDataset={loadDataset}
+                          toolboxOpen={toolboxOpen}
+                          setChartFromAPI={setChartFromAPI}
+                        />
+                      </Route>
+                      <Route exact path={chartPaths.preview}>
+                        <ChartBuilderPreviewTheme
+                          loading={loading || isChartLoading}
+                          visualOptions={visualOptions}
+                          renderedChart={renderedChart}
+                          setVisualOptions={setVisualOptions}
+                          renderedChartMappedData={renderedChartMappedData}
+                          editable={!isPreviewMode || (page === "new" && !view)}
+                          setIsPreviewView={setIsPreviewView}
+                          containerRef={containerRef}
+                          loadedChart={loadedChart}
+                          isMappingValid={isMappingValid}
+                          view={view}
+                          isAIAssistedChart={editChartCrudData?.isAIAssisted}
+                          dataError={dataError}
+                          chartError={chartError}
+                          chartErrorMessage={chartErrorMessage}
+                        />
+                      </Route>
+                      <Route exact path={chartPaths.detail}>
+                        <ChartBuilderPreviewTheme
+                          loading={loading || isChartLoading}
+                          visualOptions={visualOptions}
+                          renderedChart={renderedChart}
+                          setVisualOptions={setVisualOptions}
+                          renderedChartMappedData={renderedChartMappedData}
+                          editable={!isPreviewMode}
+                          setIsPreviewView={setIsPreviewView}
+                          containerRef={containerRef}
+                          loadedChart={loadedChart}
+                          isMappingValid={isMappingValid}
+                          view={view}
+                          isAIAssistedChart={
+                            editChartCrudData?.isAIAssisted ??
+                            loadedChart?.isAIAssisted
+                          }
+                          dataError={dataError}
+                          chartError={chartError}
+                          chartErrorMessage={chartErrorMessage}
+                        />
+                      </Route>
+                      <Route path="*">
+                        <NoMatchPage />
+                      </Route>
+                    </Switch>
+                  </div>
+                </Container>
+
+                {isPreviewView && <HomeFooter mini />}
+              </div>
             </>
           ) : (
             <>

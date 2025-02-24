@@ -31,6 +31,7 @@ import ShareModal from "./shareModal";
 import DuplicateMessage from "app/modules/common/mobile-duplicate-message";
 import { PrimaryButton } from "app/components/Styled/button";
 import { ArrowBack } from "@material-ui/icons";
+import ArrowBackIosIcon from "@material-ui/icons/ArrowBackIos";
 
 export default function DatasetSubHeaderToolbar(
   props: Readonly<{ name: string }>
@@ -261,9 +262,14 @@ export default function DatasetSubHeaderToolbar(
             data-cy="dataset-back-to-library-btn"
           >
             <Tooltip title="Back to Dashboard">
-              <ArrowBack fontSize={"small"} />
+              {isMobile ? (
+                <ArrowBackIosIcon fontSize="small" />
+              ) : (
+                <ArrowBack fontSize={"small"} />
+              )}
             </Tooltip>
           </Link>
+
           <p
             title={props.name}
             css={`
