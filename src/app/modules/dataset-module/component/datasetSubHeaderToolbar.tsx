@@ -14,7 +14,7 @@ import Button from "@material-ui/core/Button";
 import DeleteIcon from "@material-ui/icons/Delete";
 import React from "react";
 import CopyToClipboard from "react-copy-to-clipboard";
-import { Link, useHistory, useParams } from "react-router-dom";
+import { Link, useHistory, useLocation, useParams } from "react-router-dom";
 import { useAuth0 } from "@auth0/auth0-react";
 import axios from "axios";
 /** Project */
@@ -30,18 +30,21 @@ import { planDialogAtom } from "app/state/recoil/atoms";
 import ShareModal from "./shareModal";
 import DuplicateMessage from "app/modules/common/mobile-duplicate-message";
 import { PrimaryButton } from "app/components/Styled/button";
+import { ArrowBack } from "@material-ui/icons";
 
 export default function DatasetSubHeaderToolbar(
   props: Readonly<{ name: string }>
 ) {
   const { user, isAuthenticated } = useAuth0();
   const history = useHistory();
+  const location = useLocation();
   const isMobile = useMediaQuery("(max-width: 599px)");
   const { page } = useParams<{ page: string }>();
   const token = useStoreState((state) => state.AuthToken.value);
   const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(
     null
   );
+  const fromHome = location.search.includes("fromHome=true");
   const [isShareModalOpen, setIsShareModalOpen] =
     React.useState<boolean>(false);
   const [openSnackbar, setOpenSnackbar] = React.useState(false);
@@ -239,6 +242,28 @@ export default function DatasetSubHeaderToolbar(
 
       <Container maxWidth="lg">
         <div css={styles.innercontainer}>
+          <Link
+            to={fromHome ? "/" : "/dashboard"}
+            css={`
+              display: flex;
+              align-items: center;
+              font-size: 14px;
+              color: #231d2c;
+              text-decoration: none;
+              position: absolute;
+              left: -32px;
+              cursor: pointer;
+              @media (max-width: 960px) {
+                position: static;
+                margin-right: 8px;
+              }
+            `}
+            data-cy="dataset-back-to-library-btn"
+          >
+            <Tooltip title="Back to Dashboard">
+              <ArrowBack fontSize={"small"} />
+            </Tooltip>
+          </Link>
           <p
             title={props.name}
             css={`

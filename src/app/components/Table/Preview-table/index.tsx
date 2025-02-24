@@ -205,6 +205,7 @@ export default function PreviewTable(props: PreviewTableProps) {
                         text-overflow: ellipsis;
                         min-width: ${cellIndex === 0 ? "30px" : "auto"};
                         text-align: ${cellIndex === 0 ? "center" : "left"};
+                        font-size: 12px;
                       `}
                     >
                       {data?.[val] ?? ""}
