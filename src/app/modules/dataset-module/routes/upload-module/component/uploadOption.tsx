@@ -21,13 +21,12 @@ const UploadOption = (props: {
   const history = useHistory();
 
   return (
-    <div>
+    <div
+      data-tooltip-id={
+        props.upgradeRequired ? `${props.name.split(" ").join("")}-tooltip` : ""
+      }
+    >
       <button
-        className={
-          props.upgradeRequired
-            ? `${props.name.split(" ").join("")}-tooltip`
-            : ""
-        }
         css={`
           border-radius: 8px;
           border: 1px solid #e2eaef;
@@ -236,7 +235,7 @@ const UploadOption = (props: {
       </button>
 
       <Tooltip
-        anchorSelect={`.${props.name.split(" ").join("")}-tooltip`}
+        id={`${props.name.split(" ").join("")}-tooltip`}
         place="bottom"
         style={{
           background: "#231D2C",
