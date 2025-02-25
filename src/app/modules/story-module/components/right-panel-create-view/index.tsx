@@ -159,10 +159,10 @@ export const StoryElementsType = {
 };
 
 const sortByOptions = [
-  { value: "createdDate desc", label: "Recent (DESC)" },
-  { value: "createdDate asc", label: "Recent (ASC)" },
-  { value: "name desc", label: "Name (DESC)" },
-  { value: "name asc", label: "Name (ASC)" },
+  { value: "createdDate desc", label: "Recent" },
+  { value: "createdDate asc", label: "Recent" },
+  { value: "name desc", label: "Name" },
+  { value: "name asc", label: "Name" },
 ];
 
 const videoSources = [
@@ -607,27 +607,40 @@ function StoryRightPanelCreateViewChartList(
           padding: 12px 23px;
           position: relative;
           flex-direction: row;
-          > svg {
-            top: 17px;
-            right: 200px;
-            position: absolute;
+          @media (min-width: 768px) and (max-width: 1090px) {
+            flex-wrap: wrap;
+            justify-content: flex-end;
           }
         `}
       >
-        <input
-          type="text"
-          onChange={(e) => setSearch(e.target.value)}
-          data-cy="story-panel-chart-search-input"
+        <div
           css={`
+            display: flex;
+            align-items: center;
+            gap: 8px;
             width: 187px;
             height: 35px;
-            border-style: none;
             background: #dfe3e6;
             border-radius: 24px;
-            padding: 0 45px 0 10px;
+            padding: 0 8px;
+            @media (min-width: 768px) and (max-width: 1090px) {
+              width: 100%;
+            }
           `}
-        />
-        <SearchIcon htmlColor="#495057" />
+        >
+          <input
+            type="text"
+            onChange={(e) => setSearch(e.target.value)}
+            data-cy="story-panel-chart-search-input"
+            css={`
+              width: 100%;
+              height: 100%;
+              border-style: none;
+              background: transparent;
+            `}
+          />
+          <SearchIcon htmlColor="#495057" />
+        </div>
         <Button
           disableTouchRipple
           onClick={handleClick}
@@ -638,7 +651,7 @@ function StoryRightPanelCreateViewChartList(
             background: #231d2c;
             text-transform: capitalize;
             padding-left: 16px;
-
+            display: flex;
             svg {
               margin-left: 10px;
               transition: all 0.2s ease-in-out;
@@ -646,6 +659,9 @@ function StoryRightPanelCreateViewChartList(
               > path {
                 fill: #fff;
               }
+            }
+            @media (max-width: 768px) {
+              justify-self: flex-end;
             }
           `}
         >

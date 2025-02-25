@@ -573,8 +573,6 @@ export default function ChartModule() {
                 dimensions={dimensions}
                 setChartFromAPI={setChartFromAPI}
                 setDatasetName={setChartName}
-                onClose={() => setToolboxOpen(false)}
-                onOpen={() => setToolboxOpen(true)}
                 deselectDataset={deselectDataset}
                 onSave={onSave}
                 triggerAutoSave={onTriggerAutoSave}

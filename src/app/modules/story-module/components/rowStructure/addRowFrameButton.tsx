@@ -11,6 +11,7 @@ interface Props {
   rowStructureType: IRowFrameStructure;
   setRowStructureType: React.Dispatch<React.SetStateAction<IRowFrameStructure>>;
   endTour: () => void;
+  rightPanelOpen: boolean;
 }
 
 export default function AddRowFrameButton(props: Props) {
@@ -40,11 +41,17 @@ export default function AddRowFrameButton(props: Props) {
       disableAddRowStructureButton: false,
     });
   };
-
+  const RIGHT_PANEL_WIDTH = "36.83%"; //percentage value of 274px which is the width at 768px as per design
   return (
     <div
       css={`
         width: 100%;
+        @media (min-width: 768px) and (max-width: 1080px) {
+          transition: width 225ms cubic-bezier(0, 0, 0.2, 1) 0ms;
+          width: ${props.rightPanelOpen
+            ? `calc(100% - ${RIGHT_PANEL_WIDTH})`
+            : "100%"};
+        }
       `}
     >
       <div

@@ -4,7 +4,7 @@ import { useAuth0 } from "@auth0/auth0-react";
 import { useHistory, useLocation, useParams } from "react-router-dom";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 import { isEmpty } from "lodash";
-import { Slide, SnackbarContent, useMediaQuery } from "@material-ui/core";
+import { Slide, Tooltip, useMediaQuery } from "@material-ui/core";
 /* project */
 import {
   snackbarStyle,
@@ -137,6 +137,29 @@ export function ChartModuleToolBox(props: Readonly<ChartToolBoxProps>) {
     }
   }, [location.pathname]);
 
+  const togglePanel = (e: KeyboardEvent) => {
+    const target = e.target as HTMLElement;
+    if (
+      target.tagName === "INPUT" ||
+      target.tagName === "TEXTAREA" ||
+      target.isContentEditable ||
+      target.tagName === "SELECT"
+    ) {
+      return;
+    }
+
+    if (e.key === "p") {
+      props.setToolboxOpen(!props.openToolbox);
+    }
+  };
+
+  React.useEffect(() => {
+    window.addEventListener("keydown", togglePanel);
+    return () => {
+      window.removeEventListener("keydown", togglePanel);
+    };
+  }, [props.openToolbox]);
+
   const canChartEditDelete = React.useMemo(() => {
     return isAuthenticated && loadedChart && loadedChart.owner === user?.sub;
   }, [user, isAuthenticated, loadedChart]);
@@ -154,44 +177,53 @@ export function ChartModuleToolBox(props: Readonly<ChartToolBoxProps>) {
       >
         <div css={styles.container}>
           {!isMobile && (
-            <div
-              role="button"
-              tabIndex={-1}
-              css={`
-                top: calc((100% - 205px) / 2);
-                left: -16px;
-                color: #fff;
-                width: 16px;
-                height: 133px;
-                display: flex;
-                cursor: pointer;
-                position: absolute;
-                background: #231d2c;
-                align-items: center;
-                flex-direction: column;
-                justify-content: center;
-                border-radius: 10px 0px 0px 10px;
-                transition: background 0.2s ease-in-out;
-                &:hover {
-                  background: #13183f;
-                }
-                > svg {
-                  transform: rotate(${!props.openToolbox ? "-" : ""}90deg);
-                  > path {
-                    fill: #fff;
-                  }
-                }
-              `}
-              onClick={() => {
-                if (props.openToolbox) {
-                  props.onClose();
-                } else {
-                  props.onOpen();
-                }
-              }}
+            <Tooltip
+              title={
+                <>
+                  Press <b>P</b> to quickly open/close the panel
+                </>
+              }
+              placement="right"
             >
-              <TriangleXSIcon />
-            </div>
+              <div
+                role="button"
+                tabIndex={-1}
+                css={`
+                  top: calc((100% - 205px) / 2);
+                  left: -16px;
+                  color: #fff;
+                  width: 16px;
+                  height: 133px;
+                  display: flex;
+                  cursor: pointer;
+                  position: absolute;
+                  background: #231d2c;
+                  align-items: center;
+                  flex-direction: column;
+                  justify-content: center;
+                  border-radius: 10px 0px 0px 10px;
+                  transition: background 0.2s ease-in-out;
+                  &:hover {
+                    background: #13183f;
+                  }
+                  > svg {
+                    transform: rotate(${!props.openToolbox ? "-" : ""}90deg);
+                    > path {
+                      fill: #fff;
+                    }
+                  }
+                `}
+                onClick={() => {
+                  if (props.openToolbox) {
+                    props.setToolboxOpen(false);
+                  } else {
+                    props.setToolboxOpen(true);
+                  }
+                }}
+              >
+                <TriangleXSIcon />
+              </div>
+            </Tooltip>
           )}
 
           <ToolboxNav
