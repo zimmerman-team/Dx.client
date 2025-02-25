@@ -237,6 +237,7 @@ export default function RowFrame(props: RowFrameProps) {
       | "oneByThree"
       | "oneByFour"
       | "oneByFive"
+    // eslint-disable-next-line sonarjs/cognitive-complexity
   ) => {
     let content: (string | object | null)[] = [];
     let contentTypes: ("text" | "divider" | "chart" | null)[] = [];
