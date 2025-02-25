@@ -40,6 +40,9 @@ export default function AddAssetDropdown() {
           font-size: 14px;
           text-transform: capitalize;
           cursor: pointer;
+          @media (max-width: 767px) {
+            display: none;
+          }
         `}
         aria-label="sort-button"
       >

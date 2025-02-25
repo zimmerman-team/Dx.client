@@ -49,6 +49,7 @@ export default function Hero() {
             text-transform: capitalize;
             line-height: normal;
             margin: 0px;
+            margin-bottom: 40px;
             b {
               background: linear-gradient(90deg, #231d2c, #6061e5);
               -webkit-background-clip: text;
@@ -59,22 +60,6 @@ export default function Hero() {
             }
             @media (max-width: 744px) {
               font-size: 48px;
-            }
-          }
-
-          > p {
-            color: #231d2c;
-            font-family: "GothamNarrow-Bold", sans-serif;
-            font-size: 36px;
-            font-style: normal;
-            text-align: center;
-            margin: 40px 0 10px 0;
-            line-height: 43px;
-            @media (max-width: 960px) {
-              font-size: 18px;
-            }
-            @media (max-width: 744px) {
-              line-height: normal;
             }
           }
         }
@@ -91,89 +76,83 @@ export default function Hero() {
           @media (max-width: 744px) {
             padding: 80px 16px 40px 16px;
           }
+          div {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 16px;
+            a {
+              text-decoration: none;
+            }
+            button {
+              height: 48px;
+            }
+          }
         `}
       >
-        <div
-          css={`
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-          `}
-        >
-          <h1>
-            Create high impact data driven <b>stories</b>
-          </h1>
-          {isAuthenticated ? (
-            <Box
-              display={"flex"}
-              gridColumnGap={"24px"}
-              gridRowGap={"8px"}
-              justifyContent={"center"}
-              flexDirection={{ xs: "column", sm: "row" }}
-              marginTop={"40px"}
-            >
-              <AddAssetDropdown />
-              <Link
-                to="/"
-                data-cy="empower-block-explore-stories-link"
-                css={`
-                  text-decoration: none;
-                `}
-              >
-                <PrimaryButton size="big" bg="light" type="button">
-                  Explore the Dashboard
-                </PrimaryButton>
-              </Link>
-            </Box>
-          ) : (
-            <div
-              css={`
+        <h1>
+          Create high impact data driven <b>stories</b>
+        </h1>
+        {isAuthenticated && (
+          <div>
+            <AddAssetDropdown />
+            <Link to="/" data-cy="empower-block-explore-stories-link">
+              <PrimaryButton size="big" bg="light" type="button">
+                Explore the Dashboard
+              </PrimaryButton>
+            </Link>
+          </div>
+        )}
+        {!isAuthenticated && (
+          <div
+            css={`
+              > button {
+                gap: 8px;
+                color: #231d2c;
+                display: flex;
+                padding: 9px 17px !important;
+                height: 48px;
+                border-radius: 12px;
+                outline: none;
+                border: none;
+                background: #a1a2ff;
+                align-items: center;
+                justify-content: center;
+                font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
+                white-space: nowrap;
+                font-size: 16px;
+                > svg {
+                  transform: scale(0.8);
+                }
+                :hover {
+                  opacity: 0.8;
+                  cursor: pointer;
+                }
+              }
+              @media (max-width: 655px) {
+                flex-direction: column;
+                gap: 8px;
+
                 button {
-                  gap: 8px;
-                  color: #231d2c;
-                  display: flex;
-                  padding: 12px 24px !important;
-                  height: 48px;
-                  border-radius: 12px;
-                  outline: none;
-                  border: none;
-                  background: #a1a2ff;
-                  align-items: center;
-                  justify-content: center;
-                  font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
-                  white-space: nowrap;
-                  font-size: 16px;
-                  > svg {
-                    transform: scale(0.8);
-                  }
-                  :hover {
-                    opacity: 0.8;
-                    cursor: pointer;
+                  width: 60%;
+                  @media (max-width: 428px) {
+                    width: 82%;
                   }
                 }
-              `}
-            >
-              <p>Sign in for free to unlock data visualisation tools with</p>
-              <Box
-                display={"flex"}
-                gridColumnGap={"16px"}
-                gridRowGap={"8px"}
-                justifyContent={"center"}
-                flexDirection={{ xs: "column", sm: "row" }}
-              >
-                <button onClick={() => socialAuth("google-oauth2")}>
-                  <GoogleIcon /> Google
-                </button>
-                <button onClick={() => socialAuth("linkedin")}>
-                  <LinkedInIcon /> LinkedIn
-                </button>
-                <button onClick={() => socialAuth("windowslive")}>
-                  <MicrosoftIcon /> Microsoft
-                </button>
-              </Box>
-            </div>
-          )}
-        </div>
+              }
+            `}
+          >
+            <button onClick={() => socialAuth("google-oauth2")}>
+              <GoogleIcon /> Google
+            </button>
+            <button onClick={() => socialAuth("linkedin")}>
+              <LinkedInIcon /> LinkedIn
+            </button>
+            <button onClick={() => socialAuth("windowslive")}>
+              <MicrosoftIcon /> Microsoft
+            </button>
+          </div>
+        )}
       </Container>
     </div>
   );
