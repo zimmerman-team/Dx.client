@@ -47,7 +47,7 @@ export default function GridItem(props: Readonly<Props>) {
         to={`/story/${props.id}`}
         css={`
           width: 100%;
-          height: 161.59px;
+          height: 162px;
           padding: 12px;
           display: flex;
           color: #262c34;
@@ -141,12 +141,12 @@ export default function GridItem(props: Readonly<Props>) {
           css={`
             margin-top: 4px;
             position: absolute;
-            bottom: -8px;
+            bottom: -15px;
             svg {
               width: 119.722px;
               height: 83.717px;
             }
-            rect:nth-of-type(2) {
+            rect:nth-of-type(5) {
               fill: ${props.color || "#231d2c"};
             }
 

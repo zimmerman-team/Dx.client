@@ -16,6 +16,7 @@ import NewsletterBlock from "./newsletterBlock";
 import { FieldErrors } from "react-hook-form";
 import { APPLICATION_JSON } from "app/state/api";
 import { PrimaryButton } from "app/components/Styled/button";
+import Hero from "app/modules/home-module/components/hero";
 
 const CssTextField = withStyles({
   root: {
@@ -121,13 +122,14 @@ export default function ContactModule() {
       {loading && <PageLoader />}
       <div
         css={`
-          min-height: 100vh;
+          margin-top: 50px;
+          min-height: calc(100vh - 50px);
           display: flex;
           flex-direction: column;
           justify-content: space-between;
         `}
       >
-        <EmpowerBlock view="contact" />
+        <Hero />
         <Container maxWidth="lg">
           <div
             css={`
@@ -135,7 +137,7 @@ export default function ContactModule() {
               z-index: 1;
               height: 874px;
               margin: auto;
-              margin-top: 18px;
+              margin: 64px 0;
               display: flex;
               justify-content: center;
               align-items: center;
@@ -146,10 +148,12 @@ export default function ContactModule() {
               }
               h4 {
                 font-family: "GothamNarrow-Bold", sans-serif;
-                font-size: 36px;
-                line-height: 43px;
+                font-size: 40px;
+                line-height: normal;
                 color: #231d2c;
                 text-align: center;
+                margin: 0;
+                margin-top: 120px;
                 @media (max-width: 640px) {
                   margin: 0;
                   margin-bottom: 20px;
@@ -157,10 +161,11 @@ export default function ContactModule() {
               }
               p {
                 font-size: 20px;
-                line-height: 24px;
+                line-height: 18px;
                 text-align: center;
                 font-family: "GothamNarrow-Medium", sans-serif;
-                margin-top: 0;
+                margin: 0;
+                margin-top: 24px;
 
                 /* width: 60%; */
 
@@ -207,14 +212,15 @@ export default function ContactModule() {
                   margin-top: 20px;
                 }
                 input {
-                  font-family: "Inter", sans-serif;
+                  font-family: "GothamNarrow-Book", "Helvetica Neue", sans-serif;
                   color: #231d2c;
+                  font-size: 14px;
                 }
                 @media (max-width: 1024px) {
                   width: 450px;
                 }
                 @media (max-width: 600px) {
-                  width: 80%;
+                  width: 95%;
                   p {
                     font-family: "GothamNarrow-Book", sans-serif;
                     font-size: 16px;
@@ -233,7 +239,7 @@ export default function ContactModule() {
                 type="email"
                 onChange={handleContactFormChange}
                 value={contactFormDetails.email}
-                style={{ fontSize: "12px" }}
+                style={{ fontSize: "14px" }}
               />
               <CssTextField
                 id="standard-basic"
@@ -289,14 +295,25 @@ export default function ContactModule() {
                   width: 100%;
                   @media (max-width: 600px) {
                     button {
-                      width: 100%;
                       font-size: 16px;
                     }
                   }
                 `}
               >
-                <PrimaryButton type="submit" size="big" bg="dark">
-                  SUBMIT
+                <PrimaryButton
+                  type="submit"
+                  size="big"
+                  bg="dark"
+                  css={`
+                    @media (max-width: 744px) {
+                      height: 48px;
+                    }
+                    @media (max-width: 425px) {
+                      width: max-content;
+                    }
+                  `}
+                >
+                  Submit
                 </PrimaryButton>
               </div>
             </form>

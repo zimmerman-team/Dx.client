@@ -127,7 +127,7 @@ export default function AITemplate() {
               />
               <label
                 css={`
-                  font-family: "Inter", sans-serif;
+                  font-family: "GothamNarrow-Book", "Helvetica Neue", sans-serif;
                   font-size: 12px;
                   text-align: left;
                   width: 100%;
@@ -176,7 +176,7 @@ export default function AITemplate() {
                   width: 100%;
                   padding-left: 10px;
                   font-size: 12px;
-                  font-family: "Roboto", sans-serif;
+                  font-family: "GothamNarrow-Book", "Helvetica Neue", sans-serif;
                   line-height: normal;
                   color: #000;
                 `}

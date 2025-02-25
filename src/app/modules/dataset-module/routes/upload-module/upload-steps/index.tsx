@@ -30,6 +30,7 @@ import BasicSwitch from "app/components/Switch/BasicSwitch";
 import Search from "@material-ui/icons/Search";
 import DesktopWindowsIcon from "@material-ui/icons/DesktopWindows";
 import { APPLICATION_JSON } from "app/state/api";
+import HomeFooter from "app/modules/home-module/components/Footer";
 
 interface Props {
   datasetId: string;
@@ -332,34 +333,44 @@ function DatasetUploadSteps(props: Props) {
       case 0:
         return (
           <>
-            <Box height={32} />
-            <BreadCrumbs
-              items={[
-                {
-                  title: "Library",
-                  path: location.search.includes("fromHome=true")
-                    ? "/"
-                    : "/dashboard",
-                },
-                {
-                  title: (
-                    <span
-                      onClick={() => {
-                        disableActiveOption();
-                      }}
-                    >
-                      Connect Data
-                    </span>
-                  ),
-                  path: "#",
-                },
-                ...(activeOption ? [{ title: activeOption }] : []),
-              ]}
-            />
-            <Box height={24} />
             <div
               css={`
-                width: 434px;
+                h1 {
+                  font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
+                  font-size: 24px;
+                  font-weight: 400;
+                  color: #231d2c;
+                  margin: 0px;
+                }
+                p {
+                  color: #231d2c;
+                  font-family: "GothamNarrow-Book", "Helvetica Neue", sans-serif;
+                  font-size: 14px;
+                  font-weight: 325;
+                  line-height: 20px;
+                  letter-spacing: 0.5px;
+                  margin: 0px;
+                  padding: 0px;
+                }
+              `}
+            >
+              <h1>
+                {" "}
+                {activeTab === "search"
+                  ? "Search External Data Sources"
+                  : "Connect Your Data"}
+              </h1>
+              <p>
+                {activeTab === "search"
+                  ? "External search allows you to search and import data from WHO, World Bank, The Global Fund, Kaggle and the Humanitarian Data Exchange"
+                  : "Connect your data by uploading a file or connect to your cloud storage."}
+              </p>
+            </div>
+            <Box height={24} />
+
+            <div
+              css={`
+                width: 322px;
                 height: 56px;
               `}
             >
@@ -473,7 +484,11 @@ function DatasetUploadSteps(props: Props) {
     <>
       <div
         css={`
-          min-height: calc(100vh - 73px);
+          min-height: calc(100vh - 50px);
+          margin-top: 50px;
+          display: flex;
+          flex-direction: column;
+          justify-content: space-between;
         `}
       >
         <Container maxWidth="lg">
@@ -492,11 +507,11 @@ function DatasetUploadSteps(props: Props) {
           </div>
 
           <>
-            <PageTopSpacer /> <div>{currentStep()}</div>
+            <div>{currentStep()}</div>
           </>
         </Container>
+        <HomeFooter mini />
       </div>
-      {activeStep === 0 ? <SmallFooter /> : null}
     </>
   );
 }

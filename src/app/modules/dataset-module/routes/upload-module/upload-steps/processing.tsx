@@ -1,5 +1,6 @@
 import React from "react";
 import { ReactComponent as ErrorICon } from "app/modules/dataset-module/routes/upload-module/assets/error-icon.svg";
+import { PrimaryButton } from "app/components/Styled/button";
 
 interface ProcessingMetaDataProps {
   setProcessingError: React.Dispatch<React.SetStateAction<string | null>>;
@@ -35,57 +36,53 @@ export default function Processing(props: ProcessingMetaDataProps) {
             margin-top: 151px;
           `}
         >
-          <ErrorICon />
-
+          <div
+            css={`
+              padding: 5px;
+            `}
+          >
+            <ErrorICon width={53} height={53} />
+          </div>
+          <h2
+            css={`
+              margin: 0;
+              padding: 0;
+              margin-top: 8px;
+              font-size: 36px;
+              font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
+              line-height: normal;
+            `}
+          >
+            Error{" "}
+          </h2>
           <p
             css={`
               font-size: 18px;
               text-align: center;
               margin: 0;
               padding: 0;
-              margin-top: 16px;
+              margin-top: 8px;
               width: 365px;
               text-align: center;
             `}
             data-testid="error-message"
           >
-            <b>{props.processingError}</b>
+            {props.processingError}
           </p>
 
-          <p
-            css={`
-              margin: 0;
-              padding: 0;
-              margin-top: 16px;
-            `}
-          >
-            Error{" "}
-          </p>
-          <button
-            type="button"
+          <PrimaryButton
             onClick={props.tryAgain}
             data-cy="dataset-processing-try-again"
+            bg="dark"
+            size="small"
             css={`
-              color: #231d2c;
-              text-transform: uppercase;
-              background: #231d2c;
-              color: #fff;
-              margin-top: 58px;
-              padding: 12px 27px;
-              border: none;
-              outline: none;
-              border-radius: 30px;
-              font-weight: 500;
-              font-size: 14px;
-              font-family: "Inter";
-              cursor: pointer;
-              :hover {
-                opacity: 0.8;
-              }
+              margin-top: 24px;
+              height: 48px;
+              font-size: 16px;
             `}
           >
             Try Again
-          </button>
+          </PrimaryButton>
         </div>
       ) : (
         <div

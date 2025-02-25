@@ -195,7 +195,7 @@ export default function MobilePlanCard() {
                       : "0px"};
                     font-family: "GothamNarrow-Book", "Helvetica Neue",
                       sans-serif;
-                    font-size: 16px;
+                    font-size: 14px;
                     white-space: pre-line;
                   }
                 }
@@ -218,7 +218,7 @@ export default function MobilePlanCard() {
               > button {
                 margin-top: 40px;
                 margin-bottom: 48px;
-                border-radius: 50px;
+                border-radius: 12px;
                 width: 100%;
                 outline: none;
                 background: transparent;
@@ -259,6 +259,7 @@ export default function MobilePlanCard() {
                     line-height: normal;
                     margin-top: 8px;
                     font-size: 16px;
+                    gap: 3px;
                     svg {
                       display: flex;
                       flex-shrink: 0;

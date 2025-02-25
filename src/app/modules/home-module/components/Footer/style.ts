@@ -2,7 +2,7 @@ import { css } from "styled-components/macro";
 
 export const homeFootercss = css`
   background: #fff;
-  padding-top: 27px;
+
   bottom: 0;
   left: 0;
   right: 0;
@@ -11,7 +11,7 @@ export const homeFootercss = css`
     padding: 0;
     color: #000;
 
-    font-family: "Inter", sans-serif;
+    font-family: "GothamNarrow-Book", "Helvetica Neue", sans-serif;
   }
 
   li {

@@ -28,14 +28,21 @@ export const turnsDataCss = css`
   h2 {
     font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
     font-weight: 400;
-    font-size: 34px;
-    line-height: 42px;
-    color: #2b3674;
+    font-size: 36px;
+    line-height: normal;
+    color: #231d2c;
     margin: 0;
     padding: 0;
     @media (max-width: 700px) {
       font-size: 29px;
     }
+  }
+
+  h4 {
+    line-height: 24px;
+    margin: 0;
+    color: #231d2c;
+    font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
   }
 
   p {
@@ -128,7 +135,7 @@ export const searchInputCss = (
 export const iconButtonCss = (active?: boolean) => css`
   padding: 3px;
   ${active
-    ? ` svg > circle {
+    ? ` svg > circle, rect {
       fill:  #231d2c;
     }
     svg > path,
@@ -142,7 +149,8 @@ export const iconButtonCss = (active?: boolean) => css`
     background: transparent;
     padding: none;
 
-    svg > circle {
+    svg > circle,
+    rect {
       fill: #231d2c;
     }
     svg > path,
@@ -158,10 +166,10 @@ export const sortByItemCss = (active: boolean) => css`
   font-size: 12px;
   padding: 8px 22px;
   font-family: "GothamNarrow-Book", "Helvetica Neue", sans-serif;
-  background: ${active ? "#f1f3f5" : "transparent"};
+  background: ${active ? "#DFE3E5" : "transparent"};
 
   &:hover {
     cursor: pointer;
-    background: #f1f3f5;
+    background: #dfe3e5;
   }
 `;

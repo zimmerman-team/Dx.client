@@ -17,19 +17,26 @@ export default function HomeModule() {
   return (
     <div
       css={`
-        margin-top: 48px;
-        min-height: calc(100vh - 48px);
+        margin-top: 50px;
+        min-height: calc(100vh - 50px);
         display: flex;
         flex-direction: column;
         justify-content: space-between;
-        background-color: #f2f7fd;
+        background-color: ${isAuthenticated
+          ? "linear-gradient(180deg, #FFF 0%, #F2F7FD 100%)"
+          : "#f2f7fd"};
+        @media (max-width: 881px) {
+          margin-top: 66px;
+          min-height: calc(100vh - 66px);
+        }
       `}
     >
-      {!isAuthenticated ? <Hero /> : <Box height={40} />}
+      <div>
+        {!isAuthenticated ? <Hero /> : <Box height={40} />}
 
-      {!isAuthenticated ? <NonAuthUserLibrary /> : <AssetsCollection />}
-
-      <HomeFooter />
+        {!isAuthenticated ? <NonAuthUserLibrary /> : <AssetsCollection />}
+      </div>
+      <HomeFooter mini={isAuthenticated} />
     </div>
   );
 }

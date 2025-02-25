@@ -116,26 +116,6 @@ export default function FinishedFragment(props: Props) {
 
   return (
     <div css={dataSetsCss}>
-      <Link
-        to={fromHome ? "/" : "/dashboard"}
-        css={`
-          display: flex;
-          align-items: center;
-          font-size: 14px;
-          color: #231d2c;
-          text-decoration: none;
-          margin-top: 16px;
-          margin-bottom: 16px;
-          column-gap: 8px;
-          cursor: pointer;
-          @media (max-width: 450px) {
-            display: none;
-          }
-        `}
-        data-cy="dataset-back-to-library-btn"
-      >
-        <ArrowBack fontSize={"small"} /> Back to Data Library
-      </Link>
       <div
         css={`
           width: 100%;
@@ -151,8 +131,8 @@ export default function FinishedFragment(props: Props) {
             color: #231d2c;
             font-size: 16px;
             font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
-            line-height: 19px;
-            margin-top: 19px;
+            line-height: 24px;
+            margin-top: 32px;
             @media (max-width: 450px) {
               display: none;
             }
@@ -166,7 +146,7 @@ export default function FinishedFragment(props: Props) {
             display: flex;
             margin-bottom: 12px;
             justify-content: space-between;
-            margin-top: 34px;
+            margin-top: 10px;
           `}
         >
           <div
@@ -178,20 +158,17 @@ export default function FinishedFragment(props: Props) {
           >
             <div
               css={`
-                width: 40px;
-                height: 40px;
+                width: 32px;
+                height: 32px;
                 cursor: pointer;
                 position: relative;
-                @media (max-width: 450px) {
-                  display: none;
-                }
               `}
               onMouseOver={() => setOpenFullScreenTooltip(true)}
               onMouseLeave={() => setOpenFullScreenTooltip(false)}
               onClick={handleFullScreenDisplay}
               data-cy="dataset-full-screen-btn"
             >
-              <FullScreenIcon />
+              <FullScreenIcon width={32} height={32} />
               <div
                 css={`
                   background: #626262;
@@ -213,7 +190,7 @@ export default function FinishedFragment(props: Props) {
 
             <p
               css={`
-                font-size: 16px;
+                font-size: 14px;
                 font-family: "GothamNarrow-Book", "Helvetica Neue", sans-serif;
                 padding: 0;
                 margin: 0;
@@ -293,6 +270,9 @@ export default function FinishedFragment(props: Props) {
             width: 100vw;
             height: 100vh;
             padding: 26px 100px 26px 108px;
+            @media (max-width: 450px) {
+              padding: 26px;
+            }
           `}
           hidden={!openFullScreen}
           data-cy="dataset-full-screen-view"
@@ -306,8 +286,8 @@ export default function FinishedFragment(props: Props) {
           >
             <div
               css={`
-                width: 40px;
-                height: 40px;
+                width: 32px;
+                height: 32px;
                 cursor: pointer;
                 margin-bottom: 15px;
                 position: relative;
@@ -317,7 +297,7 @@ export default function FinishedFragment(props: Props) {
               onClick={() => setOpenFullScreen(false)}
               data-cy="dataset-close-full-screen-btn"
             >
-              <CloseFullScreenIcon />
+              <CloseFullScreenIcon width={32} height={32} />
 
               <div
                 css={`
@@ -358,7 +338,7 @@ export default function FinishedFragment(props: Props) {
           p {
             margin-bottom: 8px;
             margin-top: 0;
-            font-size: 12px;
+            font-size: 14px;
             font-family: "GothamNarrow-Book", "Helvetica Neue", sans-serif;
             > a {
               text-decoration: none;
@@ -422,7 +402,7 @@ export default function FinishedFragment(props: Props) {
 
       <div
         css={`
-          height: 50px;
+          height: 32px;
         `}
       />
       <CssSnackbar

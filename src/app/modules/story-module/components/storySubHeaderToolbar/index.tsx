@@ -38,6 +38,7 @@ import ShareModal from "app/modules/dataset-module/component/shareModal";
 import DuplicateMessage from "app/modules/common/mobile-duplicate-message";
 import { ExportStoryButton } from "./exportButton";
 import { PrimaryButton } from "app/components/Styled/button";
+import { ArrowBack } from "@material-ui/icons";
 
 export const useStyles = makeStyles(() =>
   createStyles({
@@ -265,85 +266,121 @@ export function StorySubheaderToolbar(
       <Container maxWidth="lg">
         <div css={styles.innercontainer}>
           <div
-            ref={titleRef}
             css={`
               display: flex;
               align-items: center;
-              gap: 28px;
               position: relative;
-              width: 70%;
-              @media (min-width: 768px) {
-                @media (max-width: 800px) {
-                  width: 48%;
-                }
-              }
-              @media (min-width: 801px) {
-                @media (max-width: 1199px) {
-                  width: 49%;
-                }
-              }
+              width: 100%;
             `}
           >
-            {isMobile && <ArrowBackIosIcon onClick={() => history.go(-1)} />}
-            <AutoResizeInput
-              name={props.name}
-              setName={props.setName}
-              placeholder="Title"
-              autoResize={true}
-              maxWidth={(titleRef.current?.offsetWidth ?? 1000) - 100}
-              spanBuffer={isMobile ? 0 : 150}
-              minWidth={200}
-              spanVisibility={inputSpanVisibiltiy}
-              setSpanVisibility={setInputSpanVisibility}
-              onClick={(e) => {
-                if (props.name === "Untitled story") {
-                  e.currentTarget.value = "";
-                }
-              }}
-              onBlur={() => {
-                setInputSpanVisibility(true);
-                props.setHasStoryNameBlurred?.(true);
-              }}
-              onFocus={() => {
-                props.setHasStoryNameFocused?.(true);
-                props.setHasStoryNameBlurred?.(false);
-                setInputSpanVisibility(false);
-              }}
-              disabled={props.isPreviewView}
-              style={
-                page !== "new" && !view
-                  ? {
-                      pointerEvents: "none",
-                    }
-                  : {}
-              }
-            />
-            <div
+            <Link
+              to={"/"}
               css={`
                 display: flex;
-                flex-shrink: 0;
-                gap: 12px;
+                align-items: center;
+                font-size: 14px;
+                color: #231d2c;
+                text-decoration: none;
+                position: absolute;
+                left: -32px;
+                cursor: pointer;
+                @media (max-width: 960px) {
+                  position: static;
+                  margin-right: 8px;
+                }
+                @media (max-width: 450px) {
+                  position: static;
+                }
+              `}
+              data-cy="dataset-back-to-library-btn"
+            >
+              <Tooltip title="Back to Dashboard">
+                {isMobile ? (
+                  <ArrowBackIosIcon fontSize="small" />
+                ) : (
+                  <ArrowBack fontSize={"small"} />
+                )}
+              </Tooltip>
+            </Link>
+            <div
+              ref={titleRef}
+              css={`
+                display: flex;
+                align-items: center;
+                gap: 28px;
+                position: relative;
+                width: 70%;
                 @media (min-width: 768px) {
-                  @media (max-width: 1200px) {
-                    display: none;
+                  @media (max-width: 800px) {
+                    width: 48%;
+                  }
+                }
+                @media (min-width: 801px) {
+                  @media (max-width: 1199px) {
+                    width: 49%;
                   }
                 }
               `}
             >
-              {view === "edit" && (
-                <button
-                  css={styles.viewStoryBtn}
-                  onClick={handleViewStory}
-                  data-cy="view-story-button"
-                  aria-label="view story button"
-                >
-                  <PlayIcon />
-                  View Story
-                </button>
-              )}
+              <AutoResizeInput
+                name={props.name}
+                setName={props.setName}
+                placeholder="Title"
+                autoResize={true}
+                maxWidth={(titleRef.current?.offsetWidth ?? 1000) - 100}
+                spanBuffer={isMobile ? 0 : 150}
+                minWidth={200}
+                spanVisibility={inputSpanVisibiltiy}
+                setSpanVisibility={setInputSpanVisibility}
+                onClick={(e) => {
+                  if (props.name === "Untitled story") {
+                    e.currentTarget.value = "";
+                  }
+                }}
+                onBlur={() => {
+                  setInputSpanVisibility(true);
+                  props.setHasStoryNameBlurred?.(true);
+                }}
+                onFocus={() => {
+                  props.setHasStoryNameFocused?.(true);
+                  props.setHasStoryNameBlurred?.(false);
+                  setInputSpanVisibility(false);
+                }}
+                disabled={props.isPreviewView}
+                style={
+                  page !== "new" && !view
+                    ? {
+                        pointerEvents: "none",
+                      }
+                    : {}
+                }
+              />
+              <div
+                css={`
+                  display: flex;
+                  flex-shrink: 0;
+                  gap: 12px;
+                  @media (min-width: 768px) {
+                    @media (max-width: 1200px) {
+                      display: none;
+                    }
+                  }
+                `}
+              >
+                {view === "edit" && (
+                  <button
+                    css={styles.viewStoryBtn}
+                    onClick={handleViewStory}
+                    data-cy="view-story-button"
+                    aria-label="view story button"
+                  >
+                    <PlayIcon />
+                    View Story
+                  </button>
+                )}
+              </div>
             </div>
           </div>
-
           {view !== "initial" && (
             <>
               {(page === "new" || view) && (

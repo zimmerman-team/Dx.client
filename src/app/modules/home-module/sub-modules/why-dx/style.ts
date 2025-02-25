@@ -33,7 +33,7 @@ export const keyfeaturescss = {
   container: css`
     position: relative;
     z-index: 1;
-    padding-top: 114px;
+    padding-top: 120px;
 
     svg {
       @media (max-width: 1200px) {
@@ -49,7 +49,7 @@ export const keyfeaturescss = {
       text-align: center;
       color: #000000;
       margin-top: 0;
-      margin-bottom: 83px;
+      margin-bottom: 80px;
       font-family: "GothamNarrow-Bold", sans-serif;
       @media (max-width: 1200px) {
         font-size: 36px;

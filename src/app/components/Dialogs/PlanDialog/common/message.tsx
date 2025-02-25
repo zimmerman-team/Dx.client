@@ -27,10 +27,10 @@ const MessageContainer = styled((props) => <Box {...props} />)`
     }
   }
   p {
-    font-family: "Inter", sans-serif;
+    font-family: "GothamNarrow-Book", "Helvetica Neue", sans-serif;
     font-size: 14px;
     font-style: normal;
-    font-weight: 500;
+    font-weight: 350;
     line-height: normal;
     color: #231d2c;
     cursor: pointer;
@@ -97,6 +97,10 @@ export const Message = (props: MessageProps) => {
             size="small"
             bg="dark"
             type="button"
+            css={`
+              height: 48px;
+              font-size: 16px;
+            `}
             onClick={() => {
               planDialog.onTryAgain();
               setPlanDialog({
@@ -114,6 +118,10 @@ export const Message = (props: MessageProps) => {
           size="small"
           bg="light"
           type="button"
+          css={`
+            height: 48px;
+            font-size: 16px;
+          `}
           onClick={() => {
             history.push("/pricing");
             setPlanDialog({
@@ -133,6 +141,8 @@ export const Message = (props: MessageProps) => {
           css={`
             text-transform: uppercase;
             flex-shrink: 0;
+            height: 48px;
+            font-size: 16px;
           `}
           onClick={props.onClose}
         >

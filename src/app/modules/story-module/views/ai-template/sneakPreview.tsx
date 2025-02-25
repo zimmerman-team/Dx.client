@@ -90,7 +90,7 @@ export default function SneakPreview(props: {
           <div
             css={`
               color: #ffffff;
-              font-family: "Poppins", sans-serif;
+              font-family: "GothamNarrow-Book", "Helvetica Neue", sans-serif;
               width: 34%;
             `}
           >
@@ -103,8 +103,7 @@ export default function SneakPreview(props: {
                 height: 31px;
                 width: 154px;
                 color: #ffffff;
-                font-family: "Poppins", sans-serif;
-
+                font-family: "GothamNarrow-Book", "Helvetica Neue", sans-serif;
                 align-items: flex-start;
                 border-radius: 100px;
                 background: linear-gradient(

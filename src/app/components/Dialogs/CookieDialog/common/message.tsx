@@ -1,4 +1,3 @@
-import React from "react";
 import Box from "@material-ui/core/Box";
 import styled from "styled-components/macro";
 import Typography from "@material-ui/core/Typography";
@@ -17,33 +16,6 @@ const MessageContainer = styled((props) => <Box {...props} />)`
 const Typo = styled((props) => <Typography {...props} />)`
   && {
     align-self: center;
-  }
-`;
-
-const Button = styled.button`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 12px;
-  background: #231d2c;
-  color: #fff;
-  width: 91px;
-  height: 48px;
-  outline: none;
-  border: none;
-  font-family: "Inter", sans-serif;
-  font-size: 14px;
-  font-style: normal;
-  font-weight: 700;
-  line-height: normal;
-  text-transform: capitalize;
-  cursor: pointer;
-
-  @media (max-width: 744px) {
-    height: 35px;
-  }
-  @media (max-width: 425px) {
-    width: 100%;
   }
 `;
 
