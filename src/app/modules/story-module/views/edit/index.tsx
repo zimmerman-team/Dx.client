@@ -335,6 +335,9 @@ function StoryEditView(props: Readonly<StoryEditViewProps>) {
               ? "calc(100vw - ((100vw - 1280px) / 2) - 400px - 50px)"
               : "100%"};
             position: relative;
+            @media (min-width: 768px) and (max-width: 1260px) {
+              width: 100%;
+            }
           `}
         >
           <Box height={50} />
@@ -378,6 +381,7 @@ function StoryEditView(props: Readonly<StoryEditViewProps>) {
                       setPlugins={props.setPlugins}
                       onSave={props.onSave}
                       endStoryTour={handleEndStoryTour}
+                      rightPanelOpen={props.rightPanelOpen}
                     />
                   </div>
                 </ItemComponent>
@@ -404,6 +408,7 @@ function StoryEditView(props: Readonly<StoryEditViewProps>) {
             updateFramesArray={props.updateFramesArray}
             setRowStructureType={setRowStructuretype}
             endTour={handleEndStoryTour}
+            rightPanelOpen={props.rightPanelOpen}
           />
           <Box height={45} />
           <GridColumns />

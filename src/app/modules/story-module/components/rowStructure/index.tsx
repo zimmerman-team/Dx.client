@@ -22,6 +22,8 @@ import { useDrag } from "react-dnd";
 import { StoryElementsType } from "app/modules/story-module/components/right-panel-create-view";
 import { usehandleRowFrameItemResize } from "app/hooks/useHandleRowFrameItemResize";
 import { Updater } from "use-immer";
+import { useMediaQuery } from "@material-ui/core";
+import { rowStructureHeights } from "./data";
 
 const _rowStructureDetailItems = [
   [{ rowType: "oneByOne", rowId: "oneByOne-1", width: "100%", factor: 1 }],
@@ -133,6 +135,7 @@ interface RowFrameProps {
   setPlugins: React.Dispatch<React.SetStateAction<ToolbarPluginsType>>;
   endStoryTour: () => void;
   onSave: (type: "create" | "edit") => Promise<void>;
+  rightPanelOpen: boolean;
 }
 
 interface IRowStructureType {
@@ -151,6 +154,8 @@ interface IRowStructureType {
 
 export default function RowFrame(props: RowFrameProps) {
   const history = useHistory();
+  const isTablet = useMediaQuery("(max-width: 1110px)");
+
   const { handleRowFrameItemResize } = usehandleRowFrameItemResize(
     props.updateFramesArray
   );
@@ -232,42 +237,49 @@ export default function RowFrame(props: RowFrameProps) {
       | "oneByThree"
       | "oneByFour"
       | "oneByFive"
+    // eslint-disable-next-line sonarjs/cognitive-complexity
   ) => {
     let content: (string | object | null)[] = [];
     let contentTypes: ("text" | "divider" | "chart" | null)[] = [];
     let contentWidths: number[] = [];
     let contentHeights: number[] = [];
+    const tabletHeight =
+      rowStructureHeights[structure as keyof typeof rowStructureHeights]
+        .tabletHeight;
+    const desktopHeight =
+      rowStructureHeights[structure as keyof typeof rowStructureHeights].height;
+
     setSelectedType(structure);
     switch (structure) {
       case "oneByOne":
         content = [null];
         contentTypes = [null];
         contentWidths = [100];
-        contentHeights = [400];
+        contentHeights = isTablet ? tabletHeight : desktopHeight;
         break;
       case "oneByTwo":
         content = [null, null];
         contentTypes = [null, null];
         contentWidths = [50, 50];
-        contentHeights = [420, 420];
+        contentHeights = isTablet ? tabletHeight : desktopHeight;
         break;
       case "oneByThree":
         content = [null, null, null];
         contentTypes = [null, null, null];
         contentWidths = [33, 33, 33];
-        contentHeights = [460, 460, 460];
+        contentHeights = isTablet ? tabletHeight : desktopHeight;
         break;
       case "oneByFour":
         content = [null, null, null, null];
         contentTypes = [null, null, null, null];
         contentWidths = [25, 25, 25, 25];
-        contentHeights = [142, 142, 142, 142];
+        contentHeights = isTablet ? tabletHeight : desktopHeight;
         break;
       case "oneByFive":
         content = [null, null, null, null, null];
         contentTypes = [null, null, null, null, null];
         contentWidths = [20, 20, 20, 20, 20];
-        contentHeights = [142, 142, 142, 142, 142];
+        contentHeights = isTablet ? tabletHeight : desktopHeight;
         break;
 
       default:
@@ -373,11 +385,18 @@ export default function RowFrame(props: RowFrameProps) {
   if (!contentContainer || rowStructureDetailItems.length === 0)
     return <div>loading</div>;
 
+  const desktopHeight =
+    rowStructureHeights[selectedType as keyof typeof rowStructureHeights]
+      .height[0];
+  const tabletHeight =
+    rowStructureHeights[selectedType as keyof typeof rowStructureHeights]
+      .tabletHeight[0];
   const checkSelectedType = {
     oneByOne: (
       <RowstructureDisplay
         gap={containerGap}
-        height={400}
+        height={desktopHeight}
+        tabletHeight={tabletHeight}
         rowId={props.rowId}
         rowIndex={props.rowIndex}
         selectedType={selectedType}
@@ -395,12 +414,14 @@ export default function RowFrame(props: RowFrameProps) {
         onSave={props.onSave}
         forceSelectedType={props.forceSelectedType}
         setTempRowState={setTempRowState}
+        rightPanelOpen={props.rightPanelOpen}
       />
     ),
     oneByTwo: (
       <RowstructureDisplay
         gap={containerGap}
-        height={420}
+        height={desktopHeight}
+        tabletHeight={tabletHeight}
         rowIndex={props.rowIndex}
         rowId={props.rowId}
         selectedType={selectedType}
@@ -418,12 +439,14 @@ export default function RowFrame(props: RowFrameProps) {
         onSave={props.onSave}
         forceSelectedType={props.forceSelectedType}
         setTempRowState={setTempRowState}
+        rightPanelOpen={props.rightPanelOpen}
       />
     ),
     oneByThree: (
       <RowstructureDisplay
         gap={containerGap}
-        height={460}
+        height={desktopHeight}
+        tabletHeight={tabletHeight}
         rowId={props.rowId}
         rowIndex={props.rowIndex}
         selectedType={selectedType}
@@ -441,12 +464,14 @@ export default function RowFrame(props: RowFrameProps) {
         onSave={props.onSave}
         forceSelectedType={props.forceSelectedType}
         setTempRowState={setTempRowState}
+        rightPanelOpen={props.rightPanelOpen}
       />
     ),
     oneByFour: (
       <RowstructureDisplay
         gap={containerGap}
-        height={142}
+        height={desktopHeight}
+        tabletHeight={tabletHeight}
         selectedType={selectedType}
         selectedTypeHistory={selectedTypeHistory}
         setSelectedTypeHistory={setSelectedTypeHistory}
@@ -464,12 +489,14 @@ export default function RowFrame(props: RowFrameProps) {
         previewItems={props.previewItems}
         forceSelectedType={props.forceSelectedType}
         setTempRowState={setTempRowState}
+        rightPanelOpen={props.rightPanelOpen}
       />
     ),
     oneByFive: (
       <RowstructureDisplay
         gap={containerGap}
-        height={142}
+        height={desktopHeight}
+        tabletHeight={tabletHeight}
         rowId={props.rowId}
         rowIndex={props.rowIndex}
         selectedType={selectedType}
@@ -487,6 +514,7 @@ export default function RowFrame(props: RowFrameProps) {
         onSave={props.onSave}
         forceSelectedType={props.forceSelectedType}
         setTempRowState={setTempRowState}
+        rightPanelOpen={props.rightPanelOpen}
       />
     ),
   };

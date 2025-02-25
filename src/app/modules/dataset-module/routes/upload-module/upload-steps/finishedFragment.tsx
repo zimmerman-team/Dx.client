@@ -14,6 +14,7 @@ import { useMediaQuery } from "usehooks-ts";
 import { DatasetListItemAPIModel } from "app/modules/dataset-module/data";
 import moment from "moment";
 import { useAuth0 } from "@auth0/auth0-react";
+import { PrimaryButton } from "app/components/Styled/button";
 
 interface Props {
   data: any[];
@@ -46,6 +47,7 @@ export default function FinishedFragment(props: Props) {
     open: false,
     vertical: "bottom",
     horizontal: "center",
+    message: "",
   });
 
   const [openFullScreenTooltip, setOpenFullScreenTooltip] =
@@ -57,24 +59,60 @@ export default function FinishedFragment(props: Props) {
   const [openFullScreen, setOpenFullScreen] = React.useState(false);
 
   React.useEffect(() => {
-    let snackbarTimeOut: any;
     if (
       props.dataTotalCount > 0 &&
       location.pathname === "/dataset/new/upload"
     ) {
-      setSnackbarState({ ...snackbarState, open: true });
-      snackbarTimeOut = setTimeout(() => {
-        setSnackbarState({ ...snackbarState, open: false });
-      }, 5000);
+      setSnackbarState((prev) => ({
+        ...prev,
+        open: true,
+        message: `${props.dataTotalCount} rows have been successfully processed!`,
+      }));
     }
-    return () => {
-      clearTimeout(snackbarTimeOut);
-    };
   }, [props.dataTotalCount]);
 
   function handleCreateNewChart() {
     setDatasetId(props.datasetId);
   }
+
+  const handleFullScreenDisplay = () => {
+    setOpenFullScreen(true);
+    setSnackbarState((prev) => ({
+      ...prev,
+      open: true,
+      message: "Press ESC to exit Full Screen",
+    }));
+  };
+
+  React.useEffect(() => {
+    if (snackbarState.open) {
+      if (snackbarState.message.includes("Press ESC to exit Full Screen")) {
+        const timer = setTimeout(() => {
+          setSnackbarState((prev) => ({ ...prev, open: false }));
+        }, 30000);
+        return () => clearTimeout(timer);
+      } else {
+        const timer = setTimeout(() => {
+          setSnackbarState((prev) => ({ ...prev, open: false }));
+        }, 3000);
+        return () => clearTimeout(timer);
+      }
+    }
+  }, [snackbarState.open]);
+
+  React.useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        setOpenFullScreen(false);
+        setSnackbarState((prev) => ({ ...prev, open: false }));
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, []);
 
   return (
     <div css={dataSetsCss}>
@@ -150,7 +188,7 @@ export default function FinishedFragment(props: Props) {
               `}
               onMouseOver={() => setOpenFullScreenTooltip(true)}
               onMouseLeave={() => setOpenFullScreenTooltip(false)}
-              onClick={() => setOpenFullScreen(true)}
+              onClick={handleFullScreenDisplay}
               data-cy="dataset-full-screen-btn"
             >
               <FullScreenIcon />
@@ -198,12 +236,12 @@ export default function FinishedFragment(props: Props) {
                   css={`
                     color: #fff;
                     width: 100%;
-                    width: 278px;
-                    height: 41px;
+                    width: max-content;
+                    height: 48px;
+                    padding: 0 24px;
                     font-size: 14px;
                     background: #6061e5;
-                    border-radius: 30px;
-                    text-transform: uppercase;
+                    border-radius: 12px;
                     font-family: "GothamNarrow-Bold", sans-serif;
                     display: flex;
                     justify-content: center;
@@ -214,7 +252,7 @@ export default function FinishedFragment(props: Props) {
                     }
                   `}
                 >
-                  Sign in to Create new chart
+                  Sign in to Create Chart
                 </Link>
               ) : (
                 <Link
@@ -225,34 +263,14 @@ export default function FinishedFragment(props: Props) {
                     }`,
                   }}
                 >
-                  <button
-                    css={`
-                      color: #fff;
-                      width: 100%;
-                      width: 200px;
-                      height: 41px;
-                      font-size: 14px;
-                      font-weight: 700;
-                      padding: 12px 27px;
-                      background: #64afaa;
-                      border-radius: 30px;
-                      text-transform: uppercase;
-                      font-family: "GothamNarrow-Bold";
-                      outline: none;
-                      border: none;
-                      display: flex;
-                      justify-content: center;
-                      align-items: center;
-
-                      :hover {
-                        opacity: 0.8;
-                        cursor: pointer;
-                      }
-                    `}
+                  <PrimaryButton
+                    size="big"
+                    bg="dark"
+                    type="button"
                     onClick={handleCreateNewChart}
                   >
-                    create new chart
-                  </button>
+                    create chart
+                  </PrimaryButton>
                 </Link>
               )}
             </>
@@ -271,7 +289,7 @@ export default function FinishedFragment(props: Props) {
             position: fixed;
             top: 0;
             left: 0;
-            z-index: 100001;
+            z-index: 1101;
             width: 100vw;
             height: 100vh;
             padding: 26px 100px 26px 108px;
@@ -413,8 +431,10 @@ export default function FinishedFragment(props: Props) {
           horizontal: snackbarState.horizontal,
         }}
         open={snackbarState.open}
-        onClose={() => setSnackbarState({ ...snackbarState, open: false })}
-        message={`${props.dataTotalCount} rows have been successfully parsed!`}
+        onClose={() =>
+          setSnackbarState((prev) => ({ ...prev, open: false, message: "" }))
+        }
+        message={snackbarState.message}
         key={snackbarState.vertical + snackbarState.horizontal}
       />
     </div>

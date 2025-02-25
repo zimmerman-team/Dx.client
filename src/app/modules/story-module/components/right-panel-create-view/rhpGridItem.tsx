@@ -105,6 +105,9 @@ export default function GridItem(props: Props) {
                   border: 1px solid #000;
                   justify-content: center;
                   font-family: "GothamNarrow", "Helvetica Neue", sans-serif;
+                  @media (min-width: 768px) and (max-width: 940px) {
+                    font-size: 10px;
+                  }
                 `}
               >
                 Added
@@ -157,6 +160,9 @@ export default function GridItem(props: Props) {
             path {
               fill: #231d2c;
             }
+          }
+          @media (min-width: 768px) and (max-width: 940px) {
+            font-size: 10px;
           }
         `}
       >

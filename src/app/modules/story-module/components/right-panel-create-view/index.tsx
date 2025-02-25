@@ -61,6 +61,7 @@ import Skeleton from "@material-ui/lab/Skeleton";
 import { useInfinityScroll } from "app/hooks/useInfinityScroll";
 import { IHeaderDetails } from "app/modules/story-module/components/right-panel/data";
 import { useCheckUserPlan } from "app/hooks/useCheckUserPlan";
+import { PrimaryButton, TertiaryButton } from "app/components/Styled/button";
 
 interface Props {
   showHeaderItem: boolean;
@@ -158,10 +159,10 @@ export const StoryElementsType = {
 };
 
 const sortByOptions = [
-  { value: "createdDate desc", label: "Recent (DESC)" },
-  { value: "createdDate asc", label: "Recent (ASC)" },
-  { value: "name desc", label: "Name (DESC)" },
-  { value: "name asc", label: "Name (ASC)" },
+  { value: "createdDate desc", label: "Recent" },
+  { value: "createdDate asc", label: "Recent" },
+  { value: "name desc", label: "Name" },
+  { value: "name asc", label: "Name" },
 ];
 
 const videoSources = [
@@ -196,10 +197,13 @@ const UpgradeCard = (props: { onClose: () => void }) => {
           margin: 0;
           color: #231d2c;
           font-family: "GothamNarrow-Bold", sans-serif;
-          font-size: 20px;
+          font-size: 24px;
           font-style: normal;
           font-weight: 400;
           line-height: normal;
+          @media (max-width: 768px) {
+            font-size: 18px;
+          }
         `}
       >
         Enhance Your Stories with Multimedia!
@@ -207,11 +211,15 @@ const UpgradeCard = (props: { onClose: () => void }) => {
       <p
         css={`
           margin: 0;
+          margin-top: 8px;
           font-family: "GothamNarrow-Book", sans-serif;
-          font-size: 15px;
+          font-size: 18px;
           font-style: normal;
           font-weight: 325;
           line-height: normal;
+          @media (max-width: 768px) {
+            font-size: 14px;
+          }
         `}
       >
         Currently, adding videos and images to stories is a feature exclusive to
@@ -224,52 +232,32 @@ const UpgradeCard = (props: { onClose: () => void }) => {
           display: flex;
           align-items: center;
           gap: 16px;
-          padding-top: 43px;
+          padding-top: 24px;
           justify-content: flex-end;
+          @media (max-width: 768px) {
+            flex-direction: column;
+            gap: 16px;
+            button {
+              width: 100%;
+              font-size: 16px;
+            }
+          }
         `}
       >
-        <p
-          css={`
-            text-transform: uppercase;
-            flex-shrink: 0;
-            font-family: Inter;
-            font-size: 14px;
-            font-style: normal;
-            font-weight: 500;
-            line-height: normal;
-            color: #231d2c;
-            cursor: pointer;
-          `}
-          onClick={props.onClose}
-        >
-          Not Now
-        </p>
-
-        <button
-          css={`
-            padding: 16px 24px;
-            border-radius: 48px;
-            background: #6061e5;
-            color: #fff;
-            outline: none;
-            border: none;
-            font-family: "Inter", sans-serif;
-            font-size: 14px;
-            font-style: normal;
-            font-weight: 500;
-            line-height: normal;
-            text-transform: uppercase;
-            cursor: pointer;
-            flex-shrink: 0;
-          `}
+        <PrimaryButton
+          size="big"
+          bg="light"
           type="button"
           onClick={() => {
             history.push("/pricing");
             props.onClose();
           }}
         >
-          Upgrade Now
-        </button>
+          Upgrade
+        </PrimaryButton>
+        <TertiaryButton size="big" bg="light" onClick={props.onClose}>
+          Not Now
+        </TertiaryButton>
       </div>
     </div>
   );
@@ -619,27 +607,40 @@ function StoryRightPanelCreateViewChartList(
           padding: 12px 23px;
           position: relative;
           flex-direction: row;
-          > svg {
-            top: 17px;
-            right: 200px;
-            position: absolute;
+          @media (min-width: 768px) and (max-width: 1090px) {
+            flex-wrap: wrap;
+            justify-content: flex-end;
           }
         `}
       >
-        <input
-          type="text"
-          onChange={(e) => setSearch(e.target.value)}
-          data-cy="story-panel-chart-search-input"
+        <div
           css={`
+            display: flex;
+            align-items: center;
+            gap: 8px;
             width: 187px;
             height: 35px;
-            border-style: none;
             background: #dfe3e6;
             border-radius: 24px;
-            padding: 0 45px 0 10px;
+            padding: 0 8px;
+            @media (min-width: 768px) and (max-width: 1090px) {
+              width: 100%;
+            }
           `}
-        />
-        <SearchIcon htmlColor="#495057" />
+        >
+          <input
+            type="text"
+            onChange={(e) => setSearch(e.target.value)}
+            data-cy="story-panel-chart-search-input"
+            css={`
+              width: 100%;
+              height: 100%;
+              border-style: none;
+              background: transparent;
+            `}
+          />
+          <SearchIcon htmlColor="#495057" />
+        </div>
         <Button
           disableTouchRipple
           onClick={handleClick}
@@ -650,7 +651,7 @@ function StoryRightPanelCreateViewChartList(
             background: #231d2c;
             text-transform: capitalize;
             padding-left: 16px;
-
+            display: flex;
             svg {
               margin-left: 10px;
               transition: all 0.2s ease-in-out;
@@ -658,6 +659,9 @@ function StoryRightPanelCreateViewChartList(
               > path {
                 fill: #fff;
               }
+            }
+            @media (max-width: 768px) {
+              justify-self: flex-end;
             }
           `}
         >

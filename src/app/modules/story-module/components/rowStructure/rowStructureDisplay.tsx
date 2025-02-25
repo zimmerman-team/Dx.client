@@ -14,7 +14,7 @@ import { useHistory, useLocation, useParams } from "react-router-dom";
 import { RichEditor } from "app/modules/common/RichEditor";
 import { StoryChartWrapper } from "app/modules/story-module/components/chart-wrapper";
 import { ReactComponent as EditIcon } from "app/modules/story-module/asset/editIcon.svg";
-import ZoomOutMapIcon from "@material-ui/icons/ZoomOutMap";
+import { ReactComponent as RedoIcon } from "app/modules/story-module/asset/redo-icon.svg";
 import { ReactComponent as DeleteIcon } from "app/modules/story-module/asset/deleteIcon.svg";
 import { StoryElementsType } from "app/modules/story-module/components/right-panel-create-view";
 import {
@@ -28,10 +28,12 @@ import { ToolbarPluginsType } from "app/modules/story-module/components/storySub
 import { css } from "styled-components";
 import { Updater } from "use-immer";
 import { useMediaQuery } from "@material-ui/core";
+import { rowStructureHeights } from "./data";
 
 interface RowStructureDisplayProps {
   gap: string;
   height: number;
+  tabletHeight: number;
   rowIndex: number;
   rowId: string;
   selectedType: string;
@@ -59,15 +61,20 @@ interface RowStructureDisplayProps {
   onSave: (type: "create" | "edit") => Promise<void>;
   forceSelectedType: string | undefined;
   setTempRowState: React.Dispatch<React.SetStateAction<IFramesArray>>;
+  rightPanelOpen: boolean;
 }
 
 export default function RowstructureDisplay(
   props: Readonly<RowStructureDisplayProps>
 ) {
+  const isTablet = useMediaQuery("(max-width: 1110px)");
+  const RIGHT_PANEL_WIDTH = isTablet ? "36.83%" : "400px"; //percentage value of 274px which is the width at 768px as per design
   const ref = useRef(null);
+  useOnClickOutside(ref, () => setHandleDisplay(false));
   const location = useLocation();
   const { page } = useParams<{ page: string }>();
   const [handleDisplay, setHandleDisplay] = React.useState(false);
+  const boxHeight = isTablet ? props.tabletHeight : props.height;
   const viewOnlyMode =
     location.pathname === `/story/${page}` ||
     location.pathname === `/story/${page}/downloaded-view`;
@@ -79,32 +86,39 @@ export default function RowstructureDisplay(
           setHandleDisplay(true);
         },
       };
+
   const resetRowSizes = () => {
+    const getHeight = (structure: string) => {
+      const heights =
+        rowStructureHeights[structure as keyof typeof rowStructureHeights];
+      return isTablet ? heights.tabletHeight : heights.height;
+    };
+
     const rowSizes = [
       {
         type: "oneByOne",
         width: [100],
-        height: [400],
+        height: getHeight("oneByOne"),
       },
       {
         type: "oneByTwo",
         width: [50, 50],
-        height: [420, 420],
+        height: getHeight("oneByTwo"),
       },
       {
         type: "oneByThree",
         width: [33.33, 33.33, 33.33],
-        height: [460, 460, 460],
+        height: getHeight("oneByThree"),
       },
       {
         type: "oneByFour",
         width: [25, 25, 25, 25],
-        height: [122, 122, 122, 122],
+        height: getHeight("oneByFour"),
       },
       {
         type: "oneByFive",
         width: [20, 20, 20, 20, 20],
-        height: [142, 142, 142, 142, 142],
+        height: getHeight("oneByFive"),
       },
     ];
     props.updateFramesArray((draft) => {
@@ -117,8 +131,6 @@ export default function RowstructureDisplay(
       draft[props.rowIndex].contentHeights = defaultHeights;
     });
   };
-
-  useOnClickOutside(ref, () => setHandleDisplay(false));
 
   const border =
     !viewOnlyMode && handleDisplay
@@ -150,6 +162,10 @@ export default function RowstructureDisplay(
               display: flex;
               position: absolute;
               height: calc(100% + 8px);
+              @media (min-width: 760px) and (max-width: 1100px) {
+                left: 12px;
+                z-index: 1;
+              }
             `}
           >
             <div
@@ -190,7 +206,7 @@ export default function RowstructureDisplay(
                     title="Go back to default placeholder size"
                     placement="right"
                   >
-                    <ZoomOutMapIcon fontSize={"small"} htmlColor="#231D2C" />
+                    <RedoIcon />
                   </Tooltip>
                 </IconButton>
                 <IconButton
@@ -222,9 +238,18 @@ export default function RowstructureDisplay(
             width: 100%;
             height: 100%;
             display: flex;
-            overflow: hidden;
+            overflow-x: hidden;
+            overflow-y: hidden;
             gap: ${props.gap};
             border: ${border};
+            @media (min-width: 768px) and (max-width: 1260px) {
+              width: ${props.rightPanelOpen
+                ? `calc(100% - ${RIGHT_PANEL_WIDTH})`
+                : "100%"};
+              :hover {
+                overflow-x: ${props.rightPanelOpen ? "scroll" : "hidden"};
+              }
+            }
             @media (max-width: 767px) {
               display: grid;
               grid-template-columns: ${props.forceSelectedType ===
@@ -239,7 +264,7 @@ export default function RowstructureDisplay(
             <Box
               key={row.rowId}
               width={get(props.rowContentWidths, `[${index}]`, "fit-content")}
-              height={get(props.rowContentHeights, `[${index}]`, props.height)}
+              height={get(props.rowContentHeights, `[${index}]`, boxHeight)}
               itemIndex={index}
               rowId={props.rowId}
               rowIndex={props.rowIndex}
