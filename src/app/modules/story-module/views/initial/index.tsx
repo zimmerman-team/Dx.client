@@ -146,6 +146,7 @@ function StoryInitialView(props: Readonly<StoryInitialViewProps>) {
             searchIconCypressId="open-search-button"
             filterValue={filterValue}
             setFilterValue={setFilterValue}
+            hasSearch
           />
         </Grid>
       </Grid>

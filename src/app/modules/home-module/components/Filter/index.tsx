@@ -29,6 +29,7 @@ export default function Filter(
     openSearch?: boolean;
     setOpenSearch?: React.Dispatch<React.SetStateAction<boolean>>;
     searchIconCypressId: string;
+    hasSearch: boolean;
   }>
 ) {
   const inputRef = React.useRef<HTMLInputElement>(null);
@@ -120,7 +121,7 @@ export default function Filter(
               />
             </IconButton>
           </div>{" "}
-          {props.searchValue && (
+          {props.hasSearch && (
             <Tooltip title="Search" placement="bottom">
               <IconButton
                 data-cy={props.searchIconCypressId}

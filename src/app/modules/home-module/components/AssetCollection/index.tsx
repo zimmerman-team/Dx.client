@@ -220,6 +220,7 @@ function AssetsCollection() {
                 searchIconCypressId="home-search-button"
                 filterValue={filterValue}
                 setFilterValue={setFilterValue}
+                hasSearch
               />
             </div>
           </Grid>
@@ -259,6 +260,7 @@ function AssetsCollection() {
             searchIconCypressId="home-search-button"
             filterValue={filterValue}
             setFilterValue={setFilterValue}
+            hasSearch
           />
         </div>
         {display === "data" ? (

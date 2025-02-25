@@ -43,6 +43,9 @@ export default function NonAuthUserLibrary() {
                   font-family: "GothamNarrow-Bold", sans-serif;
                   font-weight: 400;
                 }
+                svg {
+                  flex-shrink: 0;
+                }
               `}
             >
               <InfoIcon />

@@ -271,6 +271,7 @@ export default function ExternalSearch(props: {
             assetsView={view}
             searchInputWidth="249px"
             searchIconCypressId="open-search-button"
+            hasSearch={false}
           />
         </Grid>
       </Grid>

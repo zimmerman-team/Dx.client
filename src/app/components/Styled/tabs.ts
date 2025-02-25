@@ -24,6 +24,7 @@ export const Tab = {
     position: relative;
     color: ${(props) => (props.active ? "#6061E5" : "#000000")};
     font-family: "GothamNarrow-Book", "Helvetica Neue", sans-serif;
+    font-size: 18px;
 
     ::after {
       content: "";
@@ -43,6 +44,7 @@ export const Tab = {
     position: relative;
     color: ${(props) => (props.active ? "#6061E5" : "#000000")};
     font-family: "GothamNarrow-Book", "Helvetica Neue", sans-serif;
+    font-size: 18px;
 
     ::after {
       content: "";
@@ -66,6 +68,7 @@ export const Tab = {
     color: ${(props) => (props.active ? "#6061E5" : "#000000")};
     font-weight: ${(props) => (props.active ? "700" : "normal")};
     font-family: "GothamNarrow-Book", "Helvetica Neue", sans-serif;
+    font-size: 18px;
 
     ::after {
       content: "";

@@ -81,7 +81,7 @@ export const DropZone = (props: DropzoneProps) => {
                   font-weight: 500;
                   font-size: 12px;
                   color: #231d2c;
-                  font-family: "Inter", sans-serif;
+                  font-family: "GothamNarrow-Book", sans-serif;
                   margin: 0;
                   padding: 0;
                   margin-top: 8px;
