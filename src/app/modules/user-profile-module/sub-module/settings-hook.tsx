@@ -8,9 +8,7 @@ import axios from "axios";
 import React from "react";
 import { useTitle } from "react-use";
 
-export default function Settings() {
-  useTitle("DX Dataxplorer - User Settings");
-
+export default function useProfileSettings() {
   const [modalDisplay, setModalDisplay] = React.useState<boolean>(false);
   const [inputValue, setInputValue] = React.useState<string>("");
   const [enableButton, setEnableButton] = React.useState<boolean>(false);
@@ -84,61 +82,13 @@ export default function Settings() {
       setEnableButton(false);
     }
   };
-  return (
-    <>
-      {loading && <PageLoader />}
-      <div
-        css={`
-          width: 70%;
-          @media (max-width: 800px) {
-            width: 100%;
-          }
-        `}
-      >
-        <h4
-          css={`
-            font-weight: 700;
-            font-size: 24px;
-            color: #6061e5;
-          `}
-        >
-          Settings
-        </h4>
-        <div
-          css={`
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-          `}
-        >
-          <p>Account</p>
-          <div
-            css={`
-              width: max-content;
-              color: #ffffff;
-              button {
-                height: 32px;
-              }
-            `}
-          >
-            <PrimaryButton
-              type="button"
-              bg="dark"
-              size="big"
-              onClick={() => setModalDisplay(true)}
-            >
-              Delete account
-            </PrimaryButton>
-          </div>
-        </div>
-      </div>
-      <DeleteAccountDialog
-        enableButton={enableButton}
-        handleDelete={handleDelete}
-        handleInputChange={handleInputChange}
-        modalDisplay={modalDisplay}
-        setModalDisplay={setModalDisplay}
-      />
-    </>
-  );
+  return {
+    setModalDisplay,
+    handleDelete,
+    handleInputChange,
+    inputValue,
+    enableButton,
+    loading,
+    modalDisplay,
+  };
 }

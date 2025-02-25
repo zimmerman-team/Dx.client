@@ -1,7 +1,11 @@
 import { css } from "styled-components";
 
 export const layoutcss = css`
-  margin-top: 3rem;
+  margin-top: 50px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: calc(100vh - 50px);
 `;
 
 export const tabcss = (active: boolean, disabled: boolean) => css`
@@ -13,34 +17,40 @@ export const tabcss = (active: boolean, disabled: boolean) => css`
   display: flex;
   justify-content: space-between;
   align-items: center;
+  font-size: 16px;
   padding: 12px 24px;
   pointer-events: ${disabled ? "none" : "auto"};
   opacity: ${disabled ? "0.25" : "1"};
+  background-color: ${active ? "#231D2C" : "transparent"};
   cursor: pointer;
   p {
+    font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
     text-transform: capitalize;
-    color: ${active ? "#6061E5" : "#231D2C"};
+    color: ${active ? "#ffffff" : "#231D2C"};
   }
-  @media (max-width: 600px) {
+  @media (max-width: 960px) {
     width: 100%;
   }
 `;
 
 export const profilecss = css`
   font-style: normal;
-  width: 72%;
+  width: 500px;
   h4 {
     font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
     font-weight: 700;
     font-size: 24px;
     color: #6061e5;
+    margin: 0;
+    margin-bottom: 24px;
   }
   p {
-    width: 11vw;
     font-weight: 400;
     font-family: "GothamNarrow-Book", "Helvetica Neue", sans-serif;
+    font-size: 18px;
+    margin: 0;
   }
-  @media (max-width: 800px) {
+  @media (max-width: 960px) {
     @media (min-width: 600px) {
       width: 100%;
     }
@@ -53,6 +63,8 @@ export const billingcss = css`
     font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
     font-size: 24px;
     height: 38px;
+    margin: 0;
+    margin-bottom: 24px;
   }
 
   & > div:nth-of-type(1),
@@ -88,18 +100,20 @@ export const billingcss = css`
 `;
 
 export const flexContainercss = css`
-  display: grid;
-  grid-template-columns: 31% auto;
+  display: flex;
+  justify-content: space-between;
   align-items: center;
   margin-bottom: 24px;
-  @media (max-width: 428px) {
-    grid-template-columns: 45% auto;
+  @media (max-width: 600px) {
+    flex-direction: column;
+    gap: 8px;
+    align-items: flex-start;
   }
 `;
 
 export const bigAvicss = css`
-  width: 223px;
-  height: 223px;
+  width: 224px;
+  height: 224px;
   background: #dadaf8;
   border-radius: 50%;
   display: flex;
@@ -107,7 +121,7 @@ export const bigAvicss = css`
   justify-content: center;
   text-transform: uppercase;
   p {
-    font-weight: 500;
+    font-weight: 325;
     font-size: 96px;
     color: #231d2c;
   }
@@ -130,12 +144,14 @@ export const avicss = css`
 `;
 
 export const inputcss = css`
-  border: 1px solid #231d2c;
-  border-radius: 10px;
-  background: #ffffff;
-
+  border-radius: 16px;
+  background: #f4f4f4;
   width: 100%;
   height: 48px;
   color: #231d2c;
-  padding-left: 20px;
+  width: 320px;
+  padding: 14.5px 24px;
+  border: none;
+  outline: none;
+  font-size: 16px;
 `;

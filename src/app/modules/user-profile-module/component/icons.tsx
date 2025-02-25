@@ -1,3 +1,5 @@
+import React from "react";
+
 interface RightIconProps {
   active: boolean;
 }
@@ -10,7 +12,7 @@ export const RightIcon = ({ active }: RightIconProps) => {
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
     >
-      <path d="M0 10L5 5L0 0L0 10Z" fill={active ? "#6061E5" : "#231D2C"} />
+      <path d="M0 10L5 5L0 0L0 10Z" fill={active ? "#ffffff" : "#231D2C"} />
     </svg>
   );
 };
@@ -26,13 +28,13 @@ export const LogOutIcon = ({ active }: RightIconProps) => {
     >
       <path
         d="M16 0H2C0.89 0 0 0.89 0 2V6H2V2H16V16H2V12H0V16C0 16.5304 0.210714 17.0391 0.585786 17.4142C0.960859 17.7893 1.46957 18 2 18H16C16.5304 18 17.0391 17.7893 17.4142 17.4142C17.7893 17.0391 18 16.5304 18 16V2C18 0.89 17.1 0 16 0ZM7.08 12.58L8.5 14L13.5 9L8.5 4L7.08 5.41L9.67 8H0V10H9.67L7.08 12.58Z"
-        fill={active ? "#6061E5" : "#231D2C"}
+        fill={active ? "#ffffff" : "#231D2C"}
       />
     </svg>
   );
 };
 
-export const InfoIcon = () => {
+export const InfoIcon: React.FC<React.SVGProps<SVGSVGElement>> = (props) => {
   return (
     <svg
       width="20"
@@ -40,6 +42,7 @@ export const InfoIcon = () => {
       viewBox="0 0 20 21"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
+      {...props}
     >
       <path
         d="M9 5.90137H11V7.90137H9V5.90137ZM9 9.90137H11V15.9014H9V9.90137ZM10 0.901367C4.48 0.901367 0 5.38137 0 10.9014C0 16.4214 4.48 20.9014 10 20.9014C15.52 20.9014 20 16.4214 20 10.9014C20 5.38137 15.52 0.901367 10 0.901367ZM10 18.9014C5.59 18.9014 2 15.3114 2 10.9014C2 6.49137 5.59 2.90137 10 2.90137C14.41 2.90137 18 6.49137 18 10.9014C18 15.3114 14.41 18.9014 10 18.9014Z"
