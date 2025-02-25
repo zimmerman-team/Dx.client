@@ -20,8 +20,6 @@ export interface ChartToolBoxProps {
   setDatasetName: React.Dispatch<React.SetStateAction<string>>;
   setToolboxOpen: React.Dispatch<React.SetStateAction<boolean>>;
   openToolbox: boolean;
-  onClose: () => void;
-  onOpen: () => void;
   renderChartFromAPI: (chartId?: string | undefined) => Promise<void>;
   exportView: boolean;
   rawViz: any;
