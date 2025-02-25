@@ -174,39 +174,6 @@ export default function GridItem(props: Readonly<Props>) {
             >
               <DataCardImg />
             </div>
-            <div
-              css={`
-                position: absolute;
-                bottom: 4px;
-                right: 3%;
-                p {
-                  margin: 0;
-                  font-size: 10px;
-                  line-height: normal;
-                }
-              `}
-            >
-              <div
-                css={`
-                  display: flex;
-                  align-items: center;
-                  gap: 3px;
-                `}
-              >
-                <OwnerIcon />
-                <p>Owner</p>
-              </div>
-              <div
-                css={`
-                  display: flex;
-                  align-items: center;
-                  gap: 3px;
-                `}
-              >
-                <ClockIcon width={12} height={12} />
-                <p>{moment(props.date).format("MMMM YYYY")}</p>
-              </div>
-            </div>
           </div>
         </div>
       </Link>
@@ -262,6 +229,39 @@ export default function GridItem(props: Readonly<Props>) {
           type="dataset"
         />
       )}
+      <div
+        css={`
+          position: absolute;
+          bottom: 12px;
+          right: 16px;
+          p {
+            margin: 0;
+            font-size: 10px;
+            line-height: normal;
+          }
+        `}
+      >
+        <div
+          css={`
+            display: flex;
+            align-items: center;
+            gap: 3px;
+          `}
+        >
+          <OwnerIcon />
+          <p>Owner</p>
+        </div>
+        <div
+          css={`
+            display: flex;
+            align-items: center;
+            gap: 3px;
+          `}
+        >
+          <ClockIcon width={12} height={12} />
+          <p>{moment(props.date).format("MMMM YYYY")}</p>
+        </div>
+      </div>
     </div>
   );
 }
