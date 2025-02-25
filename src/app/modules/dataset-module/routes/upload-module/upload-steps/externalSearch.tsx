@@ -157,20 +157,20 @@ export default function ExternalSearch(props: {
   const v =
     "http://localhost:4200/stories?filter={%22order%22:%22updatedDate%20desc%22,%22limit%22:15,%22offset%22:0}";
 
-  // const [,] = useDebounce(
-  //   () => {
-  //     if (token) {
-  //       if (firstTimeRef.current) {
-  //         firstTimeRef.current = false;
-  //         return;
-  //       }
-  //       setDatasets([]);
-  //       loadSearch();
-  //     }
-  //   },
-  //   500,
-  //   [props.searchValue, token, props.sources, sortValue]
-  // );
+  const [,] = useDebounce(
+    () => {
+      if (token) {
+        if (firstTimeRef.current) {
+          firstTimeRef.current = false;
+          return;
+        }
+        setDatasets([]);
+        loadSearch();
+      }
+    },
+    500,
+    [token, props.sources, sortValue]
+  );
 
   const onSearch = () => {
     if (token) {
