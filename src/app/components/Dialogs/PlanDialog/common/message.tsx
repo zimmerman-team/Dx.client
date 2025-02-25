@@ -97,6 +97,10 @@ export const Message = (props: MessageProps) => {
             size="small"
             bg="dark"
             type="button"
+            css={`
+              height: 48px;
+              font-size: 16px;
+            `}
             onClick={() => {
               planDialog.onTryAgain();
               setPlanDialog({
@@ -114,6 +118,10 @@ export const Message = (props: MessageProps) => {
           size="small"
           bg="light"
           type="button"
+          css={`
+            height: 48px;
+            font-size: 16px;
+          `}
           onClick={() => {
             history.push("/pricing");
             setPlanDialog({
@@ -133,6 +141,8 @@ export const Message = (props: MessageProps) => {
           css={`
             text-transform: uppercase;
             flex-shrink: 0;
+            height: 48px;
+            font-size: 16px;
           `}
           onClick={props.onClose}
         >

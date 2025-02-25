@@ -489,12 +489,7 @@ export default function ChartModule() {
   React.useEffect(() => {
     if (page !== "new") {
       if (!isLoading) {
-        if (token.length > 0) {
-          console.log("---load chart");
-          loadChart({ token, getId: page });
-        } else if (!isAuthenticated) {
-          loadChart({ nonAuthCall: true, getId: page });
-        }
+        reLoadChart();
       } else {
         clearChart();
       }
@@ -504,6 +499,14 @@ export default function ChartModule() {
     };
   }, [page, token, isLoading, isAuthenticated]);
 
+  const reLoadChart = () => {
+    if (token.length > 0) {
+      loadChart({ token, getId: page });
+    } else if (!isAuthenticated) {
+      loadChart({ nonAuthCall: true, getId: page });
+    }
+  };
+
   if (chartError401 || error401) {
     return (
       <>
@@ -512,6 +515,7 @@ export default function ChartModule() {
           asset="chart"
           action="view"
           name={errorChartName}
+          handleRetry={reLoadChart}
         />
       </>
     );
@@ -673,6 +677,7 @@ export default function ChartModule() {
                         <ChartBuilderPreview
                           loading={loading}
                           data={sampleData}
+                          datasetId={datasetId!}
                           loadDataset={loadDataset}
                           stats={dataStats}
                           dataTypes={dataTypes2}
@@ -743,7 +748,11 @@ export default function ChartModule() {
           ) : (
             <>
               <div css="width: 100%; height: 100px;" />
-              <NotAuthorizedMessageModule asset="chart" action="edit" />
+              <NotAuthorizedMessageModule
+                asset="chart"
+                action="edit"
+                handleRetry={reLoadChart}
+              />
             </>
           )}
         </>

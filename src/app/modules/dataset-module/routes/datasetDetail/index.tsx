@@ -64,6 +64,10 @@ export default function DatasetDetail() {
 
   React.useEffect(() => {
     loadSampleDataset(page);
+    reloadDataset();
+  }, [token, page]);
+
+  const reloadDataset = () => {
     if (token) {
       loadDataset({
         token,
@@ -76,7 +80,7 @@ export default function DatasetDetail() {
         nonAuthCall: !token,
       });
     }
-  }, [token, page]);
+  };
 
   if (datasetError401) {
     return (
@@ -86,6 +90,7 @@ export default function DatasetDetail() {
           asset="dataset"
           action="view"
           name={errorDatasetName}
+          handleRetry={reloadDataset}
         />
       </>
     );

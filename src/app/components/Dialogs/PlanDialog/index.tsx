@@ -52,7 +52,7 @@ const BaseSnackbar = styled((props) => (
   }
 
   & [class*="MuiSnackbarContent-message"] {
-    padding: 28px 56px;
+    padding: 16px 56px;
     width: 100%;
     @media (max-width: 1024px) {
       padding: 24px;
