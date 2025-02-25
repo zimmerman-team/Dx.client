@@ -57,6 +57,7 @@ function ChartModuleDataView(
         openSearch={openSearch}
         setOpenSearch={setOpenSearch}
         searchIconCypressId="open-search-button"
+        hasSearch
       />
       <DatasetCategoryList
         categories={categories}

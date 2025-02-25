@@ -49,7 +49,7 @@ export default function GridItem(props: Props) {
         title={props.title}
         css={`
           width: 100%;
-          height: 161.59px;
+          height: 162px;
           display: flex;
           color: #262c34;
           background: #fff;

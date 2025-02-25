@@ -14,8 +14,8 @@ export const Tab = {
     justify-content: flex-start;
     color: #000000;
     /* margin: 4% 0%; */
-    width: 30%;
-    gap: 40px;
+    width: 317px;
+    gap: 58px;
     cursor: pointer;
     position: relative;
   `,
@@ -23,10 +23,8 @@ export const Tab = {
     text-align: center;
     position: relative;
     color: ${(props) => (props.active ? "#6061E5" : "#000000")};
-    font-weight: ${(props) => (props.active ? "bold" : "normal")};
-    font-family: ${(props) =>
-        props.active ? gothamNarrowBold : gothamNarrowBook},
-      "Helvetica Neue", sans-serif;
+    font-family: "GothamNarrow-Book", "Helvetica Neue", sans-serif;
+    font-size: 18px;
 
     ::after {
       content: "";
@@ -45,10 +43,8 @@ export const Tab = {
     text-align: center;
     position: relative;
     color: ${(props) => (props.active ? "#6061E5" : "#000000")};
-    font-weight: ${(props) => (props.active ? "bold" : "normal")};
-    font-family: ${(props) =>
-        props.active ? gothamNarrowBold : gothamNarrowBook},
-      "Helvetica Neue", sans-serif;
+    font-family: "GothamNarrow-Book", "Helvetica Neue", sans-serif;
+    font-size: 18px;
 
     ::after {
       content: "";
@@ -71,9 +67,8 @@ export const Tab = {
     position: relative;
     color: ${(props) => (props.active ? "#6061E5" : "#000000")};
     font-weight: ${(props) => (props.active ? "700" : "normal")};
-    font-family: ${(props) =>
-        props.active ? gothamNarrowBold : gothamNarrowBook},
-      "Helvetica Neue", sans-serif;
+    font-family: "GothamNarrow-Book", "Helvetica Neue", sans-serif;
+    font-size: 18px;
 
     ::after {
       content: "";

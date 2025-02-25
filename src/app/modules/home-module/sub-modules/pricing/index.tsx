@@ -202,15 +202,12 @@ export default function PricingModule() {
   return (
     <section
       css={`
-        background: url(${BgEllipses});
-        background-size: 100%;
-        background-position: center 72px;
-        background-repeat: no-repeat;
-        padding-top: 48px; // AppBar height
+        background: linear-gradient(180deg, #fff 0%, #f2f7fd 100%);
         display: flex;
         flex-direction: column;
         justify-content: space-between;
-        min-height: 100vh;
+        margin-top: 50px; // AppBar height
+        min-height: calc(100vh - 50px);
       `}
     >
       <Container maxWidth="lg">
@@ -219,7 +216,7 @@ export default function PricingModule() {
             margin: 0;
             padding: 0;
             margin-top: 124px;
-            font-size: 55px;
+            font-size: 48px;
             font-weight: 400;
             font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
             line-height: normal;
@@ -236,7 +233,7 @@ export default function PricingModule() {
           css={`
             margin: 0;
             padding: 0;
-            font-size: 14px;
+            font-size: 16px;
             font-weight: 325;
             font-family: "GothamNarrow-Book", "Helvetica Neue", sans-serif;
             line-height: normal;
@@ -256,7 +253,7 @@ export default function PricingModule() {
           `}
         >
           DATAXPLORER simplifies and empowers visual data storytelling for all.
-          <b> Free for all.</b>
+          Free for all.
         </p>
         <Box height={65} />
         <div
@@ -278,7 +275,7 @@ export default function PricingModule() {
                 padding: 0;
                 font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
                 color: #231d2c;
-                font-size: 20px;
+                font-size: 18px;
                 font-weight: 400;
                 line-height: normal;
               `}

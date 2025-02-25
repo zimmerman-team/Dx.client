@@ -11,6 +11,7 @@ import { useAuth0 } from "@auth0/auth0-react";
 import { PageLoader } from "app/modules/common/page-loader";
 import { useTitle } from "react-use";
 import { NotAuthorizedMessageModule } from "app/modules/common/not-authorized-message";
+import HomeFooter from "app/modules/home-module/components/Footer";
 
 export default function DatasetDetail() {
   useTitle("DX Dataxplorer - Dataset Detail");
@@ -63,6 +64,10 @@ export default function DatasetDetail() {
 
   React.useEffect(() => {
     loadSampleDataset(page);
+    reloadDataset();
+  }, [token, page]);
+
+  const reloadDataset = () => {
     if (token) {
       loadDataset({
         token,
@@ -75,7 +80,7 @@ export default function DatasetDetail() {
         nonAuthCall: !token,
       });
     }
-  }, [token, page]);
+  };
 
   if (datasetError401) {
     return (
@@ -85,31 +90,41 @@ export default function DatasetDetail() {
           asset="dataset"
           action="view"
           name={errorDatasetName}
+          handleRetry={reloadDataset}
         />
       </>
     );
   }
   return (
-    <Container maxWidth="lg">
-      <DatasetSubHeaderToolbar name={datasetDetails.name} />
-      <div
-        css={`
-          height: 98px;
-          @media (max-width: 881px) {
-            height: 116px;
-          }
-        `}
-      />
-      {loadDatasetLoading ? <PageLoader /> : null}
-      <FinishedFragment
-        data={sampleData}
-        stats={dataStats}
-        dataTypes={dataTypes}
-        datasetId={page}
-        dataTotalCount={dataTotalCount}
-        canDatasetEditDelete={canDatasetEditDelete}
-        datasetDetails={datasetDetails}
-      />
-    </Container>
+    <div
+      css={`
+        margin-top: 100px;
+        min-height: calc(100vh - 100px);
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        @media (max-width: 881px) {
+          margin-top: 118px;
+          min-height: calc(100vh - 118px);
+        }
+      `}
+    >
+      <Container maxWidth="lg">
+        <DatasetSubHeaderToolbar name={datasetDetails.name} />
+
+        {loadDatasetLoading ? <PageLoader /> : null}
+        <FinishedFragment
+          data={sampleData}
+          stats={dataStats}
+          dataTypes={dataTypes}
+          datasetId={page}
+          dataTotalCount={dataTotalCount}
+          canDatasetEditDelete={canDatasetEditDelete}
+          datasetDetails={datasetDetails}
+        />
+      </Container>
+
+      <HomeFooter mini />
+    </div>
   );
 }

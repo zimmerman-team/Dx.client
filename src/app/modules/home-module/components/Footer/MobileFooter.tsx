@@ -8,7 +8,6 @@ export default function MobileFooter() {
   return (
     <div
       css={`
-        height: 113px;
         display: flex;
         flex-direction: column;
         justify-content: center;
@@ -20,18 +19,14 @@ export default function MobileFooter() {
       <Link to="/">
         <LogoIcon />
       </Link>
-      <hr
-        css={`
-          color: #d9d9d9;
-          height: 1px;
-          width: 100%;
-        `}
-      />
       <div
         css={`
-          height: 14px;
+          border-top: 1px solid #d9d9d9;
+          width: 100%;
+          margin: 14px 0;
         `}
       />
+
       <div
         css={`
           height: 39px;
@@ -84,6 +79,7 @@ export default function MobileFooter() {
             gap: 8px;
             margin: 0;
             padding: 0;
+            font-size: 12px;
           `}
         >
           <CopyIcon />

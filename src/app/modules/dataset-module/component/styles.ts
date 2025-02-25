@@ -22,6 +22,7 @@ export const styles = {
     align-items: center;
     flex-direction: row;
     justify-content: space-between;
+    position: relative;
     p {
       font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
       font-style: normal;
@@ -31,14 +32,14 @@ export const styles = {
     }
     @media (max-width: 1280px) {
       margin-left: 0;
-      width: calc(100vw - 400px);
+      /* width: calc(100vw - 400px); */
       @media (max-width: 700px) {
-        width: calc(100vw - 337px);
+        /* width: calc(100vw - 337px); */
       }
     }
 
     @media (max-width: 600px) {
-      width: calc(100vw - 153px);
+      /* width: calc(100vw - 153px); */
       p {
         font-size: 20px;
       }
@@ -126,7 +127,7 @@ export const styles = {
   endContainer: css`
     display: flex;
     right: 17px;
-    position: absolute;
+    /* position: absolute; */
     gap: 13px;
     @media (max-width: 881px) {
       right: 11px;

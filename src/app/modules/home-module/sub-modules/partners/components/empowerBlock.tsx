@@ -2,7 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { useAuth0 } from "@auth0/auth0-react";
 import { socialAuth } from "app/utils/socialAuth";
-import { HomePrimaryButton } from "app/components/Styled/button";
+import { PrimaryButton } from "app/components/Styled/button";
 import { ReactComponent as GoogleIcon } from "app/modules/onboarding-module/asset/google-img.svg";
 import { ReactComponent as LinkedInIcon } from "app/modules/onboarding-module/asset/linkedIn-img.svg";
 import { ReactComponent as MicrosoftIcon } from "app/modules/onboarding-module/asset/microsoft-img.svg";
@@ -13,6 +13,7 @@ import {
   ClimateButton,
 } from "app/modules/home-module/sub-modules/partners/style";
 import { Box } from "@material-ui/core";
+import AddAssetDropdown from "app/modules/home-module/components/AddAssetDropdown";
 
 export default function EmpowerBlock(props: {
   view?: "why-dx" | "contact" | "about" | "partners" | "explore" | "landing";
@@ -83,47 +84,32 @@ export default function EmpowerBlock(props: {
 
       {isAuthenticated && (
         <div>
-          <Link
-            to="/story/new/initial"
-            data-cy="empower-block-create-story-link"
-          >
-            <HomePrimaryButton color="#6061E5" type="button">
-              CREATE STORY
-            </HomePrimaryButton>
-          </Link>
+          <AddAssetDropdown />
           <Link to="/" data-cy="empower-block-explore-stories-link">
-            <HomePrimaryButton color="#E492BD" type="button">
-              EXPLORE STORIES
-            </HomePrimaryButton>
+            <PrimaryButton size="big" bg="light" type="button">
+              Explore the Dashboard
+            </PrimaryButton>
           </Link>
         </div>
       )}
       {!isAuthenticated && (
         <div
           css={`
-            gap: 20px;
-            width: 100%;
-            display: flex;
-            flex-direction: row;
-            justify-content: center;
-
             > button {
-              gap: 10px;
-              color: #fff;
+              gap: 8px;
+              color: #231d2c;
               display: flex;
               padding: 9px 17px !important;
-              height: 41px;
-              border-radius: 30px;
+              height: 48px;
+              border-radius: 12px;
               outline: none;
               border: none;
               background: #a1a2ff;
               align-items: center;
               justify-content: center;
-              text-transform: uppercase;
-              font-family: "Inter", sans-serif;
-              font-weight: 700;
+              font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
               white-space: nowrap;
-              font-size: 14px;
+              font-size: 16px;
               > svg {
                 transform: scale(0.8);
               }
@@ -134,6 +120,8 @@ export default function EmpowerBlock(props: {
             }
             @media (max-width: 655px) {
               flex-direction: column;
+              gap: 8px;
+
               button {
                 width: 60%;
                 @media (max-width: 428px) {
@@ -143,23 +131,14 @@ export default function EmpowerBlock(props: {
             }
           `}
         >
-          <button
-            data-cy="google-button"
-            onClick={() => socialAuth("google-oauth2")}
-          >
-            <GoogleIcon /> sign in for free
+          <button onClick={() => socialAuth("google-oauth2")}>
+            <GoogleIcon /> Google
           </button>
-          <button
-            data-cy="linkedin-button"
-            onClick={() => socialAuth("linkedin")}
-          >
-            <LinkedInIcon /> sign in for free
+          <button onClick={() => socialAuth("linkedin")}>
+            <LinkedInIcon /> LinkedIn
           </button>
-          <button
-            data-cy="microsoft-button"
-            onClick={() => socialAuth("windowslive")}
-          >
-            <MicrosoftIcon /> sign in for free
+          <button onClick={() => socialAuth("windowslive")}>
+            <MicrosoftIcon /> Microsoft
           </button>
         </div>
       )}

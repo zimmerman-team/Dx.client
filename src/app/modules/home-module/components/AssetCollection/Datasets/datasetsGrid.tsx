@@ -298,7 +298,7 @@ export default function DatasetsGrid(props: Readonly<Props>) {
                 inChartBuilder={props.inChartBuilder as boolean}
               />
 
-              {!props.inChartBuilder && <Box height={16} />}
+              {!props.inChartBuilder && <Box height={{ xs: 0, lg: 8 }} />}
             </Grid>
           ))}
         </Grid>

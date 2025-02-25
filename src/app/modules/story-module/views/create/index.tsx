@@ -161,6 +161,7 @@ function StoryCreateView(props: Readonly<StoryCreateViewProps>) {
                     onSave={props.onSave}
                     setPlugins={props.setPlugins}
                     endStoryTour={() => {}}
+                    rightPanelOpen={props.rightPanelOpen}
                   />
                 </div>
                 <Box height={38} />
@@ -181,6 +182,7 @@ function StoryCreateView(props: Readonly<StoryCreateViewProps>) {
               updateFramesArray={props.updateFramesArray}
               setRowStructureType={setRowStructuretype}
               endTour={() => {}}
+              rightPanelOpen={props.rightPanelOpen}
             />
           }
           <Box height={45} />

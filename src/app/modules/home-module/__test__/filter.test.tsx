@@ -7,6 +7,8 @@ interface MockProps {
   setSearchValue: jest.Mock<any, any, any>;
   setSortValue: jest.Mock<any, any, any>;
   sortValue: string;
+  setFilterValue: jest.Mock<any, any, any>;
+  filterValue: "";
   setAssetsView: jest.Mock<any, any, any>;
   assetsView: "table" | "grid";
   terminateSearch?: jest.Mock<any, any, any>;
@@ -14,6 +16,7 @@ interface MockProps {
   openSearch: boolean;
   setOpenSearch: jest.Mock<any, any, any>;
   searchIconCypressId: string;
+  hasSearch: boolean;
 }
 
 const defaultProps = (newProps: Partial<MockProps>): MockProps => {
@@ -22,12 +25,15 @@ const defaultProps = (newProps: Partial<MockProps>): MockProps => {
     setSearchValue: jest.fn(),
     setSortValue: jest.fn(),
     sortValue: "",
+    setFilterValue: jest.fn(),
+    filterValue: "",
     setAssetsView: jest.fn(),
     assetsView: "table",
     openSearch: false,
     terminateSearch: jest.fn(),
     setOpenSearch: jest.fn(),
     searchIconCypressId: "",
+    hasSearch: false,
     ...newProps,
   };
 };

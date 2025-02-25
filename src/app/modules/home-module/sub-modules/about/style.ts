@@ -5,12 +5,13 @@ export const subParagraphcss = css`
   > div:nth-of-type(1) {
     display: flex;
     column-gap: 97px;
-    align-items: start;
+    align-items: center;
     @media (max-width: 1024px) {
       flex-direction: column;
       align-items: center;
       justify-content: center;
       text-align: center;
+      row-gap: 40px;
     }
   }
   #ab-mobile {

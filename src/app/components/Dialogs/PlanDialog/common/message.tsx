@@ -5,23 +5,36 @@ import Typography from "@material-ui/core/Typography";
 import { useRecoilState } from "recoil";
 import { planDialogAtom } from "app/state/recoil/atoms";
 import { useHistory } from "react-router-dom";
+import { PrimaryButton, TertiaryButton } from "app/components/Styled/button";
 
 const MessageContainer = styled((props) => <Box {...props} />)`
   align-items: center;
   width: 100%;
+
   justify-content: space-between;
   @media (max-width: 960px) {
     flex-direction: column;
     align-items: normal;
   }
+  @media (max-width: 600px) {
+    gap: 16px;
+    flex-direction: column;
+    align-items: normal;
+    justify-content: center;
+
+    button {
+      width: max-content;
+    }
+  }
   p {
-    font-family: "Inter", sans-serif;
+    font-family: "GothamNarrow-Book", "Helvetica Neue", sans-serif;
     font-size: 14px;
     font-style: normal;
-    font-weight: 500;
+    font-weight: 350;
     line-height: normal;
     color: #231d2c;
     cursor: pointer;
+    margin: 0px;
   }
 `;
 
@@ -33,27 +46,6 @@ const Typo = styled((props) => <Typography {...props} />)`
       margin-bottom: 8px;
       align-self: start;
     }
-  }
-`;
-
-const Button = styled.button`
-  padding: 16px 24px;
-  border-radius: 48px;
-  background: #6061e5;
-  color: #fff;
-  outline: none;
-  border: none;
-  font-family: "Inter", sans-serif;
-  font-size: 14px;
-  font-style: normal;
-  font-weight: 500;
-  line-height: normal;
-  text-transform: uppercase;
-  cursor: pointer;
-  flex-shrink: 0;
-
-  @media (max-width: 960px) {
-    margin-bottom: 8px;
   }
 `;
 
@@ -87,21 +79,28 @@ export const Message = (props: MessageProps) => {
           flex-basis: auto;
           @media (max-width: 960px) {
             justify-content: flex-end;
+
+            @media (max-width: 600px) {
+              justify-content: center;
+              flex-direction: ${planDialog.tryAgain ? "column" : "row"};
+              gap: ${planDialog.tryAgain ? "8px" : "16px"};
+
+              button {
+                width: ${planDialog.tryAgain ? "193px" : " max-content"};
+              }
+            }
           }
         `}
       >
-        <p
-          css={`
-            text-transform: uppercase;
-            flex-shrink: 0;
-          `}
-          onClick={props.onClose}
-        >
-          Not Now
-        </p>
         {planDialog.tryAgain && (
-          <Button
+          <PrimaryButton
+            size="small"
+            bg="dark"
             type="button"
+            css={`
+              height: 48px;
+              font-size: 16px;
+            `}
             onClick={() => {
               planDialog.onTryAgain();
               setPlanDialog({
@@ -113,10 +112,16 @@ export const Message = (props: MessageProps) => {
             }}
           >
             {planDialog.tryAgain}
-          </Button>
+          </PrimaryButton>
         )}
-        <Button
+        <PrimaryButton
+          size="small"
+          bg="light"
           type="button"
+          css={`
+            height: 48px;
+            font-size: 16px;
+          `}
           onClick={() => {
             history.push("/pricing");
             setPlanDialog({
@@ -127,8 +132,22 @@ export const Message = (props: MessageProps) => {
             });
           }}
         >
-          Upgrade Now
-        </Button>
+          Upgrade
+        </PrimaryButton>
+        <TertiaryButton
+          size="small"
+          bg="light"
+          type="button"
+          css={`
+            text-transform: uppercase;
+            flex-shrink: 0;
+            height: 48px;
+            font-size: 16px;
+          `}
+          onClick={props.onClose}
+        >
+          Not Now
+        </TertiaryButton>
       </div>
     </MessageContainer>
   );

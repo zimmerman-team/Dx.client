@@ -231,7 +231,7 @@ export default function StaticToolbar(props: { plugins: ToolbarPluginsType }) {
                       css={`
                         width: max-content;
                         height: 44px;
-                        display: flex;
+                        display: ${displayRestIcons ? "flex" : "none"};
                         align-items: center;
                         justify-content: space-around;
                         border-radius: 8px;

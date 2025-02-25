@@ -10,7 +10,7 @@ export const styles = {
     max-width: 1280px;
     position: relative;
     padding: 67px 0px 0 0;
-    min-height: calc(100vh - 98px);
+    min-height: calc(100vh - 100px);
   `,
   previewInnercontainer: (isEditMode: boolean) => css`
     left: 0;

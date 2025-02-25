@@ -4,9 +4,12 @@ import { useAuth0 } from "@auth0/auth0-react";
 import { useHistory, useLocation, useParams } from "react-router-dom";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 import { isEmpty } from "lodash";
-import { Slide, SnackbarContent, useMediaQuery } from "@material-ui/core";
+import { Slide, Tooltip, useMediaQuery } from "@material-ui/core";
 /* project */
-import { styles } from "app/modules/chart-module/components/toolbox/styles";
+import {
+  snackbarStyle,
+  styles,
+} from "app/modules/chart-module/components/toolbox/styles";
 import { ChartExporter } from "app/modules/chart-module/components/exporter";
 import {
   ChartToolBoxProps,
@@ -21,6 +24,7 @@ import {
 } from "app/modules/chart-module/data";
 import ToolboxNav from "app/modules/chart-module/components/toolbox/steps/navbar";
 import { InfoSnackbar } from "app/modules/chart-module/components/chartSubheaderToolbar/infoSnackbar";
+import { PrimaryButton } from "app/components/Styled/button";
 
 export function ChartModuleToolBox(props: Readonly<ChartToolBoxProps>) {
   const { page, view } = useParams<{ page: string; view?: string }>();
@@ -133,6 +137,29 @@ export function ChartModuleToolBox(props: Readonly<ChartToolBoxProps>) {
     }
   }, [location.pathname]);
 
+  const togglePanel = (e: KeyboardEvent) => {
+    const target = e.target as HTMLElement;
+    if (
+      target.tagName === "INPUT" ||
+      target.tagName === "TEXTAREA" ||
+      target.isContentEditable ||
+      target.tagName === "SELECT"
+    ) {
+      return;
+    }
+
+    if (e.key === "p") {
+      props.setToolboxOpen(!props.openToolbox);
+    }
+  };
+
+  React.useEffect(() => {
+    window.addEventListener("keydown", togglePanel);
+    return () => {
+      window.removeEventListener("keydown", togglePanel);
+    };
+  }, [props.openToolbox]);
+
   const canChartEditDelete = React.useMemo(() => {
     return isAuthenticated && loadedChart && loadedChart.owner === user?.sub;
   }, [user, isAuthenticated, loadedChart]);
@@ -150,44 +177,53 @@ export function ChartModuleToolBox(props: Readonly<ChartToolBoxProps>) {
       >
         <div css={styles.container}>
           {!isMobile && (
-            <div
-              role="button"
-              tabIndex={-1}
-              css={`
-                top: calc((100% - 205px) / 2);
-                left: -16px;
-                color: #fff;
-                width: 16px;
-                height: 133px;
-                display: flex;
-                cursor: pointer;
-                position: absolute;
-                background: #231d2c;
-                align-items: center;
-                flex-direction: column;
-                justify-content: center;
-                border-radius: 10px 0px 0px 10px;
-                transition: background 0.2s ease-in-out;
-                &:hover {
-                  background: #13183f;
-                }
-                > svg {
-                  transform: rotate(${!props.openToolbox ? "-" : ""}90deg);
-                  > path {
-                    fill: #fff;
-                  }
-                }
-              `}
-              onClick={() => {
-                if (props.openToolbox) {
-                  props.onClose();
-                } else {
-                  props.onOpen();
-                }
-              }}
+            <Tooltip
+              title={
+                <>
+                  Press <b>P</b> to quickly open/close the panel
+                </>
+              }
+              placement="right"
             >
-              <TriangleXSIcon />
-            </div>
+              <div
+                role="button"
+                tabIndex={-1}
+                css={`
+                  top: calc((100% - 205px) / 2);
+                  left: -16px;
+                  color: #fff;
+                  width: 16px;
+                  height: 133px;
+                  display: flex;
+                  cursor: pointer;
+                  position: absolute;
+                  background: #231d2c;
+                  align-items: center;
+                  flex-direction: column;
+                  justify-content: center;
+                  border-radius: 10px 0px 0px 10px;
+                  transition: background 0.2s ease-in-out;
+                  &:hover {
+                    background: #13183f;
+                  }
+                  > svg {
+                    transform: rotate(${!props.openToolbox ? "-" : ""}90deg);
+                    > path {
+                      fill: #fff;
+                    }
+                  }
+                `}
+                onClick={() => {
+                  if (props.openToolbox) {
+                    props.setToolboxOpen(false);
+                  } else {
+                    props.setToolboxOpen(true);
+                  }
+                }}
+              >
+                <TriangleXSIcon />
+              </div>
+            </Tooltip>
           )}
 
           <ToolboxNav
@@ -236,81 +272,33 @@ export function ChartModuleToolBox(props: Readonly<ChartToolBoxProps>) {
         onClose={() => setShowSnackbar(null)}
         open={showSnackbar !== null && showSnackbar !== ""}
       >
-        <div
-          css={`
-            border-radius: 20px;
-            width: 1232px;
-            padding: 8px 0;
-            display: flex;
-            align-items: center;
-            background: #fff;
-            box-shadow: 0px 0px 10px 0px rgba(152, 161, 170, 0.6);
-            justify-content: center;
-            column-gap: 48px;
-            p {
-              font-size: 18px;
-              font-style: normal;
-              margin: 0;
-              line-height: 20px; /* 111.111% */
-              letter-spacing: 0.5px;
-            }
-            button {
-              font-size: 14px;
-              font-style: normal;
-              font-weight: 500;
-              font-family: Inter;
-              line-height: normal;
-              text-align: center;
-              color: #fff;
-              background: #231d2c;
-              border-radius: 20px;
-              border: none;
-              padding: 12px 27px;
-              cursor: pointer;
-            }
-          `}
-        >
-          <p
-            css={`
-              font-family: GothamNarrow-Bold;
-              font-weight: 400;
-            `}
-          >
+        <div css={snackbarStyle}>
+          <p>
             Your chart has been successfully saved! You can now find it in your
             library.
           </p>
-          <div
-            css={`
-              display: flex;
-              align-items: center;
-              column-gap: 24px;
-            `}
-          >
-            <button
+          <div>
+            <PrimaryButton
+              size="big"
+              bg="light"
               onClick={() => {
                 setShowSnackbar(null);
                 history.push("/story/new/initial");
               }}
             >
-              CREATE STORY
-            </button>
-            <p
-              css={`
-                font-family: GothamNarrow-Book;
-                font-weight: 325;
-              `}
-            >
-              or
-            </p>
+              Create story
+            </PrimaryButton>
 
-            <button
+            <PrimaryButton
+              size="big"
+              bg="dark"
               onClick={() => {
                 setShowSnackbar(null);
                 history.push("/");
               }}
             >
-              BACK TO EXPLORE
-            </button>
+              Back to dashboard
+            </PrimaryButton>
           </div>
         </div>
       </InfoSnackbar>

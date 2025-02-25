@@ -19,7 +19,7 @@ import ArrowBackIosIcon from "@material-ui/icons/ArrowBackIos";
 import CopyToClipboard from "react-copy-to-clipboard";
 import FileCopyIcon from "@material-ui/icons/FileCopy";
 import { PageLoader } from "app/modules/common/page-loader";
-import { useHistory, useParams } from "react-router-dom";
+import { Link, useHistory, useParams } from "react-router-dom";
 import Snackbar from "@material-ui/core/Snackbar";
 import SnackbarContent from "@material-ui/core/SnackbarContent";
 import { styles } from "app/modules/chart-module/components/chartSubheaderToolbar/styles";
@@ -40,6 +40,8 @@ import useMediaQuery from "@material-ui/core/useMediaQuery";
 import DuplicateMessage from "app/modules/common/mobile-duplicate-message";
 import { InfoSnackbar } from "app/modules/story-module/components/storySubHeaderToolbar/infosnackbar";
 import ShareModal from "app/modules/dataset-module/component/shareModal";
+import { PrimaryButton } from "app/components/Styled/button";
+import { ArrowBack } from "@material-ui/icons";
 
 // eslint-disable-next-line sonarjs/cognitive-complexity
 export function ChartSubheaderToolbar(
@@ -63,7 +65,6 @@ export function ChartSubheaderToolbar(
   const [hasChangesBeenMade, setHasChangesBeenMade] = React.useState(false);
 
   const [inputSpanVisibiltiy, setInputSpanVisibility] = React.useState(true);
-  const [showSnackbar, setShowSnackbar] = React.useState<string | null>(null);
   const [duplicatedChartId, setDuplicatedChartId] = React.useState<
     string | null
   >(null);
@@ -116,6 +117,7 @@ export function ChartSubheaderToolbar(
     open: false,
     vertical: "bottom",
     horizontal: "center",
+    message: "Your chart has been successfully duplicated!",
   });
 
   React.useEffect(() => {
@@ -291,64 +293,102 @@ export function ChartSubheaderToolbar(
       <Container maxWidth="lg">
         <div css={styles.innercontainer} ref={innerContainerRef}>
           <div
-            ref={titleRef}
             css={`
               display: flex;
               align-items: center;
-              gap: 12px;
-              width: 72%;
               position: relative;
-              @media (min-width: 768px) {
-                @media (max-width: 828px) {
-                  width: ${canChartEditDelete ? "50%" : "90%"};
-                }
-              }
-              @media (min-width: 829px) {
-                @media (max-width: 1040px) {
-                  width: 55%;
-                }
-              }
-              @media (min-width: 1041px) {
-                @media (max-width: 1373px) {
-                  width: 64%;
-                }
-              }
+              width: 100%;
             `}
           >
-            {isMobile && <ArrowBackIosIcon onClick={() => history.go(-1)} />}
-            <AutoResizeInput
-              name={props.name}
-              setName={props.setName}
-              placeholder="Title"
-              autoResize={false}
-              maxWidth={titleRef.current?.offsetWidth ?? 1000}
-              spanBuffer={0}
-              minWidth={100}
-              spanVisibility={inputSpanVisibiltiy}
-              setSpanVisibility={setInputSpanVisibility}
-              onClick={(e) => {
-                if (props.name === "Untitled Chart") {
-                  e.currentTarget.value = "";
+            <Link
+              to={"/"}
+              css={`
+                display: flex;
+                align-items: center;
+                font-size: 14px;
+                color: #231d2c;
+                text-decoration: none;
+                position: absolute;
+                left: -32px;
+                cursor: pointer;
+                @media (max-width: 960px) {
+                  position: static;
+                  margin-right: 8px;
                 }
-              }}
-              onBlur={() => {
-                props.setHasSubHeaderTitleBlurred?.(true);
-                setInputSpanVisibility(true);
-              }}
-              onFocus={() => {
-                props.setHasSubHeaderTitleFocused?.(true);
-                props.setHasSubHeaderTitleBlurred?.(false);
-                setInputSpanVisibility(false);
-              }}
-              disabled={props.isPreviewView}
-              style={
-                page !== "new" && !view
-                  ? {
-                      pointerEvents: "none",
-                    }
-                  : {}
-              }
-            />
+                @media (max-width: 450px) {
+                  position: static;
+                }
+              `}
+              data-cy="dataset-back-to-library-btn"
+            >
+              <Tooltip title="Back to Dashboard">
+                {isMobile ? (
+                  <ArrowBackIosIcon fontSize="small" />
+                ) : (
+                  <ArrowBack fontSize={"small"} />
+                )}
+              </Tooltip>
+            </Link>
+            <div
+              ref={titleRef}
+              css={`
+                display: flex;
+                align-items: center;
+                gap: 12px;
+
+                width: 72%;
+                position: relative;
+                @media (min-width: 768px) {
+                  @media (max-width: 828px) {
+                    width: ${canChartEditDelete ? "50%" : "90%"};
+                  }
+                }
+                @media (min-width: 829px) {
+                  @media (max-width: 1040px) {
+                    width: 55%;
+                  }
+                }
+                @media (min-width: 1041px) {
+                  @media (max-width: 1373px) {
+                    width: 64%;
+                  }
+                }
+              `}
+            >
+              <AutoResizeInput
+                name={props.name}
+                setName={props.setName}
+                placeholder="Title"
+                autoResize={false}
+                maxWidth={titleRef.current?.offsetWidth ?? 1000}
+                spanBuffer={0}
+                minWidth={100}
+                spanVisibility={inputSpanVisibiltiy}
+                setSpanVisibility={setInputSpanVisibility}
+                onClick={(e) => {
+                  if (props.name === "Untitled Chart") {
+                    e.currentTarget.value = "";
+                  }
+                }}
+                onBlur={() => {
+                  props.setHasSubHeaderTitleBlurred?.(true);
+                  setInputSpanVisibility(true);
+                }}
+                onFocus={() => {
+                  props.setHasSubHeaderTitleFocused?.(true);
+                  props.setHasSubHeaderTitleBlurred?.(false);
+                  setInputSpanVisibility(false);
+                }}
+                disabled={props.isPreviewView}
+                style={
+                  page !== "new" && !view
+                    ? {
+                        pointerEvents: "none",
+                      }
+                    : {}
+                }
+              />
+            </div>
           </div>
 
           <div css={styles.endContainer}>
@@ -614,37 +654,22 @@ export function ChartSubheaderToolbar(
             data-testid="duplicated-chart-snackbar"
             open={snackbarState.open}
             onClose={() => setSnackbarState({ ...snackbarState, open: false })}
-            message={`Chart has been duplicated successfully!`}
+            message={snackbarState.message}
             key={snackbarState.vertical + snackbarState.horizontal}
             action={
-              <button onClick={handleViewDuplicatedChart}>GO TO CHART</button>
+              <PrimaryButton
+                size="big"
+                bg="dark"
+                style={{ textTransform: "none" }}
+                onClick={handleViewDuplicatedChart}
+              >
+                Go to Copied Chart
+              </PrimaryButton>
             }
           />
         )}
       </>
-      <InfoSnackbar
-        gap={window.location.pathname.includes("story")}
-        data-testid="create-chart-snackbar"
-        onClose={() => setShowSnackbar(null)}
-        open={showSnackbar !== null && showSnackbar !== ""}
-      >
-        <SnackbarContent
-          message={showSnackbar}
-          aria-describedby="create-chart-snackbar-content"
-          action={
-            <>
-              <button
-                onClick={() => {
-                  setShowSnackbar(null);
-                  history.push("/story/new/initial");
-                }}
-              >
-                CREATE NEW STORY
-              </button>
-            </>
-          }
-        />
-      </InfoSnackbar>
+
       <Snackbar
         anchorOrigin={{
           vertical: "bottom",

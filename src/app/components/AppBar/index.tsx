@@ -18,7 +18,7 @@ const NavList = (props: {
   setIsNavExpanded?: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
   const list = [
-    { name: "Library", path: "/", cy: "nav-explore", class: "" },
+    { name: "Dashboard", path: "/", cy: "nav-explore", class: "" },
     {
       name: "Why Dataxplorer",
       path: "/why-dataxplorer",
@@ -137,16 +137,17 @@ function MobileHeader(props: { navLocation: string }) {
               <button
                 onClick={() => history.push("/user-management/profile")}
                 css={`
-                  min-width: 33px;
-                  height: 33px;
+                  min-width: 35px;
+                  height: 35px;
                   display: flex;
                   margin-left: 16px;
                   border-radius: 50%;
                   align-items: center;
-                  background: #b5b5db;
+                  background: #dadaf8;
                   justify-content: center;
                   border: none;
-                  font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
+                  font-family: "GothamNarrow-Medium", "Helvetica Neue",
+                    sans-serif;
                   font-size: 14px;
                 `}
               >
@@ -159,22 +160,19 @@ function MobileHeader(props: { navLocation: string }) {
               <Link
                 to="/onboarding/signin"
                 css={`
-                  border-radius: 24.48px;
                   background: #dadaf8;
                   display: flex;
-                  width: 100%;
-                  max-width: 110px;
-                  height: 34px;
                   justify-content: center;
                   align-items: center;
-                  gap: 8.16px;
                   color: var(--Primary-Dark, #231d2c);
-                  font-family: "Inter", sans-serif;
-                  font-size: 11.424px;
-                  font-weight: 500;
-                  text-transform: uppercase;
+                  font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
+                  font-size: 16px;
+                  font-weight: 400;
                   text-decoration: none;
                   white-space: nowrap;
+                  border-radius: 10px;
+                  padding: 12px 24px;
+                  line-height: 11px;
                 `}
               >
                 Sign in
@@ -256,7 +254,7 @@ export function AppBar() {
             css={`
               gap: 32px;
               width: 100%;
-              height: 48px;
+              height: 50px;
               display: flex;
               flex-direction: row;
               align-items: center;
@@ -353,45 +351,50 @@ const ActionMenu = () => {
             border: none;
             background: #dadaf8;
             color: #231d2c;
-            font-size: 11.424px;
+            font-size: 16px;
             line-height: normal;
             padding: 0px;
-            font-family: "Inter", sans-serif;
-
-            :nth-child(1) {
-              width: ${isAuthenticated ? "146px" : "110px"};
-              height: 34px;
-              border-radius: 24px;
-              &:hover {
-                opacity: 0.8;
-              }
-            }
-
-            svg {
-              ${openActionPopover ? "transform: rotate(180deg)" : ""}
-            }
+            font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
+          }
+          svg {
+            ${openActionPopover ? "transform: rotate(180deg)" : ""}
           }
         `}
       >
-        <Link to={isAuthenticated ? "/dashboard" : "/onboarding/signin"}>
-          <button data-cy="appbar-create-story/login">
-            {isAuthenticated ? "MY DASHBOARD" : "Sign in"}
-          </button>
-        </Link>
+        {!isAuthenticated && (
+          <Link
+            to="/onboarding/signin"
+            data-cy="appbar-create-story/login"
+            css={`
+              background: #dadaf8;
+              color: #231d2c;
+              font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
+              display: flex;
+              justify-content: center;
+              align-items: center;
+              border-radius: 10px;
+              padding: 12px 24px;
+              line-height: 11px;
+            `}
+          >
+            Sign in
+          </Link>
+        )}
 
         {isAuthenticated && (
           <button
             onClick={() => history.push("/user-management/profile")}
             data-cy="navbar-profile-btn"
             css={`
-              min-width: 33px;
-              height: 33px;
+              min-width: 35px;
+              height: 35px;
               display: flex;
-              margin-left: 16px;
               border-radius: 50%;
               align-items: center;
-              background: #b5b5db;
+              background: #dadaf8;
+              font-family: "GothamNarrow-Medium", "Helvetica Neue", sans-serif;
               justify-content: center;
+              font-weight: 350;
             `}
           >
             {user?.given_name?.slice(0, 1) ??
@@ -452,9 +455,8 @@ const ActionMenu = () => {
                 display: flex;
                 gap: 8px;
                 align-items: center;
-                text-transform: uppercase;
                 font-weight: 500;
-                font-family: "Inter", sans-serif;
+                font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
               }
 
               &:hover,

@@ -88,7 +88,7 @@ export default function NewsletterForm(
         width: 100%;
         display: flex;
         input {
-          font-family: "Roboto", sans-serif;
+          font-family: "GothamNarrow-Book", "Helvetica Neue", sans-serif;
         }
         button {
           cursor: pointer;

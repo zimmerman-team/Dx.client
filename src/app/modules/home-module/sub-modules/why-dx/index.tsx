@@ -9,6 +9,7 @@ import EmpowerBlock from "app/modules/home-module/sub-modules/partners/component
 import KeyFeaturesBlock from "app/modules/home-module/sub-modules/why-dx/components/keyFeaturesBlock";
 import { useTitle } from "react-use";
 import { useMediaQuery } from "usehooks-ts";
+import Hero from "app/modules/home-module/components/hero";
 
 export default function WhyDX() {
   useTitle("DX Dataxplorer - Why Dataxplorer?");
@@ -28,30 +29,24 @@ export default function WhyDX() {
           display: flex;
           flex-direction: column;
           justify-content: space-between;
-          min-height: 100vh;
+          margin-top: 50px;
+          min-height: calc(100vh - 50px);
         `}
       >
         <div>
-          <EmpowerBlock view="why-dx" />
+          <Hero />
           <div
             css={`
-              background-image: url(${Ellipses});
-              background-repeat: no-repeat;
-              background-position: ${isTablet ? "49% 58%" : "44% 4%"};
+              background-color: #f2f7fd;
             `}
           >
             <Container maxWidth="lg">
               <KeyFeaturesBlock />
               <div
                 css={`
-                  height: 50px;
-                `}
-              />
-              <div
-                css={`
-                  height: 129px;
+                  height: 120px;
                   @media (max-width: 1024px) {
-                    height: 39px;
+                    height: 72px;
                   }
                 `}
               />

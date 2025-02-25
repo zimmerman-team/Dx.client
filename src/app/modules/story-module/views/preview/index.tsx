@@ -2,7 +2,7 @@ import React from "react";
 import get from "lodash/get";
 import { useRecoilState } from "recoil";
 import Box from "@material-ui/core/Box";
-import { Link, useLocation, useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { useAuth0 } from "@auth0/auth0-react";
 import useResizeObserver from "use-resize-observer";
 import Container from "@material-ui/core/Container";
@@ -86,17 +86,20 @@ export function StoryPreviewView(
     (actions) => actions.stories.StoryGet.clear
   );
 
+  const loadStoryData = () => {
+    if (token) {
+      fetchStoryData({ token, getId: page });
+    } else if (!isAuthenticated) {
+      fetchStoryData({ nonAuthCall: true, getId: page });
+    }
+  };
   React.useEffect(() => {
     props.setAutoSave({ isAutoSaveEnabled: false });
 
     if (isLoading) {
       return;
     }
-    if (token) {
-      fetchStoryData({ token, getId: page });
-    } else if (!isAuthenticated) {
-      fetchStoryData({ nonAuthCall: true, getId: page });
-    }
+    loadStoryData();
 
     return () => {
       clearStoryData();
@@ -138,6 +141,7 @@ export function StoryPreviewView(
           asset="story"
           action="view"
           name={errorStoryName}
+          handleRetry={loadStoryData}
         />
       </>
     );
@@ -234,6 +238,7 @@ export function StoryPreviewView(
                 rowContentWidths={
                   rowFrame.contentWidths?.widths ?? rowFrame.contentWidths
                 }
+                rightPanelOpen={false}
               />
             );
           })}
