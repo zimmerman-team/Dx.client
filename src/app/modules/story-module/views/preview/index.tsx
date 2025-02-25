@@ -2,7 +2,7 @@ import React from "react";
 import get from "lodash/get";
 import { useRecoilState } from "recoil";
 import Box from "@material-ui/core/Box";
-import { useLocation, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { useAuth0 } from "@auth0/auth0-react";
 import useResizeObserver from "use-resize-observer";
 import Container from "@material-ui/core/Container";
@@ -232,6 +232,7 @@ export function StoryPreviewView(
                 rowContentWidths={
                   rowFrame.contentWidths?.widths ?? rowFrame.contentWidths
                 }
+                rightPanelOpen={false}
               />
             );
           })}

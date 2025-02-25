@@ -381,6 +381,7 @@ function StoryEditView(props: Readonly<StoryEditViewProps>) {
                       setPlugins={props.setPlugins}
                       onSave={props.onSave}
                       endStoryTour={handleEndStoryTour}
+                      rightPanelOpen={props.rightPanelOpen}
                     />
                   </div>
                 </ItemComponent>
