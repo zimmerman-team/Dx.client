@@ -76,33 +76,19 @@ export default function DownloadedView(props: {
       <Link
         to="/"
         css={`
-          height: 32px;
           display: flex;
           justify-content: center;
           align-items: center;
-          padding: 38px;
+          padding: 40px;
           text-decoration: none;
         `}
       >
-        <LogoIcon />
+        <LogoIcon width={224} height={24} />
       </Link>
       <StoryPreviewView
         setIsPreviewView={props.setIsPreviewView}
         setAutoSave={props.setAutoSave}
       />
-      <Link
-        to="/"
-        css={`
-          height: 32px;
-          display: flex;
-          justify-content: flex-end;
-          align-items: center;
-          padding: 38px;
-          text-decoration: none;
-        `}
-      >
-        <LogoIcon />
-      </Link>
     </div>
   );
 }

@@ -2,7 +2,7 @@ import React from "react";
 import get from "lodash/get";
 import { useRecoilState } from "recoil";
 import Box from "@material-ui/core/Box";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { useAuth0 } from "@auth0/auth0-react";
 import useResizeObserver from "use-resize-observer";
 import Container from "@material-ui/core/Container";
@@ -18,6 +18,8 @@ import { linkDecorator } from "app/modules/common/RichEditor/decorators";
 import { useTitle } from "react-use";
 import StoryUsePanel from "app/modules/story-module/components/use-story-panel";
 import { PageLoader } from "app/modules/common/page-loader";
+import { ReactComponent as LogoIcon } from "app/modules/home-module/components/Footer/asset/logo.svg";
+import { Typography } from "@material-ui/core";
 
 export function StoryPreviewView(
   props: Readonly<{
@@ -240,7 +242,43 @@ export function StoryPreviewView(
               />
             );
           })}
-        <Box height={16} />
+
+        {window.location.pathname.includes("downloaded-view") ? (
+          <Box
+            sx={{
+              padding: "40px 24px",
+            }}
+          >
+            <Link
+              to="/"
+              css={`
+                display: block;
+                text-decoration: none;
+                line-height: normal;
+              `}
+            >
+              <LogoIcon width={224} height={24} />
+            </Link>
+            <div
+              css={`
+                margin-top: 8px;
+                a,
+                h5 {
+                  font-family: "GothamNarrow-Bold", sans-serif;
+                  font-size: 14px;
+                  color: #70777e;
+                }
+              `}
+            >
+              <Typography variant="h5">
+                Story Link:{" "}
+                <Link to={`/story/${page}`} target="_blank">
+                  {window.location.origin}/story/{page}
+                </Link>
+              </Typography>
+            </div>
+          </Box>
+        ) : null}
       </Container>
       {window.location.search.includes("?fromLanding=true") &&
       !isAuthenticated ? (
