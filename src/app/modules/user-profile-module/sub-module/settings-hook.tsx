@@ -1,12 +1,8 @@
 import { useAuth0 } from "@auth0/auth0-react";
-import DeleteAccountDialog from "app/components/Dialogs/deleteAccountDialog";
-import { PrimaryButton } from "app/components/Styled/button";
-import { PageLoader } from "app/modules/common/page-loader";
 import { APPLICATION_JSON } from "app/state/api";
 import { useStoreActions } from "app/state/store/hooks";
 import axios from "axios";
 import React from "react";
-import { useTitle } from "react-use";
 
 export default function useProfileSettings() {
   const [modalDisplay, setModalDisplay] = React.useState<boolean>(false);

@@ -194,6 +194,23 @@ export function ChartBuilderPreviewTheme(props: ChartBuilderPreviewThemeProps) {
                 }
               `}
             >
+              {" "}
+              <p
+                css={`
+                  font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
+                  font-size: 24px;
+                  color: #231d2c;
+                  margin: 0;
+                  line-height: normal;
+                  margin-bottom: 16px;
+                  white-space: nowrap;
+                  text-overflow: ellipsis;
+                  overflow: hidden;
+                  max-width: 90%;
+                `}
+              >
+                {props?.loadedChart?.name}
+              </p>
               <div
                 ref={props.containerRef}
                 css={`

@@ -214,6 +214,10 @@ export default function AboutModule() {
         justify-content: space-between;
         margin-top: 50px;
         min-height: calc(100vh - 50px);
+        @media (max-width: 880px) {
+          margin-top: 66px;
+          min-height: calc(100vh - 66px);
+        }
       `}
     >
       <section
@@ -233,7 +237,7 @@ export default function AboutModule() {
           css={`
             padding: 77px 0;
             @media (max-width: 600px) {
-              padding: 48px 0;
+              padding: 64px 0;
             }
 
             background: url(${HeroEllipses}),
@@ -260,13 +264,28 @@ export default function AboutModule() {
         >
           {" "}
           <Container maxWidth="lg">
+            <h1
+              css={`
+                font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
+                font-size: 48px;
+                font-style: normal;
+                font-weight: 400;
+                line-height: 130%;
+                margin: 0;
+                @media (min-width: 600px) {
+                  display: none;
+                }
+              `}
+            >
+              Our Story
+            </h1>
             <div
               css={`
                 display: flex;
                 justify-content: space-between;
                 align-items: center;
-                @media (max-width: 805px) {
-                  flex-direction: column;
+                @media (max-width: 600px) {
+                  flex-direction: column-reverse;
                 }
               `}
             >
@@ -298,6 +317,9 @@ export default function AboutModule() {
                     font-weight: 400;
                     line-height: 130%;
                     margin: 0;
+                    @media (max-width: 600px) {
+                      display: none;
+                    }
                   `}
                 >
                   Our Story
@@ -307,15 +329,18 @@ export default function AboutModule() {
                   css={`
                     margin: 0;
                     margin-top: 37.38px;
-                    font-size: 20px;
+                    font-size: 24px;
                     font-style: normal;
-                    font-weight: 350;
+                    font-weight: 325;
                     line-height: normal;
-                    font-family: "GothamNarrow-Medium", "Helvetica Neue",
+                    font-family: "GothamNarrow-Book", "Helvetica Neue",
                       sans-serif;
                     @media (max-width: 1024px) {
                       font-family: "GothamNarrow-Book", "Helvetica Neue",
                         sans-serif;
+                    }
+                    @media (max-width: 500px) {
+                      margin-top: 0px;
                     }
                   `}
                 >
@@ -345,11 +370,6 @@ export default function AboutModule() {
                         column-gap: 20px;
                         a {
                           text-decoration: none;
-                          :nth-of-type(1) {
-                            @media (max-width: 767px) {
-                              display: none;
-                            }
-                          }
                         }
                         @media (max-width: 425px) {
                           flex-direction: column;
@@ -362,7 +382,14 @@ export default function AboutModule() {
                       <AddAssetDropdown />
 
                       <Link to="/" data-cy="empower-block-explore-stories-link">
-                        <PrimaryButton size="big" bg="light" type="button">
+                        <PrimaryButton
+                          size="big"
+                          bg="light"
+                          type="button"
+                          css={`
+                            height: 48px;
+                          `}
+                        >
                           Explore the Dashboard
                         </PrimaryButton>
                       </Link>
@@ -434,7 +461,7 @@ export default function AboutModule() {
                     }
                   }
                   @media (max-width: 500px) {
-                    margin-top: 40px;
+                    margin-top: 0;
                   }
                 `}
               >
@@ -457,12 +484,13 @@ export default function AboutModule() {
                 column-gap: 150px;
                 justify-content: center;
                 @media (max-width: 1110px) {
-                  column-gap: 88px;
+                  column-gap: 56px;
                 }
-                @media (max-width: 905px) {
+                @media (max-width: 600px) {
                   column-gap: unset;
                   flex-direction: column;
                   gap: 40px;
+                  padding: 0 16px;
                 }
               `}
             >
@@ -497,6 +525,9 @@ export default function AboutModule() {
                       margin: 0;
                       color: #fff;
                       margin-left: 16.3%;
+                      @media (max-width: 600px) {
+                        font-size: 32px;
+                      }
                     `}
                   >
                     {feature.title}
@@ -512,6 +543,12 @@ export default function AboutModule() {
                       margin: 0;
                       color: #fff;
                       margin-left: 16.3%;
+                      @media (max-width: 960px) {
+                        font-size: 18px;
+                      }
+                      @media (max-width: 600px) {
+                        font-size: 20px;
+                      }
                     `}
                   >
                     {feature.subtitle}
@@ -524,6 +561,12 @@ export default function AboutModule() {
                       white-space: pre-line;
                       width: 66%;
                       margin: 16px auto 0 auto;
+                      @media (max-width: 960px) {
+                        font-size: 14px;
+                      }
+                      @media (max-width: 600px) {
+                        font-size: 16px;
+                      }
                     `}
                   >
                     {feature.text}
@@ -533,7 +576,13 @@ export default function AboutModule() {
             </div>
           </Container>
         </div>
-        <Box height={77} />
+        <Box
+          height={{
+            xs: 32,
+            md: 40,
+            lg: 120,
+          }}
+        />
 
         <Container maxWidth="lg">
           <h2
@@ -546,6 +595,9 @@ export default function AboutModule() {
               margin: 0;
               text-align: center;
               color: #231d2c;
+              @media (max-width: 600px) {
+                font-size: 24px;
+              }
             `}
           >
             Meet Our Team
@@ -553,7 +605,7 @@ export default function AboutModule() {
           <p
             css={`
               text-align: center;
-              font-size: 20px;
+              font-size: 18px;
               font-family: "GothamNarrow-Book", "Helvetica Neue", sans-serif;
               font-style: normal;
               font-weight: 325;
@@ -561,6 +613,12 @@ export default function AboutModule() {
               margin: 0;
               margin-top: 11px;
               color: #231d2c;
+              @media (max-width: 960px) {
+                font-size: 24px;
+              }
+              @media (max-width: 600px) {
+                font-size: 18px;
+              }
             `}
           >
             Zimmerman B.V. is a data information technology company based in
@@ -568,7 +626,13 @@ export default function AboutModule() {
             <br /> in making data meaningful through visualisation tooling and
             dashboards.
           </p>
-          <Box height={77} />
+          <Box
+            height={{
+              xs: 56,
+              md: 40,
+              lg: 75,
+            }}
+          />
           <div
             css={`
               @media (min-width: 501px) {
@@ -621,9 +685,10 @@ export default function AboutModule() {
                 }
               }
               @media (max-width: 830px) {
-                grid-template-columns: repeat(2, minmax(0, 1fr));
+                grid-template-columns: repeat(3, minmax(0, 1fr));
                 row-gap: 46px;
                 justify-items: center;
+                column-gap: 35px;
                 img {
                   width: 100%;
                   height: 70%;
@@ -658,6 +723,10 @@ export default function AboutModule() {
                     line-height: normal;
                     color: #504e4e;
                     white-space: pre-line;
+                    @media (max-width: 960px) {
+                      font-size: 18px;
+                      margin-top: 24px;
+                    }
                   `}
                 >
                   {member.name}
@@ -672,6 +741,9 @@ export default function AboutModule() {
                     font-family: "GothamNarrow-Book", "Helvetica Neue",
                       sans-serif;
                     color: #231d2c;
+                    @media (max-width: 960px) {
+                      font-size: 12px;
+                    }
                   `}
                 >
                   {member.role}
@@ -727,9 +799,6 @@ export default function AboutModule() {
           />
           <div css={subParagraphcss}>
             <div>
-              <h3 id="ab-mobile">
-                <b>Mission</b>
-              </h3>
               <div css={``}>
                 <MissionImg
                   css={`
@@ -747,7 +816,7 @@ export default function AboutModule() {
                 </h3>
                 <div
                   css={`
-                    height: 39.5px;
+                    height: 24px;
                     @media (max-width: 1024px) {
                       display: none;
                     }
@@ -787,7 +856,7 @@ export default function AboutModule() {
                 <h3 id="ab-desktop">
                   <b>Dataxplorer</b>
                 </h3>
-                <Box height={26.9} />
+                <Box height={24} />
                 <p>
                   Many organizations struggle to convey the data they collect,
                   analyze, and share. We specialize in turning data into a
@@ -812,9 +881,6 @@ export default function AboutModule() {
                   `}
                 />
               </div>
-              <h3 id="ab-mobile">
-                <b>Dataxplorer</b>
-              </h3>
             </div>
           </div>
         </Container>

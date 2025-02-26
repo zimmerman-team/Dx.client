@@ -2,6 +2,12 @@ import { css } from "styled-components/macro";
 
 export const subParagraphcss = css`
   color: #231d2c;
+  @media (max-width: 1024px) {
+    padding: 0 48px;
+  }
+  @media (max-width: 500px) {
+    padding: 0;
+  }
   > div:nth-of-type(1) {
     display: flex;
     column-gap: 97px;
@@ -14,51 +20,39 @@ export const subParagraphcss = css`
       row-gap: 40px;
     }
   }
-  #ab-mobile {
-    margin: 0;
-    font-size: 36px;
-    font-style: normal;
-    font-weight: 350;
-    line-height: normal;
-    font-family: "GothamNarrow-Medium", "Helvetica Neue", sans-serif;
-    display: none;
-    @media (max-width: 1024px) {
-      display: block;
-      margin: 37px;
-    }
-    @media (max-width: 500px) {
-      display: block;
-      margin: 0px;
-      margin-bottom: 32px;
-    }
-  }
+
   #ab-desktop {
     margin: 0;
-    font-size: 36px;
+    font-size: 40px;
     font-style: normal;
-    font-weight: 350;
+    font-weight: 400;
     line-height: normal;
-    font-family: "GothamNarrow-Medium", sans-serif;
+    font-family: "GothamNarrow-Bold", sans-serif;
     display: block;
     @media (max-width: 1024px) {
-      display: none;
+      font-size: 36px;
+      text-align: left;
+    }
+    @media (max-width: 500px) {
+      font-size: 18px;
     }
   }
   p {
     margin: 0;
     font-family: "GothamNarrow-Medium", "Helvetica Neue", sans-serif;
-    font-size: 20px;
+    font-size: 24px;
     font-style: normal;
     font-weight: 350;
     line-height: 30px; /* 150% */
     letter-spacing: 0.5px;
     @media (max-width: 1024px) {
+      text-align: left;
       font-size: 24px;
       font-family: "GothamNarrow-Book", sans-serif;
       line-height: 28.5px; /* 150% */
     }
     @media (max-width: 500px) {
-      font-size: 14px;
+      font-size: 12px;
       font-family: "GothamNarrow-Book", sans-serif;
       line-height: 16.8px; /* 150% */
     }
