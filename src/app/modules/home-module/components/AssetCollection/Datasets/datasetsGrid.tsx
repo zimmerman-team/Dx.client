@@ -74,6 +74,7 @@ export default function DatasetsGrid(props: Readonly<Props>) {
   const datasetLoadSuccess = useStoreState(
     (state) => state.dataThemes.DatasetGetList.success
   );
+
   const getFilterString = (fromZeroOffset?: boolean) => {
     const value =
       props.searchStr?.length > 0
@@ -222,7 +223,7 @@ export default function DatasetsGrid(props: Readonly<Props>) {
 
   React.useEffect(() => {
     reloadData();
-  }, [props.sortBy, token, props.categories]);
+  }, [props.sortBy, token, props.categories, props.userOnly]);
 
   const [,] = useDebounce(
     () => {

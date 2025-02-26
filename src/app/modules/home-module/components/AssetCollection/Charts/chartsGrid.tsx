@@ -27,6 +27,7 @@ import { getLimit } from "app/modules/home-module/components/AssetCollection/Dat
 interface Props {
   sortBy: string;
   searchStr: string;
+  userOnly?: boolean;
   view: "grid" | "table";
   addCard?: boolean;
 }
@@ -82,15 +83,20 @@ export default function ChartsGrid(props: Props) {
       props.searchStr?.length > 0
         ? `"where":{"name":{"like":"${props.searchStr}.*","options":"i"}},`
         : "";
-    return `filter={${value}"order":"${props.sortBy} ${
-      props.sortBy === "name" ? "asc" : "desc"
-    }","limit":${limit},"offset":${fromZeroOffset ? 0 : offset}}`;
+
+    return `${props.userOnly ? "userOnly=true&" : ""}filter={${value}"order":"${
+      props.sortBy
+    } ${props.sortBy === "name" ? "asc" : "desc"}","limit":${limit},"offset":${
+      fromZeroOffset ? 0 : offset
+    }}`;
   };
 
   const getWhereString = () => {
-    return props.searchStr?.length > 0
-      ? `where={"name":{"like":"${props.searchStr}.*","options":"i"}}`
-      : "";
+    const value =
+      props.searchStr?.length > 0
+        ? `where={"name":{"like":"${props.searchStr}.*","options":"i"}}`
+        : "";
+    return `${props.userOnly ? "userOnly=true&" : ""}${value}`;
   };
 
   const loadData = (fromZeroOffset?: boolean) => {
@@ -227,7 +233,7 @@ export default function ChartsGrid(props: Props) {
 
   React.useEffect(() => {
     reloadData();
-  }, [props.sortBy, token]);
+  }, [props.sortBy, token, props.userOnly]);
 
   const [,] = useDebounce(
     () => {
