@@ -5,6 +5,7 @@ import { useAuth0 } from "@auth0/auth0-react";
 import { IconButton, useMediaQuery } from "@material-ui/core";
 import { ReactComponent as MenuIcon } from "app/modules/home-module/assets/menu.svg";
 import { ReactComponent as ClockIcon } from "app/modules/home-module/assets/clock-icon.svg";
+import { ReactComponent as OwnerIcon } from "app/modules/home-module/assets/owner-icon.svg";
 import MenuItems from "app/modules/home-module/components/AssetCollection/Datasets/menuItems";
 import AIIcon from "app/assets/icons/AIIcon";
 
@@ -150,22 +151,6 @@ export default function GridItem(props: Props) {
               height: 10px;
             `}
           />
-          <div
-            css={`
-              display: flex;
-              font-size: 12px;
-              justify-content: flex-end;
-              align-items: center;
-              gap: 3px;
-              > p {
-                margin: 0;
-                font-size: 8.814px;
-              }
-            `}
-          >
-            <ClockIcon />
-            <p>{moment(props.date).format("MMMM YYYY")}</p>
-          </div>
         </div>
       </Link>
       {menuOptionsDisplay && (
@@ -183,6 +168,40 @@ export default function GridItem(props: Props) {
           type="chart"
         />
       )}
+
+      <div
+        css={`
+          position: absolute;
+          bottom: 12px;
+          right: 16px;
+          p {
+            margin: 0;
+            font-size: 10px;
+            line-height: normal;
+          }
+        `}
+      >
+        <div
+          css={`
+            display: flex;
+            align-items: center;
+            gap: 3px;
+          `}
+        >
+          <OwnerIcon />
+          <p>Owner</p>
+        </div>
+        <div
+          css={`
+            display: flex;
+            align-items: center;
+            gap: 3px;
+          `}
+        >
+          <ClockIcon width={12} height={12} />
+          <p>{moment(props.date).format("MMMM YYYY")}</p>
+        </div>
+      </div>
     </div>
   );
 }

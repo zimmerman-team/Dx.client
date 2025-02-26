@@ -5,6 +5,7 @@ import { useAuth0 } from "@auth0/auth0-react";
 import IconButton from "@material-ui/core/IconButton";
 import { ReactComponent as MenuIcon } from "app/modules/home-module/assets/menu.svg";
 import { ReactComponent as ClockIcon } from "app/modules/home-module/assets/clock-icon.svg";
+import { ReactComponent as OwnerIcon } from "app/modules/home-module/assets/owner-icon.svg";
 import { EditorState } from "draft-js";
 import { useMediaQuery } from "@material-ui/core";
 import MenuItems from "app/modules/home-module/components/AssetCollection/Datasets/menuItems";
@@ -52,7 +53,6 @@ export default function GridItem(props: Readonly<Props>) {
           display: flex;
           color: #262c34;
           background: #fff;
-          position: relative;
           text-decoration: none;
           flex-direction: column;
           border: 1px solid #fff;
@@ -160,25 +160,6 @@ export default function GridItem(props: Readonly<Props>) {
         >
           {props.viz}
         </div>
-        <div
-          css={`
-            position: absolute;
-            bottom: 4px;
-            right: 3%;
-            display: flex;
-            font-size: 12px;
-            justify-content: flex-end;
-            align-items: center;
-            gap: 3px;
-            > p {
-              margin: 0;
-              font-size: 8.814px;
-            }
-          `}
-        >
-          <ClockIcon />
-          <p>{moment(props.date).format("MMMM YYYY")}</p>
-        </div>
       </Link>
       {menuOptionsDisplay && (
         <MenuItems
@@ -191,6 +172,39 @@ export default function GridItem(props: Readonly<Props>) {
           type="story"
         />
       )}
+      <div
+        css={`
+          position: absolute;
+          bottom: 12px;
+          right: 16px;
+          p {
+            margin: 0;
+            font-size: 10px;
+            line-height: normal;
+          }
+        `}
+      >
+        <div
+          css={`
+            display: flex;
+            align-items: center;
+            gap: 3px;
+          `}
+        >
+          <OwnerIcon />
+          <p>Owner</p>
+        </div>
+        <div
+          css={`
+            display: flex;
+            align-items: center;
+            gap: 3px;
+          `}
+        >
+          <ClockIcon width={12} height={12} />
+          <p>{moment(props.date).format("MMMM YYYY")}</p>
+        </div>
+      </div>
     </div>
   );
 }

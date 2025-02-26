@@ -579,6 +579,10 @@ const Box = (props: {
             background: #fff;
             overflow: hidden;
             position: relative;
+            @media (max-width: 600px) {
+              border-radius: 10px;
+              box-shadow: 0px 0px 8px 0px rgba(0, 0, 0, 0.1);
+            }
 
             div {
               ${viewOnlyMode && cursorDefault}
@@ -660,6 +664,10 @@ const Box = (props: {
               position: relative;
               padding: ${props.rowType === "oneByFive" ? "0" : "24px"};
               background: #fff;
+              @media (max-width: 600px) {
+                border-radius: 10px;
+                box-shadow: 0px 0px 8px 0px rgba(0, 0, 0, 0.1);
+              }
             `}
             onMouseEnter={() => setDisplayBoxIcons(true)}
             onMouseLeave={() => setDisplayBoxIcons(false)}
@@ -758,7 +766,10 @@ const Box = (props: {
             background: #fff;
             overflow: hidden;
             position: relative;
-
+            @media (max-width: 600px) {
+              border-radius: 10px;
+              box-shadow: 0px 0px 8px 0px rgba(0, 0, 0, 0.1);
+            }
             div {
               ${viewOnlyMode && cursorDefault}
             }
@@ -839,6 +850,11 @@ const Box = (props: {
             background: #fff;
             overflow: hidden;
             position: relative;
+
+            @media (max-width: 600px) {
+              border-radius: 10px;
+              box-shadow: 0px 0px 8px 0px rgba(0, 0, 0, 0.1);
+            }
 
             div {
               ${viewOnlyMode && cursorDefault}

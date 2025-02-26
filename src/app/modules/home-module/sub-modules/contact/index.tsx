@@ -329,7 +329,7 @@ export default function ContactModule() {
               }
             `}
           />
-          <div
+          {/* <div
             css={`
               width: 100%;
               display: flex;
@@ -382,7 +382,7 @@ export default function ContactModule() {
                 setIsSubscriptionFailed={setIsSubscriptionFailed}
               />
             </div>
-          </div>
+          </div> */}
         </Container>
       </div>
       <HomeFooter />

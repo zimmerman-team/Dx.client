@@ -272,7 +272,7 @@ export default function HeaderBlock(props: Props) {
               width: 60%;
               overflow-y: hidden;
               color: ${props.headerDetails.titleColor} !important;
-              font-size: 29px;
+              font-size: 24px;
               min-width: 600px;
               line-height: 16.8px;
               background: inherit;

@@ -33,7 +33,7 @@ export const useStyles = makeStyles(() =>
         "0px 14.8787px 22.318px rgba(0, 0, 0, 0.05), 0px 4.4636px 7.43933px rgba(0, 0, 0, 0.05), 0px 0.743933px 7.43933px rgba(0, 0, 0, 0.05)",
       "@media (max-width: 577px)": {
         width: "90%",
-        padding: "0 48px",
+        padding: "0 48px 32px 48px",
       },
     },
   })

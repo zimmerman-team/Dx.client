@@ -30,6 +30,15 @@ const ErrorFallback = ({
         justify-content: space-between;
       `}
     >
+      <BgImg
+        css={`
+          position: absolute;
+          top: 80px;
+          z-index: -1;
+          left: 0;
+          width: 100%;
+        `}
+      />
       <Container maxWidth="lg">
         <div
           css={`
@@ -42,15 +51,6 @@ const ErrorFallback = ({
             position: relative;
           `}
         >
-          <BgImg
-            css={`
-              position: absolute;
-              top: 80px;
-              z-index: -1;
-              left: 0;
-              width: 100%;
-            `}
-          />
           <div>
             <InfoIcon width={53} height={53} />
           </div>

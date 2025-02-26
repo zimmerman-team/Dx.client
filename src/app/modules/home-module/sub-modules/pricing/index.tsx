@@ -364,35 +364,49 @@ export default function PricingModule() {
               ))}
             </div>
             <Features />
-            <Box height={100} />
-            <div>
-              <h2
-                css={`
-                  font-size: 18px;
-                  font-style: normal;
-                  font-weight: 400;
-                  line-height: 160%;
-                  font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
-                  color: #262c34;
-                  text-align: center;
-                `}
-              >
-                Trusted by
-              </h2>
-              <div
-                css={`
-                  margin-top: 24px;
-                  display: flex;
-                  justify-content: center;
-                  align-items: center;
-                  column-gap: 200px;
-                `}
-              >
-                <MFALogo /> <TGFLogo /> <IATILogo />
-              </div>
-            </div>
           </>
         )}
+
+        <Box
+          height={{
+            xs: 32,
+            lg: 100,
+          }}
+        />
+        <div>
+          <h2
+            css={`
+              font-size: 18px;
+              font-style: normal;
+              font-weight: 400;
+              line-height: 160%;
+              font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
+              color: #262c34;
+              text-align: center;
+              margin: 0;
+            `}
+          >
+            Trusted by
+          </h2>
+          <div
+            css={`
+              margin-top: 24px;
+              display: flex;
+              justify-content: center;
+              align-items: center;
+              column-gap: 200px;
+
+              @media (max-width: 1024px) {
+                column-gap: 85px;
+              }
+              @media (max-width: 600px) {
+                column-gap: 42.5px;
+              }
+            `}
+          >
+            <MFALogo /> <TGFLogo /> <IATILogo />
+          </div>
+        </div>
 
         <Box height={100} />
       </Container>
