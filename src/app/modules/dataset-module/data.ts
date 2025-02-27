@@ -9,4 +9,5 @@ export interface DatasetListItemAPIModel {
   owner: string;
   source: string;
   sourceUrl: string;
+  ownerName?: string;
 }

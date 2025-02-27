@@ -20,6 +20,7 @@ interface Props {
   handleDuplicate?: (id: string) => void;
   owner: string;
   isAIAssisted: boolean;
+  ownerName: string;
 }
 
 export default function GridItem(props: Props) {
@@ -189,7 +190,7 @@ export default function GridItem(props: Props) {
           `}
         >
           <OwnerIcon />
-          <p>Owner</p>
+          <p>{props.ownerName.split(" ")?.[0]}</p>
         </div>
         <div
           css={`

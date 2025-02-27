@@ -259,6 +259,7 @@ export default function ChartsGrid(props: Props) {
                 handleDuplicate={() => handleDuplicate(c.id)}
                 owner={c.owner}
                 isAIAssisted={c.isAIAssisted}
+                ownerName={c.ownerName}
               />
               <div
                 css={`

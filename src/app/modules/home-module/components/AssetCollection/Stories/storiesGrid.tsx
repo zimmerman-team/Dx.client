@@ -238,6 +238,7 @@ export default function StoriesGrid(props: Readonly<Props>) {
                     : EditorState.createEmpty()
                 }
                 owner={data.owner}
+                ownerName={data.ownerName ?? ""}
               />
               <Box height={16} />
             </Grid>
