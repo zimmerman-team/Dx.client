@@ -90,8 +90,11 @@ export default function Processing(props: ProcessingMetaDataProps) {
             display: flex;
             justify-content: center;
             align-items: center;
-            height: calc(100vh - 98px);
+            height: calc(100vh - 140px - 72px);
             flex-direction: column;
+            @media (max-width: 881px) {
+              height: calc(100vh - 156px - 72px);
+            }
           `}
         >
           <p
@@ -99,7 +102,8 @@ export default function Processing(props: ProcessingMetaDataProps) {
               font-size: 18px;
               color: #231d2c;
               text-align: center;
-              margin-bottom: 45px;
+              margin: 0;
+              margin-bottom: 40px;
             `}
             dangerouslySetInnerHTML={{
               __html: props.processingMessage || "Data is being processed...",
@@ -108,7 +112,7 @@ export default function Processing(props: ProcessingMetaDataProps) {
 
           <div
             css={`
-              width: 399.71px;
+              width: 400px;
             `}
           >
             <p
@@ -125,14 +129,16 @@ export default function Processing(props: ProcessingMetaDataProps) {
               css={`
                 display: flex;
                 flex-wrap: wrap;
-                width: 399.71px;
+                width: 400px;
                 justify-content: space-between;
                 align-items: center;
                 p {
                   font-family: "GothamNarrow-Book", "Helvetica Neue", sans-serif;
                   font-size: 12px;
                   color: #adb5bd;
-                  margin-top: 0;
+                  margin: 0;
+                  line-height: normal;
+                  margin-top: 6.42px;
                 }
               `}
             >
@@ -140,7 +146,7 @@ export default function Processing(props: ProcessingMetaDataProps) {
                 css={`
                   width: 100%;
                   height: 6.42px;
-                  border-radius: 3px;
+
                   background-color: #dfe3e5;
 
                   border-radius: 3.211px;
@@ -151,6 +157,7 @@ export default function Processing(props: ProcessingMetaDataProps) {
                   css={`
                     width: ${props.percentageLoaded}%;
                     height: 100%;
+                    border-radius: 3px;
                     background: linear-gradient(
                       90deg,
                       #6466f1 7.48%,

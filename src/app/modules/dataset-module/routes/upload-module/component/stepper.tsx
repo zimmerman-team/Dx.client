@@ -81,14 +81,15 @@ export default function Stepper(
           css={`
             position: absolute;
             margin: 0;
-            left: 0;
+            left: -48px;
+            width: 128px;
+            text-align: center;
             font-size: 14px;
             font-family: ${props.index <= props.activeStep
                 ? "GothamNarrow-Bold"
                 : "GothamNarrow-Book"},
               "Helvetica Neue", sans-serif;
             color: ${props.index <= props.activeStep ? "#6061E5" : "#868E96"};
-            width: max-content;
           `}
         >
           {props.tab}

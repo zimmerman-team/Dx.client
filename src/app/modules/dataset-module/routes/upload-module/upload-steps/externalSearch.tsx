@@ -15,6 +15,7 @@ import ExternalSearchTable from "app/modules/dataset-module/routes/upload-module
 import { useCheckUserPlan } from "app/hooks/useCheckUserPlan";
 import { PrimaryButton } from "app/components/Styled/button";
 import { SearchIcon } from "app/assets/icons/Search";
+import { ChevronRight } from "@material-ui/icons";
 
 export interface IExternalDataset {
   name: string;
@@ -190,6 +191,9 @@ export default function ExternalSearch(props: {
         css={`
           display: flex;
           gap: 24px;
+          @media (max-width: 881px) {
+            margin-top: 40px;
+          }
         `}
       >
         <div
@@ -299,6 +303,7 @@ export default function ExternalSearch(props: {
                       url={dataset.url}
                       handleDownload={() => props.handleDownload(dataset)}
                       dataset={dataset}
+                      searchValue={props.searchValue}
                     />
                     <Box height={16} />
                   </Grid>
@@ -313,7 +318,8 @@ export default function ExternalSearch(props: {
                   { key: "name", label: "Title" },
                   { key: "description", label: "Description" },
                   { key: "datePublished", label: "Date" },
-                  { key: "source", label: "Source", icon: <SaveAltIcon /> },
+                  { key: "source", label: "Source" },
+                  { key: "download", label: "", icon: <ChevronRight /> },
                 ],
                 data: datasets,
               }}

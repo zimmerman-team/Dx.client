@@ -489,6 +489,10 @@ function DatasetUploadSteps(props: Props) {
           display: flex;
           flex-direction: column;
           justify-content: space-between;
+          @media (max-width: 881px) {
+            min-height: calc(100vh - 66px);
+            margin-top: 66px;
+          }
         `}
       >
         <Container maxWidth="lg">
