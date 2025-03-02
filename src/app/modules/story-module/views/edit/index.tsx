@@ -308,7 +308,7 @@ function StoryEditView(props: Readonly<StoryEditViewProps>) {
     <div onDragOver={handleDragOverScroll}>
       <div
         css={`
-          height: 55px;
+          height: 105px;
           transition: all cubic-bezier(0.4, 0, 0.2, 1) 0.2s;
         `}
       />

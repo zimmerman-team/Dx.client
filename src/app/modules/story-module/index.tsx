@@ -438,31 +438,42 @@ export default function StoryModule() {
         <Route exact path="/story/:page/edit">
           <div
             css={`
-              height: ${canEditDeleteStory && !storyError401 ? "98px" : "0px"};
+              height: ${canEditDeleteStory && !storyError401 ? "50px" : "0px"};
             `}
           />
-          <StoryEditView
-            rightPanelOpen={rightPanelOpen}
-            handleRightPanelOpen={() => setRightPanelOpen(true)}
-            autoSave={autoSave.isAutoSaveEnabled}
-            storyType={storyType}
-            setHasChangesBeenMade={setHasChangesBeenMade}
-            setStoryName={setStoryName}
-            storyName={storyName}
-            framesArray={framesArray}
-            headerDetails={headerDetails}
-            updateFramesArray={updateFramesArray}
-            setHeaderDetails={setHeaderDetails}
-            stopInitializeFramesWidth={stopInitializeFramesWidth}
-            setStopInitializeFramesWidth={setStopInitializeFramesWidth}
-            view={view}
-            hasStoryNameFocused={hasStoryNameFocused}
-            setHasStoryNameFocused={setHasStoryNameFocused}
-            setPlugins={setPlugins}
-            setAutoSave={setAutoSave}
-            isSaveEnabled={isSaveEnabled}
-            onSave={onSave}
-          />
+          <section
+            id="story-edit-view-section"
+            css={`
+              height: ${canEditDeleteStory && !storyError401
+                ? "calc(100vh - 50px)"
+                : "100vh"};
+              overflow-y: auto;
+              overflow-x: hidden;
+            `}
+          >
+            <StoryEditView
+              rightPanelOpen={rightPanelOpen}
+              handleRightPanelOpen={() => setRightPanelOpen(true)}
+              autoSave={autoSave.isAutoSaveEnabled}
+              storyType={storyType}
+              setHasChangesBeenMade={setHasChangesBeenMade}
+              setStoryName={setStoryName}
+              storyName={storyName}
+              framesArray={framesArray}
+              headerDetails={headerDetails}
+              updateFramesArray={updateFramesArray}
+              setHeaderDetails={setHeaderDetails}
+              stopInitializeFramesWidth={stopInitializeFramesWidth}
+              setStopInitializeFramesWidth={setStopInitializeFramesWidth}
+              view={view}
+              hasStoryNameFocused={hasStoryNameFocused}
+              setHasStoryNameFocused={setHasStoryNameFocused}
+              setPlugins={setPlugins}
+              setAutoSave={setAutoSave}
+              isSaveEnabled={isSaveEnabled}
+              onSave={onSave}
+            />
+          </section>
         </Route>
         <Route exact path="/story/:page">
           <div

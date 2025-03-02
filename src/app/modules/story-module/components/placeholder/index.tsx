@@ -110,8 +110,6 @@ const PlaceHolder = (props: PlaceholderProps) => {
   return (
     <div
       data-cy={`story-row-placeholder`}
-      data-handler-id={handlerId}
-      ref={drop}
       css={`
         width: 100%;
         height: 10px;
@@ -119,8 +117,25 @@ const PlaceHolder = (props: PlaceholderProps) => {
         background-color: ${placeholderActive() ? "#6061E5" : "#262c34"};
         opacity: ${isDroppable() ? 1 : 0.5};
         margin-bottom: 10px;
+        position: relative;
+        z-index: 1;
       `}
-    />
+    >
+      <div // Eureka!
+        ref={drop}
+        data-handler-id={handlerId}
+        css={`
+          position: absolute;
+          width: 100%;
+          left: 0;
+          height: 150px;
+          top: -70px;
+        `}
+        onMouseOver={() => {
+          console.log("onMouseOver");
+        }}
+      ></div>
+    </div>
   );
 };
 
