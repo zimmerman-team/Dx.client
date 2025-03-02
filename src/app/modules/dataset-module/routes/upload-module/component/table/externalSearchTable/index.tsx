@@ -97,31 +97,46 @@ export default function ExternalSearchTable(props: {
               data-cy={`table-row-${data.type}`}
             >
               {props.tableData.columns.map((val) => (
-                <TableCell key={val.key}>
+                <TableCell
+                  key={val.key}
+                  style={{
+                    padding: "10px 16px",
+                  }}
+                >
                   <div
                     css={`
                       display: flex;
                       align-items: center;
                       justify-content: space-between;
                       width: 100%;
+                      justify-content: ${data[val.key]
+                        ? "flex-start"
+                        : "center"};
                     `}
                   >
-                    <p
-                      title={data[val.key] as string}
-                      css={`
-                        margin: 0;
-                        overflow: hidden;
-                        max-width: 99%;
-                        white-space: nowrap;
-                        text-overflow: ellipsis;
-                        min-width: ${val.key === "id" ? "30px" : "auto"};
-                        text-align: ${val.key === "id" ? "center" : "left"};
-                      `}
-                    >
-                      {isValidDate(data[val.key])
-                        ? moment(data[val.key]).format("MMMM YYYY")
-                        : data[val.key] ?? ""}
-                    </p>
+                    {data[val.key] ? (
+                      <p
+                        title={data[val.key] as string}
+                        css={`
+                          margin: 0;
+                          overflow: hidden;
+                          max-width: 99%;
+                          white-space: nowrap;
+                          text-overflow: ellipsis;
+                          font-size: 12px;
+                          min-width: ${val.key === "id" ? "30px" : "auto"};
+                          text-align: ${val.key === "id" ? "center" : "left"};
+                          line-height: normal;
+                        `}
+                      >
+                        {isValidDate(data[val.key])
+                          ? moment(data[val.key]).format("MMMM YYYY")
+                          : data[val.key] ?? ""}
+                      </p>
+                    ) : (
+                      ""
+                    )}
+
                     {val.icon}
                   </div>
                 </TableCell>
