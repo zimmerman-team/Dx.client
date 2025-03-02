@@ -267,17 +267,6 @@ export default function DatasetsGrid(props: Readonly<Props>) {
                   a{
                     pointer-events: none;
                   }
-                  > div {
-                    >div{
-
-                      width: 100%;
-                    
-                      &:hover {
-                        cursor: pointer;
-                        border: 1px solid #6061E5;
-                      }
-                    }
-                  }
               `
                   : ""
               }
