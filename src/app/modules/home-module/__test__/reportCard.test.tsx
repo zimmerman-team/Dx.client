@@ -20,6 +20,7 @@ interface MockProps {
   handleDuplicate?: jest.Mock<any, any, any>;
   showMenuButton: boolean;
   owner: string;
+  ownerName: string;
   heading: EditorState;
 }
 
@@ -52,7 +53,7 @@ const defaultProps = (newProps: Partial<MockProps> = {}): MockProps => {
     handleDuplicate: jest.fn(),
     showMenuButton: true,
     owner: "auth0|123",
-
+    ownerName: "owner-name",
     ...newProps,
   } as MockProps;
 };

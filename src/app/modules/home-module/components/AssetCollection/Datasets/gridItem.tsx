@@ -25,6 +25,7 @@ interface Props {
   id?: string;
   owner: string;
   inChartBuilder: boolean;
+  ownerName: string;
 }
 
 export default function GridItem(props: Readonly<Props>) {
@@ -249,7 +250,7 @@ export default function GridItem(props: Readonly<Props>) {
           `}
         >
           <OwnerIcon />
-          <p>Owner</p>
+          <p>{props.ownerName.split(" ")?.[0]}</p>
         </div>
         <div
           css={`

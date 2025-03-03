@@ -338,6 +338,7 @@ export default function AssetsGrid(props: Props) {
                       }
                       owner={d.owner}
                       isAIAssisted={d.isAIAssisted}
+                      ownerName={d.ownerName ?? ""}
                     />
                   ),
                   dataset: (
@@ -357,6 +358,7 @@ export default function AssetsGrid(props: Props) {
                       id={d.id}
                       owner={d.owner}
                       inChartBuilder={props.inChartBuilder as boolean}
+                      ownerName={d.ownerName ?? ""}
                     />
                   ),
                   story: (
@@ -382,6 +384,7 @@ export default function AssetsGrid(props: Props) {
                           : EditorState.createEmpty()
                       }
                       owner={d.owner}
+                      ownerName={d.ownerName ?? ""}
                     />
                   ),
                 }[d.assetType as assetType]

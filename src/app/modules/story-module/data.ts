@@ -35,6 +35,7 @@ export interface StoryModel {
   owner: string;
   dateColor: string;
   isUpdated: boolean;
+  ownerName?: string;
 }
 
 export const emptyStory: StoryModel = {

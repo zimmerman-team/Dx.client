@@ -19,6 +19,7 @@ interface MockProps {
   handleDelete?: jest.Mock<any, any, any>;
   handleDuplicate?: jest.Mock<any, any, any>;
   owner: string;
+  ownerName: string;
   isAIAssisted: boolean;
 }
 
@@ -50,6 +51,7 @@ const defaultProps = (newProps: Partial<MockProps> = {}): MockProps => {
     handleDelete: jest.fn(),
     handleDuplicate: jest.fn(),
     owner: "auth0|123",
+    ownerName: "owner-name",
     isAIAssisted: false,
     ...newProps,
   } as MockProps;
