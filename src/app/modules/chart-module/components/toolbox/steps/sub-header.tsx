@@ -20,8 +20,7 @@ export default function ToolboxSubHeader(
         display: flex;
         justify-content: space-between;
         align-items: center;
-        padding-left: 24px;
-        padding-right: 24px;
+        padding: 16px 24px;
         button {
           padding: 4px;
           color: #495057;
@@ -29,6 +28,9 @@ export default function ToolboxSubHeader(
           :hover {
             background: transparent;
           }
+        }
+        p {
+          margin: 0;
         }
         div {
           display: flex;
