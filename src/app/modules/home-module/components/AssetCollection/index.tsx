@@ -123,7 +123,13 @@ function AssetsCollection() {
         {isAuthenticated ? (
           <Grid container alignItems="center">
             <Grid item lg={5} md={5} sm={7} xs={11}>
-              <h4>Library</h4>
+              <h4
+                css={`
+                  font-size: 18px;
+                `}
+              >
+                Library
+              </h4>
               <h2>Welcome {user?.given_name ?? user?.name?.split(" ")[0]}</h2>
             </Grid>
             <Grid
@@ -234,7 +240,7 @@ function AssetsCollection() {
             padding-top: 16px;
             font-size: 14px;
             font-family: "GothamNarrow-Book", "Helvetica Neue", sans-serif;
-            color: #000000;
+            color: #231d2c;
             line-height: normal;
           `}
         >

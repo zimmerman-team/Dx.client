@@ -5,14 +5,18 @@ import { Tooltip } from "react-tooltip";
 export default function AIIcon() {
   return (
     <>
-      <p
+      <Icon
+        data-cy="chart-grid-item-ai-icon"
+        data-testid="chart-grid-item-ai-icon"
         className="AIChart-info"
         css={`
           cursor: pointer;
+          margin: 0;
+          line-height: normal;
+          flex-shrink: 0;
         `}
-      >
-        <Icon />
-      </p>
+      />
+
       <Tooltip
         anchorSelect=".AIChart-info"
         place="bottom"
