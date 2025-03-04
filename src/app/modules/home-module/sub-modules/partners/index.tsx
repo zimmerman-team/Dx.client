@@ -112,7 +112,7 @@ const Pagination = (props: {
   </div>
 );
 export default function PartnersModule() {
-  useTitle("DX Dataxplorer - Partners");
+  useTitle("Dataxplorer - Partners");
 
   const [displayTab, setDisplayTab] = React.useState<number>(0);
   const handleChange = (

@@ -23,7 +23,7 @@ interface IDatasetDetail {
 }
 
 export default function EditMetaData() {
-  useTitle("DX Dataxplorer - Edit Meta Data");
+  useTitle("Dataxplorer - Edit Meta Data");
 
   const { page } = useParams<{ page: string }>();
   const token = useStoreState((state) => state.AuthToken.value);

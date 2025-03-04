@@ -10,7 +10,7 @@ import { useTitle } from "react-use";
 import { Link } from "react-router-dom";
 
 export default function LandingModule() {
-  useTitle("DX Dataxplorer - Landing");
+  useTitle("Dataxplorer - Landing");
 
   return (
     <div

@@ -57,11 +57,11 @@ export default function InfoCard() {
     >
       <p>
         <EyeIcon />
-        You’re Viewing Default DX Assets
+        You’re Viewing Default Dataxplorer Assets
       </p>
       <p>
-        The items displayed here are default assets from DX. Sign in to create,
-        customize, and personalize your own assets to match your needs.
+        The items displayed here are default assets from Dataxplorer. Sign in to
+        create, customize, and personalize your own assets to match your needs.
       </p>
       <p onClick={toggleDisplayButtons}>
         Sign In to Our Free Plan <KeyboardArrowDownIcon />{" "}

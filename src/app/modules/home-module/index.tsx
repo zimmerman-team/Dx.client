@@ -10,7 +10,7 @@ import NonAuthUserLibrary from "./components/nonAuthUserLibrary";
 import { Box } from "@material-ui/core";
 
 export default function HomeModule() {
-  useTitle("DX Dataxplorer");
+  useTitle("Dataxplorer");
 
   const { isAuthenticated, user } = useAuth0();
 

@@ -79,7 +79,7 @@ const PLANS = [
 ];
 
 export default function PricingModule() {
-  useTitle("DX Dataxplorer - Pricing");
+  useTitle("Dataxplorer - Pricing");
 
   const { user, isAuthenticated } = useAuth0();
   const isMobile = useMediaQuery("(max-width: 1030px)");

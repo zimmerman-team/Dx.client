@@ -31,7 +31,7 @@ export function StoryPreviewView(
     >;
   }>
 ) {
-  useTitle(`DX DataXplorer - Story View`);
+  useTitle(`DataXplorer - Story View`);
 
   const { page } = useParams<{ page: string }>();
 

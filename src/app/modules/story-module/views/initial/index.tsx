@@ -17,7 +17,7 @@ import Filter from "app/modules/home-module/components/Filter";
 import { useMediaQuery } from "@material-ui/core";
 
 function StoryInitialView(props: Readonly<StoryInitialViewProps>) {
-  useTitle("DX Dataxplorer - New Story");
+  useTitle("Dataxplorer - New Story");
 
   const history = useHistory();
   const isMobile = useMediaQuery("(max-width: 599px)");

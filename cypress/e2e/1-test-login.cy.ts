@@ -1,6 +1,6 @@
 /// <reference types="cypress" />
 
-describe("Login for a test user on DX", () => {
+describe("Login for a test user on Dataxplorer", () => {
   beforeEach(() => {
     // cy.login();
     cy.loginToAuth0(

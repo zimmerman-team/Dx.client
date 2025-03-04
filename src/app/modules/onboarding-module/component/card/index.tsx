@@ -104,7 +104,7 @@ export default function AuthCard(props: { isSignIn?: boolean }) {
                 font-family: "GothamNarrow-Book", "Helvetica Neue", sans-serif;
               `}
             >
-              I agree with DX's{" "}
+              I agree with Dataxplorer's{" "}
               <a
                 href="/"
                 target="_blank"

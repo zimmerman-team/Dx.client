@@ -33,7 +33,7 @@ import EmptyAvi from "app/modules/home-module/assets/team/empty.png";
 import AddAssetDropdown from "app/modules/home-module/components/AddAssetDropdown";
 
 export default function AboutModule() {
-  useTitle("DX Dataxplorer - About");
+  useTitle("Dataxplorer - About");
   const { isAuthenticated } = useAuth0();
   const features = [
     {

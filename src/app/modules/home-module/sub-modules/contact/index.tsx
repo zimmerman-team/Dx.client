@@ -31,7 +31,7 @@ const CssTextField = withStyles({
 })(TextField);
 
 export default function ContactModule() {
-  useTitle("DX Dataxplorer - Contact");
+  useTitle("Dataxplorer - Contact");
   const md = useMediaQuery("(max-width: 940px)");
   const [openSnackbar, setOpenSnackbar] = React.useState(false);
   const [message, setMessage] = React.useState("");

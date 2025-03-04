@@ -29,7 +29,7 @@ import NewsletterForm from "app/modules/common/newsletterForm";
 import { useTitle } from "react-use";
 
 export default function AITemplate() {
-  useTitle("DX Dataxplorer - AI Template");
+  useTitle("Dataxplorer - AI Template");
 
   const [isSubscribed, setIsSubscribed] = React.useState(false);
   const [isSubscriptionFailed, setIsSubscriptionFailed] = React.useState(false);
@@ -181,8 +181,8 @@ export default function AITemplate() {
                   color: #000;
                 `}
               >
-                You will receive occasional emails from DX. You always have
-                choice to unsubscribe within every email.
+                You will receive occasional emails from Dataxplorer. You always
+                have choice to unsubscribe within every email.
               </p>
             </div>
           </div>

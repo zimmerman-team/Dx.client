@@ -11,7 +11,7 @@ import ErrorComponent from "app/modules/chart-module/components/dialog/errrorCom
 import AIIcon from "app/assets/icons/AIIcon";
 
 function ChartBuilderFilters(props: Readonly<ChartBuilderFiltersProps>) {
-  useTitle("DX Dataxplorer - Filters");
+  useTitle("Dataxplorer - Filters");
   const { page } = useParams<{ page: string }>();
   const mapping = useStoreState((state) => state.charts.mapping.value);
   if (props.dataError || props.chartError) {

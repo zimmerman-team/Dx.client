@@ -10,7 +10,7 @@ import { useParams } from "react-router-dom";
 import AIIcon from "app/assets/icons/AIIcon";
 
 function ChartBuilderCustomize(props: Readonly<ChartBuilderCustomizeProps>) {
-  useTitle("DX Dataxplorer - Customise");
+  useTitle("Dataxplorer - Customise");
 
   const { page } = useParams<{ page: string; view?: string }>();
   const mapping = useStoreState((state) => state.charts.mapping.value);

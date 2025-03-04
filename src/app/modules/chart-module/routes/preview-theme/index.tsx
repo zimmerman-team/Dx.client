@@ -20,7 +20,7 @@ import moment from "moment";
 import AIIcon from "app/assets/icons/AIIcon";
 
 export function ChartBuilderPreviewTheme(props: ChartBuilderPreviewThemeProps) {
-  useTitle("DX Dataxplorer - Preview Chart");
+  useTitle("Dataxplorer - Preview Chart");
   const { visualOptions } = props;
   const token = useStoreState((state) => state.AuthToken.value);
   const domRef = React.useRef<HTMLDivElement>(null);

@@ -227,7 +227,7 @@ export default function DesktopFooter(props: Props) {
                     ? "Thank you for subscribing!"
                     : isSubscriptionFailed
                     ? "Oops! Something went wrong with the request! Please fill your email again."
-                    : "  You will receive occasional emails from DX. You always have choice to unsubscribe within every Email."}
+                    : "  You will receive occasional emails from Dataxplorer. You always have choice to unsubscribe within every Email."}
                 </p>
               </Grid>
             </Grid>

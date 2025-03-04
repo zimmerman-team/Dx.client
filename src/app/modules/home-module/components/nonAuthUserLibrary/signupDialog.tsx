@@ -97,8 +97,9 @@ export default function SignupDialog(props: Props) {
               Sign in to Create and Manage Assets
             </p>
             <p>
-              To enable editing and creation, DX needs to link your account.
-              Once signed up, you’ll find all your assets saved in your library.
+              To enable editing and creation, Dataxplorer needs to link your
+              account. Once signed up, you’ll find all your assets saved in your
+              library.
             </p>
           </div>
           <p
