@@ -83,7 +83,6 @@ export default function GridItem(props: Props) {
           <div
             css={`
               width: 96%;
-              margin-top: -9px;
               gap: 6px;
               display: flex;
               align-items: center;
@@ -94,26 +93,16 @@ export default function GridItem(props: Props) {
               css={`
                 font-size: 14px;
                 font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
-                margin-top: 6px;
+                margin: 0;
                 overflow: hidden;
-                margin-bottom: 0;
                 white-space: nowrap;
                 text-overflow: ellipsis;
+                line-height: normal;
               `}
             >
-              <b>{props.title}</b>
+              {props.title}
             </p>
-            {props.isAIAssisted ? (
-              <div
-                css={`
-                  margin-bottom: -12px;
-                `}
-                data-cy="chart-grid-item-ai-icon"
-                data-testid="chart-grid-item-ai-icon"
-              >
-                <AIIcon />
-              </div>
-            ) : null}
+            {props.isAIAssisted ? <AIIcon /> : null}
           </div>
           <IconButton
             css={`

@@ -267,7 +267,23 @@ export default function Filter(
                 props.assetsView === "table" ? "grid" : "table"
               );
             }}
-            css={iconButtonCss(props.assetsView === "table")}
+            css={`
+              padding: 3px;
+              &:hover {
+                background: transparent;
+                padding: none;
+
+                svg > circle,
+                rect {
+                  fill: #231d2c;
+                }
+                svg > path,
+                svg > g > path,
+                svg > g > rect {
+                  fill: #fff;
+                }
+              }
+            `}
             aria-label={`${
               props.assetsView === "table" ? "grid" : "table"
             }-view-button`}

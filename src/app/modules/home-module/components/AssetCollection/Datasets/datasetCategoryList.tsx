@@ -68,7 +68,7 @@ export default function DatasetCategoryList(props: Readonly<Props>) {
                   border: "1px solid #6061E5",
                   fontWeight: "bold",
                 }
-              : {}
+              : { color: "#231D2C" }
           }
         >
           {c}

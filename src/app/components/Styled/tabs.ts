@@ -22,7 +22,7 @@ export const Tab = {
   Left: styled.div<ITab>`
     text-align: center;
     position: relative;
-    color: ${(props) => (props.active ? "#6061E5" : "#000000")};
+    color: ${(props) => (props.active ? "#6061E5" : "#231D2C")};
     font-family: "GothamNarrow-Book", "Helvetica Neue", sans-serif;
     font-size: 18px;
 
@@ -42,7 +42,7 @@ export const Tab = {
   Center: styled.div<ITab>`
     text-align: center;
     position: relative;
-    color: ${(props) => (props.active ? "#6061E5" : "#000000")};
+    color: ${(props) => (props.active ? "#6061E5" : "#231D2C")};
     font-family: "GothamNarrow-Book", "Helvetica Neue", sans-serif;
     font-size: 18px;
 
@@ -65,7 +65,7 @@ export const Tab = {
   Right: styled.div<ITab>`
     text-align: center;
     position: relative;
-    color: ${(props) => (props.active ? "#6061E5" : "#000000")};
+    color: ${(props) => (props.active ? "#6061E5" : "#231D2C")};
     font-weight: ${(props) => (props.active ? "700" : "normal")};
     font-family: "GothamNarrow-Book", "Helvetica Neue", sans-serif;
     font-size: 18px;
