@@ -14,7 +14,7 @@ import { NotAuthorizedMessageModule } from "app/modules/common/not-authorized-me
 import HomeFooter from "app/modules/home-module/components/Footer";
 
 export default function DatasetDetail() {
-  useTitle("DX Dataxplorer - Dataset Detail");
+  useTitle("Dataxplorer - Dataset Detail");
 
   const { page } = useParams<{ page: string }>();
   const { user, isAuthenticated } = useAuth0();

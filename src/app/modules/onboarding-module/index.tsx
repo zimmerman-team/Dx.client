@@ -8,7 +8,7 @@ import OnboardingRightDeco from "app/modules/onboarding-module/asset/onboardingR
 import { useTitle } from "react-use";
 
 export default function Onboarding() {
-  useTitle("DX Dataxplorer - Onboarding");
+  useTitle("Dataxplorer - Onboarding");
 
   const history = useHistory();
   const location = useLocation();

@@ -6,7 +6,7 @@ import { LogOutIcon, RightIcon } from "./component/icons";
 import { useTitle } from "react-use";
 
 export default function UserProfileModule() {
-  useTitle("DX Dataxplorer - User Management");
+  useTitle("Dataxplorer - User Management");
 
   const history = useHistory();
   const { isAuthenticated, isLoading } = useAuth0();

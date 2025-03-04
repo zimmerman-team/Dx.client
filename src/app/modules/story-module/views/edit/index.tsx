@@ -37,7 +37,7 @@ import {
 import PlaceHolder from "app/modules/story-module/components/placeholder";
 
 function StoryEditView(props: Readonly<StoryEditViewProps>) {
-  useTitle("DX Dataxplorer - Edit Story");
+  useTitle("Dataxplorer - Edit Story");
 
   const { page } = useParams<{ page: string }>();
   const token = useStoreState((state) => state.AuthToken.value);

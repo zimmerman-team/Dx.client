@@ -19,7 +19,7 @@ import { useTitle } from "react-use";
 import PlaceHolder from "app/modules/story-module/components/placeholder";
 
 function StoryCreateView(props: Readonly<StoryCreateViewProps>) {
-  useTitle("DX Dataxplorer - Create Story");
+  useTitle("Dataxplorer - Create Story");
 
   const { ref, width } = useResizeObserver<HTMLDivElement>();
 

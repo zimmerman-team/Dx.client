@@ -21,7 +21,7 @@ describe("Testing stories on DX", () => {
     // restoring login cache
     cy.restoreLocalStorageCache();
 
-    // Navigating to dx home page
+    // Navigating to Dataxplorer home page
     cy.intercept("GET", `${apiUrl}/users/plan-data`).as("planData");
 
     cy.visit("/");

@@ -30,7 +30,7 @@ interface ChartBuilderPreviewProps {
 }
 
 export function ChartBuilderPreview(props: ChartBuilderPreviewProps) {
-  useTitle("DX Dataxplorer - Preview Data");
+  useTitle("Dataxplorer - Preview Data");
   const history = useHistory();
   const { page } = useParams<{ page: string }>();
   const datasetId = useStoreState((state) => state.charts.dataset.value);

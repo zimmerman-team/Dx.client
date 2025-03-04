@@ -20,7 +20,7 @@ function ChartModuleDataView(
     ) => void;
   }>
 ) {
-  useTitle("DX Dataxplorer - Select Data");
+  useTitle("Dataxplorer - Select Data");
 
   const history = useHistory();
   const { page } = useParams<{ page: string }>();

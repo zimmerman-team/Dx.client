@@ -8,7 +8,7 @@ import { useCookie, useTitle } from "react-use";
 import { APPLICATION_JSON } from "app/state/api";
 
 function AuthCallbackModule() {
-  useTitle("DX Dataxplorer - Auth Callback");
+  useTitle("Dataxplorer - Auth Callback");
 
   const history = useHistory();
   const { error, isAuthenticated, getAccessTokenSilently } = useAuth0();

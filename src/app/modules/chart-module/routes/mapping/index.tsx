@@ -19,7 +19,7 @@ import MappingErrorComponent from "app/modules/chart-module/routes/mapping/error
 import AIIcon from "app/assets/icons/AIIcon";
 
 function ChartBuilderMapping(props: Readonly<ChartBuilderMappingProps>) {
-  useTitle("DX Dataxplorer - Mapping");
+  useTitle("Dataxplorer - Mapping");
   const { page, view } = useParams<{ page: string; view?: string }>();
 
   const location = useLocation();

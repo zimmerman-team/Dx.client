@@ -75,9 +75,9 @@ export default function RowFrameIntro(props: {
         </IconButton>
         <p>
           <b>
-            The stories in Dx are created by rows. Whenever you want to add
-            chart or text, you need to use the Row frame element and Select a
-            structure for the row.
+            The stories in Dataxplorer are created by rows. Whenever you want to
+            add chart or text, you need to use the Row frame element and Select
+            a structure for the row.
           </b>
         </p>
         <button

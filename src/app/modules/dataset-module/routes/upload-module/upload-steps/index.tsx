@@ -38,7 +38,7 @@ interface Props {
 }
 
 function DatasetUploadSteps(props: Props) {
-  useTitle("DX Dataxplorer - Upload Dataset");
+  useTitle("Dataxplorer - Upload Dataset");
 
   const { user } = useAuth0();
   const location = useLocation();

@@ -12,7 +12,7 @@ import { useMediaQuery } from "usehooks-ts";
 import Hero from "app/modules/home-module/components/hero";
 
 export default function WhyDX() {
-  useTitle("DX Dataxplorer - Why Dataxplorer?");
+  useTitle("Dataxplorer - Why Dataxplorer?");
   const isTablet = useMediaQuery("(max-width: 1024px)");
   const isMobile = useMediaQuery("(max-width: 641px)");
   let Ellipses = EllipsesDesktop;

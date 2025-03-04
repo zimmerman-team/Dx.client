@@ -23,7 +23,7 @@ interface State {
 }
 
 export default function Profile() {
-  useTitle("DX Dataxplorer - User Profile");
+  useTitle("Dataxplorer - User Profile");
   const { user, getAccessTokenSilently } = useAuth0();
   const token = useStoreState((state) => state.AuthToken.value);
 

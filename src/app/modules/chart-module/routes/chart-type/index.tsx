@@ -27,7 +27,7 @@ import { useCheckUserPlan } from "app/hooks/useCheckUserPlan";
 import { IChartType } from "app/state/api/action-reducers/sync/charts";
 
 function ChartBuilderChartType(props: Readonly<ChartBuilderChartTypeProps>) {
-  useTitle("DX Dataxplorer - Chart Type");
+  useTitle("Dataxplorer - Chart Type");
 
   const history = useHistory();
   const { page } = useParams<{ page: string }>();
