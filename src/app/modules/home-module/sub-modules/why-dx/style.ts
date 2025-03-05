@@ -35,6 +35,10 @@ export const keyfeaturescss = {
     z-index: 1;
     padding-top: 120px;
 
+    @media (max-width: 1024px) {
+      padding-top: 40px;
+    }
+
     svg {
       @media (max-width: 1200px) {
         flex-direction: column;
@@ -47,7 +51,7 @@ export const keyfeaturescss = {
       font-size: 48px;
       line-height: 43px;
       text-align: center;
-      color: #000000;
+      color: #231d2c;
       margin-top: 0;
       margin-bottom: 80px;
       font-family: "GothamNarrow-Bold", sans-serif;
@@ -65,7 +69,7 @@ export const keyfeaturescss = {
       font-size: 36px;
       line-height: 20px;
       font-weight: 350;
-      font-family: "GothamNarrow-Medium", sans-serif;
+      font-family: "GothamNarrow-Bold", sans-serif;
       margin-bottom: 25px;
       margin-top: 0;
       color: #231d2c;
@@ -76,11 +80,11 @@ export const keyfeaturescss = {
       }
     }
     p:nth-of-type(2) {
-      font-family: "GothamNarrow-Medium", sans-serif;
+      font-family: "GothamNarrow-Book", sans-serif;
       font-weight: 350;
       line-height: 30px;
       letter-spacing: 0.5px;
-      font-size: 20px;
+      font-size: 25px;
       color: #231d2c;
       @media (max-width: 600px) {
         font-size: 14px;

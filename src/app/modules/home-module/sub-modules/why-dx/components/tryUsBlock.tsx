@@ -55,7 +55,7 @@ export default function TryUsBlock() {
             &:nth-of-type(2) {
               font-size: 24px;
               color: #f4f4f4;
-              font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
+              font-family: "GothamNarrow-Book", "Helvetica Neue", sans-serif;
             }
           }
           @media (max-width: 1120px) {
