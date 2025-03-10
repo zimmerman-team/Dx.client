@@ -16,6 +16,7 @@ import { InfoIcon } from "app/modules/user-profile-module/component/icons";
 import DeleteAccountDialog from "app/components/Dialogs/deleteAccountDialog";
 import { PrimaryButton } from "app/components/Styled/button";
 import useProfileSettings from "./settings-hook";
+import { PageLoader } from "app/modules/common/page-loader";
 
 interface State {
   password: string;
@@ -26,6 +27,8 @@ export default function Profile() {
   useTitle("Dataxplorer - User Profile");
   const { user, getAccessTokenSilently } = useAuth0();
   const token = useStoreState((state) => state.AuthToken.value);
+
+  const [loading, setLoading] = React.useState(false);
 
   const [values, setValues] = React.useState({
     name: user?.name || `${user?.given_name} ${user?.family_name}`,
@@ -69,6 +72,7 @@ export default function Profile() {
   }, [user]);
 
   const updateUserProfile = async () => {
+    setLoading(true);
     try {
       const response = await axios.patch(
         `${process.env.REACT_APP_API}/users/update-profile`,
@@ -90,6 +94,7 @@ export default function Profile() {
     } catch (err) {
       console.log(err);
     }
+    setLoading(false);
   };
   const handleSubmit = async (
     event:
@@ -101,30 +106,41 @@ export default function Profile() {
     }
     updateUserProfile();
   };
-  const handleBlur = () => {
+  const handleSave = () => {
     updateUserProfile();
   };
 
   return (
-    <div css={profilecss}>
-      <h4>Profile</h4>
-      <form onSubmit={handleSubmit}>
-        <div css={flexContainercss}>
-          <p>Name</p>
-          <div>
+    <div
+      css={`
+        width: 100%;
+        height: calc(100vh - 162px - 64px);
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        @media (max-width: 1024px) {
+          height: max-content;
+          gap: 72px;
+        }
+      `}
+    >
+      {loading && <PageLoader />}
+      <div css={profilecss}>
+        <h4>Profile</h4>
+        <form onSubmit={handleSubmit}>
+          <div css={flexContainercss}>
+            <p>Name</p>
             <input
               type="text"
               name="name"
               css={inputcss}
               onChange={handleChange}
               value={values.name}
-              onBlur={handleBlur}
             />
           </div>
-        </div>
-        <div css={flexContainercss}>
-          <p>Email</p>
-          <div>
+          <div css={flexContainercss}>
+            <p>Email</p>
+
             <input
               type="text"
               name="email"
@@ -133,99 +149,131 @@ export default function Profile() {
               disabled
             />
           </div>
-        </div>
-        {authObj && (
-          <div
-            css={`
-              width: 320px;
-              margin-left: auto;
-              margin-top: -16px;
-              margin-bottom: 24px;
-              @media (max-width: 600px) {
-                margin-left: 0;
-              }
-            `}
-          >
+          {authObj && (
             <div
               css={`
-                display: flex;
-                align-items: center;
-                gap: 8px;
-                font-size: 12px;
-                line-height: normal;
-              `}
-            >
-              {authObj.icon}
-              Signed in with {authObj.name}
-            </div>
-            <div
-              css={`
-                margin-top: 8px;
-                border-radius: 16px;
-                background: #dadaf8;
-                padding: 16px;
+                width: 320px;
+                margin-left: auto;
+                margin-top: -16px;
+                margin-bottom: 24px;
+                @media (max-width: 600px) {
+                  margin-left: 0;
+                  width: 100%;
+                }
               `}
             >
               <div
                 css={`
                   display: flex;
-                  font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
-                  font-size: 12px;
-                  gap: 8px;
                   align-items: center;
-                  line-height: normal;
-                `}
-              >
-                <InfoIcon width={14} height={14} />
-                Connected account
-              </div>
-              <span
-                css={`
+                  gap: 8px;
                   font-size: 12px;
                   line-height: normal;
-                  color: #231d2c;
-                  margin: 0;
-                  margin-top: 8px;
                 `}
               >
-                Your account is connected to a {authObj.name} account.
-              </span>
+                {authObj.icon}
+                Signed in with {authObj.name}
+              </div>
+              <div
+                css={`
+                  margin-top: 8px;
+                  border-radius: 16px;
+                  background: #dadaf8;
+                  padding: 16px;
+                `}
+              >
+                <div
+                  css={`
+                    display: flex;
+                    font-family: "GothamNarrow-Bold", "Helvetica Neue",
+                      sans-serif;
+                    font-size: 12px;
+                    gap: 8px;
+                    align-items: center;
+                    line-height: normal;
+                  `}
+                >
+                  <InfoIcon width={14} height={14} />
+                  Connected account
+                </div>
+                <span
+                  css={`
+                    font-size: 12px;
+                    line-height: normal;
+                    color: #231d2c;
+                    margin: 0;
+                    margin-top: 8px;
+                  `}
+                >
+                  Your account is connected to a {authObj.name} account.
+                </span>
+              </div>
             </div>
-          </div>
-        )}{" "}
-        <div css={flexContainercss}>
-          <p>Account</p>
+          )}{" "}
           <div
             css={`
-              display: flex;
-              gap: 16px;
-              align-items: center;
-              width: 320px;
+              ${flexContainercss}
+              margin-bottom: 0;
             `}
           >
-            <PrimaryButton
-              type="button"
-              bg="dark"
-              size="big"
-              onClick={() => setModalDisplay(true)}
+            <p>Account</p>
+            <div
               css={`
-                padding: 12px 24px;
-                height: 35px;
-                font-size: 16px;
+                display: flex;
+                gap: 16px;
+                align-items: center;
+                width: 320px;
+                @media (max-width: 600px) {
+                  width: 100%;
+                }
               `}
             >
-              Delete account
-            </PrimaryButton>
+              <PrimaryButton
+                type="button"
+                bg="dark"
+                size="big"
+                onClick={() => setModalDisplay(true)}
+                css={`
+                  padding: 12px 24px;
+                  height: 35px;
+                  font-size: 16px;
+                `}
+              >
+                Delete account
+              </PrimaryButton>
+            </div>
           </div>
-        </div>
-      </form>
-      <DeleteAccountDialog
-        enableButton={enableButton}
-        handleDelete={handleDelete}
-        handleInputChange={handleInputChange}
-        modalDisplay={modalDisplay}
-        setModalDisplay={setModalDisplay}
-      />
+        </form>
+        <DeleteAccountDialog
+          enableButton={enableButton}
+          handleDelete={handleDelete}
+          handleInputChange={handleInputChange}
+          modalDisplay={modalDisplay}
+          setModalDisplay={setModalDisplay}
+        />
+      </div>
+      <div
+        css={`
+          margin-left: 620px;
+          @media (max-width: 1024px) {
+            margin: 0 auto;
+          }
+        `}
+      >
+        <PrimaryButton
+          type="button"
+          bg="dark"
+          size="big"
+          onClick={handleSave}
+          css={`
+            padding: 18.5px 24px;
+            height: 48px;
+            font-size: 16px;
+          `}
+        >
+          Save
+        </PrimaryButton>
+      </div>
     </div>
   );
 }
