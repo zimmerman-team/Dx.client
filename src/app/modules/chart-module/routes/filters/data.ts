@@ -15,4 +15,5 @@ export interface ChartBuilderFiltersProps {
   chartError: boolean;
   dataError: boolean;
   chartErrorMessage: string;
+  chartName: string;
 }

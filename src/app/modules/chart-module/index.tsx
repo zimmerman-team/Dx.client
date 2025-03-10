@@ -592,7 +592,7 @@ export default function ChartModule() {
                     css={`
                       position: relative;
                       width: ${toolboxOpen
-                        ? "calc(100vw - ((100vw - 1280px) / 2) - 400px - 50px)"
+                        ? "calc(100vw - ((100vw - 1232px) / 2) - 400px - 16px)"
                         : "100%"};
 
                       transition: width 225ms cubic-bezier(0, 0, 0.2, 1) 0ms;
@@ -622,6 +622,7 @@ export default function ChartModule() {
                           dataError={dataError}
                           chartError={chartError}
                           chartErrorMessage={chartErrorMessage}
+                          chartName={chartName}
                         />
                       </Route>
 
@@ -641,6 +642,7 @@ export default function ChartModule() {
                           dataError={dataError}
                           chartError={chartError}
                           chartErrorMessage={chartErrorMessage}
+                          chartName={chartName}
                         />
                       </Route>
                       <Route exact path={chartPaths.mapping}>
@@ -659,6 +661,7 @@ export default function ChartModule() {
                           dataError={dataError}
                           chartError={chartError}
                           chartErrorMessage={chartErrorMessage}
+                          chartName={chartName}
                         />
                       </Route>
                       <Route exact path={chartPaths.chartType}>
