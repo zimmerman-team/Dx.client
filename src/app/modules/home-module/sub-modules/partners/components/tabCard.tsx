@@ -46,7 +46,7 @@ function TabCard(props: {
           margin-bottom: 11px;
         }
         p {
-          font-family: "GothamNarrow-Light", "Helvetica Neue", sans-serif;
+          font-family: "GothamNarrow-Book", "Helvetica Neue", sans-serif;
           white-space: pre-line;
           font-weight: 400;
           line-height: normal;

@@ -175,7 +175,7 @@ export const useDXcss = css`
     font-size: 20px;
     line-height: 24px;
     text-align: center;
-    font-family: "GothamNarrow-Medium", "Helvetica Neue", sans-serif;
+    font-family: "GothamNarrow-Book", "Helvetica Neue", sans-serif;
     width: 85%;
     margin: 16px auto 0 auto;
     @media (max-width: 1024px) {
@@ -198,7 +198,7 @@ export const quotecss = css`
   align-items: center;
   padding: 20px 0;
   width: 78%;
-  p {
+  > p {
     font-size: 40px;
     line-height: 48px;
     text-align: center;
@@ -221,13 +221,13 @@ export const quotecss = css`
     flex-direction: column;
     align-items: center;
     margin-top: 28px;
-    b {
+    p {
       color: #6061e5;
       margin: 0;
-      font-size: 16px;
+      font-size: 18px;
       line-height: 19px;
       text-align: center;
-      font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
+      font-family: "GothamNarrow-Book", "Helvetica Neue", sans-serif;
       @media (max-width: 1024px) {
         font-size: 14px;
         line-height: 16.8px;
