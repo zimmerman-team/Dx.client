@@ -19,6 +19,7 @@ import { ReactComponent as MicrosoftIcon } from "app/modules/onboarding-module/a
 import HeroEllipses from "app/modules/home-module/assets/hero-ellipses.svg";
 import HeroEllipsesTablet from "app/modules/home-module/assets/hero-ellipses-tablet.svg";
 import HeroEllipsesMobile from "app/modules/home-module/assets/hero-ellipses-mobile.svg";
+import { ReactComponent as BackArrow } from "app/modules/home-module/assets/back-arrow.svg";
 import SiemAvi from "app/modules/home-module/assets/team/siem.png";
 import JohnAvi from "app/modules/home-module/assets/team/john.png";
 import KennyAvi from "app/modules/home-module/assets/team/kenny.png";
@@ -35,6 +36,8 @@ import AddAssetDropdown from "app/modules/home-module/components/AddAssetDropdow
 export default function AboutModule() {
   useTitle("Dataxplorer - About");
   const { isAuthenticated } = useAuth0();
+
+  const [selectedItem, setSelectedItem] = React.useState(0);
   const features = [
     {
       title: "+100.000",
@@ -481,7 +484,7 @@ export default function AboutModule() {
             <div
               css={`
                 display: flex;
-                column-gap: 150px;
+                column-gap: 180px;
                 justify-content: center;
                 @media (max-width: 1110px) {
                   column-gap: 56px;
@@ -524,7 +527,7 @@ export default function AboutModule() {
                       line-height: 130%;
                       margin: 0;
                       color: #fff;
-                      margin-left: 16.3%;
+
                       @media (max-width: 600px) {
                         font-size: 32px;
                       }
@@ -542,7 +545,7 @@ export default function AboutModule() {
                       line-height: 130%;
                       margin: 0;
                       color: #fff;
-                      margin-left: 16.3%;
+
                       @media (max-width: 960px) {
                         font-size: 18px;
                       }
@@ -559,8 +562,9 @@ export default function AboutModule() {
                       font-family: "GothamNarrow-Book", "Helvetica Neue",
                         sans-serif;
                       white-space: pre-line;
-                      width: 66%;
-                      margin: 16px auto 0 auto;
+                      margin: 0;
+                      margin-top: 16px;
+                      font-size: 16px;
                       @media (max-width: 960px) {
                         font-size: 14px;
                       }
@@ -647,6 +651,7 @@ export default function AboutModule() {
 
                 object-fit: cover;
               }
+              position: relative;
             `}
           >
             <Carousel
@@ -658,9 +663,19 @@ export default function AboutModule() {
               showThumbs={false}
               showArrows={false}
               showIndicators={false}
+              selectedItem={selectedItem}
+              onChange={(index) => setSelectedItem(index)}
             >
               {allTeamCarousel}
             </Carousel>
+            <BackArrow
+              css={`
+                position: absolute;
+                left: -100px;
+                top: 35%;
+              `}
+              onClick={() => setSelectedItem(0)}
+            />
           </div>
           <div
             css={`
@@ -761,31 +776,21 @@ export default function AboutModule() {
                     border-radius: 20px;
                   `}
                 />
-                <Link
-                  to={"/contact"}
-                  css={`
-                    margin-top: 32px;
-                    font-family: "GothamNarrow-Bold", "Helvetica Neue",
-                      sans-serif;
-                    font-size: 20px;
-                    font-style: normal;
-                    font-weight: 400;
-                    line-height: normal;
-                    text-transform: uppercase;
-                    border-radius: 30px;
-                    background: #231d2c;
-                    box-shadow: 0px 0px 4px 0px rgba(0, 0, 0, 0.25);
-                    width: max-content;
-                    margin: 32px auto 0 auto;
-                    display: block;
-                    color: #fff;
-                    padding: 12px 27px;
-                    border: none;
-                    text-decoration: none;
-                  `}
-                >
-                  Join Our Team
-                </Link>
+                <a href="/contact">
+                  <PrimaryButton
+                    size="big"
+                    bg="dark"
+                    type="button"
+                    css={`
+                      height: 48px;
+                      margin-top: 32px;
+                      font-size: 16px;
+                      width: 100%;
+                    `}
+                  >
+                    Join Our Team
+                  </PrimaryButton>
+                </a>
               </div>
             ))}
           </div>
