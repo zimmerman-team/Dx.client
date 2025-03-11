@@ -103,7 +103,7 @@ export const mobileDescriptioncss = css`
     padding: 24px;
     flex-direction: column;
     align-items: flex-start;
-    gap: 24px;
+    gap: 16px;
     border-radius: 10px;
     background: #fff;
     box-shadow: 0px 0px 8px 0px rgba(0, 0, 0, 0.1);
