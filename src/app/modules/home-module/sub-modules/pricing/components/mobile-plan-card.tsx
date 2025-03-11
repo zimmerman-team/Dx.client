@@ -7,12 +7,14 @@ import { Plan } from "./plan-card";
 interface MobilePlanCardProps {
   plans: Plan[];
   subscriptionPlan: string;
+  onButtonClick: (key: string) => void;
 }
 
 export default function MobilePlanCard(props: MobilePlanCardProps) {
   const PLAN_LIST = [
     {
       type: "Free Plan",
+      key: "free",
       subName: "Free forever",
       description: `For individuals or teams just getting started in Dataxplorer.`,
       custom: false,
@@ -34,6 +36,7 @@ export default function MobilePlanCard(props: MobilePlanCardProps) {
     },
     {
       type: "Pro",
+      key: "pro",
       subName: "€75",
       description: `per month \nOr €720 / yr (Save 20%)\nFor individual users.`,
       yearlyDescription: `per year \nOr €75 / month \nFor individual users.`,
@@ -71,6 +74,7 @@ export default function MobilePlanCard(props: MobilePlanCardProps) {
     {
       type: "Team",
       subName: "€60",
+      key: "team",
       description: `per month / per user\nOr €576 / yr (Save 20%)\nScale up to 50 users and connect your team.`,
       yearlyDescription: `per year / per user\nOr €60 / month \nScale up to 50 users and connect your team.`,
       custom: false,
@@ -106,6 +110,7 @@ export default function MobilePlanCard(props: MobilePlanCardProps) {
     },
     {
       type: "Enterprise",
+      key: "enterprise",
       subName: "Custom",
       description: `For organizations looking to more powerful data visualization, with full support and security.`,
       custom: true,
@@ -145,7 +150,7 @@ export default function MobilePlanCard(props: MobilePlanCardProps) {
 
   const planList = React.useMemo(() => {
     return PLAN_LIST.map((p) => {
-      const plan = props.plans.find((plan) => plan.name === p.type);
+      const plan = props.plans.find((plan) => plan.key === p.key);
       const currentPlan = plan?.current;
       const available = plan?.available;
       const recommended = plan?.recommended;
@@ -323,7 +328,10 @@ export default function MobilePlanCard(props: MobilePlanCardProps) {
               {plan.recommended && <button>Recommended</button>}
             </div>
 
-            <button disabled={plan.currentPlan || !plan.available}>
+            <button
+              disabled={plan.currentPlan || !plan.available}
+              onClick={() => props.onButtonClick(plan.key)}
+            >
               {buttonText}
             </button>
             <div>

@@ -363,7 +363,11 @@ export default function PricingModule() {
         <Box height={65} />
         {isMobile ? (
           <>
-            <MobilePlanCard plans={plans} subscriptionPlan={subscriptionPlan} />
+            <MobilePlanCard
+              plans={plans}
+              subscriptionPlan={subscriptionPlan}
+              onButtonClick={handlePlanButtonClick}
+            />
           </>
         ) : (
           <>
