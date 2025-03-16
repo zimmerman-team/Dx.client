@@ -15,6 +15,8 @@ import IATILogo from "./assets/iati-logo";
 import { useHistory } from "react-router-dom";
 import MobilePlanCard from "./components/mobile-plan-card";
 import { APPLICATION_JSON } from "app/state/api";
+import { PageLoader } from "app/modules/common/page-loader";
+import { useCheckPricingActive } from "app/hooks/useCheckPricingActive";
 
 const VIEWS = [
   {
@@ -34,7 +36,7 @@ const PLANS = [
     monthlyPrice: "Free forever",
     text: "For individuals or teams just getting started in Dataxplorer",
     current: false,
-    recommended: false,
+    recommended: true,
     buttonText: "Activate",
     discount: "",
     key: "free",
@@ -46,7 +48,7 @@ const PLANS = [
     monthlyPrice: "€75",
     text: "For individual users.",
     current: false,
-    recommended: true,
+    recommended: false,
     buttonText: "Activate a free trial",
     discount: "(Save 20%)",
     key: "pro",
@@ -89,6 +91,13 @@ export default function PricingModule() {
     isAuthenticated ? PLANS[0].name : ""
   );
 
+  const { loading: pricingActiveLoading, pricingActive } =
+    useCheckPricingActive();
+
+  console.log(pricingActive, "kdjwbjk");
+
+  const [loading, setLoading] = React.useState(false);
+
   const token = useStoreState((state) => state.AuthToken.value);
 
   const history = useHistory();
@@ -112,6 +121,7 @@ export default function PricingModule() {
   };
 
   const getCurrentSubscriptionPlan = async () => {
+    setLoading(true);
     await axios
       .get(`${process.env.REACT_APP_API}/stripe/subscription/${user?.sub}`, {
         headers: {
@@ -129,6 +139,7 @@ export default function PricingModule() {
       .catch((error) => {
         console.error(error);
       });
+    setLoading(false);
   };
 
   const createStripeCheckoutSession = async (
@@ -186,16 +197,24 @@ export default function PricingModule() {
     return PLANS.map((plan) => {
       return {
         ...plan,
-        current: plan.name === currentPlan,
+        current: pricingActive
+          ? plan.name === currentPlan
+          : currentPlan
+          ? plan.name === "Free Plan"
+          : false,
+        available: plan.name === "Free Plan" ? true : pricingActive,
+        recommended: pricingActive
+          ? plan.name === "Pro"
+          : plan.name === "Free Plan",
       };
     });
-  }, [currentPlan]);
+  }, [currentPlan, pricingActive]);
 
   React.useEffect(() => {
     if (isAuthenticated) {
       getCurrentSubscriptionPlan();
     } else {
-      setCurrentPlan(PLANS[0].name);
+      setCurrentPlan("");
     }
   }, [isAuthenticated]);
 
@@ -210,6 +229,7 @@ export default function PricingModule() {
         min-height: calc(100vh - 50px);
       `}
     >
+      {(loading || pricingActiveLoading) && <PageLoader />}
       <Container maxWidth="lg">
         <h1
           css={`
@@ -343,7 +363,11 @@ export default function PricingModule() {
         <Box height={65} />
         {isMobile ? (
           <>
-            <MobilePlanCard />
+            <MobilePlanCard
+              plans={plans}
+              subscriptionPlan={subscriptionPlan}
+              onButtonClick={handlePlanButtonClick}
+            />
           </>
         ) : (
           <>

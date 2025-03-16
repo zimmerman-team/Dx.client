@@ -14,8 +14,7 @@ export interface IHeaderDetails {
 }
 export interface StoryRightPanelProps {
   open: boolean;
-  onOpen: () => void;
-  onClose: () => void;
+  setOpen: (open: boolean) => void;
   showHeaderItem: boolean;
   currentView: "initial" | "edit" | "create" | "preview" | "ai-template";
   headerDetails: IHeaderDetails;

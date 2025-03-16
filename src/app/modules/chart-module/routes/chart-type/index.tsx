@@ -235,12 +235,16 @@ function ChartBuilderChartType(props: Readonly<ChartBuilderChartTypeProps>) {
               border-color: #262c34;
             }
             svg {
+              ${aIChartSuggestions(ct.id)
+                ? `
               path {
-                fill: ${aIChartSuggestions(ct.id) ? "#fff" : "#262C34"};
+                fill: "#fff";
               }
               circle {
-                fill: ${aIChartSuggestions(ct.id) ? "#fff" : "#262C34"};
+                fill: "#fff";
               }
+              `
+                : ""}
             }
           `}
           data-testid={ct.id}

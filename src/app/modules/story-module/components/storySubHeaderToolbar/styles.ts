@@ -135,8 +135,7 @@ export const styles = {
     align-items: center;
     width: 30%;
     justify-content: flex-end;
-    position: absolute;
-    right: 2%;
+    margin-right: -12px;
   `,
   iconbtns: css`
     display: flex;
