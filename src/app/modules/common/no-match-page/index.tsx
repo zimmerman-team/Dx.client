@@ -63,13 +63,20 @@ export const NoMatchPage = () => {
               color: #6061e5;
               margin: 0;
               line-height: 41px;
+              @media (max-width: 500px) {
+                font-size: 24px;
+                line-height: normal;
+              }
             }
             p:nth-of-type(2) {
               font-size: 18px;
-              font-family: "GothamNarrow-Medium", "Helvetica Neue", sans-serif;
+              font-family: "GothamNarrow-Book", "Helvetica Neue", sans-serif;
               color: #231d2c;
               margin: 0;
               margin-top: 24px;
+              @media (max-width: 500px) {
+                font-size: 14px;
+              }
             }
             margin-bottom: 24px;
           `}
@@ -83,12 +90,16 @@ export const NoMatchPage = () => {
         <div
           css={`
             display: flex;
-            gap: 30px;
+            gap: 16px;
             justify-content: center;
             @media (max-width: 500px) {
               flex-direction: column;
               align-items: center;
               width: 100%;
+              button {
+                width: 182px;
+                height: 48px;
+              }
             }
           `}
         >
