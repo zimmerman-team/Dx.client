@@ -150,6 +150,7 @@ export default function PartnersModule() {
           flex-direction: column;
           margin-top: 50px;
           min-height: calc(100vh - 50px);
+          background: #f2f7fd;
         `}
       >
         <div>

@@ -12,9 +12,9 @@ export default function QuoteBlock() {
         and dice. Dataxplorer is allowing us to do that!
       </p>
       <div>
-        <b>Murad Hrji</b>
-        <b>Senior Digital Architect</b>
-        <b>The Global Fund to Fight AIDS, Tuberculosis and Malaria</b>
+        <p>Murad Hrji</p>
+        <p>Senior Digital Architect</p>
+        <p>The Global Fund to Fight AIDS, Tuberculosis and Malaria</p>
       </div>
     </Grid>
   );
