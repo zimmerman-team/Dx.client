@@ -62,7 +62,7 @@ export default function AddAssetDropdown() {
         }}
         css={`
           .MuiPaper-root {
-            border-radius: 5px;
+            border-radius: 12px;
           }
         `}
       >
