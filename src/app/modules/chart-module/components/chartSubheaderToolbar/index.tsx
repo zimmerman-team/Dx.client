@@ -9,6 +9,7 @@ import EditIcon from "@material-ui/icons/Edit";
 import Tooltip from "@material-ui/core/Tooltip";
 import Popover from "@material-ui/core/Popover";
 import ShareIcon from "@material-ui/icons/Share";
+import MoreIcon from "@material-ui/icons/MoreVert";
 import { LinkIcon } from "app/assets/icons/Link";
 import DeleteIcon from "@material-ui/icons/Delete";
 import Container from "@material-ui/core/Container";
@@ -21,15 +22,17 @@ import FileCopyIcon from "@material-ui/icons/FileCopy";
 import { PageLoader } from "app/modules/common/page-loader";
 import { Link, useHistory, useParams } from "react-router-dom";
 import Snackbar from "@material-ui/core/Snackbar";
-import SnackbarContent from "@material-ui/core/SnackbarContent";
 import { styles } from "app/modules/chart-module/components/chartSubheaderToolbar/styles";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 import DeleteChartDialog from "app/components/Dialogs/deleteChartDialog";
 import { ChartAPIModel, emptyChartAPI } from "app/modules/chart-module/data";
 import { ChartSubheaderToolbarProps } from "app/modules/chart-module/components/chartSubheaderToolbar/data";
-import { ExportChartButton } from "app/modules/chart-module/components/chartSubheaderToolbar/exportButton";
 import { ISnackbarState } from "app/modules/dataset-module/routes/upload-module/upload-steps/previewFragment";
-import { chartFromStoryAtom, planDialogAtom } from "app/state/recoil/atoms";
+import {
+  chartFromStoryAtom,
+  planDialogAtom,
+  shareAssetDetailsAtom,
+} from "app/state/recoil/atoms";
 import AutoSaveSwitch from "app/modules/story-module/components/storySubHeaderToolbar/autoSaveSwitch";
 import useAutosave from "app/hooks/useAutoSave";
 import { useStyles } from "app/modules/story-module/components/storySubHeaderToolbar";
@@ -71,9 +74,13 @@ export function ChartSubheaderToolbar(
   const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(
     null
   );
+  const [displayMobileMenu, setDisplayMobileMenu] = React.useState(false);
+  React.useState<HTMLButtonElement | null>(null);
   const [chartFromStory, setChartFromStory] =
     useRecoilState(chartFromStoryAtom);
-
+  const [assetIdToShare, setAssetIdToShare] = useRecoilState(
+    shareAssetDetailsAtom
+  );
   const mapping = useStoreState((state) => state.charts.mapping.value);
 
   const dataset = useStoreState((state) => state.charts.dataset.value);
@@ -550,11 +557,9 @@ export function ChartSubheaderToolbar(
                   </Tooltip>
                 </React.Fragment>
               )}
-              {page !== "new" && !view && (
+              {page !== "new" && !view && !isSmallScreen && (
                 <React.Fragment>
-                  {!isSmallScreen && (
-                    <ExportChartButton filename={props.name} />
-                  )}
+                  {/* <ExportChartButton filename={props.name} /> */}
                   {isAuthenticated && (
                     <Tooltip title="Duplicate">
                       <IconButton
@@ -570,44 +575,15 @@ export function ChartSubheaderToolbar(
                       <ShareIcon htmlColor="#262c34" />
                     </IconButton>
                   </Tooltip>
-                  <Popover
-                    id={id}
-                    open={open}
-                    anchorEl={anchorEl}
-                    onClose={handleClose}
-                    anchorOrigin={{
-                      vertical: "bottom",
-                      horizontal: "right",
-                    }}
-                    transformOrigin={{
-                      vertical: "top",
-                      horizontal: "right",
-                    }}
-                    css={`
-                      .MuiPaper-root {
-                        border-radius: 10px;
-                        background: #495057;
-                      }
-                    `}
-                    aria-label="copy-link-popover"
-                  >
-                    <div css={styles.sharePopup} data-testid="copy-link-action">
-                      <CopyToClipboard
-                        text={window.location.href}
-                        onCopy={handleCopy}
-                      >
-                        <Button startIcon={<LinkIcon />}>Copy link</Button>
-                      </CopyToClipboard>
-                    </div>
-                  </Popover>
-                  {canChartEditDelete && !isSmallScreen && (
+
+                  {canChartEditDelete && (
                     <Tooltip title="Edit">
                       <IconButton onClick={handleEdit} aria-label="edit-button">
                         <EditIcon htmlColor="#262c34" />
                       </IconButton>
                     </Tooltip>
                   )}
-                  {canChartEditDelete && !isSmallScreen && (
+                  {canChartEditDelete && (
                     <Tooltip title="Delete">
                       <IconButton
                         onClick={handleModalDisplay}
@@ -619,12 +595,107 @@ export function ChartSubheaderToolbar(
                   )}
                 </React.Fragment>
               )}
+              {isSmallScreen && (
+                <React.Fragment>
+                  <IconButton
+                    aria-describedby={id}
+                    onClick={() => setDisplayMobileMenu(!displayMobileMenu)}
+                    aria-label="more"
+                    data-testid="more-button"
+                  >
+                    <MoreIcon htmlColor="#262c34" />
+                  </IconButton>
+                  <div
+                    css={`
+                      position: absolute;
+                      top: 115%;
+                      right: -4px;
+                      opacity: ${displayMobileMenu ? 1 : 0};
+                      box-shadow: 0px 0px 10px 0px #98a1aa99;
+                      transition: opacity 211ms cubic-bezier(0.4, 0, 0.2, 1),
+                        transform 141ms cubic-bezier(0.4, 0, 0.2, 1);
+                      border-radius: 4px;
+                      background: var(--Secondary-Background-grey, #f4f4f4);
+                      display: flex;
+                      height: 56px;
+                      padding: 16px;
+                      align-items: center;
+                      gap: 16px;
+                      flex-shrink: 0;
+                    `}
+                  >
+                    {canChartEditDelete && (
+                      <Tooltip title="Edit">
+                        <Link
+                          aria-label="edit-button"
+                          to={`/not-available`}
+                          onClick={() => {
+                            setAssetIdToShare({
+                              assetURL: `/chart/${page}/customize`,
+                              title: props.name,
+                            });
+                          }}
+                        >
+                          <EditIcon htmlColor="#262c34" />
+                        </Link>
+                      </Tooltip>
+                    )}
+
+                    {isAuthenticated && (
+                      <Tooltip title="Duplicate">
+                        <IconButton
+                          onClick={handleDuplicate}
+                          aria-label="duplicate-button"
+                        >
+                          <FileCopyIcon htmlColor="#262c34" />
+                        </IconButton>
+                      </Tooltip>
+                    )}
+
+                    <Tooltip title="Share">
+                      <IconButton
+                        onClick={handleShare}
+                        aria-label="share-button"
+                      >
+                        <ShareIcon htmlColor="#262c34" />
+                      </IconButton>
+                    </Tooltip>
+                  </div>
+                </React.Fragment>
+              )}
             </div>
           </div>
         </div>
       </Container>
 
       <>
+        <Popover
+          id={id}
+          open={open}
+          anchorEl={anchorEl}
+          onClose={handleClose}
+          anchorOrigin={{
+            vertical: "bottom",
+            horizontal: "right",
+          }}
+          transformOrigin={{
+            vertical: "top",
+            horizontal: "right",
+          }}
+          css={`
+            .MuiPaper-root {
+              border-radius: 10px;
+              background: #495057;
+            }
+          `}
+          aria-label="copy-link-popover"
+        >
+          <div css={styles.sharePopup} data-testid="copy-link-action">
+            <CopyToClipboard text={window.location.href} onCopy={handleCopy}>
+              <Button startIcon={<LinkIcon />}>Copy link</Button>
+            </CopyToClipboard>
+          </div>
+        </Popover>
         {isMobile ? (
           <InfoSnackbar
             anchorOrigin={{

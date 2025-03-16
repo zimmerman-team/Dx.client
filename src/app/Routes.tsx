@@ -63,6 +63,9 @@ const DatasetModule = lazy(() => import("app/modules/dataset-module"));
 const DashboardModule = lazy(
   () => import("app/modules/home-module/sub-modules/dashboard")
 );
+const NotAvailableOnMobile = lazy(
+  () => import("app/modules/common/not-available")
+);
 
 const ProtectedRoute = (props: {
   component: React.ComponentType<any>;
@@ -313,6 +316,9 @@ export function MainRoutes() {
           </RouteWithAppBar>
           <RouteWithAppBar exact path="/payment/canceled">
             <PaymentCanceledCallbackModule />
+          </RouteWithAppBar>
+          <RouteWithAppBar path="/not-available">
+            <NotAvailableOnMobile />
           </RouteWithAppBar>
           <RouteWithAppBar path="*">
             <NoMatchPage />
