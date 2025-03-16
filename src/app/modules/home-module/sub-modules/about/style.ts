@@ -39,10 +39,10 @@ export const subParagraphcss = css`
   }
   p {
     margin: 0;
-    font-family: "GothamNarrow-Medium", "Helvetica Neue", sans-serif;
+    font-family: "GothamNarrow-Book", "Helvetica Neue", sans-serif;
     font-size: 24px;
     font-style: normal;
-    font-weight: 350;
+    font-weight: 325;
     line-height: 30px; /* 150% */
     letter-spacing: 0.5px;
     @media (max-width: 1024px) {
@@ -51,7 +51,7 @@ export const subParagraphcss = css`
       font-family: "GothamNarrow-Book", sans-serif;
       line-height: 28.5px; /* 150% */
     }
-    @media (max-width: 500px) {
+    @media (max-width: 600px) {
       font-size: 12px;
       font-family: "GothamNarrow-Book", sans-serif;
       line-height: 16.8px; /* 150% */
