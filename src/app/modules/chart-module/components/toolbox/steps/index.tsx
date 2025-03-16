@@ -153,7 +153,7 @@ export function ChartToolBoxSteps(props: ChartToolBoxStepsProps) {
         css={`
           width: 400px;
           overflow-y: hidden;
-          height: calc(100vh - 229px);
+          height: calc(100vh - 231px);
           position: relative;
 
           &::-webkit-scrollbar {

@@ -5,7 +5,7 @@ export const styles = {
     right: 0;
     z-index: 99;
     position: fixed;
-    top: 97px;
+    top: 100px;
     display: flex;
     background: #f1f3f5;
     box-shadow: 0px 0px 10px 0px rgba(152, 161, 170, 0.6);
@@ -30,7 +30,7 @@ export const styles = {
     }
     @media (min-width: 768px) {
       @media (max-width: 881px) {
-        top: 113px;
+        top: 116px;
       }
     }
   `,
@@ -98,7 +98,7 @@ export const mappingStyles = {
     background: ${dimension.mappedValues.length > 0 && !dimension.multiple
       ? "#262c34"
       : "#dfe3e5"};
-    text-transform: capitalize;
+    text-transform: none;
     justify-content: space-between;
     color: ${dimension.mappedValues.length > 0 && !dimension.multiple
       ? "#fff"

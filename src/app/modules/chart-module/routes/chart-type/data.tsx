@@ -1,6 +1,12 @@
 import BarChartIcon from "app/assets/icons/data-themes-chart-types/bar";
 import ColoredBarChartIcon from "app/assets/icons/data-themes-chart-types/coloredBarChart";
 
+import MultisetBarChartIcon from "app/assets/icons/data-themes-chart-types/multisetBarChart";
+import ColoredMultisetBarChartIcon from "app/assets/icons/data-themes-chart-types/coloredBarChart";
+
+import StackedBarChartIcon from "app/assets/icons/data-themes-chart-types/stackedBarChart";
+import ColoredStackedBarChartIcon from "app/assets/icons/data-themes-chart-types/coloredBarChart";
+
 import GeomapChartIcon from "app/assets/icons/data-themes-chart-types/geomap";
 import ColoredGeomapChartIcon from "app/assets/icons/data-themes-chart-types/coloredGeomap";
 
@@ -52,12 +58,14 @@ import ColoredAreaTimeAxisIcon from "app/assets/icons/data-themes-chart-types/co
 import GraphGLIcon from "app/assets/icons/data-themes-chart-types/graphgl";
 import ColoredGraphGLIcon from "app/assets/icons/data-themes-chart-types/coloredGraphGl";
 
-import { ReactComponent as GeomapPreviewImg } from "app/modules/chart-module/assets/geomapPreview.svg";
+import GeomapPreviewImg from "app/modules/chart-module/assets/geomapPreview.svg";
 import { ReactComponent as BigNumberPreviewImg } from "app/modules/chart-module/assets/bigNumberPreview.svg";
 import { ReactComponent as LineChartPreviewImg } from "app/modules/chart-module/assets/lineChartPreview.svg";
 import { ReactComponent as TreeMapPreviewImg } from "app/modules/chart-module/assets/treemapPreview.svg";
 import { ReactComponent as SankeyPreviewImg } from "app/modules/chart-module/assets/sankeyPreview.svg";
 import { ReactComponent as BarChartPreviewImg } from "app/modules/chart-module/assets/barChartPreview.svg";
+import { ReactComponent as MultisetBarChartPreviewImg } from "app/modules/chart-module/assets/multisetBarChartPreview.svg";
+import { ReactComponent as StackedBarChartPreviewImg } from "app/modules/chart-module/assets/stackedBarChartPreview.svg";
 
 import { ReactComponent as SunburstPreviewImg } from "app/modules/chart-module/assets/sunburstPreview.svg";
 import { ReactComponent as PieChartPreviewImg } from "app/modules/chart-module/assets/pieChartPreview.svg";
@@ -146,8 +154,8 @@ export const echartTypes = (big: boolean): IEchartTypes[] => {
     {
       id: "echartsMultisetBarchart",
       label: "Multi-set Bar chart",
-      icon: <BarChartIcon big={big} />,
-      preview: <BarChartPreviewImg />,
+      icon: <MultisetBarChartIcon big={big} />,
+      preview: <MultisetBarChartPreviewImg />,
       categories: ["Correllations", "Proportions"],
       class: "advanced",
       ssr: false,
@@ -156,8 +164,8 @@ export const echartTypes = (big: boolean): IEchartTypes[] => {
     {
       id: "echartsStackedBarchart",
       label: "Stacked Bar Chart",
-      icon: <BarChartIcon big={big} />,
-      preview: <BarChartPreviewImg />,
+      icon: <StackedBarChartIcon big={big} />,
+      preview: <StackedBarChartPreviewImg />,
       categories: ["Correllations", "Proportions"],
       class: "advanced",
       ssr: false,
@@ -211,7 +219,9 @@ export const echartTypes = (big: boolean): IEchartTypes[] => {
       id: "echartsGeomap",
       label: "Geo map",
       icon: <GeomapChartIcon big={big} />,
-      preview: <GeomapPreviewImg />,
+      preview: (
+        <img src={GeomapPreviewImg} alt="Geo map" width={305} height={150} />
+      ),
       categories: ["Locations"],
       class: "basic",
 
@@ -369,7 +379,7 @@ export const coloredEchartTypes = () => {
     {
       id: "echartsMultisetBarchart",
       label: "Multi-set Bar chart",
-      icon: <ColoredBarChartIcon />,
+      icon: <ColoredMultisetBarChartIcon />,
       categories: ["Correllations", "Proportions"],
       ssr: false,
       description: barChartDescription,
@@ -377,7 +387,7 @@ export const coloredEchartTypes = () => {
     {
       id: "echartsStackedBarchart",
       label: "Stacked Bar chart",
-      icon: <ColoredBarChartIcon />,
+      icon: <ColoredStackedBarChartIcon />,
       categories: ["Correllations", "Proportions"],
       ssr: false,
       description: barChartDescription,

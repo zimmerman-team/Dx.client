@@ -398,7 +398,7 @@ function FilterOption(props: FilterOptionProps) {
       <div
         css={`
           width: 100%;
-          padding: 5px;
+          padding: 5px 24px;
           display: flex;
           position: relative;
           flex-direction: row;

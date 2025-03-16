@@ -3,7 +3,7 @@ import { css } from "styled-components/macro";
 export const styles = {
   container: css`
     left: 0;
-    top: 48px;
+    top: 50px;
     z-index: 100;
     width: 100vw;
     height: 50px;
