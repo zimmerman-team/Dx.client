@@ -26,8 +26,8 @@ function TabCard(props: {
 
         a {
           text-decoration: none;
-          color: #231d2c;
-          border-bottom: 1px solid #231d2c;
+          color: #6061e5;
+          border-bottom: 1px solid #6061e5;
           cursor: pointer;
         }
         div:nth-child(1) {
