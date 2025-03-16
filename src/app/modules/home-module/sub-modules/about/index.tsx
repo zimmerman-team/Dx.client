@@ -816,9 +816,7 @@ export default function AboutModule() {
                 />
               </div>
               <div>
-                <h3 id="ab-desktop">
-                  <b>Mission</b>
-                </h3>
+                <h3 id="ab-desktop">Mission</h3>
                 <div
                   css={`
                     height: 24px;
@@ -858,9 +856,7 @@ export default function AboutModule() {
           >
             <div>
               <div>
-                <h3 id="ab-desktop">
-                  <b>Dataxplorer</b>
-                </h3>
+                <h3 id="ab-desktop">Dataxplorer</h3>
                 <Box height={24} />
                 <p>
                   Many organizations struggle to convey the data they collect,
