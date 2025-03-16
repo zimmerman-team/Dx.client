@@ -238,8 +238,8 @@ export function StoryChartWrapper(props: Props) {
           css={`
             margin: 0;
             margin-bottom: 12px;
-            font-family: "GothamNarrow-bold", "Helvetica Neue", sans-serif;
-            font-size: 14px;
+            font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
+            font-size: 24px;
             color: #231d2c;
             letter-spacing: 0.5px;
             word-break: break-all;
