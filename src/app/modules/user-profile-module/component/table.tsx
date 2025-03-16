@@ -1,6 +1,5 @@
 import React from "react";
-// @ts-ignore
-import domtoimage from "dom-to-image";
+import * as htmlToImage from "html-to-image";
 import Table from "@material-ui/core/Table";
 import Tooltip from "@material-ui/core/Tooltip";
 import SaveAlt from "@material-ui/icons/SaveAlt";
@@ -94,10 +93,9 @@ export function InvoiceTable(props: InvoiceTableProps) {
   const onPrintClick = () => {
     const t = document.getElementById("invoice-table");
     if (t) {
-      domtoimage
+      htmlToImage
         .toPng(t, {
-          bgcolor: "#fff",
-          filename: "dataxplorer-invoices",
+          backgroundColor: "#fff",
         })
         .then((dataUrl: any) => {
           const link = document.createElement("a");

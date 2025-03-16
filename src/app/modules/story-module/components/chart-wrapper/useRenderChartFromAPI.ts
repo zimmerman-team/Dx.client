@@ -86,6 +86,10 @@ export const useRenderChartFromAPI = (
         setChartErrorMessage(
           "This chart has been deleted! You can create or add a new chart from Right Panel."
         );
+        if (location.pathname.includes("downloaded-view")) {
+          console.log("view", location.pathname);
+          setLoadedChartsList((prev) => [...prev, "deleted"]);
+        }
       });
   };
 
