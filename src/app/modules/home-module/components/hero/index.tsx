@@ -2,7 +2,7 @@ import React from "react";
 import { ReactComponent as GoogleIcon } from "app/modules/onboarding-module/asset/google-img.svg";
 import { ReactComponent as LinkedInIcon } from "app/modules/onboarding-module/asset/linkedIn-img.svg";
 import { ReactComponent as MicrosoftIcon } from "app/modules/onboarding-module/asset/microsoft-img.svg";
-import HeroEllipses from "app/modules/home-module/assets/hero-ellipses.svg";
+import HeroEllipses from "app/modules/home-module/assets/hero-ellipses.png";
 import HeroEllipsesTablet from "app/modules/home-module/assets/hero-ellipses-tablet.svg";
 import HeroEllipsesMobile from "app/modules/home-module/assets/hero-ellipses-mobile.svg";
 
@@ -23,8 +23,8 @@ export default function Hero() {
           linear-gradient(180deg, rgba(255, 255, 255, 0) 0%, #f2f7fd 100%);
         background-color: #f2f7fd;
         background-repeat: no-repeat;
-        background-size: contain;
-        background-position: bottom;
+        background-size: cover;
+        background-position: 58px 0%;
         @media (max-width: 960px) {
           background: url(${HeroEllipsesTablet}),
             linear-gradient(180deg, rgba(255, 255, 255, 0) 0%, #f2f7fd 100%);
