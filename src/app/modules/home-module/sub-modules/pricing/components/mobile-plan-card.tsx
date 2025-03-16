@@ -2,16 +2,22 @@
 /* eslint no-use-before-define: 0 */
 import React from "react";
 import GoodIcon from "app/modules/home-module/sub-modules/pricing/assets/good-icon";
+import { Plan } from "./plan-card";
 
-export default function MobilePlanCard() {
-  const planList = [
+interface MobilePlanCardProps {
+  plans: Plan[];
+  subscriptionPlan: string;
+  onButtonClick: (key: string) => void;
+}
+
+export default function MobilePlanCard(props: MobilePlanCardProps) {
+  const PLAN_LIST = [
     {
       type: "Free Plan",
+      key: "free",
       subName: "Free forever",
       description: `For individuals or teams just getting started in Dataxplorer.`,
-      currentPlan: true,
       custom: false,
-      recommended: false,
       offers: [
         "Max 5 datasets / 1 GB",
         "Max 10 search results",
@@ -30,11 +36,11 @@ export default function MobilePlanCard() {
     },
     {
       type: "Pro",
+      key: "pro",
       subName: "€75",
-      description: `per month / per user\nOr €720 / yr (Save 20%)\nFor individual users.`,
-      currentPlan: false,
+      description: `per month \nOr €720 / yr (Save 20%)\nFor individual users.`,
+      yearlyDescription: `per year \nOr €75 / month \nFor individual users.`,
       custom: false,
-      recommended: false,
       offers: [
         "Unlimited availability",
         "Connect data",
@@ -68,10 +74,10 @@ export default function MobilePlanCard() {
     {
       type: "Team",
       subName: "€60",
+      key: "team",
       description: `per month / per user\nOr €576 / yr (Save 20%)\nScale up to 50 users and connect your team.`,
-      currentPlan: false,
+      yearlyDescription: `per year / per user\nOr €60 / month \nScale up to 50 users and connect your team.`,
       custom: false,
-      recommended: true,
       offers: [
         "Unlimited availability",
         "Connect data",
@@ -104,11 +110,10 @@ export default function MobilePlanCard() {
     },
     {
       type: "Enterprise",
+      key: "enterprise",
       subName: "Custom",
       description: `For organizations looking to more powerful data visualization, with full support and security.`,
-      currentPlan: false,
       custom: true,
-      recommended: false,
       offers: [
         "Unlimited availability",
         "Connect data",
@@ -143,6 +148,26 @@ export default function MobilePlanCard() {
     },
   ];
 
+  const planList = React.useMemo(() => {
+    return PLAN_LIST.map((p) => {
+      const plan = props.plans.find((plan) => plan.key === p.key);
+      const currentPlan = plan?.current;
+      const available = plan?.available;
+      const recommended = plan?.recommended;
+      const monthly = props.subscriptionPlan === "monthly";
+      return {
+        ...p,
+        currentPlan,
+        available,
+        recommended,
+        subName: monthly ? plan?.monthlyPrice : plan?.yearlyPrice,
+        description: monthly
+          ? p.description
+          : p.yearlyDescription ?? p.description,
+      };
+    });
+  }, [props.plans, props.subscriptionPlan]);
+
   return (
     <>
       {planList.map((plan) => {
@@ -150,9 +175,12 @@ export default function MobilePlanCard() {
           0,
           Math.round(plan.offers.length / 2)
         );
-        let buttonText = "Activate trial";
+        let buttonText =
+          plan.type === "Free Plan" ? "Activate" : "Activate trial";
         if (plan.currentPlan) {
           buttonText = "Current plan";
+        } else if (!plan.available) {
+          buttonText = "Coming soon";
         } else if (plan.custom) {
           buttonText = "Contact us";
         }
@@ -222,12 +250,12 @@ export default function MobilePlanCard() {
                 width: 100%;
                 outline: none;
                 background: transparent;
-                color: #262c34;
-                border: 1px solid #262c34;
+                color: #231d2c;
+                border: 1px solid #231d2c;
                 ${plan.currentPlan &&
-                "background:#000000; color: #ffffff;  border: none;"}
+                "background:#231D2C; color: #ffffff;  border: none;"}
                 ${plan.recommended &&
-                "background: #2C2C79; color: #F5F5F7;  border: none;"}
+                "background: #33347B; color: #F5F5F7;  border: none;"}
                 height: 41px;
                 display: flex;
                 justify-content: center;
@@ -235,6 +263,18 @@ export default function MobilePlanCard() {
                 cursor: pointer;
                 font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
                 font-size: 16px;
+                :disabled {
+                  border: 1px solid transparent;
+                  color: #70777e;
+                  background: #dfe3e5;
+                  cursor: not-allowed;
+                  ${plan.currentPlan &&
+                  `
+                    background:#231D2C; 
+                    color: #ffffff;  
+                    border: none;
+              `}
+                }
               }
               > div:nth-of-type(2) {
                 > p {
@@ -288,7 +328,12 @@ export default function MobilePlanCard() {
               {plan.recommended && <button>Recommended</button>}
             </div>
 
-            <button disabled={plan.currentPlan}>{buttonText}</button>
+            <button
+              disabled={plan.currentPlan || !plan.available}
+              onClick={() => props.onButtonClick(plan.key)}
+            >
+              {buttonText}
+            </button>
             <div>
               <hr />
               <p>Includes:</p>
