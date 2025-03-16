@@ -1,19 +1,20 @@
 import React from "react";
 
+export interface Plan {
+  name: string;
+  yearlyPrice: string;
+  monthlyPrice: string;
+  text: string;
+  current: boolean;
+  recommended: boolean;
+  buttonText: string;
+  discount: string;
+  key: string;
+  available: boolean;
+}
 interface PlanCardProps {
   activeView: string;
-  plan: {
-    name: string;
-    yearlyPrice: string;
-    monthlyPrice: string;
-    text: string;
-    current: boolean;
-    recommended: boolean;
-    buttonText: string;
-    discount: string;
-    key: string;
-    available: boolean;
-  };
+  plan: Plan;
   onButtonClick: (key: string) => void;
 }
 
@@ -159,15 +160,15 @@ export default function PlanCard({
             bottom: 23px;
             left: 23px;
             border-radius: 12px;
-            border: 1px solid ${plan.recommended ? "transparent" : "#262C34"};
+            border: 1px solid ${plan.recommended ? "transparent" : "#231D2C"};
             line-height: normal;
             font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
             font-size: 16px;
             font-style: normal;
             font-weight: 400;
             line-height: normal;
-            color: ${plan.recommended ? "#FFFFFF" : "#262C34"};
-            background: ${plan.recommended ? "#2C2C79" : "#FFFFFF"};
+            color: ${plan.recommended ? "#FFFFFF" : "#231D2C"};
+            background: ${plan.recommended ? "#33347B" : "#FFFFFF"};
             height: 48px;
             width: 175px;
             display: flex;
@@ -175,18 +176,18 @@ export default function PlanCard({
             align-items: center;
             &:hover {
               background: ${plan.recommended ? "#fff" : "#6061E5"};
-              color: ${plan.recommended ? "#262C34" : "#fff"};
+              color: ${plan.recommended ? "#231D2C" : "#fff"};
               cursor: pointer;
               border: none;
             }
             :disabled {
               border: 1px solid transparent;
-              color: #868d96;
-              background: #f4f4f4;
+              color: #70777e;
+              background: #dfe3e5;
               cursor: not-allowed;
               ${plan.current &&
               `
-              background:#000000; 
+              background:#231D2C; 
               color: #ffffff;  
               border: none;
               `}
@@ -200,7 +201,7 @@ export default function PlanCard({
           data-cy="plan-button"
         >
           {plan.current
-            ? "Active"
+            ? "Current Plan"
             : !plan.available
             ? "Coming soon"
             : plan.buttonText}

@@ -411,8 +411,7 @@ export default function StoryModule() {
           currentView={view}
           headerDetails={headerDetails}
           setHeaderDetails={setHeaderDetails}
-          onOpen={() => setRightPanelOpen(true)}
-          onClose={() => setRightPanelOpen(false)}
+          setOpen={setRightPanelOpen}
           showHeaderItem={!headerDetails.showHeader}
           framesArray={framesArray}
           storyName={storyName}
