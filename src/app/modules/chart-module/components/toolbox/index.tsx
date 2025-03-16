@@ -25,6 +25,7 @@ import {
 import ToolboxNav from "app/modules/chart-module/components/toolbox/steps/navbar";
 import { InfoSnackbar } from "app/modules/chart-module/components/chartSubheaderToolbar/infoSnackbar";
 import { PrimaryButton } from "app/components/Styled/button";
+import useTogglePanelWithKey from "app/hooks/useTogglePanelWithKey";
 
 export function ChartModuleToolBox(props: Readonly<ChartToolBoxProps>) {
   const { page, view } = useParams<{ page: string; view?: string }>();
@@ -55,6 +56,10 @@ export function ChartModuleToolBox(props: Readonly<ChartToolBoxProps>) {
   const [displayToolbar, setDisplayToolbar] = React.useState<"block" | "none">(
     "block"
   );
+  useTogglePanelWithKey({
+    openToolbox: props.openToolbox,
+    setToolboxOpen: props.setToolboxOpen,
+  });
 
   const stepPaths = [
     { name: "dataset", path: `/chart/${page}/data` },
@@ -136,29 +141,6 @@ export function ChartModuleToolBox(props: Readonly<ChartToolBoxProps>) {
       props.setToolboxOpen(true);
     }
   }, [location.pathname]);
-
-  const togglePanel = (e: KeyboardEvent) => {
-    const target = e.target as HTMLElement;
-    if (
-      target.tagName === "INPUT" ||
-      target.tagName === "TEXTAREA" ||
-      target.isContentEditable ||
-      target.tagName === "SELECT"
-    ) {
-      return;
-    }
-
-    if (e.key === "p") {
-      props.setToolboxOpen(!props.openToolbox);
-    }
-  };
-
-  React.useEffect(() => {
-    window.addEventListener("keydown", togglePanel);
-    return () => {
-      window.removeEventListener("keydown", togglePanel);
-    };
-  }, [props.openToolbox]);
 
   const canChartEditDelete = React.useMemo(() => {
     return isAuthenticated && loadedChart && loadedChart.owner === user?.sub;

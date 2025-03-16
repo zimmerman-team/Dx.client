@@ -193,7 +193,7 @@ export default function GridItem(props: Readonly<Props>) {
           `}
         >
           <OwnerIcon />
-          <p>{props.ownerName.split(" ")?.[0]}</p>
+          <p>{props.ownerName?.split(" ")?.[0]}</p>
         </div>
         <div
           css={`
