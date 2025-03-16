@@ -346,7 +346,7 @@ export default function FinishedFragment(props: Props) {
               border-bottom: 1px solid #70777e;
             }
           }
-          @media (max-width: 450px) {
+          @media (max-width: 500px) {
             display: none;
           }
         `}
@@ -356,7 +356,7 @@ export default function FinishedFragment(props: Props) {
         <p>Data Category : {props.datasetDetails.category}</p>
         <p>Data Source : {props.datasetDetails.source}</p>
         <p>
-          Link to data source :{" "}
+          Link to data source:{" "}
           {props.datasetDetails.sourceUrl ? (
             <a
               href={props.datasetDetails.sourceUrl}
@@ -372,12 +372,36 @@ export default function FinishedFragment(props: Props) {
       </div>
       <div css={mobileDescriptioncss}>
         <div>
-          <p>Details</p>
+          <p>Data Title</p>
+          <p>{props.datasetDetails.name}</p>
+        </div>
+        <div>
+          <p>Data Description</p>
           <p>{props.datasetDetails.description}</p>
         </div>
         <div>
-          <p>category</p>
-          {props.datasetDetails.category}
+          <p>Category</p>
+          <p>{props.datasetDetails.category}</p>
+        </div>
+        <div>
+          <p>Data Source</p>
+          <p> {props.datasetDetails.source}</p>
+        </div>
+        <div>
+          <p>Link to Data Source</p>
+          <p>
+            {props.datasetDetails.sourceUrl ? (
+              <a
+                href={props.datasetDetails.sourceUrl}
+                rel="noreferrer noopener"
+                target="_blank"
+              >
+                {props.datasetDetails.sourceUrl}
+              </a>
+            ) : (
+              "NIL"
+            )}
+          </p>
         </div>
       </div>
       <div
