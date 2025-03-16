@@ -66,9 +66,8 @@ export const keyfeaturescss = {
       }
     }
     p:nth-of-type(1) {
-      font-size: 36px;
+      font-size: 40px;
       line-height: 20px;
-      font-weight: 350;
       font-family: "GothamNarrow-Bold", sans-serif;
       margin-bottom: 25px;
       margin-top: 0;
@@ -81,7 +80,6 @@ export const keyfeaturescss = {
     }
     p:nth-of-type(2) {
       font-family: "GothamNarrow-Book", sans-serif;
-      font-weight: 350;
       line-height: 30px;
       letter-spacing: 0.5px;
       font-size: 25px;
