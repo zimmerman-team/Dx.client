@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   avicss,
   flexContainercss,
@@ -34,10 +34,22 @@ export default function Profile() {
     name: user?.name || `${user?.given_name} ${user?.family_name}`,
   });
 
+  const [hasNameChanged, setHasNameChanged] = React.useState(false);
+
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
     setValues({ ...values, [name]: value });
   };
+
+  useEffect(() => {
+    if (
+      values.name !== (user?.name || `${user?.given_name} ${user?.family_name}`)
+    ) {
+      setHasNameChanged(true);
+    } else {
+      setHasNameChanged(false);
+    }
+  }, [values]);
 
   const {
     modalDisplay,
@@ -88,6 +100,7 @@ export default function Profile() {
         getAccessTokenSilently().then(() => {
           if (user) {
             user["name"] = response.data.name;
+            setHasNameChanged(false);
           }
         });
       }
@@ -252,28 +265,31 @@ export default function Profile() {
           setModalDisplay={setModalDisplay}
         />
       </div>
-      <div
-        css={`
-          margin-left: 620px;
-          @media (max-width: 1024px) {
-            margin: 0 auto;
-          }
-        `}
-      >
-        <PrimaryButton
-          type="button"
-          bg="dark"
-          size="big"
-          onClick={handleSave}
+
+      {hasNameChanged ? (
+        <div
           css={`
-            padding: 18.5px 24px;
-            height: 48px;
-            font-size: 16px;
+            margin-left: 620px;
+            @media (max-width: 1024px) {
+              margin: 0 auto;
+            }
           `}
         >
-          Save
-        </PrimaryButton>
-      </div>
+          <PrimaryButton
+            type="button"
+            bg="dark"
+            size="big"
+            onClick={handleSave}
+            css={`
+              padding: 18.5px 24px;
+              height: 48px;
+              font-size: 16px;
+            `}
+          >
+            Save
+          </PrimaryButton>
+        </div>
+      ) : null}
     </div>
   );
 }
