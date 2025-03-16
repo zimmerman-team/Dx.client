@@ -51,9 +51,7 @@ export const profilecss = css`
     margin: 0;
   }
   @media (max-width: 960px) {
-    @media (min-width: 600px) {
-      width: 100%;
-    }
+    width: 100%;
   }
 `;
 
@@ -104,6 +102,7 @@ export const flexContainercss = css`
   justify-content: space-between;
   align-items: center;
   margin-bottom: 24px;
+
   @media (max-width: 600px) {
     flex-direction: column;
     gap: 8px;
@@ -146,12 +145,17 @@ export const avicss = css`
 export const inputcss = css`
   border-radius: 16px;
   background: #f4f4f4;
-  width: 100%;
   height: 48px;
   color: #231d2c;
   width: 320px;
   padding: 14.5px 24px;
-  border: none;
+  border: 1px solid #f4f4f4;
   outline: none;
   font-size: 16px;
+  :focus {
+    border: 1px solid #231d2c;
+  }
+  @media (max-width: 600px) {
+    width: 100%;
+  }
 `;
