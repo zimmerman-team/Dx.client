@@ -40,7 +40,7 @@ export function HomepageTable(
   const getDestinationPath = (data: IData) => {
     let destinationPath = `/${data.type}/${data.id}`;
     if (data.type === "dataset") {
-      destinationPath = `/${data.type}/${data.id}/detail?${
+      destinationPath = `/${data.type}/${data.id}?${
         location.pathname === "/" ? "fromHome=true" : ""
       }`;
     }

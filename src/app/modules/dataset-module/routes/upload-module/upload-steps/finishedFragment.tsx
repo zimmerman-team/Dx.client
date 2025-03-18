@@ -33,7 +33,7 @@ export default function FinishedFragment(props: Props) {
   const queryParams = new URLSearchParams(location.search);
   const storyPage = queryParams.get("page") as string;
   const fromHome = location.search.includes("fromHome=true");
-  let redirectPath = `/dataset/${props.datasetId}/detail${
+  let redirectPath = `/dataset/${props.datasetId}${
     fromHome ? "?fromHome=true" : ""
   }`;
   if (storyPage) {

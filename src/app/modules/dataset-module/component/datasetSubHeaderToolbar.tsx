@@ -69,7 +69,6 @@ export default function DatasetSubHeaderToolbar(
   const open = Boolean(anchorEl);
   const popoverId = open ? "simple-popover" : undefined;
   const [displayMobileMenu, setDisplayMobileMenu] = React.useState(false);
-
   const loadDataset = useStoreActions(
     (actions) => actions.dataThemes.DatasetGet.fetch
   );
