@@ -44,6 +44,7 @@ import { InfoSnackbar } from "app/modules/story-module/components/storySubHeader
 import ShareModal from "app/modules/dataset-module/component/shareModal";
 import { PrimaryButton } from "app/components/Styled/button";
 import { ArrowBack } from "@material-ui/icons";
+import { MOBILE_BREAKPOINT } from "app/theme";
 
 // eslint-disable-next-line sonarjs/cognitive-complexity
 export function ChartSubheaderToolbar(
@@ -51,7 +52,7 @@ export function ChartSubheaderToolbar(
 ) {
   const classes = useStyles();
   const history = useHistory();
-  const isSmallScreen = useMediaQuery("(max-width:743px)"); //at this breakpoint, we limit user creation abilities
+  const isSmallScreen = useMediaQuery(`(max-width:${MOBILE_BREAKPOINT})`); //at this breakpoint, we limit user creation abilities
   const { user, isAuthenticated } = useAuth0();
   const token = useStoreState((state) => state.AuthToken.value);
   const titleRef = React.useRef<HTMLDivElement>(null);
@@ -634,7 +635,7 @@ export function ChartSubheaderToolbar(
                           to={`/chart/${page}/not-available`}
                           onClick={handleEditMobile}
                           css={`
-                            @media (max-width: 743px) {
+                            @media (max-width: ${MOBILE_BREAKPOINT}) {
                               svg {
                                 path {
                                   fill: #70777e;

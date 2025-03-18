@@ -156,39 +156,50 @@ export default function Billing() {
   return (
     <React.Fragment>
       {loading && <PageLoader />}
-      <div css={billingcss}>
-        <h4>Billing</h4>
-        <div>
+      <div>
+        <h4 css={billingcss.heading}>Billing</h4>
+        <div css={billingcss.section}>
           <p>Dataxplorer Plan</p>
-          <p>
-            {currentPlan}
-            {planMessage ? ` (${planMessage})` : ""}
-          </p>
-        </div>
-        <div>
-          <PrimaryButton
-            bg="dark"
-            size="small"
-            disabled={!isOnPaidPlan}
-            onClick={getGenericPortal}
+
+          <div
+            css={`
+              ${billingcss.end}
+              p {
+                font-size: 18px;
+              }
+            `}
           >
-            RENEW PLAN
-          </PrimaryButton>
-          <PrimaryButton bg="dark" size="small" onClick={getGenericPortal}>
-            UPGRADE PLAN
-          </PrimaryButton>
-          <PrimaryButton
-            bg="dark"
-            size="small"
-            disabled={!isOnPaidPlan}
-            onClick={getGenericPortal}
-          >
-            CANCEL PLAN
-          </PrimaryButton>
+            <p>
+              {currentPlan}
+              {planMessage ? ` (${planMessage})` : ""}
+            </p>
+            <div css={billingcss.planButtons}>
+              <PrimaryButton
+                bg="dark"
+                size="small"
+                disabled={!isOnPaidPlan}
+                onClick={getGenericPortal}
+              >
+                RENEW PLAN
+              </PrimaryButton>
+              <PrimaryButton bg="dark" size="small" onClick={getGenericPortal}>
+                UPGRADE PLAN
+              </PrimaryButton>
+              <PrimaryButton
+                bg="dark"
+                size="small"
+                disabled={!isOnPaidPlan}
+                onClick={getGenericPortal}
+              >
+                CANCEL PLAN
+              </PrimaryButton>
+            </div>
+          </div>
         </div>
-        <div>
-          <p>Payment method</p>
-          <div>
+
+        <div css={billingcss.section}>
+          <p>Payment method</p>{" "}
+          <div css={billingcss.end}>
             <p
               css={`
                 text-transform: uppercase;
@@ -198,21 +209,33 @@ export default function Billing() {
                 ? `${paymentMethod?.method} ••${paymentMethod?.number}`
                 : "-"}
             </p>
+            <div>
+              <PrimaryButton
+                bg="dark"
+                size="small"
+                disabled={!isOnPaidPlan}
+                onClick={changePaymentMethod}
+              >
+                CHANGE PAYMENT METHOD
+              </PrimaryButton>
+            </div>
           </div>
         </div>
-        <div>
-          <PrimaryButton
-            bg="dark"
-            size="small"
-            disabled={!isOnPaidPlan}
-            onClick={changePaymentMethod}
-          >
-            CHANGE PAYMENT METHOD
-          </PrimaryButton>
-        </div>
-        <div>
+
+        <div css={billingcss.section}>
           <p>Billing info</p>
-          <div>
+
+          <div
+            css={`
+              ${billingcss.end}
+              p:nth-child(1) {
+                margin-bottom: 0px;
+              }
+              p:nth-child(2) {
+                margin-bottom: 8px;
+              }
+            `}
+          >
             {isOnPaidPlan ? (
               <React.Fragment>
                 <p>
@@ -234,17 +257,17 @@ export default function Billing() {
             ) : (
               "-"
             )}
+            <div>
+              <PrimaryButton
+                bg="dark"
+                size="small"
+                disabled={!isOnPaidPlan}
+                onClick={getGenericPortal}
+              >
+                CHANGE BILLING INFO
+              </PrimaryButton>
+            </div>
           </div>
-        </div>
-        <div>
-          <PrimaryButton
-            bg="dark"
-            size="small"
-            disabled={!isOnPaidPlan}
-            onClick={getGenericPortal}
-          >
-            CHANGE BILLING INFO
-          </PrimaryButton>
         </div>
         <div
           css={`

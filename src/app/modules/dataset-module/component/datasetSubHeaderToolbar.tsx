@@ -33,6 +33,7 @@ import DuplicateMessage from "app/modules/common/mobile-duplicate-message";
 import { PrimaryButton } from "app/components/Styled/button";
 import { ArrowBack } from "@material-ui/icons";
 import ArrowBackIosIcon from "@material-ui/icons/ArrowBackIos";
+import { MOBILE_BREAKPOINT } from "app/theme";
 
 export default function DatasetSubHeaderToolbar(
   props: Readonly<{ name: string }>
@@ -43,7 +44,7 @@ export default function DatasetSubHeaderToolbar(
   const [_assetIdToShare, setAssetIdToShare] = useRecoilState(
     shareAssetDetailsAtom
   );
-  const isSmallScreen = useMediaQuery("(max-width:743px)"); //at this breakpoint, we limit user creation abilities
+  const isSmallScreen = useMediaQuery(`(max-width:${MOBILE_BREAKPOINT})`); //at this breakpoint, we limit user creation abilities
   const { page } = useParams<{ page: string }>();
   const token = useStoreState((state) => state.AuthToken.value);
   const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(
@@ -399,7 +400,7 @@ export default function DatasetSubHeaderToolbar(
                           to={`/dataset/${page}/not-available`}
                           onClick={handleEditMobile}
                           css={`
-                            @media (max-width: 743px) {
+                            @media (max-width: ${MOBILE_BREAKPOINT}) {
                               svg {
                                 path {
                                   fill: #70777e;

@@ -17,6 +17,7 @@ import DeleteAccountDialog from "app/components/Dialogs/deleteAccountDialog";
 import { PrimaryButton } from "app/components/Styled/button";
 import useProfileSettings from "./settings-hook";
 import { PageLoader } from "app/modules/common/page-loader";
+import { MOBILE_BREAKPOINT } from "app/theme";
 
 interface State {
   password: string;
@@ -169,7 +170,7 @@ export default function Profile() {
                 margin-left: auto;
                 margin-top: -16px;
                 margin-bottom: 24px;
-                @media (max-width: 600px) {
+                @media (max-width: ${MOBILE_BREAKPOINT}) {
                   margin-left: 0;
                   width: 100%;
                 }
@@ -236,8 +237,10 @@ export default function Profile() {
                 gap: 16px;
                 align-items: center;
                 width: 320px;
-                @media (max-width: 600px) {
+                @media (max-width: ${MOBILE_BREAKPOINT}) {
                   width: 100%;
+                  display: flex;
+                  justify-content: flex-end;
                 }
               `}
             >
@@ -250,6 +253,7 @@ export default function Profile() {
                   padding: 12px 24px;
                   height: 35px;
                   font-size: 16px;
+                  width: 156px;
                 `}
               >
                 Delete account

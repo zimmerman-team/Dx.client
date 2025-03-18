@@ -1,5 +1,5 @@
 import { css } from "styled-components";
-
+import { MOBILE_BREAKPOINT } from "app/theme";
 export const layoutcss = css`
   margin-top: 50px;
   display: flex;
@@ -39,7 +39,7 @@ export const profilecss = css`
   h4 {
     font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
     font-weight: 700;
-    font-size: 24px;
+    font-size: 36px;
     color: #6061e5;
     margin: 0;
     margin-bottom: 24px;
@@ -55,47 +55,74 @@ export const profilecss = css`
   }
 `;
 
-export const billingcss = css`
-  h4 {
+export const billingcss = {
+  heading: css`
     color: #6061e5;
     font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
-    font-size: 24px;
+    font-size: 36px;
     height: 38px;
     margin: 0;
     margin-bottom: 24px;
-  }
-
-  & > div:nth-of-type(1),
-  & > div:nth-of-type(3),
-  & > div:nth-of-type(5) {
+  `,
+  section: css`
     display: flex;
-    gap: 123px;
-    align-items: center;
+    gap: 50px;
+    align-items: flex-start;
     margin-bottom: 24px;
-    p {
-      margin: 0;
-      font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
-    }
-    p:nth-child(1) {
-      width: 134px;
-    }
-    p:nth-child(2) {
+
+    > p:nth-child(1) {
+      min-width: 130px;
+      font-family: "GothamNarrow-Book", "Helvetica Neue", sans-serif;
+      font-size: 18px;
       color: #231d2c;
-      font-size: 14px;
+      margin: 0px;
     }
-  }
-  & > div:nth-of-type(2) {
+    @media (max-width: ${MOBILE_BREAKPOINT}) {
+      margin-bottom: 24px;
+      gap: 8px;
+      flex-wrap: wrap;
+      > p:nth-child(1) {
+        width: 100%;
+      }
+    }
+  `,
+  end: css`
+    p {
+      font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
+      font-size: 14px;
+      line-height: 24px;
+      margin-bottom: 8px;
+      margin-top: 0px;
+    }
+    @media (max-width: ${MOBILE_BREAKPOINT}) {
+      width: 100%;
+      display: flex;
+      flex-wrap: wrap;
+      p {
+        width: 100%;
+      }
+      div {
+        width: 100%;
+        button {
+          justify-self: flex-end;
+          width: max-content;
+        }
+      }
+    }
+  `,
+  planButtons: css`
     display: flex;
     gap: 16px;
-    align-items: center;
-    margin-bottom: 48px;
-  }
-  & > div:nth-of-type(4) {
-    margin-bottom: 48px;
-  }
-  & > div:nth-of-type(6) {
-  }
-`;
+    @media (max-width: ${MOBILE_BREAKPOINT}) {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: end;
+      width: max-content;
+    }
+  `,
+  billingInfo: css``,
+};
 
 export const flexContainercss = css`
   display: flex;
@@ -103,7 +130,7 @@ export const flexContainercss = css`
   align-items: center;
   margin-bottom: 24px;
 
-  @media (max-width: 600px) {
+  @media (max-width: ${MOBILE_BREAKPOINT}) {
     flex-direction: column;
     gap: 8px;
     align-items: flex-start;
@@ -155,7 +182,7 @@ export const inputcss = css`
   :focus {
     border: 1px solid #231d2c;
   }
-  @media (max-width: 600px) {
+  @media (max-width: ${MOBILE_BREAKPOINT}) {
     width: 100%;
   }
 `;

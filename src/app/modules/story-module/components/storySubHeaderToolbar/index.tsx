@@ -40,6 +40,7 @@ import DuplicateMessage from "app/modules/common/mobile-duplicate-message";
 import { ExportStoryButton } from "./exportButton";
 import { PrimaryButton } from "app/components/Styled/button";
 import { ArrowBack } from "@material-ui/icons";
+import { MOBILE_BREAKPOINT } from "app/theme";
 
 export const useStyles = makeStyles(() =>
   createStyles({
@@ -64,8 +65,7 @@ export function StorySubheaderToolbar(
   const history = useHistory();
   const classes = useStyles();
   const { user, isAuthenticated } = useAuth0();
-  const isMobile = useMediaQuery("(max-width: 743px)"); //at this breakpoint, we limit user creation abilities
-  const isSmallScreen = useMediaQuery("(max-width:743px)"); //at this breakpoint, we limit user creation abilities
+  const isMobile = useMediaQuery(`(max-width: ${MOBILE_BREAKPOINT})`); //at this breakpoint, we limit user creation abilities
   const titleRef = React.useRef<HTMLDivElement>(null);
   const { page, view } = useParams<{ page: string; view?: string }>();
   const token = useStoreState((state) => state.AuthToken.value);
@@ -533,7 +533,7 @@ export function StorySubheaderToolbar(
               )}
               {page !== "new" && !view && (
                 <div css={styles.previewEndContainer}>
-                  {!isSmallScreen && (
+                  {!isMobile && (
                     <React.Fragment>
                       <ExportStoryButton filename={props.name} />
                       <Tooltip title="Duplicate">
@@ -607,7 +607,7 @@ export function StorySubheaderToolbar(
                       )}
                     </React.Fragment>
                   )}
-                  {isSmallScreen && (
+                  {isMobile && (
                     <React.Fragment>
                       <IconButton
                         aria-describedby={id}
@@ -648,7 +648,7 @@ export function StorySubheaderToolbar(
                               onClick={handleEditMobile}
                               data-testid="edit-button"
                               css={`
-                                @media (max-width: 743px) {
+                                @media (max-width: ${MOBILE_BREAKPOINT}) {
                                   svg {
                                     path {
                                       fill: #70777e;

@@ -34,10 +34,11 @@ import useAutosave from "app/hooks/useAutoSave";
 import DownloadedView from "./views/downloaded-view";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import NotAvailableOnMobile from "app/modules/common/not-available";
+import { MOBILE_BREAKPOINT } from "app/theme";
 
 export default function StoryModule() {
   const { user, isAuthenticated } = useAuth0();
-  const isSmallScreen = useMediaQuery("(max-width:743px)"); //at this breakpoint, we limit user creation abilities
+  const isSmallScreen = useMediaQuery(`(max-width:${MOBILE_BREAKPOINT})`); //at this breakpoint, we limit user creation abilities
   const history = useHistory();
   const aiTemplateString = "ai-template";
   const { page, view } = useParams<{

@@ -7,13 +7,14 @@ import EditMetaData from "app/modules/dataset-module/routes/edit";
 import { NoMatchPage } from "app/modules/common/no-match-page";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import NotAvailableOnMobile from "app/modules/common/not-available";
+import { MOBILE_BREAKPOINT } from "app/theme";
 
 export default function DatasetDetailModule() {
   useTitle("Dataxplorer - Datasets");
   const { page, view } = useParams<{ page: string; view?: string }>();
 
   const [datasetId, setDatasetId] = React.useState("");
-  const isSmallScreen = useMediaQuery("(max-width:743px)"); //at this breakpoint, we limit user creation abilities
+  const isSmallScreen = useMediaQuery(`(max-width:${MOBILE_BREAKPOINT})`); //at this breakpoint, we limit user creation abilities
   const history = useHistory();
   React.useEffect(() => {
     if (isSmallScreen && view !== undefined) {

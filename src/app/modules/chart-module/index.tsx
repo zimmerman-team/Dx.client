@@ -64,11 +64,12 @@ import { APPLICATION_JSON } from "app/state/api";
 import HomeFooter from "app/modules/home-module/components/Footer";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import NotAvailableOnMobile from "app/modules/common/not-available";
+import { MOBILE_BREAKPOINT } from "app/theme";
 
 // eslint-disable-next-line sonarjs/cognitive-complexity
 export default function ChartModule() {
   const { user, isLoading, isAuthenticated } = useAuth0();
-  const isSmallScreen = useMediaQuery("(max-width:743px)"); //at this breakpoint, we limit user creation abilities
+  const isSmallScreen = useMediaQuery(`(max-width:${MOBILE_BREAKPOINT})`); //at this breakpoint, we limit user creation abilities
   const token = useStoreState((state) => state.AuthToken.value);
   const history = useHistory();
   const { page, view } = useParams<{ page: string; view?: string }>();
