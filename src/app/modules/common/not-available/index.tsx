@@ -1,11 +1,13 @@
+import React from "react";
 import { PrimaryButton } from "app/components/Styled/button";
 import { ReactComponent as SmileIcon } from "./asset/smile.svg";
-import React from "react";
-import { useHistory } from "react-router-dom";
+import { useHistory, useLocation } from "react-router-dom";
 import { useRecoilValue } from "recoil";
 import { shareAssetDetailsAtom } from "app/state/recoil/atoms";
+import useMediaQuery from "@material-ui/core/useMediaQuery";
 
 export default function NotAvailableOnMobile() {
+  const isTablet = useMediaQuery("(min-width:744px)"); //at this breakpoint, we limit user creation abilities
   const content = useRecoilValue(shareAssetDetailsAtom);
   const shareData = {
     title: "Dataxplorer",
@@ -13,6 +15,7 @@ export default function NotAvailableOnMobile() {
     url: content.assetURL,
   };
   const history = useHistory();
+  const location = useLocation();
   const [result, setResult] = React.useState("");
 
   const handleShare = async () => {
@@ -25,8 +28,17 @@ export default function NotAvailableOnMobile() {
   };
 
   const handleBackToPreview = () => {
-    history.goBack();
+    const currentPath = location.pathname.split("/");
+    currentPath.pop();
+    const pathToGo = currentPath.join("/");
+    history.push(pathToGo);
   };
+
+  React.useEffect(() => {
+    if (isTablet) {
+      history.goBack();
+    }
+  }, [isTablet]);
 
   return (
     <div
@@ -57,6 +69,8 @@ export default function NotAvailableOnMobile() {
             letter-spacing: 0%;
             text-align: center;
             margin-top: 42px;
+            color: #6061e5;
+            width: 98%;
           `}
         >
           Sorry, editing feature is not supported on mobile.
@@ -69,6 +83,7 @@ export default function NotAvailableOnMobile() {
             text-align: center;
             margin: 0px;
             margin-top: 8px;
+            width: 92%;
           `}
         >
           This feature is not supported on mobile due to layout limitation.

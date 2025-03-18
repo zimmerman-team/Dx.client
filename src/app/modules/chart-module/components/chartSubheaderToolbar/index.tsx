@@ -1,6 +1,5 @@
 import React from "react";
 import axios from "axios";
-import isEmpty from "lodash/isEmpty";
 import { useRecoilState, useSetRecoilState } from "recoil";
 import { useAuth0 } from "@auth0/auth0-react";
 import Button from "@material-ui/core/Button";
@@ -52,8 +51,7 @@ export function ChartSubheaderToolbar(
 ) {
   const classes = useStyles();
   const history = useHistory();
-  const isMobile = useMediaQuery("(max-width: 599px)");
-  const isSmallScreen = useMediaQuery("(max-width:788px)"); //at this breakpoint, we limit user creation abilities
+  const isSmallScreen = useMediaQuery("(max-width:743px)"); //at this breakpoint, we limit user creation abilities
   const { user, isAuthenticated } = useAuth0();
   const token = useStoreState((state) => state.AuthToken.value);
   const titleRef = React.useRef<HTMLDivElement>(null);
@@ -65,8 +63,6 @@ export function ChartSubheaderToolbar(
   const [enableButton, setEnableButton] = React.useState<boolean>(false);
   const [displayEmbedModal, setDisplayEmbedModal] = React.useState(false);
   const [openSnackbar, setOpenSnackbar] = React.useState(false);
-  const [hasChangesBeenMade, setHasChangesBeenMade] = React.useState(false);
-
   const [inputSpanVisibiltiy, setInputSpanVisibility] = React.useState(true);
   const [duplicatedChartId, setDuplicatedChartId] = React.useState<
     string | null
@@ -78,7 +74,7 @@ export function ChartSubheaderToolbar(
   React.useState<HTMLButtonElement | null>(null);
   const [chartFromStory, setChartFromStory] =
     useRecoilState(chartFromStoryAtom);
-  const [assetIdToShare, setAssetIdToShare] = useRecoilState(
+  const [_assetIdToShare, setAssetIdToShare] = useRecoilState(
     shareAssetDetailsAtom
   );
   const mapping = useStoreState((state) => state.charts.mapping.value);
@@ -127,8 +123,20 @@ export function ChartSubheaderToolbar(
     message: "Your chart has been successfully duplicated!",
   });
 
-  React.useEffect(() => {
-    setHasChangesBeenMade(compareStateChanges);
+  const compareStateChanges = () => {
+    if (loadedChart.id !== page) return false;
+    return (
+      !isEqual(props.name, loadedChart.name) ||
+      !isEqual(selectedChartType, loadedChart.vizType) ||
+      !isEqual(mapping, loadedChart.mapping) ||
+      !isEqual(dataset as string, loadedChart.datasetId as string) ||
+      !isEqual(props.visualOptions, loadedChart.vizOptions) ||
+      !isEqual(appliedFilters, loadedChart.appliedFilters)
+    );
+  };
+
+  const hasChangesBeenMade = React.useMemo(() => {
+    return compareStateChanges();
   }, [
     props.name,
     selectedChartType,
@@ -155,10 +163,12 @@ export function ChartSubheaderToolbar(
       appliedFilters,
     ]
   );
-
-  const isPreviewDisabled: boolean = React.useMemo(() => {
-    return isEmpty(selectedChartType) || !isMappingValid || view === "preview";
-  }, [selectedChartType, mapping, view, editChartCrudData]);
+  const handleEditMobile = () => {
+    setAssetIdToShare({
+      assetURL: `/chart/${page}/customize`,
+      title: props.name,
+    });
+  };
 
   const handleDeleteModalInputChange = (
     e: React.ChangeEvent<HTMLInputElement>
@@ -171,7 +181,7 @@ export function ChartSubheaderToolbar(
   };
 
   const handleShare = () => {
-    if (isMobile) {
+    if (isSmallScreen) {
       setIsShareModalOpen(true);
     } else {
       setDisplayEmbedModal(true);
@@ -201,17 +211,6 @@ export function ChartSubheaderToolbar(
     } else {
       history.push(`/chart/${page}/customize`);
     }
-  };
-  const compareStateChanges = () => {
-    if (loadedChart.id !== page) return false;
-    return (
-      !isEqual(props.name, loadedChart.name) ||
-      !isEqual(selectedChartType, loadedChart.vizType) ||
-      !isEqual(mapping, loadedChart.mapping) ||
-      !isEqual(dataset as string, loadedChart.datasetId as string) ||
-      !isEqual(props.visualOptions, loadedChart.vizOptions) ||
-      !isEqual(appliedFilters, loadedChart.appliedFilters)
-    );
   };
 
   const open = Boolean(anchorEl);
@@ -329,7 +328,7 @@ export function ChartSubheaderToolbar(
               data-cy="dataset-back-to-library-btn"
             >
               <Tooltip title="Back to Dashboard">
-                {isMobile ? (
+                {isSmallScreen ? (
                   <ArrowBackIosIcon fontSize="small" />
                 ) : (
                   <ArrowBack fontSize={"small"} />
@@ -615,28 +614,36 @@ export function ChartSubheaderToolbar(
                       transition: opacity 211ms cubic-bezier(0.4, 0, 0.2, 1),
                         transform 141ms cubic-bezier(0.4, 0, 0.2, 1);
                       border-radius: 4px;
-                      background: var(--Secondary-Background-grey, #f4f4f4);
+                      background: #f4f4f4;
                       display: flex;
                       height: 56px;
                       padding: 16px;
                       align-items: center;
                       gap: 16px;
                       flex-shrink: 0;
+                      a {
+                        height: 100%;
+                        padding: 0;
+                      }
                     `}
                   >
                     {canChartEditDelete && (
                       <Tooltip title="Edit">
                         <Link
                           aria-label="edit-button"
-                          to={`/not-available`}
-                          onClick={() => {
-                            setAssetIdToShare({
-                              assetURL: `/chart/${page}/customize`,
-                              title: props.name,
-                            });
-                          }}
+                          to={`/chart/${page}/not-available`}
+                          onClick={handleEditMobile}
+                          css={`
+                            @media (max-width: 743px) {
+                              svg {
+                                path {
+                                  fill: #70777e;
+                                }
+                              }
+                            }
+                          `}
                         >
-                          <EditIcon htmlColor="#262c34" />
+                          <EditIcon htmlColor={"#262c34"} />
                         </Link>
                       </Tooltip>
                     )}
@@ -696,7 +703,7 @@ export function ChartSubheaderToolbar(
             </CopyToClipboard>
           </div>
         </Popover>
-        {isMobile ? (
+        {isSmallScreen ? (
           <InfoSnackbar
             anchorOrigin={{
               vertical: snackbarState.vertical,

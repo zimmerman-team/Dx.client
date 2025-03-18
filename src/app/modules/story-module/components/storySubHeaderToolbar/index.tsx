@@ -1,6 +1,6 @@
 import React from "react";
 import axios from "axios";
-import { useSetRecoilState } from "recoil";
+import { useRecoilState, useSetRecoilState } from "recoil";
 import { useAuth0 } from "@auth0/auth0-react";
 import Button from "@material-ui/core/Button";
 import SaveIcon from "@material-ui/icons/Save";
@@ -18,8 +18,9 @@ import CopyToClipboard from "react-copy-to-clipboard";
 import FileCopyIcon from "@material-ui/icons/FileCopy";
 import AutorenewIcon from "@material-ui/icons/Autorenew";
 import CloudDoneIcon from "@material-ui/icons/CloudDone";
-import { planDialogAtom } from "app/state/recoil/atoms";
+import { planDialogAtom, shareAssetDetailsAtom } from "app/state/recoil/atoms";
 import { PageLoader } from "app/modules/common/page-loader";
+import MoreIcon from "@material-ui/icons/MoreVert";
 import { createStyles, makeStyles, useMediaQuery } from "@material-ui/core";
 import { Link, useHistory, useParams } from "react-router-dom";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
@@ -63,8 +64,8 @@ export function StorySubheaderToolbar(
   const history = useHistory();
   const classes = useStyles();
   const { user, isAuthenticated } = useAuth0();
-  const isMobile = useMediaQuery("(max-width: 599px)");
-  const isTabletView = useMediaQuery("(min-width: 768px)"); //at this breakpoint, we limit user creation abilities
+  const isMobile = useMediaQuery("(max-width: 743px)"); //at this breakpoint, we limit user creation abilities
+  const isSmallScreen = useMediaQuery("(max-width:743px)"); //at this breakpoint, we limit user creation abilities
   const titleRef = React.useRef<HTMLDivElement>(null);
   const { page, view } = useParams<{ page: string; view?: string }>();
   const token = useStoreState((state) => state.AuthToken.value);
@@ -122,6 +123,10 @@ export function StorySubheaderToolbar(
   const storyEditLoading = useStoreState(
     (state) => state.stories.StoryUpdate.loading
   );
+  const [_assetIdToShare, setAssetIdToShare] = useRecoilState(
+    shareAssetDetailsAtom
+  );
+  const [displayMobileMenu, setDisplayMobileMenu] = React.useState(false);
 
   React.useEffect(() => {
     // handles saved changes state for autosave
@@ -137,6 +142,12 @@ export function StorySubheaderToolbar(
     };
   }, [storyEditSuccess]);
 
+  const handleEditMobile = () => {
+    setAssetIdToShare({
+      assetURL: `/chart/${page}/customize`,
+      title: props.name,
+    });
+  };
   const handleDeleteModalInputChange = (
     e: React.ChangeEvent<HTMLInputElement>
   ) => {
@@ -522,74 +533,155 @@ export function StorySubheaderToolbar(
               )}
               {page !== "new" && !view && (
                 <div css={styles.previewEndContainer}>
-                  {isTabletView && <ExportStoryButton filename={props.name} />}
+                  {!isSmallScreen && (
+                    <React.Fragment>
+                      <ExportStoryButton filename={props.name} />
+                      <Tooltip title="Duplicate">
+                        <IconButton
+                          onClick={
+                            isAuthenticated ? handleDuplicate : handleSignIn
+                          }
+                          data-testid="duplicate-button"
+                        >
+                          <FileCopyIcon htmlColor="#262c34" />
+                        </IconButton>
+                      </Tooltip>
 
-                  <Tooltip title="Duplicate">
-                    <IconButton
-                      onClick={isAuthenticated ? handleDuplicate : handleSignIn}
-                      data-testid="duplicate-button"
-                    >
-                      <FileCopyIcon htmlColor="#262c34" />
-                    </IconButton>
-                  </Tooltip>
-
-                  <Tooltip title="Share">
-                    <IconButton
-                      onClick={handleSharePopup}
-                      data-testid="share-button"
-                    >
-                      <ShareIcon htmlColor="#262c34" />
-                    </IconButton>
-                  </Tooltip>
-                  <Popover
-                    id={id}
-                    open={open}
-                    anchorEl={anchorEl}
-                    onClose={handleClose}
-                    anchorOrigin={{
-                      vertical: "bottom",
-                      horizontal: "right",
-                    }}
-                    transformOrigin={{
-                      vertical: "top",
-                      horizontal: "right",
-                    }}
-                    css={`
-                      .MuiPaper-root {
-                        border-radius: 10px;
-                        background: #495057;
-                      }
-                    `}
-                  >
-                    <div css={styles.sharePopup}>
-                      <CopyToClipboard
-                        text={window.location.href}
-                        onCopy={handleCopy}
+                      <Tooltip title="Share">
+                        <IconButton
+                          onClick={handleSharePopup}
+                          data-testid="share-button"
+                        >
+                          <ShareIcon htmlColor="#262c34" />
+                        </IconButton>
+                      </Tooltip>
+                      <Popover
+                        id={id}
+                        open={open}
+                        anchorEl={anchorEl}
+                        onClose={handleClose}
+                        anchorOrigin={{
+                          vertical: "bottom",
+                          horizontal: "right",
+                        }}
+                        transformOrigin={{
+                          vertical: "top",
+                          horizontal: "right",
+                        }}
+                        css={`
+                          .MuiPaper-root {
+                            border-radius: 10px;
+                            background: #495057;
+                          }
+                        `}
                       >
-                        <Button startIcon={<LinkIcon />}>Copy link</Button>
-                      </CopyToClipboard>
-                    </div>
-                  </Popover>
-                  {canStoryEditDelete && isTabletView && (
-                    <Tooltip title="Edit">
-                      <IconButton
-                        component={Link}
-                        to={`/story/${page}/edit`}
-                        data-testid="edit-button"
-                      >
-                        <EditIcon htmlColor="#262c34" />
-                      </IconButton>
-                    </Tooltip>
+                        <div css={styles.sharePopup}>
+                          <CopyToClipboard
+                            text={window.location.href}
+                            onCopy={handleCopy}
+                          >
+                            <Button startIcon={<LinkIcon />}>Copy link</Button>
+                          </CopyToClipboard>
+                        </div>
+                      </Popover>
+                      {canStoryEditDelete && (
+                        <Tooltip title="Edit">
+                          <IconButton
+                            component={Link}
+                            to={`/story/${page}/edit`}
+                            data-testid="edit-button"
+                          >
+                            <EditIcon htmlColor="#262c34" />
+                          </IconButton>
+                        </Tooltip>
+                      )}
+                      {canStoryEditDelete && (
+                        <Tooltip title="Delete">
+                          <IconButton
+                            onClick={handleModalDisplay}
+                            data-testid="delete-button"
+                          >
+                            <DeleteIcon htmlColor="#262c34" />
+                          </IconButton>
+                        </Tooltip>
+                      )}
+                    </React.Fragment>
                   )}
-                  {canStoryEditDelete && isTabletView && (
-                    <Tooltip title="Delete">
+                  {isSmallScreen && (
+                    <React.Fragment>
                       <IconButton
-                        onClick={handleModalDisplay}
-                        data-testid="delete-button"
+                        aria-describedby={id}
+                        onClick={() => setDisplayMobileMenu(!displayMobileMenu)}
+                        aria-label="more"
+                        data-testid="more-button"
                       >
-                        <DeleteIcon htmlColor="#262c34" />
+                        <MoreIcon htmlColor="#262c34" />
                       </IconButton>
-                    </Tooltip>
+                      <div
+                        css={`
+                          position: absolute;
+                          top: 100%;
+                          right: -4px;
+                          opacity: ${displayMobileMenu ? 1 : 0};
+                          box-shadow: 0px 0px 10px 0px #98a1aa99;
+                          transition: opacity 211ms cubic-bezier(0.4, 0, 0.2, 1),
+                            transform 141ms cubic-bezier(0.4, 0, 0.2, 1);
+                          border-radius: 4px;
+                          background: #f4f4f4;
+                          display: flex;
+                          height: 56px;
+                          padding: 16px;
+                          align-items: center;
+                          gap: 16px;
+                          flex-shrink: 0;
+                          a {
+                            height: 100%;
+                            padding: 0;
+                          }
+                        `}
+                      >
+                        {canStoryEditDelete && (
+                          <Tooltip title="Edit">
+                            <IconButton
+                              component={Link}
+                              to={`/story/${page}/not-available`}
+                              onClick={handleEditMobile}
+                              data-testid="edit-button"
+                              css={`
+                                @media (max-width: 743px) {
+                                  svg {
+                                    path {
+                                      fill: #70777e;
+                                    }
+                                  }
+                                }
+                              `}
+                            >
+                              <EditIcon htmlColor="#262c34" />
+                            </IconButton>
+                          </Tooltip>
+                        )}
+
+                        <Tooltip title="Duplicate">
+                          <IconButton
+                            onClick={
+                              isAuthenticated ? handleDuplicate : handleSignIn
+                            }
+                            data-testid="duplicate-button"
+                          >
+                            <FileCopyIcon htmlColor="#262c34" />
+                          </IconButton>
+                        </Tooltip>
+                        <Tooltip title="Share">
+                          <IconButton
+                            onClick={handleSharePopup}
+                            data-testid="share-button"
+                          >
+                            <ShareIcon htmlColor="#262c34" />
+                          </IconButton>
+                        </Tooltip>
+                      </div>
+                    </React.Fragment>
                   )}
                 </div>
               )}
