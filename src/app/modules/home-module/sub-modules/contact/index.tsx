@@ -163,7 +163,7 @@ export default function ContactModule() {
                 font-size: 20px;
                 line-height: 18px;
                 text-align: center;
-                font-family: "GothamNarrow-Medium", sans-serif;
+                font-family: "GothamNarrow-Book", sans-serif;
                 margin: 0;
                 margin-top: 24px;
 
@@ -197,7 +197,7 @@ export default function ContactModule() {
                 }
               `}
             />
-            <h4>Contact us!</h4>
+            <h4>Contact us</h4>
             <p>
               Schedule a free demo now or ask us any data related <br />{" "}
               question you may have.

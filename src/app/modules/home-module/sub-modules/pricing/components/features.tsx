@@ -14,7 +14,7 @@ const Features = () => {
       title: "Connect Data",
       subtitle:
         "Effortlessly integrate your data from multiple sources with our comprehensive data connection features.",
-      color: "#73D3CD",
+      color: "#DADAF8",
       icon: BackupIcon,
       options: [
         {

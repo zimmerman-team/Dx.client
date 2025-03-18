@@ -53,12 +53,14 @@ export default function WhyDX() {
               <TryUsBlock />
               <div
                 css={`
-                  height: 50px;
+                  height: 120px;
+                  @media (max-width: 1024px) {
+                    height: 40px;
+                  }
                 `}
               />
             </Container>
           </div>
-          <div css="width: 100%;height: 19px" />
         </div>
         <HomeFooter />
       </div>

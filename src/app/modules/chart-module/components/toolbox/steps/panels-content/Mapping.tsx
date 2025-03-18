@@ -740,7 +740,12 @@ const DimensionSelect = (props: {
             css={mappingStyles.selectedButtoncss(props.dimension)}
             data-cy="chart-dimension-select"
           >
-            <span>
+            <span
+              css={`
+                text-align: center;
+                width: 100%;
+              `}
+            >
               {props.getSelectButtonLabel(
                 props.dimension.mappedValues,
                 !!props.dimension?.multiple

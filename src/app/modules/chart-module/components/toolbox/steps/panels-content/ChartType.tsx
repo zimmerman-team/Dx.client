@@ -8,7 +8,57 @@ import {
   ChartTypeModel,
 } from "app/modules/chart-module/routes/chart-type/data";
 import ToolboxSubHeader from "app/modules/chart-module/components/toolbox/steps/sub-header";
+import { ReactComponent as InfoIcon } from "app/modules/chart-module/assets/info-icon.svg";
+import { ReactComponent as DateIcon } from "app/modules/chart-module/assets/dateIcon.svg";
+import { ReactComponent as NumberIcon } from "app/modules/chart-module/assets/numberIcon.svg";
+import { ReactComponent as StringIcon } from "app/modules/chart-module/assets/stringIcon.svg";
 import { Box, Grid } from "@material-ui/core";
+import {
+  echartsBarchart,
+  echartsGeomap,
+  echartsLinechart,
+  echartsAreatimeaxis,
+  echartsAreastack,
+  echartsSankey,
+  echartsTreemap,
+  bigNumber,
+  echartsSunburst,
+  echartsForcegraph,
+  echartsCirculargraph,
+  echartsCirclepacking,
+  echartsBubblechart,
+  echartsMultisetBarchart,
+  echartsStackedBarchart,
+  echartsScatterchart,
+  echartsHeatmap,
+  echartsGraphgl,
+  echartsRadarchart,
+  echartsPiechart,
+  // @ts-ignore
+} from "@rawgraphs/rawgraphs-charts";
+
+export const charts = {
+  echartsBarchart,
+  echartsGeomap,
+  echartsLinechart,
+  echartsAreatimeaxis,
+  echartsAreastack,
+  echartsSankey,
+  echartsTreemap,
+  bigNumber,
+  echartsSunburst,
+  echartsForcegraph,
+  echartsCirculargraph,
+  echartsCirclepacking,
+  echartsBubblechart,
+  echartsMultisetBarchart,
+  echartsStackedBarchart,
+  echartsScatterchart,
+  echartsHeatmap,
+  echartsGraphgl,
+  echartsRadarchart,
+  echartsPiechart,
+};
 
 export function ChartToolBoxChartType() {
   const chartType = useStoreState((state) => state.charts.chartType.value);
@@ -20,24 +70,15 @@ export function ChartToolBoxChartType() {
     );
   }, [chartType]);
 
-  const topGap = React.useMemo(() => {
-    return fChartType?.id === "echartsGeomap" ? 33 : 20;
-  }, [fChartType]);
+  const echart: any = React.useMemo(() => {
+    return charts[chartType as keyof typeof charts];
+  }, [chartType]);
 
-  const bottomGap = React.useMemo(() => {
-    switch (fChartType?.id) {
-      case "echartsGeomap":
-        return 33;
-      case "echartsSunburst":
-      case "echartsLinechart":
-      case "echartsTreemap":
-        return 31;
-      case "bigNumber":
-        return 37;
-      default:
-        return 45;
-    }
-  }, [fChartType]);
+  const typeIcon = {
+    string: <StringIcon />,
+    number: <NumberIcon />,
+    date: <DateIcon />,
+  };
 
   return (
     <>
@@ -46,134 +87,270 @@ export function ChartToolBoxChartType() {
         level={2}
         tooltip="Please select a suitable chart type for your data or let the AI Agent assist you in making a choice."
       />
-      <Box height={16} />
 
       <div
         css={`
-          width: 90%;
-          margin: auto;
-          display: flex;
-          flex-direction: column;
-          ${!chartType && !fChartType && `height: 340px;`}
-          align-items: ${chartType && fChartType ? "flex-start" : "center"};
-          justify-content: ${chartType && fChartType ? "flex-start" : "center"};
+          margin: 16px 24px;
+          overflow-y: auto;
+          max-height: calc(100vh - 320px);
         `}
       >
-        {!chartType && (
-          <div
-            css={`
-              color: #262c34;
-              font-size: 14px;
-              font-family: "GothamNarrow-Book", "Helvetica Neue", sans-serif;
-              background: #dfe3e5;
-              height: 349px;
-              width: 98%;
-              border-radius: 11px;
-              justify-content: center;
-              align-items: center;
-              display: flex;
-            `}
-          >
-            <b>Please select a chart type</b>
-          </div>
-        )}
-        {chartType && fChartType && (
-          <Grid container item spacing={2} direction="column">
-            <Grid item xs={12} sm={12} md={12}>
+        <div
+          css={`
+            display: flex;
+            flex-direction: column;
+            align-items: ${chartType && fChartType ? "flex-start" : "center"};
+            justify-content: ${chartType && fChartType
+              ? "flex-start"
+              : "center"};
+          `}
+        >
+          {!chartType && (
+            <div
+              css={`
+                color: #262c34;
+                font-size: 14px;
+                font-family: "GothamNarrow-Book", "Helvetica Neue", sans-serif;
+                background: #dfe3e5;
+                height: 349px;
+                width: 100%;
+                border-radius: 12px;
+                justify-content: center;
+                align-items: center;
+                display: flex;
+              `}
+            >
+              <b>Please select a chart type</b>
+            </div>
+          )}
+          {chartType && fChartType && (
+            <div
+              css={`
+                background: #dfe3e5;
+                width: 100%;
+                padding: 8px 16px;
+                border-radius: 12px;
+                color: #231d2c;
+              `}
+              data-cy="chart-type-preview"
+            >
               <div
                 css={`
-                  background: #dfe3e5;
-                  width: 100%;
-                  padding-left: 22px;
-                  padding-right: 18px;
-                  padding-top: 7px;
-                  border-radius: 8px;
-                  height: 349px;
-
-                  color: #231d2c;
+                  display: flex;
+                  user-select: none;
+                  flex-direction: row;
+                  align-items: center;
+                  gap: 16px;
                 `}
-                data-cy="chart-type-preview"
               >
+                {fChartType.icon}
                 <div
                   css={`
-                    height: 64px;
                     display: flex;
-                    user-select: none;
-                    flex-direction: row;
-                    align-items: center;
+                    flex-direction: column;
                   `}
                 >
-                  {fChartType.icon}
-                  <div
-                    css={`
-                      display: flex;
-                      margin-left: 15px;
-                      flex-direction: column;
-                    `}
-                  >
-                    <p
-                      css={`
-                        font-size: 14px;
-                        margin: 0px;
-                        line-height: 20px;
-                        font-family: "GothamNarrow-Bold", "Helvetica Neue",
-                          sans-serif;
-                      `}
-                    >
-                      {fChartType.label}
-                    </p>
-
-                    <p
-                      css={`
-                        font-size: 12px;
-                        font-family: "GothamNarrow-Book", "Helvetica Neue",
-                          sans-serif;
-                        margin: 0px;
-                      `}
-                    >
-                      {fChartType.categories.join(", ")}
-                    </p>
-                  </div>
-                </div>
-                <div
-                  css={`
-                    height: ${topGap}px;
-                  `}
-                />
-
-                <>
-                  <div
-                    css={`
-                      height: 150px;
-                      display: flex;
-                      align-items: center;
-                      justify-content: center;
-                    `}
-                  >
-                    {fChartType.preview}
-                  </div>
-                  <div
-                    css={`
-                      height: ${bottomGap}px;
-                    `}
-                  />
                   <p
                     css={`
-                      font-family: "GothamNarrow-Book", "Helvetica Neue",
+                      font-size: 14px;
+                      margin: 0px;
+                      line-height: 20px;
+                      font-family: "GothamNarrow-Bold", "Helvetica Neue",
                         sans-serif;
-                      font-size: 10px;
-                      line-height: normal;
-                      padding-bottom: 17px;
-                      margin-top: 10px;
-                      color: #231d2c;
                     `}
                   >
-                    {fChartType.description}
+                    {fChartType.label}
                   </p>
-                </>
+
+                  <p
+                    css={`
+                      font-size: 12px;
+                      font-family: "GothamNarrow-Book", "Helvetica Neue",
+                        sans-serif;
+                      margin: 0px;
+                      line-height: normal;
+                    `}
+                  >
+                    {fChartType.categories.join(", ")}
+                  </p>
+                </div>
               </div>
-            </Grid>
-          </Grid>
+
+              <>
+                <div
+                  css={`
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    padding: 16px 0px;
+                  `}
+                >
+                  {fChartType.preview}
+                </div>
+
+                <p
+                  css={`
+                    font-family: "GothamNarrow-Book", "Helvetica Neue",
+                      sans-serif;
+                    font-size: 10px;
+                    line-height: normal;
+                    color: #231d2c;
+                    font-style: normal;
+                    margin: 0;
+                  `}
+                >
+                  {fChartType.description}
+                </p>
+              </>
+            </div>
+          )}
+        </div>
+
+        {chartType && fChartType && echart && (
+          <div
+            css={`
+              display: grid;
+              margin-top: 16px;
+              gap: 16px;
+              grid-template-columns: 1fr 1fr;
+              h6 {
+                margin: 0;
+                font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
+                font-size: 12px;
+                line-height: normal;
+              }
+              p {
+                font-family: "GothamNarrow-Book", "Helvetica Neue", sans-serif;
+                line-height: normal;
+              }
+            `}
+          >
+            <div
+              css={`
+                border-radius: 12px;
+                background: #dfe3e5;
+                padding: 16px;
+                height: 100%;
+              `}
+            >
+              <div
+                css={`
+                  display: flex;
+                  justify-content: space-between;
+                  align-items: center;
+                `}
+              >
+                <h6>Input</h6>
+                <InfoIcon />
+              </div>
+
+              <div
+                css={`
+                  margin-top: 16px;
+                  display: flex;
+                  flex-direction: column;
+                  gap: 12px;
+                `}
+              >
+                {echart?.dimensions?.map((d: any) => (
+                  <div key={d.id}>
+                    <div
+                      css={`
+                        display: flex;
+                        justify-content: space-between;
+                        align-items: center;
+                      `}
+                    >
+                      <p
+                        css={`
+                          font-size: 10px;
+                          margin: 0;
+                        `}
+                      >
+                        {d.name}
+                        <span
+                          css={`
+                            color: #ef1320;
+                          `}
+                        >
+                          *
+                        </span>
+                      </p>
+
+                      <div
+                        css={`
+                          background: #ffffff;
+                          border-radius: 16px;
+                          display: flex;
+                          padding: 2px 6px;
+                        `}
+                      >
+                        {d.validTypes.map((t: any) => (
+                          <>{typeIcon[t as keyof typeof typeIcon]}</>
+                        ))}
+                      </div>
+                    </div>
+
+                    <p
+                      css={`
+                        font-size: 8px;
+                        margin: 0;
+                        margin-top: 4px;
+                      `}
+                    >
+                      {d.description}
+                    </p>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <div
+              css={`
+                border-radius: 12px;
+                background: #dfe3e5;
+                padding: 16px;
+                height: 100%;
+              `}
+            >
+              <h6>Suitable for</h6>
+
+              <div
+                css={`
+                  margin-top: 16px;
+                `}
+              >
+                {echart?.metadata?.suitableFor?.map((s: any) => (
+                  <div
+                    css={`
+                      display: flex;
+                      gap: 8px;
+                      align-items: flex-start;
+                    `}
+                  >
+                    <div
+                      css={`
+                        width: 3px;
+                        height: 3px;
+                        background: #000;
+                        border-radius: 50%;
+                        flex-shrink: 0;
+                        margin-top: 5px;
+                      `}
+                    />
+                    <p
+                      css={`
+                        font-size: 10px;
+                        margin: 0;
+                      `}
+                    >
+                      {s}
+                    </p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
         )}
       </div>
     </>

@@ -5,10 +5,14 @@ import { TriangleXSIcon } from "app/assets/icons/TriangleXS";
 import { styles } from "app/modules/story-module/components/right-panel/styles";
 import { StoryRightPanelProps } from "app/modules/story-module/components/right-panel/data";
 import { StoryRightPanelCreateView } from "app/modules/story-module/components/right-panel-create-view";
+import useTogglePanelWithKey from "app/hooks/useTogglePanelWithKey";
 
 export function StoryRightPanel(props: StoryRightPanelProps) {
   const isMobile = useMediaQuery("(max-width: 767px)");
-
+  useTogglePanelWithKey({
+    openToolbox: props.open,
+    setToolboxOpen: props.setOpen,
+  });
   return (
     <Slide direction="left" in={props.open} style={{ visibility: "visible" }}>
       <div css={styles.container}>
@@ -45,11 +49,7 @@ export function StoryRightPanel(props: StoryRightPanelProps) {
               }
             `}
             onClick={() => {
-              if (props.open) {
-                props.onClose();
-              } else {
-                props.onOpen();
-              }
+              props.setOpen(!props.open);
             }}
           >
             <TriangleXSIcon />

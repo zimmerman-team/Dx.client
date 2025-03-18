@@ -26,8 +26,8 @@ function TabCard(props: {
 
         a {
           text-decoration: none;
-          color: #231d2c;
-          border-bottom: 1px solid #231d2c;
+          color: #6061e5;
+          border-bottom: 1px solid #6061e5;
           cursor: pointer;
         }
         div:nth-child(1) {
@@ -46,7 +46,7 @@ function TabCard(props: {
           margin-bottom: 11px;
         }
         p {
-          font-family: "GothamNarrow-Light", "Helvetica Neue", sans-serif;
+          font-family: "GothamNarrow-Book", "Helvetica Neue", sans-serif;
           white-space: pre-line;
           font-weight: 400;
           line-height: normal;
