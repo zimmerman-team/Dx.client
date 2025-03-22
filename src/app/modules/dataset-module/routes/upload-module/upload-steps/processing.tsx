@@ -1,6 +1,7 @@
 import React from "react";
 import { ReactComponent as ErrorICon } from "app/modules/dataset-module/routes/upload-module/assets/error-icon.svg";
 import { PrimaryButton } from "app/components/Styled/button";
+import { formatRemainingTime } from "app/hooks/useOnUploadProgress";
 
 interface ProcessingMetaDataProps {
   setProcessingError: React.Dispatch<React.SetStateAction<string | null>>;
@@ -14,15 +15,6 @@ interface ProcessingMetaDataProps {
 }
 
 export default function Processing(props: ProcessingMetaDataProps) {
-  const getTimeInHoursnMins = (time: number) => {
-    const mft = Math.floor(time / 60);
-    const se = " seconds (estimated)";
-    let ret = mft + se;
-    if (mft <= 0) ret = "Finishing up...";
-    if (mft > 60) ret = mft + " minutes and " + Math.floor(time % 60) + se;
-    return ret;
-  };
-
   return (
     <>
       {props.processingError ? (
@@ -168,7 +160,7 @@ export default function Processing(props: ProcessingMetaDataProps) {
               </div>
               <p>{props.loaded}</p>
               <p data-testid="estimated-time">
-                {getTimeInHoursnMins(props.estimatedUploadTime)}
+                {formatRemainingTime(props.estimatedUploadTime)}
               </p>
             </div>
           </div>
