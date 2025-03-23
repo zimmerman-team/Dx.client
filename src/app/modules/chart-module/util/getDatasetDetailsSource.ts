@@ -1,5 +1,15 @@
 import { DatasetListItemAPIModel } from "app/modules/dataset-module/data";
 
+const modifiedSourceUrl = (url: string) => {
+  if (!url) {
+    return "";
+  }
+  if (url.startsWith("https://") || url.startsWith("http://")) {
+    return url;
+  } else {
+    return `https://${url}`;
+  }
+};
 export const getDatasetDetailsSource = (
   datasetDetails: DatasetListItemAPIModel,
   datasetDetailsProps?: DatasetListItemAPIModel
@@ -20,5 +30,6 @@ export const getDatasetDetailsSource = (
   } else {
     filename = datasetDetails.sourceUrl || datasetDetails.name;
   }
+  sourceUrl = modifiedSourceUrl(sourceUrl);
   return { sourceUrl, filename };
 };
