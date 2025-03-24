@@ -67,10 +67,10 @@ export function NotAuthorizedMessageModule(props: {
       ) : null}
       <Container maxWidth="lg">
         <div
-          // 72px is the footer height and 50 is the header height
+          // 64px is the footer height and 50 is the header height
           css={`
             width: 100%;
-            height: calc(100vh - 72px - ${props.name ? "100" : "50"}px);
+            height: calc(100vh - 64px - ${props.name ? "100" : "50"}px);
             display: flex;
             flex-direction: column;
             align-items: center;

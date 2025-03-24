@@ -90,10 +90,10 @@ export default function Processing(props: ProcessingMetaDataProps) {
             display: flex;
             justify-content: center;
             align-items: center;
-            height: calc(100vh - 140px - 72px);
+            height: calc(100vh - 140px - 64px);
             flex-direction: column;
             @media (max-width: 881px) {
-              height: calc(100vh - 156px - 72px);
+              height: calc(100vh - 156px - 64px);
             }
           `}
         >

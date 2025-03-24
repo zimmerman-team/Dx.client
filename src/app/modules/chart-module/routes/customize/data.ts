@@ -16,6 +16,7 @@ export interface ChartBuilderCustomizeProps {
   chartError: boolean;
   dataError: boolean;
   chartErrorMessage: string;
+  chartName: string;
 }
 
 export const checkLists = [

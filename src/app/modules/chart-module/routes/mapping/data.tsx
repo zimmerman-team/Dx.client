@@ -15,6 +15,7 @@ export interface ChartBuilderMappingProps {
   chartError: boolean;
   dataError: boolean;
   chartErrorMessage: string;
+  chartName: string;
 }
 
 export interface ChartBuilderMappingMessageProps {
