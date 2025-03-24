@@ -8,7 +8,6 @@ import Skeleton from "@material-ui/lab/Skeleton";
 /* project */
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 import { useDataThemesEchart } from "app/hooks/useDataThemesEchart";
-import { styles as commonStyles } from "app/modules/chart-module/routes/common/styles";
 import { ChartBuilderPreviewThemeProps } from "app/modules/chart-module/routes/preview-theme/data";
 import WarningDialog from "app/modules/chart-module/components/dialog/warningDialog";
 import GeomapLegend from "app/modules/chart-module/components/geomap-legend";
@@ -18,6 +17,7 @@ import { getDatasetDetailsSource } from "app/modules/chart-module/util/getDatase
 import { mobileDescriptioncss } from "app/modules/dataset-module/routes/upload-module/style";
 import moment from "moment";
 import AIIcon from "app/assets/icons/AIIcon";
+import ChartArea from "app/modules/chart-module/components/chart-area";
 
 export function ChartBuilderPreviewTheme(props: ChartBuilderPreviewThemeProps) {
   useTitle("Dataxplorer - Preview Chart");
@@ -86,7 +86,11 @@ export function ChartBuilderPreviewTheme(props: ChartBuilderPreviewThemeProps) {
           // @ts-ignore
           domRef.current,
           selectedChartType ?? "echartsBarchart",
-          visualOptions,
+          {
+            ...visualOptions,
+            width: domRef.current.clientWidth,
+            height: domRef.current.clientHeight,
+          },
           mapping,
           "common-chart-render-container"
         );
@@ -134,179 +138,119 @@ export function ChartBuilderPreviewTheme(props: ChartBuilderPreviewThemeProps) {
   }
 
   return (
-    <div css={commonStyles.container}>
-      {!props.isMappingValid ? (
-        <WarningDialog isMappingValid={props.isMappingValid} />
-      ) : (
-        <>
-          <div
-            id="chart-placeholder"
-            css={`
-              display: flex;
-              padding: 0 24px;
-              margin-top: 20px;
-              max-width: 1280px;
-              align-items: center;
-              align-self: flex-start;
-              justify-content: center;
-              height: ${get(visualOptions, "height", 100)}px;
-
-              @media (max-width: 1280px) {
-                width: calc(100vw - 400px);
-              }
-
-              .MuiSkeleton-wave::after {
-                background: linear-gradient(
-                  90deg,
-                  transparent,
-                  rgba(223, 227, 230, 1),
-                  transparent
-                );
-              }
-
-              .MuiSkeleton-root {
-                background: transparent;
-              }
-            `}
-          >
-            <Skeleton
-              animation="wave"
-              variant="rect"
-              width="100%"
-              height="100%"
-            />
-          </div>
+    <>
+      <ChartArea chartName={props?.loadedChart?.name} footer>
+        {!props.isMappingValid ? (
+          <WarningDialog isMappingValid={props.isMappingValid} />
+        ) : (
           <>
-            {" "}
             <div
+              id="chart-placeholder"
               css={`
-                height: 40px;
-              `}
-            />
-            <div
-              css={`
-                @media (max-width: 450px) {
-                  border-radius: 10px;
-                  background: #fff;
-                  padding: 24px 16px;
-                  box-shadow: 0px 0px 8px 0px rgba(0, 0, 0, 0.1);
-                  margin-bottom: 24px;
+                display: flex;
+                padding: 0 24px;
+                margin-top: 20px;
+                align-items: center;
+                align-self: flex-start;
+                justify-content: center;
+                height: 100%;
+                width: 100%;
+
+                @media (max-width: 1280px) {
+                  width: calc(100vw - 400px);
+                }
+
+                .MuiSkeleton-wave::after {
+                  background: linear-gradient(
+                    90deg,
+                    transparent,
+                    rgba(223, 227, 230, 1),
+                    transparent
+                  );
+                }
+
+                .MuiSkeleton-root {
+                  background: transparent;
                 }
               `}
             >
-              {" "}
-              <p
-                css={`
-                  font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
-                  font-size: 24px;
-                  color: #231d2c;
-                  margin: 0;
-                  line-height: normal;
-                  margin-bottom: 16px;
-                  white-space: nowrap;
-                  text-overflow: ellipsis;
-                  overflow: hidden;
-                  max-width: 90%;
-                `}
-              >
-                {props?.loadedChart?.name}
-              </p>
+              <Skeleton
+                animation="wave"
+                variant="rect"
+                width="100%"
+                height="100%"
+              />
+            </div>
+            <>
               <div
-                ref={props.containerRef}
                 css={`
-                  position: relative;
-                  width: calc(100% - 24px);
+                  width: 100%;
+                  height: 100%;
                 `}
               >
                 <div
-                  ref={domRef}
-                  onClick={handleVizClick}
-                  id="common-chart-render-container"
+                  ref={props.containerRef}
                   css={`
-                    height: ${get(visualOptions, "height", 500)}px;
-
-                    ${selectedChartType === "bigNumber" &&
-                    window.location.pathname.indexOf("/chart/") > -1 &&
-                    `
+                    position: relative;
+                    width: 100%;
+                    height: 100%;
+                  `}
+                >
+                  <div
+                    ref={domRef}
+                    onClick={handleVizClick}
+                    id="common-chart-render-container"
+                    css={`
+                      height: 100%;
+                      width: 100%;
+                      ${selectedChartType === "bigNumber" &&
+                      window.location.pathname.indexOf("/chart/") > -1 &&
+                      `
                     > div {
-                      width: 135px;
+                      width: 135px; 
                     }
                 `}
-                    * {
-                      font-family: "GothamNarrow-Book", "Helvetica Neue",
-                        sans-serif !important;
-                    }
-                  `}
-                />
-                <div
-                  css={`
-                    position: absolute;
-                    right: -0.6%;
-                    top: -4%;
-                    display: ${!props.isAIAssistedChart || props.loading
-                      ? "none"
-                      : "block"};
-                  `}
-                >
-                  <AIIcon />
-                </div>
-                <p
-                  css={`
-                    color: #70777e;
-                    font-family: "GothamNarrow-Bold", "Helvetica Neue",
-                      sans-serif;
-                    font-size: 12px;
-                    a {
-                      font-family: "GothamNarrow-Bold", "Helvetica Neue",
-                        sans-serif;
-
-                      color: #70777e;
-                      text-decoration: none;
-                      border-bottom: 1px solid #70777e;
-                    }
-                  `}
-                >
-                  Source:{" "}
-                  <a href={sourceUrl} target="_blank" rel="noopener noreferrer">
-                    {datasetDetails.source} - Data file: {filename}
-                  </a>
-                </p>
-                {selectedChartType === "echartsGeomap" &&
-                props.visualOptions?.showLegend ? (
+                      * {
+                        font-family: "GothamNarrow-Book", "Helvetica Neue",
+                          sans-serif !important;
+                      }
+                    `}
+                  />
                   <div
                     css={`
                       position: absolute;
-                      bottom: 0;
-                      right: 0;
+                      right: -0.6%;
+                      top: -4%;
+                      display: ${!props.isAIAssistedChart || props.loading
+                        ? "none"
+                        : "block"};
                     `}
                   >
-                    <GeomapLegend
-                      data={props.renderedChartMappedData}
-                      visualOptions={props.visualOptions}
-                      mapping={mapping}
-                    />
+                    <AIIcon />
                   </div>
-                ) : null}
+                  {selectedChartType === "echartsGeomap" &&
+                  props.visualOptions?.showLegend ? (
+                    <div
+                      css={`
+                        position: absolute;
+                        bottom: 0;
+                        right: 0;
+                      `}
+                    >
+                      <GeomapLegend
+                        data={props.renderedChartMappedData}
+                        visualOptions={props.visualOptions}
+                        mapping={mapping}
+                      />
+                    </div>
+                  ) : null}
+                </div>
               </div>
-            </div>
+            </>
           </>
-        </>
-      )}
-      <div css={mobileDescriptioncss}>
-        <div>
-          <p>Source</p>
-          <p>{datasetDetails.description}</p>
-        </div>
-      </div>
-      <div
-        css={`
-          display: none;
-          @media (max-width: 500px) {
-            display: block;
-            height: 24px;
-          }
-        `}
-      />
+        )}
+      </ChartArea>
+
       <div css={mobileDescriptioncss}>
         <div>
           <p>Published date</p>
@@ -326,6 +270,6 @@ export function ChartBuilderPreviewTheme(props: ChartBuilderPreviewThemeProps) {
           }
         `}
       />
-    </div>
+    </>
   );
 }

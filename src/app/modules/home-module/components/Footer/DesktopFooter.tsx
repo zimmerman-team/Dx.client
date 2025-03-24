@@ -241,6 +241,7 @@ export default function DesktopFooter(props: Props) {
             align-items: center;
             font-size: 12px;
             padding: 24px 0;
+            line-height: normal;
 
             a {
               text-decoration: none;

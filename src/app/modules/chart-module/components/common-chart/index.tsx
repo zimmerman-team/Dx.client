@@ -38,7 +38,6 @@ interface Props {
   setVisualOptions: (value: any) => void;
   containerRef: React.RefObject<HTMLDivElement>;
   chartId?: string;
-  hideChartSource?: boolean;
   setChartError: React.Dispatch<React.SetStateAction<boolean>>;
   setChartErrorMessage: React.Dispatch<React.SetStateAction<string>>;
   renderedChartType?: ChartType;
@@ -75,17 +74,8 @@ export function CommonChart(props: Readonly<Props>) {
     props.datasetDetails
   );
 
-  const dataSourcePHeight = document
-    .getElementById(`datasource-${props.chartId || "1"}`)
-    ?.getBoundingClientRect().height;
-
   let content;
-  let contentHeight;
-  if (!props.chartPreviewInStory && props.renderedChartType !== "bigNumber") {
-    contentHeight = props.visualOptions?.height - 28 + "px";
-  } else {
-    contentHeight = "auto";
-  }
+  let contentHeight = "100%";
 
   React.useEffect(() => {
     if (token) {
@@ -157,9 +147,7 @@ export function CommonChart(props: Readonly<Props>) {
               | "bigNumber"),
           {
             ...visualOptions,
-            height: props.inChartWrapper
-              ? visualOptions.height - 28
-              : visualOptions.height,
+            height: props.containerRef.current.clientHeight,
           },
           props.mapping,
           `common-chart-render-container-${props.chartId || "1"}-${
@@ -196,7 +184,7 @@ export function CommonChart(props: Readonly<Props>) {
         data-cy="common-chart-container"
         css={`
           width: auto !important;
-          height: calc(100% - ${dataSourcePHeight ?? 0}px);
+          height: 100%;
 
           > div:first-of-type {
             ${props.renderedChartType === "bigNumber" &&
@@ -236,39 +224,14 @@ export function CommonChart(props: Readonly<Props>) {
         `}
 
             > svg {
-              height: calc(100% - ${dataSourcePHeight ?? 0}px);
-
-              > rect {
-                height: calc(100% - ${dataSourcePHeight ?? 0}px);
+              height: 100% > rect {
+                height: 100%;
               }
             }
           }
         `}
       />
 
-      <p
-        id={`datasource-${props.chartId || "1"}`}
-        css={`
-          color: #70777e;
-          font-family: "GothamNarrow-Bold", sans-serif;
-          font-size: 12px;
-          margin: 0;
-          display: ${props.hideChartSource ? "none" : "block"};
-          a {
-            font-family: "GothamNarrow-Bold", sans-serif;
-
-            color: #70777e;
-            text-decoration: none;
-            border-bottom: 1px solid #70777e;
-          }
-        `}
-      >
-        Source:{" "}
-        <a href={sourceUrl} target="_blank" rel="noopener noreferrer">
-          {props.datasetDetails?.source ?? datasetDetails.source} - Data file:{" "}
-          {filename}
-        </a>
-      </p>
       {chartType === "echartsGeomap" && props.visualOptions?.showLegend ? (
         <div
           css={`

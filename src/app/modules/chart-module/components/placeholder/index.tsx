@@ -1,7 +1,7 @@
 import React from "react";
 import { useStoreState } from "app/state/store/hooks";
 import { styles as commonStyles } from "app/modules/chart-module/routes/common/styles";
-import GeomapPlaceholder from "app/modules/chart-module/components/placeholder/geomapPlaceholder";
+import { ReactComponent as GeomapChartPlaceholderImage } from "app/modules/chart-module/assets/geomapPlaceholder.svg";
 import { ReactComponent as LinechartPlaceholderImage } from "app/modules/chart-module/assets/lineChartPlaceholder.svg";
 import { ReactComponent as BigNumberPlaceholderImage } from "app/modules/chart-module/assets/bigNumberPlaceholder.svg";
 import { ReactComponent as BarChartPlaceholderImage } from "app/modules/chart-module/assets/barChartPlaceholder.svg";
@@ -18,6 +18,7 @@ import { ReactComponent as ScatterChartPlaceholderImage } from "app/modules/char
 import { ReactComponent as GraphglPlaceholderImage } from "app/modules/chart-module/assets/graphglPlaceholder.svg";
 import { ReactComponent as HeatmapPlaceholderImage } from "app/modules/chart-module/assets/heatmapPlaceholder.svg";
 import { ReactComponent as AreatimeaxisPlaceholderImage } from "app/modules/chart-module/assets/areatimeaxisPlaceholder.svg";
+import { ReactComponent as AreastackedPlaceholderImage } from "app/modules/chart-module/assets/areastackedPlaceholder.svg";
 import { CHART_DEFAULT_HEIGHT } from "app/modules/chart-module/data";
 
 export default function ChartPlaceholder(props: { loading?: boolean }) {
@@ -29,336 +30,97 @@ export default function ChartPlaceholder(props: { loading?: boolean }) {
   const chartPlaceholders = [
     {
       id: "echartsBarchart",
-      placeholder: (
-        <div
-          css={`
-            padding-right: 38px;
-            height: 100%;
-            svg {
-              width: 100%;
-              height: 100%;
-            }
-          `}
-        >
-          <BarChartPlaceholderImage />
-        </div>
-      ),
+      placeholder: <BarChartPlaceholderImage />,
     },
     {
       id: "echartsMultisetBarchart",
-      placeholder: (
-        <div
-          css={`
-            padding-right: 38px;
-            height: 100%;
-            svg {
-              width: 100%;
-              height: 100%;
-            }
-          `}
-        >
-          <BarChartPlaceholderImage />
-        </div>
-      ),
+      placeholder: <BarChartPlaceholderImage />,
     },
     {
       id: "echartsStackedBarchart",
-      placeholder: (
-        <div
-          css={`
-            padding-right: 38px;
-            height: 100%;
-            svg {
-              width: 100%;
-              height: 100%;
-            }
-          `}
-        >
-          <BarChartPlaceholderImage />
-        </div>
-      ),
+      placeholder: <BarChartPlaceholderImage />,
     },
     {
       id: "echartsGeomap",
-      placeholder: <GeomapPlaceholder />,
+      placeholder: <GeomapChartPlaceholderImage />,
     },
     {
       id: "echartsLinechart",
-      placeholder: (
-        <div
-          css={`
-            padding-right: 38px;
-            height: 100%;
-            svg {
-              width: 100%;
-              height: 100%;
-            }
-          `}
-        >
-          <LinechartPlaceholderImage />
-        </div>
-      ),
+      placeholder: <BarChartPlaceholderImage />,
     },
     {
       id: "echartsSankey",
-      placeholder: (
-        <div
-          css={`
-            padding-right: 38px;
-            height: 100%;
-
-            svg {
-              width: 100%;
-              height: 100%;
-            }
-          `}
-        >
-          <SankeyPlaceholderImage />
-        </div>
-      ),
+      placeholder: <SankeyPlaceholderImage />,
     },
     {
       id: "echartsTreemap",
-      placeholder: (
-        <div
-          css={`
-            padding-right: 38px;
-            height: 100%;
-
-            svg {
-              width: 100%;
-              height: 100%;
-            }
-          `}
-        >
-          <TreemapPlaceholderImage />
-        </div>
-      ),
+      placeholder: <TreemapPlaceholderImage />,
     },
     {
       id: "bigNumber",
       placeholder: (
         <div
           css={`
-            padding-right: 38px;
+            width: 100%;
+            height: 100%;
+            svg {
+              width: 316px !important;
+              height: 288px !important;
+
           `}
         >
-          <div
-            css={`
-              height: 100px;
-            `}
-          />
           <BigNumberPlaceholderImage />
         </div>
       ),
     },
     {
       id: "echartsSunburst",
-      placeholder: (
-        <div
-          css={`
-            padding-right: 38px;
-            height: 100%;
-            svg {
-              width: 100%;
-              height: 100%;
-            }
-          `}
-        >
-          <SunburstPlaceholderImage />
-        </div>
-      ),
+      placeholder: <SunburstPlaceholderImage />,
     },
     {
       id: "echartsPiechart",
-      placeholder: (
-        <div
-          css={`
-            padding-right: 38px;
-            height: 100%;
-            svg {
-              width: 100%;
-              height: 100%;
-            }
-          `}
-        >
-          <PieChartPlaceholderImage />
-        </div>
-      ),
+      placeholder: <PieChartPlaceholderImage />,
     },
     {
       id: "echartsCirclepacking",
-      placeholder: (
-        <div
-          css={`
-            padding-right: 38px;
-            height: 100%;
-            svg {
-              width: 100%;
-              height: 100%;
-            }
-          `}
-        >
-          <CirclepackingPlaceholderImage />
-        </div>
-      ),
+      placeholder: <CirclepackingPlaceholderImage />,
     },
     {
       id: "echartsForcegraph",
-      placeholder: (
-        <div
-          css={`
-            padding-right: 38px;
-            height: 100%;
-            svg {
-              width: 100%;
-              height: 100%;
-            }
-          `}
-        >
-          <ForcegraphPlaceholderImage />
-        </div>
-      ),
+      placeholder: <ForcegraphPlaceholderImage />,
     },
     {
       id: "echartsCirculargraph",
-      placeholder: (
-        <div
-          css={`
-            padding-right: 38px;
-            height: 100%;
-            svg {
-              width: 100%;
-              height: 100%;
-            }
-          `}
-        >
-          <CirculargraphPlaceholderImage />
-        </div>
-      ),
+      placeholder: <CirculargraphPlaceholderImage />,
     },
 
     {
       id: "echartsBubblechart",
-      placeholder: (
-        <div
-          css={`
-            padding-right: 38px;
-            height: 100%;
-            svg {
-              width: 100%;
-              height: 100%;
-            }
-          `}
-        >
-          <LinechartPlaceholderImage />
-        </div>
-      ),
+      placeholder: <AreastackedPlaceholderImage />,
     },
     {
       id: "echartsScatterchart",
-      placeholder: (
-        <div
-          css={`
-            padding-right: 38px;
-            height: 100%;
-
-            svg {
-              width: 100%;
-              height: 100%;
-            }
-          `}
-        >
-          <ScatterChartPlaceholderImage />
-        </div>
-      ),
+      placeholder: <ScatterChartPlaceholderImage />,
     },
     {
       id: "echartsHeatmap",
-      placeholder: (
-        <div
-          css={`
-            padding-right: 38px;
-            height: 100%;
-            svg {
-              width: 100%;
-              height: 100%;
-            }
-          `}
-        >
-          <HeatmapPlaceholderImage />
-        </div>
-      ),
+      placeholder: <HeatmapPlaceholderImage />,
     },
     {
       id: "echartsAreatimeaxis",
-      placeholder: (
-        <div
-          css={`
-            padding-right: 38px;
-            height: 100%;
-
-            svg {
-              width: 100%;
-              height: 100%;
-            }
-          `}
-        >
-          <AreatimeaxisPlaceholderImage />
-        </div>
-      ),
+      placeholder: <AreatimeaxisPlaceholderImage />,
     },
     {
       id: "echartsGraphgl",
-      placeholder: (
-        <div
-          css={`
-            padding-right: 38px;
-
-            height: 100%;
-            svg {
-              width: 100%;
-              height: 100%;
-            }
-          `}
-        >
-          <GraphglPlaceholderImage />
-        </div>
-      ),
+      placeholder: <GraphglPlaceholderImage />,
     },
     {
       id: "echartsRadarchart",
-      placeholder: (
-        <div
-          css={`
-            padding-right: 38px;
-            height: 100%;
-            svg {
-              width: 100%;
-              height: 100%;
-            }
-          `}
-        >
-          <RadarChartPlaceholderImage />
-        </div>
-      ),
+      placeholder: <RadarChartPlaceholderImage />,
     },
     {
       id: "echartsAreastack",
-      placeholder: (
-        <div
-          css={`
-            padding-right: 38px;
-            height: 100%;
-            svg {
-              width: 100%;
-              height: 100%;
-            }
-          `}
-        >
-          <LinechartPlaceholderImage />
-        </div>
-      ),
+      placeholder: <AreastackedPlaceholderImage />,
     },
   ];
 
@@ -377,20 +139,30 @@ export default function ChartPlaceholder(props: { loading?: boolean }) {
       <div
         css={`
           position: relative;
+          height: 100%;
+          width: 100%;
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          align-items: center;
+          svg {
+            width: 100%;
+            height: 100%;
+          }
         `}
       >
-        {!props.loading && (
-          <div
-            css={`
-              height: ${CHART_DEFAULT_HEIGHT}px;
-            `}
-          >
-            {getChartPlaceholder()}
-          </div>
-        )}
+        {!props.loading && <>{getChartPlaceholder()}</>}
       </div>
     );
   };
 
-  return <div css={commonStyles.container}>{displayPlaceholder()}</div>;
+  return (
+    <div
+      css={`
+        ${commonStyles.container};
+      `}
+    >
+      {displayPlaceholder()}
+    </div>
+  );
 }
