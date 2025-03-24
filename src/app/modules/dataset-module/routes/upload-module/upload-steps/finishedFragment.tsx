@@ -114,6 +114,18 @@ export default function FinishedFragment(props: Props) {
     };
   }, []);
 
+  const modifiedSourceUrl = () => {
+    const url = props.datasetDetails?.sourceUrl;
+    if (!url) {
+      return "";
+    }
+    if (url.startsWith("https://") || url.startsWith("http://")) {
+      return url;
+    } else {
+      return `https://${url}`;
+    }
+  };
+
   return (
     <div css={dataSetsCss}>
       <div
@@ -359,7 +371,7 @@ export default function FinishedFragment(props: Props) {
           Link to data source:{" "}
           {props.datasetDetails.sourceUrl ? (
             <a
-              href={props.datasetDetails.sourceUrl}
+              href={modifiedSourceUrl()}
               rel="noreferrer noopener"
               target="_blank"
             >
@@ -392,7 +404,7 @@ export default function FinishedFragment(props: Props) {
           <p>
             {props.datasetDetails.sourceUrl ? (
               <a
-                href={props.datasetDetails.sourceUrl}
+                href={modifiedSourceUrl()}
                 rel="noreferrer noopener"
                 target="_blank"
               >
