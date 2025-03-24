@@ -42,6 +42,8 @@ import { InfoSnackbar } from "app/modules/story-module/components/storySubHeader
 import ShareModal from "app/modules/dataset-module/component/shareModal";
 import { PrimaryButton } from "app/components/Styled/button";
 import { ArrowBack } from "@material-ui/icons";
+import { ReactComponent as MenuIcon } from "app/modules/home-module/assets/menu.svg";
+import { ClickAwayListener } from "@material-ui/core";
 
 // eslint-disable-next-line sonarjs/cognitive-complexity
 export function ChartSubheaderToolbar(
@@ -119,6 +121,8 @@ export function ChartSubheaderToolbar(
     horizontal: "center",
     message: "Your chart has been successfully duplicated!",
   });
+
+  const [menuOptionsDisplay, setMenuOptionsDisplay] = React.useState(false);
 
   React.useEffect(() => {
     setHasChangesBeenMade(compareStateChanges);
@@ -552,24 +556,121 @@ export function ChartSubheaderToolbar(
               )}
               {page !== "new" && !view && (
                 <React.Fragment>
-                  {!isSmallScreen && (
-                    <ExportChartButton filename={props.name} />
-                  )}
-                  {isAuthenticated && (
-                    <Tooltip title="Duplicate">
-                      <IconButton
-                        onClick={handleDuplicate}
-                        aria-label="duplicate-button"
+                  {isSmallScreen ? (
+                    isAuthenticated ? (
+                      <ClickAwayListener
+                        onClickAway={() => setMenuOptionsDisplay(false)}
                       >
-                        <FileCopyIcon htmlColor="#262c34" />
-                      </IconButton>
-                    </Tooltip>
+                        <IconButton
+                          onClick={() =>
+                            setMenuOptionsDisplay(!menuOptionsDisplay)
+                          }
+                          css={`
+                            position: relative;
+                            width: 30px;
+                            height: 30px;
+                            flex-shrink: 0;
+                            ${menuOptionsDisplay &&
+                            `
+                          background: #CFD4DA;
+                          border-radius: 50px;`}
+                          `}
+                        >
+                          <MenuIcon css={``} />
+                          {menuOptionsDisplay && (
+                            <div
+                              css={`
+                                position: absolute;
+                                top: 100%;
+                                right: 0;
+                                background: #f4f4f4;
+                                border-radius: 4px;
+                                padding: 16px;
+                                display: flex;
+                                gap: 16px;
+                                box-shadow: 0px 0px 10px 0px
+                                  rgba(152, 161, 170, 0.6);
+                                button {
+                                  padding: 0 !important;
+                                  width: max-content !important;
+                                  height: max-content !important;
+                                }
+                              `}
+                            >
+                              <Tooltip title="Duplicate">
+                                <IconButton
+                                  onClick={handleDuplicate}
+                                  aria-label="duplicate-button"
+                                >
+                                  <FileCopyIcon htmlColor="#262c34" />
+                                </IconButton>
+                              </Tooltip>
+                              <Tooltip title="Share">
+                                <IconButton
+                                  onClick={handleShare}
+                                  aria-label="share-button"
+                                >
+                                  <ShareIcon htmlColor="#262c34" />
+                                </IconButton>
+                              </Tooltip>
+                            </div>
+                          )}
+                        </IconButton>
+                      </ClickAwayListener>
+                    ) : (
+                      <Tooltip title="Share">
+                        <IconButton
+                          onClick={handleShare}
+                          aria-label="share-button"
+                        >
+                          <ShareIcon htmlColor="#262c34" />
+                        </IconButton>
+                      </Tooltip>
+                    )
+                  ) : (
+                    <>
+                      <ExportChartButton filename={props.name} />
+                      {isAuthenticated && (
+                        <Tooltip title="Duplicate">
+                          <IconButton
+                            onClick={handleDuplicate}
+                            aria-label="duplicate-button"
+                          >
+                            <FileCopyIcon htmlColor="#262c34" />
+                          </IconButton>
+                        </Tooltip>
+                      )}
+                      <Tooltip title="Share">
+                        <IconButton
+                          onClick={handleShare}
+                          aria-label="share-button"
+                        >
+                          <ShareIcon htmlColor="#262c34" />
+                        </IconButton>
+                      </Tooltip>
+                      {canChartEditDelete && (
+                        <>
+                          <Tooltip title="Edit">
+                            <IconButton
+                              onClick={handleEdit}
+                              aria-label="edit-button"
+                            >
+                              <EditIcon htmlColor="#262c34" />
+                            </IconButton>
+                          </Tooltip>
+
+                          <Tooltip title="Delete">
+                            <IconButton
+                              onClick={handleModalDisplay}
+                              aria-label="delete-button"
+                            >
+                              <DeleteIcon htmlColor="#262c34" />
+                            </IconButton>
+                          </Tooltip>
+                        </>
+                      )}
+                    </>
                   )}
-                  <Tooltip title="Share">
-                    <IconButton onClick={handleShare} aria-label="share-button">
-                      <ShareIcon htmlColor="#262c34" />
-                    </IconButton>
-                  </Tooltip>
                   <Popover
                     id={id}
                     open={open}
@@ -600,23 +701,6 @@ export function ChartSubheaderToolbar(
                       </CopyToClipboard>
                     </div>
                   </Popover>
-                  {canChartEditDelete && !isSmallScreen && (
-                    <Tooltip title="Edit">
-                      <IconButton onClick={handleEdit} aria-label="edit-button">
-                        <EditIcon htmlColor="#262c34" />
-                      </IconButton>
-                    </Tooltip>
-                  )}
-                  {canChartEditDelete && !isSmallScreen && (
-                    <Tooltip title="Delete">
-                      <IconButton
-                        onClick={handleModalDisplay}
-                        aria-label="delete-button"
-                      >
-                        <DeleteIcon htmlColor="#262c34" />
-                      </IconButton>
-                    </Tooltip>
-                  )}
                 </React.Fragment>
               )}
             </div>
