@@ -197,7 +197,7 @@ function AssetsCollection() {
                 position={tabPrevPosition}
                 data-cy="home-charts-tab"
               >
-                Charts
+                Chart
               </Tab.Center>
 
               <Tab.Right
@@ -205,7 +205,7 @@ function AssetsCollection() {
                 onClick={() => handleChange("stories")}
                 data-cy="home-stories-tab"
               >
-                Stories
+                Story
               </Tab.Right>
             </Tab.Container>
           </Grid>
