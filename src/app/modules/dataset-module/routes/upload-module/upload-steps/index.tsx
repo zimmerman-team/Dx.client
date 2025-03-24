@@ -13,7 +13,7 @@ import Processing from "app/modules/dataset-module/routes/upload-module/upload-s
 import FinishedFragment from "app/modules/dataset-module/routes/upload-module/upload-steps/finishedFragment";
 import AddDatasetFragment from "app/modules/dataset-module/routes/upload-module/upload-steps/addDatasetFragment";
 import ObjectId from "app/utils/ObjectId";
-import { useOnUploadProgress } from "app/hooks/useOnUploadProgress";
+import { useUploadProgress } from "app/hooks/useOnUploadProgress";
 import ExternalSearch, {
   IExternalDataset,
 } from "app/modules/dataset-module/routes/upload-module/upload-steps/externalSearch";
@@ -101,10 +101,11 @@ function DatasetUploadSteps(props: Props) {
   const {
     loadedProgress,
     percentageLoadedProgress,
-    estUploadTime,
-    setEstUploadTime,
+    remainingTime,
+    resetProgress,
     onUploadProgress,
-  } = useOnUploadProgress();
+  } = useUploadProgress();
+
   const {
     loadDataset: loadSampleDataset,
     sampleData,
@@ -117,23 +118,6 @@ function DatasetUploadSteps(props: Props) {
     setChartFromAPI: () => {},
     chartFromAPI: null,
   });
-
-  React.useEffect(() => {
-    let timer: any;
-
-    if (estUploadTime > 0) {
-      timer = setInterval(() => {
-        setEstUploadTime((prevEstUploadTime) => prevEstUploadTime - 1);
-      }, 1000); // 1000 milliseconds = 1 second
-    }
-
-    //Cleanup the timer when estUploadTime becomes 0 or less
-    return () => {
-      if (timer) {
-        clearInterval(timer);
-      }
-    };
-  }, [estUploadTime]);
 
   const handleNext = () => {
     //handles stepper navigation
@@ -275,6 +259,7 @@ function DatasetUploadSteps(props: Props) {
     props.setDatasetId(id);
     //set active step to processing
     setActiveStep(1);
+    resetProgress();
     axios
       .post(
         `${process.env.REACT_APP_API}/external-sources/download`,
@@ -289,7 +274,7 @@ function DatasetUploadSteps(props: Props) {
       )
       .then((response) => {
         //populate formDetails with externalDataset fields to be used in metadata
-
+        resetProgress();
         if (response.data.error) {
           setProcessingError(response.data.error);
           console.debug(dataUploadError, response.data.error);
@@ -309,6 +294,7 @@ function DatasetUploadSteps(props: Props) {
       })
       .catch((error) => {
         console.debug(dataUploadError, error);
+        resetProgress();
         setActiveStep(0);
         setProcessingError(defaultProcessingError);
       });
@@ -428,7 +414,7 @@ function DatasetUploadSteps(props: Props) {
             fileName={(selectedFile && selectedFile.name) as string}
             loaded={loadedProgress}
             percentageLoaded={percentageLoadedProgress}
-            estimatedUploadTime={estUploadTime}
+            estimatedUploadTime={remainingTime}
             processingMessage={processingMessage}
             tryAgain={tryAgain}
           />
