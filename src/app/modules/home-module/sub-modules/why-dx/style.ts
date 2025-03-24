@@ -66,28 +66,29 @@ export const keyfeaturescss = {
       }
     }
     p:nth-of-type(1) {
-      font-size: 40px;
+      font-size: 36px;
       line-height: 20px;
       font-family: "GothamNarrow-Bold", sans-serif;
       margin-bottom: 25px;
       margin-top: 0;
       color: #231d2c;
       @media (max-width: 600px) {
-        font-size: 24px;
+        font-size: 18px;
         line-height: normal;
-        text-align: center;
+        text-align: left;
       }
     }
     p:nth-of-type(2) {
+      margin: 0;
       font-family: "GothamNarrow-Book", sans-serif;
       line-height: 30px;
       letter-spacing: 0.5px;
-      font-size: 25px;
+      font-size: 24px;
       color: #231d2c;
       @media (max-width: 600px) {
-        font-size: 14px;
+        font-size: 12px;
         line-height: normal;
-        text-align: center;
+        text-align: left;
       }
     }
     @media (min-width: 750px) {
@@ -107,7 +108,7 @@ export const keyfeaturescss = {
       }
     }
     @media (max-width: 1110px) {
-      width: 75%;
+      width: 85%;
       display: flex;
       flex-direction: column;
       align-items: flex-start;
@@ -118,8 +119,6 @@ export const keyfeaturescss = {
       width: 100%;
       display: flex;
       flex-direction: column;
-      align-items: center;
-      justify-content: center;
     }
   `,
 };
