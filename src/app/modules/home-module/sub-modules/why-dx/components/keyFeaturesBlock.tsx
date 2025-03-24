@@ -45,6 +45,7 @@ export default function KeyFeaturesBlock() {
               box-shadow: 0px 13.449px 20.173px 0px rgba(0, 0, 0, 0.05),
                 0px 4.035px 6.724px 0px rgba(0, 0, 0, 0.05),
                 0px 0.672px 6.724px 0px rgba(0, 0, 0, 0.05);
+              width: 100%;
             `}
           />
         </Grid>

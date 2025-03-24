@@ -40,7 +40,18 @@ export default function WhyDX() {
               background-color: #f2f7fd;
             `}
           >
-            <Container maxWidth="lg">
+            <Container
+              maxWidth="lg"
+              css={`
+                @media (max-width: 1024px) {
+                  padding: 0 32px !important;
+                }
+
+                @media (max-width: 600px) {
+                  padding: 0 24px !important;
+                }
+              `}
+            >
               <KeyFeaturesBlock />
               <div
                 css={`
