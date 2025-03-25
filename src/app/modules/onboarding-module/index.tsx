@@ -6,6 +6,7 @@ import { Route, Switch, useHistory, useLocation } from "react-router-dom";
 import AuthCard from "app/modules/onboarding-module/component/card";
 import OnboardingRightDeco from "app/modules/onboarding-module/asset/onboardingRight-img.png";
 import { useTitle } from "react-use";
+import HomeFooter from "app/modules/home-module/components/Footer";
 
 export default function Onboarding() {
   useTitle("Dataxplorer - Onboarding");
@@ -19,83 +20,100 @@ export default function Onboarding() {
     history.replace("/");
   }
   return (
-    <Grid
-      container
+    <div
       css={`
-        padding-left: 40px;
-        position: relative;
-        height: 100vh;
+        height: calc(100vh - 50px);
         @media (max-width: 1140px) {
-          padding-left: unset;
+          height: calc(100vh - 66px);
         }
       `}
     >
       <Grid
-        xs={12}
-        sm={12}
-        md={12}
-        lg={true}
+        container
         css={`
-          @media (max-width: 1024px) {
-            padding-bottom: 7rem;
+          padding-left: 40px;
+          position: relative;
+          margin-top: 50px;
+          height: calc(100vh - 50px - 64px);
+          @media (max-width: 1140px) {
+            padding-left: unset;
+            margin-top: 66px;
+            height: calc(100vh - 66px - 64px);
           }
-          padding-top: 222px;
+          @media (max-width: 600px) {
+            margin-top: 66px;
+            height: calc(100vh - 66px - 124px);
+          }
         `}
       >
-        <div
+        <Grid
+          xs={12}
+          sm={12}
+          md={12}
+          lg={true}
           css={`
-            width: 60%;
-            margin: auto;
-            @media (max-width: 1140px) {
-              width: 395px;
+            @media (max-width: 1024px) {
+              padding-bottom: 7rem;
             }
-            @media (max-width: 428px) {
-              width: 94%;
-            }
+            padding-top: 222px;
           `}
         >
-          <h2
+          <div
             css={`
-              color: #6061e5;
-              font-size: 24px;
-              font-weight: 700;
-              font-style: normal;
-              font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
-              padding: 0;
-              margin: 0;
+              width: 60%;
+              margin: auto;
+              @media (max-width: 1140px) {
+                width: 395px;
+              }
+              @media (max-width: 428px) {
+                width: 94%;
+              }
             `}
           >
-            {location.pathname.includes("signin")
-              ? "Welcome back!"
-              : "Create your free account."}
-          </h2>
+            <h2
+              css={`
+                color: #6061e5;
+                font-size: 24px;
+                font-weight: 700;
+                font-style: normal;
+                font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
+                padding: 0;
+                margin: 0;
+              `}
+            >
+              {location.pathname.includes("signin")
+                ? "Welcome back!"
+                : "Create your free account."}
+            </h2>
 
-          <Switch>
-            <Route path="/onboarding/signup">
-              <AuthCard />
-            </Route>
-            <Route path="/onboarding/signin">
-              <AuthCard isSignIn />
-            </Route>
-          </Switch>
-        </div>
+            <Switch>
+              <Route path="/onboarding/signup">
+                <AuthCard />
+              </Route>
+              <Route path="/onboarding/signin">
+                <AuthCard isSignIn />
+              </Route>
+            </Switch>
+          </div>
+        </Grid>
+        {!tablet && (
+          <Grid
+            xs={false}
+            sm={false}
+            md={6}
+            lg={"auto"}
+            css={`
+              right: 0;
+              width: 54.375%;
+              background-size: cover;
+              background-position: center;
+              background-repeat: no-repeat;
+              background-image: url(${OnboardingRightDeco});
+            `}
+          />
+        )}
       </Grid>
-      {!tablet && (
-        <Grid
-          xs={false}
-          sm={false}
-          md={6}
-          lg={"auto"}
-          css={`
-            right: 0;
-            width: 54.375%;
-            background-size: cover;
-            background-position: center;
-            background-repeat: no-repeat;
-            background-image: url(${OnboardingRightDeco});
-          `}
-        />
-      )}
-    </Grid>
+      <HomeFooter mini />
+    </div>
   );
 }
