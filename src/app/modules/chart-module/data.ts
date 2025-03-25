@@ -498,7 +498,6 @@ export const chartViews = {
   data: "data",
   mapping: "mapping",
   chartType: "chart-type",
-  notAvailable: "not-available",
 };
 
 export const chartPaths = {
@@ -510,5 +509,5 @@ export const chartPaths = {
   data: `/chart/:page/${chartViews.data}`,
   mapping: `/chart/:page/${chartViews.mapping}`,
   chartType: `/chart/:page/${chartViews.chartType}`,
-  notAvailable: `/chart/:page/${chartViews.notAvailable}`,
+  notAvailable: `/chart/:page/not-available`,
 };
