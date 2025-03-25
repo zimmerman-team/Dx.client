@@ -195,7 +195,7 @@ export default function HeaderBlock(props: Props) {
       {(handleDisplay || currentView === "editHeader") && (
         <div
           css={`
-            top: -2.5px;
+            top: 0;
             left: 0;
             height: 100%;
             display: flex;

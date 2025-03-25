@@ -21,7 +21,12 @@ import CloudDoneIcon from "@material-ui/icons/CloudDone";
 import { planDialogAtom, shareAssetDetailsAtom } from "app/state/recoil/atoms";
 import { PageLoader } from "app/modules/common/page-loader";
 import MoreIcon from "@material-ui/icons/MoreVert";
-import { createStyles, makeStyles, useMediaQuery } from "@material-ui/core";
+import {
+  ClickAwayListener,
+  createStyles,
+  makeStyles,
+  useMediaQuery,
+} from "@material-ui/core";
 import { Link, useHistory, useParams } from "react-router-dom";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 import { StoryModel, emptyStory } from "app/modules/story-module/data";
@@ -608,80 +613,87 @@ export function StorySubheaderToolbar(
                     </React.Fragment>
                   )}
                   {isMobile && (
-                    <React.Fragment>
-                      <IconButton
-                        aria-describedby={id}
-                        onClick={() => setDisplayMobileMenu(!displayMobileMenu)}
-                        aria-label="more"
-                        data-testid="more-button"
-                      >
-                        <MoreIcon htmlColor="#262c34" />
-                      </IconButton>
-                      <div
-                        css={`
-                          position: absolute;
-                          top: 100%;
-                          right: -4px;
-                          opacity: ${displayMobileMenu ? 1 : 0};
-                          box-shadow: 0px 0px 10px 0px #98a1aa99;
-                          transition: opacity 211ms cubic-bezier(0.4, 0, 0.2, 1),
-                            transform 141ms cubic-bezier(0.4, 0, 0.2, 1);
-                          border-radius: 4px;
-                          background: #f4f4f4;
-                          display: flex;
-                          height: 56px;
-                          padding: 16px;
-                          align-items: center;
-                          gap: 16px;
-                          flex-shrink: 0;
-                          a {
-                            height: 100%;
-                            padding: 0;
+                    <ClickAwayListener
+                      onClickAway={() => setDisplayMobileMenu(false)}
+                    >
+                      <div>
+                        <IconButton
+                          aria-describedby={id}
+                          onClick={() =>
+                            setDisplayMobileMenu(!displayMobileMenu)
                           }
-                        `}
-                      >
-                        {canStoryEditDelete && (
-                          <Tooltip title="Edit">
-                            <IconButton
-                              component={Link}
-                              to={`/story/${page}/not-available`}
-                              onClick={handleEditMobile}
-                              data-testid="edit-button"
-                              css={`
-                                @media (max-width: ${MOBILE_BREAKPOINT}) {
-                                  svg {
-                                    path {
-                                      fill: #70777e;
+                          aria-label="more"
+                          data-testid="more-button"
+                        >
+                          <MoreIcon htmlColor="#262c34" />
+                        </IconButton>
+                        <div
+                          css={`
+                            position: absolute;
+                            top: 100%;
+                            right: -4px;
+                            opacity: ${displayMobileMenu ? 1 : 0};
+                            box-shadow: 0px 0px 10px 0px #98a1aa99;
+                            transition: opacity 211ms
+                                cubic-bezier(0.4, 0, 0.2, 1),
+                              transform 141ms cubic-bezier(0.4, 0, 0.2, 1);
+                            border-radius: 4px;
+                            background: #f4f4f4;
+                            display: flex;
+                            height: 56px;
+                            padding: 16px;
+                            align-items: center;
+                            gap: 16px;
+                            flex-shrink: 0;
+                            a {
+                              height: 100%;
+                              padding: 0;
+                            }
+                          `}
+                        >
+                          {canStoryEditDelete && (
+                            <Tooltip title="Edit">
+                              <IconButton
+                                component={Link}
+                                to={`/story/${page}/not-available`}
+                                onClick={handleEditMobile}
+                                data-testid="edit-button"
+                                css={`
+                                  @media (max-width: ${MOBILE_BREAKPOINT}) {
+                                    svg {
+                                      path {
+                                        fill: #70777e;
+                                      }
                                     }
                                   }
-                                }
-                              `}
+                                `}
+                              >
+                                <EditIcon htmlColor="#262c34" />
+                              </IconButton>
+                            </Tooltip>
+                          )}
+
+                          <Tooltip title="Duplicate">
+                            <IconButton
+                              onClick={
+                                isAuthenticated ? handleDuplicate : handleSignIn
+                              }
+                              data-testid="duplicate-button"
                             >
-                              <EditIcon htmlColor="#262c34" />
+                              <FileCopyIcon htmlColor="#262c34" />
                             </IconButton>
                           </Tooltip>
-                        )}
-
-                        <Tooltip title="Duplicate">
-                          <IconButton
-                            onClick={
-                              isAuthenticated ? handleDuplicate : handleSignIn
-                            }
-                            data-testid="duplicate-button"
-                          >
-                            <FileCopyIcon htmlColor="#262c34" />
-                          </IconButton>
-                        </Tooltip>
-                        <Tooltip title="Share">
-                          <IconButton
-                            onClick={handleSharePopup}
-                            data-testid="share-button"
-                          >
-                            <ShareIcon htmlColor="#262c34" />
-                          </IconButton>
-                        </Tooltip>
+                          <Tooltip title="Share">
+                            <IconButton
+                              onClick={handleSharePopup}
+                              data-testid="share-button"
+                            >
+                              <ShareIcon htmlColor="#262c34" />
+                            </IconButton>
+                          </Tooltip>
+                        </div>
                       </div>
-                    </React.Fragment>
+                    </ClickAwayListener>
                   )}
                 </div>
               )}
