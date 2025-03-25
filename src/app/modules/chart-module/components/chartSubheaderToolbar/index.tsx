@@ -45,6 +45,7 @@ import ShareModal from "app/modules/dataset-module/component/shareModal";
 import { PrimaryButton } from "app/components/Styled/button";
 import { ArrowBack } from "@material-ui/icons";
 import { MOBILE_BREAKPOINT } from "app/theme";
+import { ClickAwayListener } from "@material-ui/core";
 
 // eslint-disable-next-line sonarjs/cognitive-complexity
 export function ChartSubheaderToolbar(
@@ -596,80 +597,84 @@ export function ChartSubheaderToolbar(
                 </React.Fragment>
               )}
               {isSmallScreen && (
-                <React.Fragment>
-                  <IconButton
-                    aria-describedby={id}
-                    onClick={() => setDisplayMobileMenu(!displayMobileMenu)}
-                    aria-label="more"
-                    data-testid="more-button"
-                  >
-                    <MoreIcon htmlColor="#262c34" />
-                  </IconButton>
-                  <div
-                    css={`
-                      position: absolute;
-                      top: 115%;
-                      right: -4px;
-                      opacity: ${displayMobileMenu ? 1 : 0};
-                      box-shadow: 0px 0px 10px 0px #98a1aa99;
-                      transition: opacity 211ms cubic-bezier(0.4, 0, 0.2, 1),
-                        transform 141ms cubic-bezier(0.4, 0, 0.2, 1);
-                      border-radius: 4px;
-                      background: #f4f4f4;
-                      display: flex;
-                      height: 56px;
-                      padding: 16px;
-                      align-items: center;
-                      gap: 16px;
-                      flex-shrink: 0;
-                      a {
-                        height: 100%;
-                        padding: 0;
-                      }
-                    `}
-                  >
-                    {canChartEditDelete && (
-                      <Tooltip title="Edit">
-                        <Link
-                          aria-label="edit-button"
-                          to={`/chart/${page}/not-available`}
-                          onClick={handleEditMobile}
-                          css={`
-                            @media (max-width: ${MOBILE_BREAKPOINT}) {
-                              svg {
-                                path {
-                                  fill: #70777e;
+                <ClickAwayListener
+                  onClickAway={() => setDisplayMobileMenu(false)}
+                >
+                  <div>
+                    <IconButton
+                      aria-describedby={id}
+                      onClick={() => setDisplayMobileMenu(!displayMobileMenu)}
+                      aria-label="more"
+                      data-testid="more-button"
+                    >
+                      <MoreIcon htmlColor="#262c34" />
+                    </IconButton>
+                    <div
+                      css={`
+                        position: absolute;
+                        top: 115%;
+                        right: -4px;
+                        opacity: ${displayMobileMenu ? 1 : 0};
+                        box-shadow: 0px 0px 10px 0px #98a1aa99;
+                        transition: opacity 211ms cubic-bezier(0.4, 0, 0.2, 1),
+                          transform 141ms cubic-bezier(0.4, 0, 0.2, 1);
+                        border-radius: 4px;
+                        background: #f4f4f4;
+                        display: flex;
+                        height: 56px;
+                        padding: 16px;
+                        align-items: center;
+                        gap: 16px;
+                        flex-shrink: 0;
+                        a {
+                          height: 100%;
+                          padding: 0;
+                        }
+                      `}
+                    >
+                      {canChartEditDelete && (
+                        <Tooltip title="Edit">
+                          <Link
+                            aria-label="edit-button"
+                            to={`/chart/${page}/not-available`}
+                            onClick={handleEditMobile}
+                            css={`
+                              @media (max-width: ${MOBILE_BREAKPOINT}) {
+                                svg {
+                                  path {
+                                    fill: #70777e;
+                                  }
                                 }
                               }
-                            }
-                          `}
-                        >
-                          <EditIcon htmlColor={"#262c34"} />
-                        </Link>
-                      </Tooltip>
-                    )}
+                            `}
+                          >
+                            <EditIcon htmlColor={"#262c34"} />
+                          </Link>
+                        </Tooltip>
+                      )}
 
-                    {isAuthenticated && (
-                      <Tooltip title="Duplicate">
+                      {isAuthenticated && (
+                        <Tooltip title="Duplicate">
+                          <IconButton
+                            onClick={handleDuplicate}
+                            aria-label="duplicate-button"
+                          >
+                            <FileCopyIcon htmlColor="#262c34" />
+                          </IconButton>
+                        </Tooltip>
+                      )}
+
+                      <Tooltip title="Share">
                         <IconButton
-                          onClick={handleDuplicate}
-                          aria-label="duplicate-button"
+                          onClick={handleShare}
+                          aria-label="share-button"
                         >
-                          <FileCopyIcon htmlColor="#262c34" />
+                          <ShareIcon htmlColor="#262c34" />
                         </IconButton>
                       </Tooltip>
-                    )}
-
-                    <Tooltip title="Share">
-                      <IconButton
-                        onClick={handleShare}
-                        aria-label="share-button"
-                      >
-                        <ShareIcon htmlColor="#262c34" />
-                      </IconButton>
-                    </Tooltip>
+                    </div>
                   </div>
-                </React.Fragment>
+                </ClickAwayListener>
               )}
             </div>
           </div>
