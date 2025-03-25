@@ -12,7 +12,7 @@ import { Box } from "@material-ui/core";
 export default function HomeModule() {
   useTitle("Dataxplorer");
 
-  const { isAuthenticated, user } = useAuth0();
+  const { isAuthenticated } = useAuth0();
 
   return (
     <div

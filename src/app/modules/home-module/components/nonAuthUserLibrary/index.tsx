@@ -14,7 +14,7 @@ export default function NonAuthUserLibrary() {
         <Container
           maxWidth="lg"
           css={`
-            padding: 72px 0;
+            padding: 72px 24px;
             @media (max-width: 960px) {
               padding: 40px 32px;
             }
