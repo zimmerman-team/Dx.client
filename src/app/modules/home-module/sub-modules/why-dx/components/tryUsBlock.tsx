@@ -26,8 +26,9 @@ export default function TryUsBlock() {
             line-height: normal;
           }
           @media (max-width: 600px) {
-            font-size: 24px;
+            font-size: 18px;
             line-height: normal;
+            margin-bottom: 32px;
           }
         `}
       >

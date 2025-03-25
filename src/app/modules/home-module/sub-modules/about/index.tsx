@@ -341,6 +341,7 @@ export default function AboutModule() {
                     @media (max-width: 1024px) {
                       font-family: "GothamNarrow-Book", "Helvetica Neue",
                         sans-serif;
+                      font-size: 18px;
                     }
                     @media (max-width: 500px) {
                       margin-top: 0px;
@@ -357,100 +358,6 @@ export default function AboutModule() {
                   Discover the true potential of your data with Dataxplorer. Let
                   us help you harness its power!
                 </p>
-
-                <div
-                  css={`
-                    margin-top: 59px;
-                    @media (max-width: 500px) {
-                      margin-top: 24px;
-                    }
-                  `}
-                >
-                  {isAuthenticated && (
-                    <div
-                      css={`
-                        display: flex;
-                        column-gap: 20px;
-                        a {
-                          text-decoration: none;
-                        }
-                        @media (max-width: 425px) {
-                          flex-direction: column;
-                          gap: 10px;
-                          justify-content: center;
-                          align-items: center;
-                        }
-                      `}
-                    >
-                      <AddAssetDropdown />
-
-                      <Link to="/" data-cy="empower-block-explore-stories-link">
-                        <PrimaryButton
-                          size="big"
-                          bg="light"
-                          type="button"
-                          css={`
-                            height: 48px;
-                          `}
-                        >
-                          Explore the Dashboard
-                        </PrimaryButton>
-                      </Link>
-                    </div>
-                  )}
-                  {!isAuthenticated && (
-                    <div
-                      css={`
-                        display: flex;
-                        gap: 16px;
-                        > button {
-                          gap: 8px;
-                          color: #231d2c;
-                          display: flex;
-                          padding: 9px 17px !important;
-                          height: 48px;
-                          border-radius: 12px;
-                          outline: none;
-                          border: none;
-                          background: #a1a2ff;
-                          align-items: center;
-                          justify-content: center;
-                          font-family: "GothamNarrow-Bold", "Helvetica Neue",
-                            sans-serif;
-                          white-space: nowrap;
-                          font-size: 16px;
-                          > svg {
-                            transform: scale(0.8);
-                          }
-                          :hover {
-                            opacity: 0.8;
-                            cursor: pointer;
-                          }
-                        }
-                        @media (max-width: 500px) {
-                          flex-direction: column;
-                          justify-content: center;
-                          align-items: center;
-                          gap: 8px;
-
-                          button {
-                            width: 95%;
-                          }
-                        }
-                      `}
-                    >
-                      <button onClick={() => socialAuth("google-oauth2")}>
-                        <GoogleIcon /> Google
-                      </button>
-                      <button onClick={() => socialAuth("linkedin")}>
-                        <LinkedInIcon /> LinkedIn
-                      </button>
-                      <button onClick={() => socialAuth("windowslive")}>
-                        <MicrosoftIcon /> Microsoft
-                      </button>
-                    </div>
-                  )}
-                </div>
               </div>
 
               <div
@@ -470,6 +377,99 @@ export default function AboutModule() {
               >
                 <StoryImg />
               </div>
+            </div>
+            <div
+              css={`
+                margin-top: 24px;
+                @media (max-width: 500px) {
+                  margin-top: 24px;
+                }
+              `}
+            >
+              {isAuthenticated && (
+                <div
+                  css={`
+                    display: flex;
+                    column-gap: 20px;
+                    a {
+                      text-decoration: none;
+                    }
+                    @media (max-width: 425px) {
+                      flex-direction: column;
+                      gap: 10px;
+                      justify-content: center;
+                      align-items: center;
+                    }
+                  `}
+                >
+                  <AddAssetDropdown />
+
+                  <Link to="/" data-cy="empower-block-explore-stories-link">
+                    <PrimaryButton
+                      size="big"
+                      bg="light"
+                      type="button"
+                      css={`
+                        height: 48px;
+                      `}
+                    >
+                      Explore the Dashboard
+                    </PrimaryButton>
+                  </Link>
+                </div>
+              )}
+              {!isAuthenticated && (
+                <div
+                  css={`
+                    display: flex;
+                    gap: 16px;
+                    > button {
+                      gap: 8px;
+                      color: #231d2c;
+                      display: flex;
+                      padding: 9px 17px !important;
+                      height: 48px;
+                      border-radius: 12px;
+                      outline: none;
+                      border: none;
+                      background: #a1a2ff;
+                      align-items: center;
+                      justify-content: center;
+                      font-family: "GothamNarrow-Bold", "Helvetica Neue",
+                        sans-serif;
+                      white-space: nowrap;
+                      font-size: 16px;
+                      > svg {
+                        transform: scale(0.8);
+                      }
+                      :hover {
+                        opacity: 0.8;
+                        cursor: pointer;
+                      }
+                    }
+                    @media (max-width: 500px) {
+                      flex-direction: column;
+                      justify-content: center;
+                      align-items: center;
+                      gap: 8px;
+
+                      button {
+                        width: 95%;
+                      }
+                    }
+                  `}
+                >
+                  <button onClick={() => socialAuth("google-oauth2")}>
+                    <GoogleIcon /> Google
+                  </button>
+                  <button onClick={() => socialAuth("linkedin")}>
+                    <LinkedInIcon /> LinkedIn
+                  </button>
+                  <button onClick={() => socialAuth("windowslive")}>
+                    <MicrosoftIcon /> Microsoft
+                  </button>
+                </div>
+              )}
             </div>
           </Container>
         </div>
@@ -820,9 +820,6 @@ export default function AboutModule() {
                 <div
                   css={`
                     height: 24px;
-                    @media (max-width: 1024px) {
-                      display: none;
-                    }
                   `}
                 />
                 <p css={``}>
