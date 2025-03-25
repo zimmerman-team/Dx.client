@@ -52,6 +52,17 @@ export const externalDataSortByAtom = atom<
   effects_UNSTABLE: [persistAtom],
 });
 
+export const shareAssetDetailsAtom = atom<{
+  assetURL: string;
+  title: string;
+}>({
+  key: "shareAssetDetailsAtom",
+  default: {
+    assetURL: "",
+    title: "",
+  },
+});
+
 export const homeDisplayAtom = atom<"all" | "data" | "charts" | "stories">({
   key: "homeDisplayAtom",
   default: "all",

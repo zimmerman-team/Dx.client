@@ -53,7 +53,7 @@ export default function GridItem(props: Readonly<Props>) {
     setDataset(props.id as string);
     setIsAiSwitchActive(true);
   }
-  let destinationPath = `/dataset/${props.id}/detail`;
+  let destinationPath = `/dataset/${props.id}`;
   if (location.pathname === "/") {
     destinationPath += "?fromHome=true";
   }

@@ -62,10 +62,14 @@ import {
 import { IDatasetDetails } from "./components/toolbox/steps/panels-content/SelectDataset";
 import { APPLICATION_JSON } from "app/state/api";
 import HomeFooter from "app/modules/home-module/components/Footer";
+import useMediaQuery from "@material-ui/core/useMediaQuery";
+import NotAvailableOnMobile from "app/modules/common/not-available";
+import { MOBILE_BREAKPOINT } from "app/theme";
 
 // eslint-disable-next-line sonarjs/cognitive-complexity
 export default function ChartModule() {
   const { user, isLoading, isAuthenticated } = useAuth0();
+  const isSmallScreen = useMediaQuery(`(max-width:${MOBILE_BREAKPOINT})`); //at this breakpoint, we limit user creation abilities
   const token = useStoreState((state) => state.AuthToken.value);
   const history = useHistory();
   const { page, view } = useParams<{ page: string; view?: string }>();
@@ -138,12 +142,12 @@ export default function ChartModule() {
   const isSaveLoading = useStoreState(
     (state) => state.charts.ChartCreate.loading
   );
-
+  const notAvailableOnMobile = "not-available";
   const [chartLoading, setChartLoading] = React.useState<boolean | null>(null);
   const isChartLoading = useStoreState(
     (state) => state.charts.ChartGet.loading
   );
-  const editView = !!(page !== "new" && view);
+  const editView = !!(page !== "new" && view && view !== notAvailableOnMobile);
   const [autoSaveState, setAutoSaveState] = React.useState({
     isAutoSaveEnabled: editView || false,
     enableAutoSaveSwitch: editView || false,
@@ -346,6 +350,12 @@ export default function ChartModule() {
   };
 
   React.useEffect(() => {
+    if (isSmallScreen && view !== undefined) {
+      history.push(`/chart/${page}/not-available`);
+    }
+  }, [isSmallScreen]);
+
+  React.useEffect(() => {
     //handles what happens after chart is created or edited
     let timeout: NodeJS.Timeout;
     if (editChartSuccess) {
@@ -523,21 +533,23 @@ export default function ChartModule() {
 
   return (
     <DndProvider backend={HTML5Backend}>
-      <ChartSubheaderToolbar
-        visualOptions={visualOptions}
-        isAiSwitchActive={isAiSwitchActive}
-        name={chartName}
-        setName={setChartName}
-        setHasSubHeaderTitleFocused={setHasSubHeaderTitleFocused}
-        isPreviewView={isPreviewView}
-        dimensions={dimensions}
-        setAutoSaveState={setAutoSaveState}
-        autoSave={autoSaveState.isAutoSaveEnabled}
-        enableAutoSaveSwitch={autoSaveState.enableAutoSaveSwitch}
-        onSave={onSave}
-        savedChanges={savedChanges}
-        isMappingValid={isMappingValid}
-      />
+      {view !== notAvailableOnMobile && (
+        <ChartSubheaderToolbar
+          visualOptions={visualOptions}
+          isAiSwitchActive={isAiSwitchActive}
+          name={chartName}
+          setName={setChartName}
+          setHasSubHeaderTitleFocused={setHasSubHeaderTitleFocused}
+          isPreviewView={isPreviewView}
+          dimensions={dimensions}
+          setAutoSaveState={setAutoSaveState}
+          autoSave={autoSaveState.isAutoSaveEnabled}
+          enableAutoSaveSwitch={autoSaveState.enableAutoSaveSwitch}
+          onSave={onSave}
+          savedChanges={savedChanges}
+          isMappingValid={isMappingValid}
+        />
+      )}
       {isChartLoading || isSaveLoading ? (
         <PageLoader />
       ) : (
@@ -580,7 +592,9 @@ export default function ChartModule() {
 
               <div
                 css={`
-                  margin-top: 100px;
+                  margin-top: ${view === notAvailableOnMobile
+                    ? "auto"
+                    : "100px"};
                   min-height: calc(100vh - 100px);
                   display: flex;
                   flex-direction: column;
@@ -735,6 +749,9 @@ export default function ChartModule() {
                           chartError={chartError}
                           chartErrorMessage={chartErrorMessage}
                         />
+                      </Route>
+                      <Route exact path={chartPaths.notAvailable}>
+                        <NotAvailableOnMobile />
                       </Route>
                       <Route path="*">
                         <NoMatchPage />

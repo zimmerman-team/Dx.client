@@ -32,9 +32,13 @@ import { StorySubheaderToolbar } from "app/modules/story-module/components/story
 import { ToolbarPluginsType } from "app/modules/story-module/components/storySubHeaderToolbar/staticToolbar";
 import useAutosave from "app/hooks/useAutoSave";
 import DownloadedView from "./views/downloaded-view";
+import useMediaQuery from "@material-ui/core/useMediaQuery";
+import NotAvailableOnMobile from "app/modules/common/not-available";
+import { MOBILE_BREAKPOINT } from "app/theme";
 
 export default function StoryModule() {
   const { user, isAuthenticated } = useAuth0();
+  const isSmallScreen = useMediaQuery(`(max-width:${MOBILE_BREAKPOINT})`); //at this breakpoint, we limit user creation abilities
   const history = useHistory();
   const aiTemplateString = "ai-template";
   const { page, view } = useParams<{
@@ -122,6 +126,12 @@ export default function StoryModule() {
   const storyPlanWarning = useStoreState(
     (state) => state.stories.StoryCreate.planWarning
   );
+
+  React.useEffect(() => {
+    if (isSmallScreen && view === "edit") {
+      history.push(`/story/${page}/not-available`);
+    }
+  }, [isSmallScreen]);
 
   React.useEffect(() => {
     if (storyPlanWarning) {
@@ -494,6 +504,9 @@ export default function StoryModule() {
         </Route>
         <Route exact path="/story/new">
           <Redirect to="/story/new/initial" />
+        </Route>
+        <Route exact path="/story/:page/not-available">
+          <NotAvailableOnMobile />
         </Route>
         <Route path="*">
           <NoMatchPage />

@@ -1,6 +1,5 @@
 import React from "react";
 import axios from "axios";
-import isEmpty from "lodash/isEmpty";
 import { useRecoilState, useSetRecoilState } from "recoil";
 import { useAuth0 } from "@auth0/auth0-react";
 import Button from "@material-ui/core/Button";
@@ -9,6 +8,7 @@ import EditIcon from "@material-ui/icons/Edit";
 import Tooltip from "@material-ui/core/Tooltip";
 import Popover from "@material-ui/core/Popover";
 import ShareIcon from "@material-ui/icons/Share";
+import MoreIcon from "@material-ui/icons/MoreVert";
 import { LinkIcon } from "app/assets/icons/Link";
 import DeleteIcon from "@material-ui/icons/Delete";
 import Container from "@material-ui/core/Container";
@@ -21,15 +21,17 @@ import FileCopyIcon from "@material-ui/icons/FileCopy";
 import { PageLoader } from "app/modules/common/page-loader";
 import { Link, useHistory, useParams } from "react-router-dom";
 import Snackbar from "@material-ui/core/Snackbar";
-import SnackbarContent from "@material-ui/core/SnackbarContent";
 import { styles } from "app/modules/chart-module/components/chartSubheaderToolbar/styles";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 import DeleteChartDialog from "app/components/Dialogs/deleteChartDialog";
 import { ChartAPIModel, emptyChartAPI } from "app/modules/chart-module/data";
 import { ChartSubheaderToolbarProps } from "app/modules/chart-module/components/chartSubheaderToolbar/data";
-import { ExportChartButton } from "app/modules/chart-module/components/chartSubheaderToolbar/exportButton";
 import { ISnackbarState } from "app/modules/dataset-module/routes/upload-module/upload-steps/previewFragment";
-import { chartFromStoryAtom, planDialogAtom } from "app/state/recoil/atoms";
+import {
+  chartFromStoryAtom,
+  planDialogAtom,
+  shareAssetDetailsAtom,
+} from "app/state/recoil/atoms";
 import AutoSaveSwitch from "app/modules/story-module/components/storySubHeaderToolbar/autoSaveSwitch";
 import useAutosave from "app/hooks/useAutoSave";
 import { useStyles } from "app/modules/story-module/components/storySubHeaderToolbar";
@@ -42,6 +44,7 @@ import { InfoSnackbar } from "app/modules/story-module/components/storySubHeader
 import ShareModal from "app/modules/dataset-module/component/shareModal";
 import { PrimaryButton } from "app/components/Styled/button";
 import { ArrowBack } from "@material-ui/icons";
+import { MOBILE_BREAKPOINT } from "app/theme";
 
 // eslint-disable-next-line sonarjs/cognitive-complexity
 export function ChartSubheaderToolbar(
@@ -49,8 +52,7 @@ export function ChartSubheaderToolbar(
 ) {
   const classes = useStyles();
   const history = useHistory();
-  const isMobile = useMediaQuery("(max-width: 599px)");
-  const isSmallScreen = useMediaQuery("(max-width:788px)"); //at this breakpoint, we limit user creation abilities
+  const isSmallScreen = useMediaQuery(`(max-width:${MOBILE_BREAKPOINT})`); //at this breakpoint, we limit user creation abilities
   const { user, isAuthenticated } = useAuth0();
   const token = useStoreState((state) => state.AuthToken.value);
   const titleRef = React.useRef<HTMLDivElement>(null);
@@ -62,8 +64,6 @@ export function ChartSubheaderToolbar(
   const [enableButton, setEnableButton] = React.useState<boolean>(false);
   const [displayEmbedModal, setDisplayEmbedModal] = React.useState(false);
   const [openSnackbar, setOpenSnackbar] = React.useState(false);
-  const [hasChangesBeenMade, setHasChangesBeenMade] = React.useState(false);
-
   const [inputSpanVisibiltiy, setInputSpanVisibility] = React.useState(true);
   const [duplicatedChartId, setDuplicatedChartId] = React.useState<
     string | null
@@ -71,9 +71,13 @@ export function ChartSubheaderToolbar(
   const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(
     null
   );
+  const [displayMobileMenu, setDisplayMobileMenu] = React.useState(false);
+  React.useState<HTMLButtonElement | null>(null);
   const [chartFromStory, setChartFromStory] =
     useRecoilState(chartFromStoryAtom);
-
+  const [_assetIdToShare, setAssetIdToShare] = useRecoilState(
+    shareAssetDetailsAtom
+  );
   const mapping = useStoreState((state) => state.charts.mapping.value);
 
   const dataset = useStoreState((state) => state.charts.dataset.value);
@@ -120,8 +124,20 @@ export function ChartSubheaderToolbar(
     message: "Your chart has been successfully duplicated!",
   });
 
-  React.useEffect(() => {
-    setHasChangesBeenMade(compareStateChanges);
+  const compareStateChanges = () => {
+    if (loadedChart.id !== page) return false;
+    return (
+      !isEqual(props.name, loadedChart.name) ||
+      !isEqual(selectedChartType, loadedChart.vizType) ||
+      !isEqual(mapping, loadedChart.mapping) ||
+      !isEqual(dataset as string, loadedChart.datasetId as string) ||
+      !isEqual(props.visualOptions, loadedChart.vizOptions) ||
+      !isEqual(appliedFilters, loadedChart.appliedFilters)
+    );
+  };
+
+  const hasChangesBeenMade = React.useMemo(() => {
+    return compareStateChanges();
   }, [
     props.name,
     selectedChartType,
@@ -148,10 +164,12 @@ export function ChartSubheaderToolbar(
       appliedFilters,
     ]
   );
-
-  const isPreviewDisabled: boolean = React.useMemo(() => {
-    return isEmpty(selectedChartType) || !isMappingValid || view === "preview";
-  }, [selectedChartType, mapping, view, editChartCrudData]);
+  const handleEditMobile = () => {
+    setAssetIdToShare({
+      assetURL: `/chart/${page}/customize`,
+      title: props.name,
+    });
+  };
 
   const handleDeleteModalInputChange = (
     e: React.ChangeEvent<HTMLInputElement>
@@ -164,7 +182,7 @@ export function ChartSubheaderToolbar(
   };
 
   const handleShare = () => {
-    if (isMobile) {
+    if (isSmallScreen) {
       setIsShareModalOpen(true);
     } else {
       setDisplayEmbedModal(true);
@@ -194,17 +212,6 @@ export function ChartSubheaderToolbar(
     } else {
       history.push(`/chart/${page}/customize`);
     }
-  };
-  const compareStateChanges = () => {
-    if (loadedChart.id !== page) return false;
-    return (
-      !isEqual(props.name, loadedChart.name) ||
-      !isEqual(selectedChartType, loadedChart.vizType) ||
-      !isEqual(mapping, loadedChart.mapping) ||
-      !isEqual(dataset as string, loadedChart.datasetId as string) ||
-      !isEqual(props.visualOptions, loadedChart.vizOptions) ||
-      !isEqual(appliedFilters, loadedChart.appliedFilters)
-    );
   };
 
   const open = Boolean(anchorEl);
@@ -322,7 +329,7 @@ export function ChartSubheaderToolbar(
               data-cy="dataset-back-to-library-btn"
             >
               <Tooltip title="Back to Dashboard">
-                {isMobile ? (
+                {isSmallScreen ? (
                   <ArrowBackIosIcon fontSize="small" />
                 ) : (
                   <ArrowBack fontSize={"small"} />
@@ -550,11 +557,9 @@ export function ChartSubheaderToolbar(
                   </Tooltip>
                 </React.Fragment>
               )}
-              {page !== "new" && !view && (
+              {page !== "new" && !view && !isSmallScreen && (
                 <React.Fragment>
-                  {!isSmallScreen && (
-                    <ExportChartButton filename={props.name} />
-                  )}
+                  {/* <ExportChartButton filename={props.name} /> */}
                   {isAuthenticated && (
                     <Tooltip title="Duplicate">
                       <IconButton
@@ -570,44 +575,15 @@ export function ChartSubheaderToolbar(
                       <ShareIcon htmlColor="#262c34" />
                     </IconButton>
                   </Tooltip>
-                  <Popover
-                    id={id}
-                    open={open}
-                    anchorEl={anchorEl}
-                    onClose={handleClose}
-                    anchorOrigin={{
-                      vertical: "bottom",
-                      horizontal: "right",
-                    }}
-                    transformOrigin={{
-                      vertical: "top",
-                      horizontal: "right",
-                    }}
-                    css={`
-                      .MuiPaper-root {
-                        border-radius: 10px;
-                        background: #495057;
-                      }
-                    `}
-                    aria-label="copy-link-popover"
-                  >
-                    <div css={styles.sharePopup} data-testid="copy-link-action">
-                      <CopyToClipboard
-                        text={window.location.href}
-                        onCopy={handleCopy}
-                      >
-                        <Button startIcon={<LinkIcon />}>Copy link</Button>
-                      </CopyToClipboard>
-                    </div>
-                  </Popover>
-                  {canChartEditDelete && !isSmallScreen && (
+
+                  {canChartEditDelete && (
                     <Tooltip title="Edit">
                       <IconButton onClick={handleEdit} aria-label="edit-button">
                         <EditIcon htmlColor="#262c34" />
                       </IconButton>
                     </Tooltip>
                   )}
-                  {canChartEditDelete && !isSmallScreen && (
+                  {canChartEditDelete && (
                     <Tooltip title="Delete">
                       <IconButton
                         onClick={handleModalDisplay}
@@ -619,13 +595,116 @@ export function ChartSubheaderToolbar(
                   )}
                 </React.Fragment>
               )}
+              {isSmallScreen && (
+                <React.Fragment>
+                  <IconButton
+                    aria-describedby={id}
+                    onClick={() => setDisplayMobileMenu(!displayMobileMenu)}
+                    aria-label="more"
+                    data-testid="more-button"
+                  >
+                    <MoreIcon htmlColor="#262c34" />
+                  </IconButton>
+                  <div
+                    css={`
+                      position: absolute;
+                      top: 115%;
+                      right: -4px;
+                      opacity: ${displayMobileMenu ? 1 : 0};
+                      box-shadow: 0px 0px 10px 0px #98a1aa99;
+                      transition: opacity 211ms cubic-bezier(0.4, 0, 0.2, 1),
+                        transform 141ms cubic-bezier(0.4, 0, 0.2, 1);
+                      border-radius: 4px;
+                      background: #f4f4f4;
+                      display: flex;
+                      height: 56px;
+                      padding: 16px;
+                      align-items: center;
+                      gap: 16px;
+                      flex-shrink: 0;
+                      a {
+                        height: 100%;
+                        padding: 0;
+                      }
+                    `}
+                  >
+                    {canChartEditDelete && (
+                      <Tooltip title="Edit">
+                        <Link
+                          aria-label="edit-button"
+                          to={`/chart/${page}/not-available`}
+                          onClick={handleEditMobile}
+                          css={`
+                            @media (max-width: ${MOBILE_BREAKPOINT}) {
+                              svg {
+                                path {
+                                  fill: #70777e;
+                                }
+                              }
+                            }
+                          `}
+                        >
+                          <EditIcon htmlColor={"#262c34"} />
+                        </Link>
+                      </Tooltip>
+                    )}
+
+                    {isAuthenticated && (
+                      <Tooltip title="Duplicate">
+                        <IconButton
+                          onClick={handleDuplicate}
+                          aria-label="duplicate-button"
+                        >
+                          <FileCopyIcon htmlColor="#262c34" />
+                        </IconButton>
+                      </Tooltip>
+                    )}
+
+                    <Tooltip title="Share">
+                      <IconButton
+                        onClick={handleShare}
+                        aria-label="share-button"
+                      >
+                        <ShareIcon htmlColor="#262c34" />
+                      </IconButton>
+                    </Tooltip>
+                  </div>
+                </React.Fragment>
+              )}
             </div>
           </div>
         </div>
       </Container>
 
       <>
-        {isMobile ? (
+        <Popover
+          id={id}
+          open={open}
+          anchorEl={anchorEl}
+          onClose={handleClose}
+          anchorOrigin={{
+            vertical: "bottom",
+            horizontal: "right",
+          }}
+          transformOrigin={{
+            vertical: "top",
+            horizontal: "right",
+          }}
+          css={`
+            .MuiPaper-root {
+              border-radius: 10px;
+              background: #495057;
+            }
+          `}
+          aria-label="copy-link-popover"
+        >
+          <div css={styles.sharePopup} data-testid="copy-link-action">
+            <CopyToClipboard text={window.location.href} onCopy={handleCopy}>
+              <Button startIcon={<LinkIcon />}>Copy link</Button>
+            </CopyToClipboard>
+          </div>
+        </Popover>
+        {isSmallScreen ? (
           <InfoSnackbar
             anchorOrigin={{
               vertical: snackbarState.vertical,

@@ -314,6 +314,7 @@ export function MainRoutes() {
           <RouteWithAppBar exact path="/payment/canceled">
             <PaymentCanceledCallbackModule />
           </RouteWithAppBar>
+
           <RouteWithAppBar path="*">
             <NoMatchPage />
           </RouteWithAppBar>
