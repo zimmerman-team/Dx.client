@@ -56,7 +56,7 @@ function TabCard(props: {
         @media (max-width: 1179px) {
           flex-direction: column;
           align-items: center;
-          justify-content: center;
+          justify-content: flex-start;
           height: 988px;
           gap: 22px;
           padding: 72px 80px 24px 80px;
@@ -67,7 +67,7 @@ function TabCard(props: {
               height: 100%;
             }
           }
-          @media (max-width: 761px) {
+          @media (max-width: 744px) {
             height: 100%;
             padding: unset;
             padding-top: 40px;

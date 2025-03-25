@@ -58,7 +58,7 @@ const StyledTabs = withStyles({
     "& .MuiTabs-scroller": {
       "& .MuiTabs-flexContainer": {
         gap: "113px",
-        "@media (max-width: 768px)": {
+        "@media (max-width: 744px)": {
           gap: "36px",
         },
         "@media (max-width: 390px)": {
@@ -155,7 +155,18 @@ export default function PartnersModule() {
       >
         <div>
           <Hero />
-          <Container maxWidth="lg">
+          <Container
+            maxWidth="lg"
+            css={`
+              @media (max-width: 1024px) {
+                padding: 0 32px !important;
+              }
+
+              @media (max-width: 600px) {
+                padding: 0 24px !important;
+              }
+            `}
+          >
             <Grid
               container
               justifyContent="center"
@@ -179,7 +190,7 @@ export default function PartnersModule() {
                   position: relative;
                   height: 639px;
                   @media (max-width: 1129px) {
-                    width: 83%;
+                    width: 100%;
                     height: 100%;
                   }
                   @media (max-width: 600px) {
@@ -287,7 +298,7 @@ export default function PartnersModule() {
               css={`
                 height: 120px;
                 @media (max-width: 960px) {
-                  height: 120px;
+                  height: 72px;
                 }
               `}
             />
@@ -298,7 +309,7 @@ export default function PartnersModule() {
             css={`
               height: 120px;
               @media (max-width: 960px) {
-                height: 120px;
+                height: 72px;
               }
             `}
           />
