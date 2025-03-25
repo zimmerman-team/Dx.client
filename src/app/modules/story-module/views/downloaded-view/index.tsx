@@ -39,7 +39,9 @@ export default function DownloadedView(props: {
   };
 
   React.useEffect(() => {
-    document.getElementById("app-bar-desktop")?.remove(); // Remove the app bar
+    document
+      .getElementById("app-bar-desktop")
+      ?.style.setProperty("display", "none");
     if (!storyData.id) return;
     let timeout: NodeJS.Timeout;
     if (loadedChartsInStory.length === getNumberOfRequests()) {
@@ -61,6 +63,10 @@ export default function DownloadedView(props: {
     }
     return () => {
       clearTimeout(timeout);
+      // Add the app bar back
+      document
+        .getElementById("app-bar-desktop")
+        ?.style.setProperty("display", "flex");
     };
   }, [storyData.id, loadedChartsInStory]);
 
