@@ -6,7 +6,7 @@ import { Route, Switch, useHistory, useLocation } from "react-router-dom";
 import AuthCard from "app/modules/onboarding-module/component/card";
 import OnboardingRightDeco from "app/modules/onboarding-module/asset/onboardingRight-img.png";
 import { useTitle } from "react-use";
-import HomeFooter from "../home-module/components/Footer";
+import HomeFooter from "app/modules/home-module/components/Footer";
 
 export default function Onboarding() {
   useTitle("Dataxplorer - Onboarding");
