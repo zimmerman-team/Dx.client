@@ -94,8 +94,6 @@ export default function PricingModule() {
   const { loading: pricingActiveLoading, pricingActive } =
     useCheckPricingActive();
 
-  console.log(pricingActive, "kdjwbjk");
-
   const [loading, setLoading] = React.useState(false);
 
   const token = useStoreState((state) => state.AuthToken.value);
@@ -272,7 +270,7 @@ export default function PricingModule() {
             }
           `}
         >
-          DATAXPLORER simplifies and empowers visual data storytelling for all.
+          Dataxplorer simplifies and empowers visual data storytelling for all.
           Free for all.
         </p>
         <Box height={65} />
