@@ -13,9 +13,10 @@
 */
 
 //@ts-ignore
-const randomId = () => Cypress._.random(0, 1e6);
+const randomId = () => Cypress._.random(0, 1e8);
 //@ts-ignore
 const testname1 = `testname${randomId()}`;
+const testname2 = `testname${randomId()}`;
 
 describe("Testing connecting data on DX", () => {
   const apiUrl = Cypress.env("api_url");
@@ -33,6 +34,7 @@ describe("Testing connecting data on DX", () => {
 
     cy.get('[data-cy="cookie-btn"]').click();
     cy.intercept(`${apiUrl}/external-sources/search?q=*`).as("getDefaultData");
+    cy.get('[data-cy="home-asset-dropdown-button"]').click();
     cy.get('[data-cy="home-connect-dataset-button"]').click();
     cy.wait(2000);
   });
@@ -125,13 +127,12 @@ describe("Testing connecting data on DX", () => {
       );
     });
 
-    cy.get('[data-cy="open-search-button"]').click();
     cy.intercept(
       `${apiUrl}/external-sources/search?q=Exclusive%20breastfeeding*`
     ).as("getDefaultData2");
     cy.wait(2000);
-    cy.get('[data-cy="filter-search-input"]').type("Exclusive breastfeeding");
-
+    cy.get('[data-cy="external-search-input"]').type("Exclusive breastfeeding");
+    cy.get('[data-cy="external-search-button"]').click();
     cy.wait("@getDefaultData2").then((interception) => {
       cy.get('[data-cy="external-search-card-WHO"]').should(
         "have.length.greaterThan",
@@ -181,12 +182,12 @@ describe("Testing connecting data on DX", () => {
       );
     });
 
-    cy.get('[data-cy="open-search-button"]').click();
     cy.intercept(`${apiUrl}/external-sources/search?q=n*`).as(
       "getDefaultData2"
     );
     cy.wait(2000);
-    cy.get('[data-cy="filter-search-input"]').type("n");
+    cy.get('[data-cy="external-search-input"]').type("n");
+    cy.get('[data-cy="external-search-button"]').click();
 
     cy.wait("@getDefaultData2").then((interception) => {
       cy.get('[data-cy="external-search-card-HDX"]').should(
@@ -236,13 +237,13 @@ describe("Testing connecting data on DX", () => {
       );
     });
 
-    cy.get('[data-cy="open-search-button"]').click();
     cy.intercept(`${apiUrl}/external-sources/search?q=Voice%20and*`).as(
       "getDefaultData2"
     );
 
     cy.wait(2000);
-    cy.get('[data-cy="filter-search-input"]').type("Voice and");
+    cy.get('[data-cy="external-search-input"]').type("Voice and");
+    cy.get('[data-cy="external-search-button"]').click();
 
     cy.wait("@getDefaultData2").then((interception) => {
       cy.get('[data-cy="external-search-card-World Bank"]').should(
@@ -293,12 +294,13 @@ describe("Testing connecting data on DX", () => {
       );
     });
 
-    cy.get('[data-cy="open-search-button"]').click();
-    cy.intercept(
-      `${apiUrl}/external-sources/search?q=Exclusive%20breastfeeding*`
-    ).as("getDefaultData2");
+    cy.intercept(`${apiUrl}/external-sources/search?q=men*`).as(
+      "getDefaultData2"
+    );
     cy.wait(2000);
-    cy.get('[data-cy="filter-search-input"]').type("Exclusive breastfeeding");
+
+    cy.get('[data-cy="external-search-input"]').type("men");
+    cy.get('[data-cy="external-search-button"]').click();
 
     cy.wait("@getDefaultData2").then((interception) => {
       cy.get('[data-cy="external-search-card-Kaggle"]').should(
@@ -379,7 +381,7 @@ describe("Testing connecting data on DX", () => {
   //   cy.contains("Wine Tasting").should("be.visible");
   // });
 
-  it("Can import data through local upload", () => {
+  it.only("Can import data through local upload", () => {
     cy.get('[data-cy="file-upload-tab"]').click();
     cy.get('[data-cy="upload-option-button"').first().click();
     cy.get('[data-cy="local-upload-input"]').as("fileInput");
@@ -408,20 +410,20 @@ describe("Testing connecting data on DX", () => {
     cy.contains("Football Players").should("be.visible");
   });
 
-  it("Can import another dataset through local upload", () => {
+  it.only("Can import another dataset through local upload", () => {
     cy.get('[data-cy="file-upload-tab"]').click();
     cy.get('[data-cy="upload-option-button"').first().click();
     cy.get('[data-cy="local-upload-input"]').as("fileInput");
-    cy.fixture("grossing-movies.csv").then((fileContent) => {
+    cy.fixture("football-players.csv").then((fileContent) => {
       cy.get("@fileInput").attachFile({
         fileContent: fileContent.toString(),
-        fileName: "grossing-movies.csv",
+        fileName: "football-players.csv",
         mimeType: "text/csv",
       });
     });
-    cy.get('[data-cy="dataset-metadata-title"]').type("Grossing Movies");
+    cy.get('[data-cy="dataset-metadata-title"]').type("ChartDataset");
     cy.get('[data-cy="dataset-metadata-description"]').type(
-      "Grossing Movies Data"
+      "ChartDataset Data"
     );
     cy.get('[data-cy="dataset-metadata-source"]').type("Rawgraphs");
     cy.get('[data-cy="dataset-metadata-link"]').type(
@@ -434,7 +436,7 @@ describe("Testing connecting data on DX", () => {
     cy.get('[data-cy="dataset-metadata-submit"]').click();
 
     cy.wait("@submitData");
-    cy.contains("Grossing Movies").should("be.visible");
+    cy.contains("ChartDataset").should("be.visible");
   });
 });
 
@@ -457,7 +459,7 @@ describe("Edit, Delete and Duplicate Dataset", () => {
     cy.wait("@fetchDatasets");
   });
 
-  it("Can Edit a Dataset", () => {
+  it.only("Can Edit a Dataset", () => {
     cy.contains('[data-cy="dataset-grid-item"]', "Football Players")
       .first()
       .scrollIntoView()
@@ -470,7 +472,7 @@ describe("Edit, Delete and Duplicate Dataset", () => {
     cy.wait("@fetchDataset");
 
     cy.get('[data-cy="dataset-metadata-title"]').type(
-      "{selectall}{backspace} Soccer Players"
+      `{selectall}{backspace}${testname2}`
     );
     cy.get('[data-cy="dataset-metadata-description"]').type(
       "{selectall}{backspace} Soccer"
@@ -490,11 +492,11 @@ describe("Edit, Delete and Duplicate Dataset", () => {
     cy.wait("@editData");
 
     cy.wait("@fetchDatasets");
-    cy.contains("Soccer Players").scrollIntoView().should("be.visible");
+    cy.contains(testname2).scrollIntoView().should("be.visible");
   });
 
   it("Can duplicate a dataset", () => {
-    cy.contains('[data-cy="dataset-grid-item"]', "Soccer Players")
+    cy.contains('[data-cy="dataset-grid-item"]', testname2)
       .first()
       .scrollIntoView()
       .within(() => {
@@ -506,7 +508,7 @@ describe("Edit, Delete and Duplicate Dataset", () => {
     cy.wait("@fetchDatasets");
 
     cy.get('[data-cy="dataset-grid-item"]')
-      .contains("Soccer Players (Copy)")
+      .contains(`(Copy)${testname2}`)
       .scrollIntoView()
       .should("be.visible");
   });
@@ -536,13 +538,41 @@ describe("Edit, Delete and Duplicate Dataset", () => {
   });
 
   it("Can delete dataset", () => {
-    cy.get("[data-cy=home-search-button]").click();
+    cy.get("[data-cy=home-search-button]").first().click();
     cy.wait(2000);
-    cy.get("[data-cy=filter-search-input]").type("Soccer Players");
+    cy.get("[data-cy=filter-search-input]").type(testname2);
 
     cy.wait("@fetchDatasets");
 
-    cy.contains('[data-cy="dataset-grid-item"]', "Soccer Players (Copy)")
+    cy.contains('[data-cy="dataset-grid-item"]', `(Copy)${testname2}`)
+      .first()
+      .scrollIntoView()
+      .within(() => {
+        cy.get('[data-cy="dataset-grid-item-menu-btn"]').click();
+      });
+
+    cy.get('[data-cy="dataset-grid-item-delete-btn"]').click();
+    cy.intercept("DELETE", `${apiUrl}/datasets/*`).as("deleteDataset");
+
+    cy.get('[data-cy="delete-dataset-item-form"]').within(() => {
+      cy.get('[data-cy="delete-dataset-item-input"]').type("DELETE{enter}");
+    });
+
+    cy.wait("@deleteDataset");
+
+    cy.wait("@fetchDatasets");
+
+    /// Delete main test dataset
+
+    cy.get("[data-cy=home-search-button]").first().click();
+    cy.wait(2000);
+    cy.get("[data-cy=filter-search-input]").type(
+      `{selectall}{backspace}${testname2}`
+    );
+
+    cy.wait("@fetchDatasets");
+
+    cy.contains('[data-cy="dataset-grid-item"]', `${testname2}`)
       .first()
       .scrollIntoView()
       .within(() => {
@@ -593,7 +623,7 @@ describe("Edit, Delete and Duplicate Dataset", () => {
     //   .contains("Wine Tasting")
     //   .should("not.exist");
 
-    cy.get("[data-cy=home-search-button]").click();
+    cy.get('[data-cy="home-search-button"]').click();
     cy.wait(2000);
     cy.get("[data-cy=filter-search-input]").type(
       `{selectall}{backspace}${testname1}`

@@ -308,7 +308,7 @@ export function StorySubheaderToolbar(
                   position: static;
                 }
               `}
-              data-cy="dataset-back-to-library-btn"
+              data-cy="story-back-to-library-btn"
             >
               <Tooltip title="Back to Dashboard">
                 {isMobile ? (

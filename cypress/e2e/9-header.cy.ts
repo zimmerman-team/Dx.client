@@ -9,22 +9,20 @@ describe("testing footer for valid links", () => {
     cy.contains("Create high impact data driven");
   });
   it("it should remain in home page", () => {
-    cy.contains("a", "Library").scrollIntoView().click();
+    cy.contains("a", "Dashboard").scrollIntoView().click();
     cy.contains("Create high impact data driven");
   });
   it("it should go to why dataxplorer page", () => {
     cy.contains("a", "Why Dataxplorer").scrollIntoView().click();
-    cy.contains("Turn Data into Impact in Minutes with Dataxplorer");
+    cy.contains("Unlock the Power of Data with Dataxplorer");
   });
-  it("it should go to why about page", () => {
+  it("it should go to about page", () => {
     cy.contains("a", "About").scrollIntoView().click();
     cy.contains("Our Story");
   });
   it("it should go to Partners page", () => {
     cy.contains("a", "Partners").scrollIntoView().click();
-    cy.contains(
-      "Global Health and International Development Organizations are using Dataxplorer"
-    );
+    cy.contains("The Global Fund to fight AIDS, Tuberculosis and Malaria");
   });
   it("it should go to Pricing page", () => {
     cy.contains("a", "Pricing").scrollIntoView().click();
@@ -32,6 +30,8 @@ describe("testing footer for valid links", () => {
   });
   it("it should go to Contact page", () => {
     cy.contains("a", "Contact").scrollIntoView().click();
-    cy.contains("Dataxplorer Equips You with Insightful Data");
+    cy.contains(
+      "Schedule a free demo now or ask us any data related question you may have."
+    );
   });
 });

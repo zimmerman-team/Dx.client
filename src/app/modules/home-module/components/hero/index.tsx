@@ -172,13 +172,22 @@ export default function Hero() {
                 justifyContent={"center"}
                 flexDirection={{ xs: "column", sm: "row" }}
               >
-                <button onClick={() => socialAuth("google-oauth2")}>
+                <button
+                  data-cy="google-button"
+                  onClick={() => socialAuth("google-oauth2")}
+                >
                   <GoogleIcon /> Google
                 </button>
-                <button onClick={() => socialAuth("linkedin")}>
+                <button
+                  data-cy="linkedin-button"
+                  onClick={() => socialAuth("linkedin")}
+                >
                   <LinkedInIcon /> LinkedIn
                 </button>
-                <button onClick={() => socialAuth("windowslive")}>
+                <button
+                  data-cy="microsoft-button"
+                  onClick={() => socialAuth("windowslive")}
+                >
                   <MicrosoftIcon /> Microsoft
                 </button>
               </Box>

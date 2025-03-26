@@ -7,17 +7,16 @@ describe("Partners page tests", () => {
 
     cy.get('[data-cy="cookie-btn"]').click();
     cy.contains("a", "Partners").scrollIntoView().click();
-    cy.contains(
-      "Global Health and International Development Organizations are using Dataxplorer"
-    );
+    cy.contains("Partner Case Study: The Global Fund");
   });
 
   it("it should click create story button", () => {
-    cy.get('[data-cy="empower-block-create-story-link"]').click();
+    cy.get('[data-cy="home-asset-dropdown-button"]').click();
+    cy.get('[data-cy="home-create-story-button"]').click();
     cy.wait(2000);
     cy.location("pathname").should("include", "/story/new/initial");
   });
-  it("it should click explore stories button", () => {
+  it("it should click explore dashboard button", () => {
     cy.get('[data-cy="empower-block-explore-stories-link"]').click();
     cy.wait(2000);
     cy.location("pathname").should("include", "/");
@@ -29,7 +28,7 @@ describe("Partners page tests", () => {
     cy.get('[data-cy="performance-tab"]').click();
   });
   it("it should click contact button", () => {
-    cy.contains("a", "Contact us").click();
+    cy.contains("a", "Contact Us").click();
     cy.wait(2000);
     cy.location("pathname").should("include", "/contact");
   });

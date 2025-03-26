@@ -284,6 +284,7 @@ export default function Profile() {
             bg="dark"
             size="big"
             onClick={handleSave}
+            data-cy="save-profile-btn"
             css={`
               padding: 18.5px 24px;
               height: 48px;

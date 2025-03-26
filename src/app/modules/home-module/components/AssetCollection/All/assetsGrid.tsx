@@ -39,6 +39,7 @@ interface Props {
   onItemClick?: (v: string) => void;
   md?: GridSize;
   lg?: GridSize;
+  noAuth?: boolean;
 }
 export type assetType = "chart" | "dataset" | "story";
 
@@ -139,9 +140,11 @@ export default function AssetsGrid(props: Props) {
       assetsCount > limit &&
       isObserved &&
       assetsLoadSuccess &&
-      loadedAssets.length !== assetsCount
+      loadedAssets.length !== assetsCount &&
+      !props.noAuth
     ) {
       //update the offset value for the next load
+
       setOffset(offset + limit);
     }
   }, [isObserved]);

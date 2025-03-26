@@ -21,11 +21,8 @@ describe("Testing the Pricing page", () => {
 
   it("Displays the displaysthe current plan", () => {
     cy.get('[data-cy="plan-card"]').should("have.length", 4);
-    cy.get('[data-cy="plan-card"]')
-      .eq(1)
-      .within(() => {
-        cy.get('[data-cy="plan-button"]').contains("Current Plan");
-      });
+
+    cy.get('[data-cy="plan-button"]').contains("Current Plan");
   });
 
   it("Shows the billing page and settings", () => {

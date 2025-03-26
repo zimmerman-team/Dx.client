@@ -111,6 +111,7 @@ export default function LogOutDialog(props: Props) {
               size="big"
               type="submit"
               onClick={onLogout}
+              data-cy="modal-sign-out-btn"
             >
               Sign out
             </PrimaryButton>

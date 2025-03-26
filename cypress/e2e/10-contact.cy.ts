@@ -4,7 +4,7 @@ describe("testing contact form", () => {
   const apiUrl = Cypress.env("api_url");
   beforeEach(() => {
     cy.visit("/contact");
-    cy.contains("Accept").click();
+    cy.get('[data-cy="cookie-btn"]').click();
   });
   it("should submit contact form", () => {
     cy.intercept(`${apiUrl}/users/send-contact-form-to-intercom`).as(
@@ -15,7 +15,7 @@ describe("testing contact form", () => {
     cy.get('input[name="lastName"]').type("Okorie");
     cy.get('input[name="company"]').type("Zimmerman B.V");
     cy.get('textarea[name="message"]').type("Testing");
-    cy.contains("button", "SUBMIT").click();
+    cy.contains("button", "Submit").click();
 
     cy.wait("@submitForm");
     cy.get("body").find('[data-cy="contact-form-alert"]').should("be.visible");

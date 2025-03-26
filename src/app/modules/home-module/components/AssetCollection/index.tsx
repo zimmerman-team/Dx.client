@@ -29,6 +29,7 @@ import AssetsGrid from "app/modules/home-module/components/AssetCollection/All/a
 import BreadCrumbs from "app/modules/home-module/components/Breadcrumbs";
 import Filter from "app/modules/home-module/components/Filter";
 import AddAssetDropdown from "app/modules/home-module/components/AddAssetDropdown";
+import { useMediaQuery } from "@material-ui/core";
 
 function AssetsCollection() {
   const { isAuthenticated, user } = useAuth0();
@@ -40,6 +41,8 @@ function AssetsCollection() {
   const [filterValue, setFilterValue] = useRecoilState(allAssetsFilterBy);
   const [display, setDisplay] = useRecoilState(homeDisplayAtom);
   const [tabPrevPosition, setTabPrevPosition] = React.useState("");
+
+  const laptop = useMediaQuery("(min-width: 960px)");
 
   const handleChange = (newValue: "all" | "data" | "charts" | "stories") => {
     setDisplay(newValue);
@@ -258,20 +261,22 @@ function AssetsCollection() {
             }
           `}
         >
-          <Filter
-            searchValue={searchValue as string}
-            setSearchValue={setSearchValue}
-            setSortValue={setSortValue}
-            setAssetsView={setAssetsView}
-            sortValue={sortValue}
-            assetsView={assetsView}
-            openSearch={openSearch}
-            setOpenSearch={setOpenSearch}
-            searchIconCypressId="home-search-button"
-            filterValue={filterValue}
-            setFilterValue={setFilterValue}
-            hasSearch
-          />
+          {laptop ? null : (
+            <Filter
+              searchValue={searchValue as string}
+              setSearchValue={setSearchValue}
+              setSortValue={setSortValue}
+              setAssetsView={setAssetsView}
+              sortValue={sortValue}
+              assetsView={assetsView}
+              openSearch={openSearch}
+              setOpenSearch={setOpenSearch}
+              searchIconCypressId="home-search-button"
+              filterValue={filterValue}
+              setFilterValue={setFilterValue}
+              hasSearch
+            />
+          )}
         </div>
         {display === "data" ? (
           <DatasetCategoryList

@@ -237,6 +237,7 @@ export default function ExternalSearch(props: {
             border-radius: 30px;
           `}
           onClick={onSearch}
+          data-cy="external-search-button"
         >
           SEARCH
         </PrimaryButton>

@@ -20,25 +20,20 @@ describe("Testing the Why dataxplorer page logged in", () => {
   });
 
   it("Displays the buttons that link to the correct pages", () => {
-    cy.contains("button", "CREATE STORY").first().click();
-
-    cy.location("pathname").should("include", "/story/new/initial");
-
-    cy.visit("/why-dataxplorer");
-
-    cy.contains("button", "EXPLORE STORIES").click();
+    cy.get('[data-cy="empower-block-explore-stories-link"]').click();
 
     cy.location("pathname").should("include", "/");
 
     cy.visit("/why-dataxplorer");
 
-    cy.contains("a", "CREATE STORY").scrollIntoView().click();
+    cy.get('[data-cy="home-asset-dropdown-button"]').click();
+    cy.get('[data-cy="home-create-story-button"]').click();
 
     cy.location("pathname").should("include", "/story/new/initial");
 
     cy.visit("/why-dataxplorer");
 
-    cy.contains("a", "Contact sales").scrollIntoView().click();
+    cy.contains("a", "Contact Us").scrollIntoView().click();
 
     cy.location("pathname").should("include", "/contact");
   });

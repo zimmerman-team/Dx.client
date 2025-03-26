@@ -12,20 +12,22 @@ describe("Home page tests", () => {
     cy.get('[data-cy="nav-about"]').click();
     cy.wait(2000);
     cy.location("pathname").should("include", "/about");
-    cy.get('[data-cy="empower-block-explore-stories-link"]').click();
+    cy.get('[data-cy="home-asset-dropdown-button"]').click();
+    cy.get('[data-cy="home-create-story-button"]').click();
     cy.wait(2000);
     cy.location("pathname").should("include", "/");
     cy.get('[data-cy="nav-about"]').click();
     cy.wait(2000);
 
-    cy.get('[data-cy="empower-block-create-story-link"]').click();
+    cy.get('[data-cy="home-asset-dropdown-button"]').click();
+    cy.get('[data-cy="home-create-story-button"]').click();
     cy.wait(2000);
     cy.location("pathname").should("include", "/story/new/initial");
 
     cy.visit("/");
 
     cy.get('[data-cy="app-bar"]').within(() => {
-      cy.contains("a", "Library").click();
+      cy.contains("a", "Dashboard").click();
       cy.location("pathname").should("include", "/");
     });
 

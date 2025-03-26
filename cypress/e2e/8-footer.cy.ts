@@ -4,7 +4,7 @@ describe("testing footer for valid links", () => {
   const apiUrl = Cypress.env("api_url");
   beforeEach(() => {
     cy.visit("/");
-    cy.contains("Accept").click();
+    cy.get('[data-cy="cookie-btn"]').click();
   });
   it("it should verify footer copies", () => {
     cy.contains("2025 Dataxplorer All Rights Reserved").scrollIntoView();
@@ -25,7 +25,7 @@ describe("testing footer for valid links", () => {
   });
   it("it should go to why dataxplorer page", () => {
     cy.contains("a", "Why Dataxplorer").scrollIntoView().click();
-    cy.contains("Turn Data into Impact in Minutes with Dataxplorer");
+    cy.contains("Create high impact data driven stories");
   });
   it("it should go to why about page", () => {
     cy.contains("a", "About").scrollIntoView().click();
@@ -33,9 +33,7 @@ describe("testing footer for valid links", () => {
   });
   it("it should go to Partners page", () => {
     cy.contains("a", "Partners").scrollIntoView().click();
-    cy.contains(
-      "Global Health and International Development Organizations are using Dataxplorer"
-    );
+    cy.contains("The Global Fund to fight AIDS, Tuberculosis and Malaria");
   });
   it("it should go to Pricing page", () => {
     cy.contains("a", "Pricing").scrollIntoView().click();
@@ -43,13 +41,15 @@ describe("testing footer for valid links", () => {
   });
   it("it should go to Contact page", () => {
     cy.contains("a", "Contact").scrollIntoView().click();
-    cy.contains("Dataxplorer Equips You with Insightful Data");
+    cy.contains(
+      "Schedule a free demo now or ask us any data related question you may have."
+    );
   });
 
   it("should subscibe to email", () => {
     cy.contains("Stay Up To Date");
     cy.contains(
-      "You will receive occasional emails from DX. You always have choice to unsubscribe within every Email."
+      "You will receive occasional emails from Dataxplorer. You always have choice to unsubscribe within every Email."
     );
 
     // Commenting this out since we disabled intercom on the test environment
@@ -80,42 +80,54 @@ describe("testing footer for valid links", () => {
 
     cy.visit("/");
 
-    cy.get('[data-cy="home-footer"]').within(() => {
-      cy.contains("a", "Why Dataxplorer").click();
-      cy.location("pathname").should("include", "/why-dataxplorer");
-    });
+    cy.get('[data-cy="home-footer"]')
+      .scrollIntoView()
+      .within(() => {
+        cy.contains("a", "Why Dataxplorer").click();
+        cy.location("pathname").should("include", "/why-dataxplorer");
+      });
 
     cy.visit("/");
 
-    cy.get('[data-cy="home-footer"]').within(() => {
-      cy.contains("a", "About").click();
-      cy.location("pathname").should("include", "/about");
-    });
+    cy.get('[data-cy="home-footer"]')
+      .scrollIntoView()
+      .within(() => {
+        cy.contains("a", "About").click();
+        cy.location("pathname").should("include", "/about");
+      });
 
     cy.visit("/");
 
-    cy.get('[data-cy="home-footer"]').within(() => {
-      cy.contains("a", "Partners").click();
-      cy.location("pathname").should("include", "/partners");
-    });
+    cy.get('[data-cy="home-footer"]')
+      .scrollIntoView()
+      .within(() => {
+        cy.contains("a", "Partners").click();
+        cy.location("pathname").should("include", "/partners");
+      });
 
     cy.visit("/");
 
-    cy.get('[data-cy="home-footer"]').within(() => {
-      cy.contains("a", "Contact").click();
-      cy.location("pathname").should("include", "/contact");
-    });
+    cy.get('[data-cy="home-footer"]')
+      .scrollIntoView()
+      .within(() => {
+        cy.contains("a", "Contact").click();
+        cy.location("pathname").should("include", "/contact");
+      });
 
     cy.visit("/");
 
-    cy.get('[data-cy="home-footer"]').within(() => {
-      cy.contains("a", "Pricing").click();
-      cy.location("pathname").should("include", "/pricing");
-    });
+    cy.get('[data-cy="home-footer"]')
+      .scrollIntoView()
+      .within(() => {
+        cy.contains("a", "Pricing").click();
+        cy.location("pathname").should("include", "/pricing");
+      });
 
-    cy.get('[data-cy="home-footer"]').within(() => {
-      cy.contains("a", "Privacy").invoke("removeAttr", "target").click();
-    });
+    cy.get('[data-cy="home-footer"]')
+      .scrollIntoView()
+      .within(() => {
+        cy.contains("a", "Privacy").invoke("removeAttr", "target").click();
+      });
 
     cy.origin("https://drive.google.com", () => {
       cy.location("hostname").should("include", "drive.google.com");
@@ -123,11 +135,13 @@ describe("testing footer for valid links", () => {
 
     cy.visit("/");
 
-    cy.get('[data-cy="home-footer"]').within(() => {
-      cy.contains("a", "Terms and conditions")
-        .invoke("removeAttr", "target")
-        .click();
-    });
+    cy.get('[data-cy="home-footer"]')
+      .scrollIntoView()
+      .within(() => {
+        cy.contains("a", "Terms and conditions")
+          .invoke("removeAttr", "target")
+          .click();
+      });
 
     cy.origin("https://drive.google.com", () => {
       cy.location("origin").should("include", "https://drive.google.com");

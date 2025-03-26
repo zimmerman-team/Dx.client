@@ -14,7 +14,7 @@ export default function AssetsList() {
         }
       `}
     >
-      <AssetsGrid sortBy={"updatedDate"} searchStr={""} view={"grid"} />
+      <AssetsGrid sortBy={"updatedDate"} searchStr={""} view={"grid"} noAuth />
     </div>
   );
 }

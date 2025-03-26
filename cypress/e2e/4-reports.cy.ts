@@ -9,7 +9,7 @@
 
 */
 //@ts-ignore
-const randomId = () => Cypress._.random(0, 1e6);
+const randomId = () => Cypress._.random(0, 1e8);
 //@ts-ignore
 const storyTestName = `story-testname${randomId()}`;
 const advancedStoryTestName = `story-testname${randomId()}`;
@@ -32,6 +32,7 @@ describe("Testing stories on DX", () => {
   });
 
   it("Can Create story", () => {
+    cy.get('[data-cy="home-asset-dropdown-button"]').click();
     cy.get('[data-cy="home-create-story-button"]').click();
 
     cy.contains(
@@ -219,6 +220,7 @@ describe("Testing stories on DX", () => {
   });
 
   it("Can Create an Advanced story", () => {
+    cy.get('[data-cy="home-asset-dropdown-button"]').click();
     cy.get('[data-cy="home-create-story-button"]').click();
 
     cy.contains(
@@ -579,7 +581,7 @@ describe("Edit, duplicate and delete story", () => {
     cy.wait("@fetchStories");
 
     cy.get('[data-cy="story-grid-item"]')
-      .contains(`${storyTestName} - Edited (Copy)`)
+      .contains(`(Copy)${storyTestName} - Edited`)
       .should("be.visible");
   });
 
@@ -594,7 +596,7 @@ describe("Edit, duplicate and delete story", () => {
 
     cy.contains(
       '[data-cy="story-grid-item"]',
-      `${storyTestName} - Edited (Copy)`
+      `(Copy)${storyTestName} - Edited`
     )
       .first()
       .scrollIntoView()
@@ -615,7 +617,7 @@ describe("Edit, duplicate and delete story", () => {
     cy.wait("@getDatasets");
     cy.intercept("GET", `${apiUrl}/chart/sample-data/*`).as("getDataset");
 
-    cy.contains('[data-cy="dataset-grid-item"]', "Grossing Movies")
+    cy.contains('[data-cy="dataset-grid-item"]', "ChartDataset")
       .first()
       .click();
 
@@ -624,7 +626,7 @@ describe("Edit, duplicate and delete story", () => {
     cy.contains("Please select a dataset");
 
     cy.get('[data-cy="toolbox-selected-dataset"]')
-      .contains("Grossing Movies")
+      .contains("ChartDataset")
       .should("be.visible");
 
     cy.intercept("GET", `${apiUrl}/chart-types/ai-suggestions?id=*`).as(
@@ -791,7 +793,7 @@ describe("Edit, duplicate and delete story", () => {
 
     cy.contains(
       '[data-cy="story-grid-item"]',
-      `${storyTestName} - Edited (Copy)`
+      `(Copy)${storyTestName} - Edited`
     )
       .first()
       .scrollIntoView()
@@ -818,7 +820,7 @@ describe("Edit, duplicate and delete story", () => {
     cy.wait("@fetchStories");
 
     cy.get('[data-cy="story-grid-item"]')
-      .contains(`${storyTestName} - Edited (Copy)`)
+      .contains(`(Copy)${storyTestName} - Edited`)
       .should("not.exist");
 
     // Delete the edited story

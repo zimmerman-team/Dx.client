@@ -327,7 +327,7 @@ export function ChartSubheaderToolbar(
                   position: static;
                 }
               `}
-              data-cy="dataset-back-to-library-btn"
+              data-cy="chart-back-to-library-btn"
             >
               <Tooltip title="Back to Dashboard">
                 {isSmallScreen ? (
