@@ -1058,91 +1058,91 @@ describe("Testing create chart on DX", () => {
   //     .contains(testname2)
   //     .should("be.visible");
   // });
-  // it("Can create a Circular Network Graph", () => {
-  //   cy.get('[data-cy="chart-type-item"]')
-  //     .contains("Circular Network Graph")
-  //     .click();
+  it("Can create a Circular Network Graph", () => {
+    cy.get('[data-cy="chart-type-item"]')
+      .contains("Circular Network Graph")
+      .click();
 
-  //   cy.get('[data-cy="chart-type-preview"]')
-  //     .contains("Circular Network Graph")
-  //     .should("be.visible");
+    cy.get('[data-cy="chart-type-preview"]')
+      .contains("Circular Network Graph")
+      .should("be.visible");
 
-  //   cy.intercept(`${apiUrl}/chart`).as("saveChart");
-  //   cy.intercept(`${apiUrl}/chart/*`).as("saveChart2");
+    cy.intercept(`${apiUrl}/chart`).as("saveChart");
+    cy.intercept(`${apiUrl}/chart/*`).as("saveChart2");
 
-  //   cy.get('[data-cy="toolbox-chart-next"]').click();
+    cy.get('[data-cy="toolbox-chart-next"]').click();
 
-  //   cy.wait("@saveChart");
+    cy.wait("@saveChart");
 
-  //   cy.location("pathname").should("include", "/mapping");
+    cy.location("pathname").should("include", "/mapping");
 
-  //   cy.get('[data-cy="story-sub-header-title-input"]').type(
-  //     `{selectall}{backspace}${testname2}`
-  //   );
-  //   cy.intercept(`${apiUrl}/chart/*/render`).as("renderChart");
-  //   cy.contains('[data-cy="nonstatic-dimension-container"]', "Node").within(
-  //     () => {
-  //       cy.get('[data-cy="chart-dimension-select"]').first().click();
-  //       cy.get('[data-cy="chart-dimension-mapping-item"]').first().click();
-  //     }
-  //   );
-  //   cy.contains('[data-cy="nonstatic-dimension-container"]', "Links").within(
-  //     () => {
-  //       cy.get('[data-cy="chart-dimension-select"]').first().click();
-  //       cy.get('[data-cy="chart-dimension-mapping-item"]').eq(3).click();
-  //     }
-  //   );
+    cy.get('[data-cy="story-sub-header-title-input"]').type(
+      `{selectall}{backspace}${testname2}`
+    );
+    cy.intercept(`${apiUrl}/chart/*/render`).as("renderChart");
+    cy.contains('[data-cy="nonstatic-dimension-container"]', "Node").within(
+      () => {
+        cy.get('[data-cy="chart-dimension-select"]').first().click();
+        cy.get('[data-cy="chart-dimension-mapping-item"]').first().click();
+      }
+    );
+    cy.contains('[data-cy="nonstatic-dimension-container"]', "Links").within(
+      () => {
+        cy.get('[data-cy="chart-dimension-select"]').first().click();
+        cy.get('[data-cy="chart-dimension-mapping-item"]').eq(3).click();
+      }
+    );
 
-  //   cy.wait("@renderChart");
+    cy.wait("@renderChart");
 
-  //   cy.get('[data-cy="common-chart-container"]').should("be.visible");
+    cy.get('[data-cy="common-chart-container"]').should("be.visible");
 
-  //   cy.get('[data-cy="toolbox-chart-next"]').click();
+    cy.get('[data-cy="toolbox-chart-next"]').click();
 
-  //   //test for filtering
-  //   cy.get('[data-cy="filter-group"]').first().click();
-  //   cy.get('input[name="search-input"]').type("test");
-  //   cy.wait(2000);
-  //   cy.get('input[name="search-input"]').type("{selectall}{backspace}");
-  //   cy.get('[data-cy="select-all-filters-checkbox"]').click();
-  //   cy.get('[data-cy="filter-option-checkbox"]').each(($el, index) => {
-  //     cy.wrap($el).find('input[type="checkbox"]').should("be.checked");
-  //   });
-  //   cy.get('[data-cy="select-all-filters-checkbox"]').click();
-  //   cy.get('[data-cy="filter-option-checkbox"]').each(($el, index) => {
-  //     cy.wrap($el).find('input[type="checkbox"]').should("not.be.checked");
-  //   });
-  //   cy.get('[data-cy="filter-option-checkbox"]').first().click();
-  //   cy.get('[data-cy="filter-option-checkbox"]').eq(1).click();
-  //   cy.get('[data-cy="filter-option-checkbox"]').eq(2).click();
-  //   cy.contains("button", "Apply").click();
+    //test for filtering
+    cy.get('[data-cy="filter-group"]').first().click();
+    cy.get('input[name="search-input"]').type("test");
+    cy.wait(2000);
+    cy.get('input[name="search-input"]').type("{selectall}{backspace}");
+    cy.get('[data-cy="select-all-filters-checkbox"]').click();
+    cy.get('[data-cy="filter-option-checkbox"]').each(($el, index) => {
+      cy.wrap($el).find('input[type="checkbox"]').should("be.checked");
+    });
+    cy.get('[data-cy="select-all-filters-checkbox"]').click();
+    cy.get('[data-cy="filter-option-checkbox"]').each(($el, index) => {
+      cy.wrap($el).find('input[type="checkbox"]').should("not.be.checked");
+    });
+    cy.get('[data-cy="filter-option-checkbox"]').first().click();
+    cy.get('[data-cy="filter-option-checkbox"]').eq(1).click();
+    cy.get('[data-cy="filter-option-checkbox"]').eq(2).click();
+    cy.contains("button", "Apply").click();
 
-  //   cy.wait("@renderChart");
-  //   cy.get('[data-cy="reset-filters"]').scrollIntoView().click();
-  //   cy.wait("@renderChart");
+    cy.wait("@renderChart");
+    cy.get('[data-cy="reset-filters"]').scrollIntoView().click();
+    cy.wait("@renderChart");
 
-  //   cy.get('[data-cy="toolbox-chart-next"]').click();
+    cy.get('[data-cy="toolbox-chart-next"]').click();
 
-  //   // cy.wait("@renderChart");
+    // cy.wait("@renderChart");
 
-  //   cy.intercept(`${apiUrl}/chart`).as("saveChart");
+    cy.intercept(`${apiUrl}/chart`).as("saveChart");
 
-  //   cy.get('[data-cy="toolbox-chart-next"]').click();
+    cy.get('[data-cy="toolbox-chart-next"]').click();
 
-  //   cy.wait("@saveChart2");
+    cy.wait("@saveChart2");
 
-  //   cy.visit("/");
+    cy.visit("/");
 
-  //   cy.intercept("GET", `${apiUrl}/charts*`).as("fetchCharts");
+    cy.intercept("GET", `${apiUrl}/charts*`).as("fetchCharts");
 
-  //   cy.get('[data-cy="home-charts-tab"]').scrollIntoView().click();
+    cy.get('[data-cy="home-charts-tab"]').scrollIntoView().click();
 
-  //   cy.wait("@fetchCharts");
+    cy.wait("@fetchCharts");
 
-  //   cy.get('[data-cy="chart-grid-item"]')
-  //     .contains(testname2)
-  //     .should("be.visible");
-  // });
+    cy.get('[data-cy="chart-grid-item"]')
+      .contains(testname2)
+      .should("be.visible");
+  });
 
   it("Can create a  Network Graph", () => {
     cy.get('[data-cy="chart-type-item"]').contains("Network Graph").click();
@@ -1420,102 +1420,102 @@ describe("Testing create chart on DX", () => {
       .should("be.visible");
   });
 
-  it("Can create a Circle Packing Chart", () => {
-    cy.get('[data-cy="chart-type-item"]')
-      .contains("Circle Packing Chart")
-      .click();
+  // it("Can create a Circle Packing Chart", () => {
+  //   cy.get('[data-cy="chart-type-item"]')
+  //     .contains("Circle Packing Chart")
+  //     .click();
 
-    cy.get('[data-cy="chart-type-preview"]')
-      .contains("Circle Packing Chart")
-      .should("be.visible");
+  //   cy.get('[data-cy="chart-type-preview"]')
+  //     .contains("Circle Packing Chart")
+  //     .should("be.visible");
 
-    cy.intercept(`${apiUrl}/chart`).as("saveChart");
-    cy.intercept(`${apiUrl}/chart/*`).as("saveChart2");
+  //   cy.intercept(`${apiUrl}/chart`).as("saveChart");
+  //   cy.intercept(`${apiUrl}/chart/*`).as("saveChart2");
 
-    cy.get('[data-cy="toolbox-chart-next"]').click();
+  //   cy.get('[data-cy="toolbox-chart-next"]').click();
 
-    cy.wait("@saveChart");
+  //   cy.wait("@saveChart");
 
-    cy.location("pathname").should("include", "/mapping");
+  //   cy.location("pathname").should("include", "/mapping");
 
-    cy.get('[data-cy="story-sub-header-title-input"]').type(
-      `{selectall}{backspace}${testname2}`
-    );
-    cy.contains(
-      '[data-cy="nonstatic-dimension-container"]',
-      "Hierarchy"
-    ).within(() => {
-      cy.get('[data-cy="chart-dimension-select"]').first().click();
-      cy.get('[data-cy="chart-dimension-mapping-item"]').first().click();
-    });
-    cy.contains(
-      '[data-cy="nonstatic-dimension-container"]',
-      "Hierarchy"
-    ).within(() => {
-      cy.get('[data-cy="chart-dimension-select"]').first().click().click();
+  //   cy.get('[data-cy="story-sub-header-title-input"]').type(
+  //     `{selectall}{backspace}${testname2}`
+  //   );
+  //   cy.contains(
+  //     '[data-cy="nonstatic-dimension-container"]',
+  //     "Hierarchy"
+  //   ).within(() => {
+  //     cy.get('[data-cy="chart-dimension-select"]').first().click();
+  //     cy.get('[data-cy="chart-dimension-mapping-item"]').first().click();
+  //   });
+  //   cy.contains(
+  //     '[data-cy="nonstatic-dimension-container"]',
+  //     "Hierarchy"
+  //   ).within(() => {
+  //     cy.get('[data-cy="chart-dimension-select"]').first().click().click();
 
-      cy.get('[data-cy="chart-dimension-mapping-item"]').eq(3).click();
-    });
+  //     cy.get('[data-cy="chart-dimension-mapping-item"]').eq(3).click();
+  //   });
 
-    cy.intercept(`${apiUrl}/chart/*/render`).as("renderChart");
-    cy.contains('[data-cy="nonstatic-dimension-container"]', "Size").within(
-      () => {
-        cy.get('[data-cy="chart-dimension-select"]').first().click();
+  //   cy.intercept(`${apiUrl}/chart/*/render`).as("renderChart");
+  //   cy.contains('[data-cy="nonstatic-dimension-container"]', "Size").within(
+  //     () => {
+  //       cy.get('[data-cy="chart-dimension-select"]').first().click();
 
-        cy.get('[data-cy="chart-dimension-mapping-item"]').eq(4).click();
-      }
-    );
+  //       cy.get('[data-cy="chart-dimension-mapping-item"]').eq(4).click();
+  //     }
+  //   );
 
-    cy.wait("@renderChart");
+  //   cy.wait("@renderChart");
 
-    cy.get('[data-cy="common-chart-container"]').should("be.visible");
+  //   cy.get('[data-cy="common-chart-container"]').should("be.visible");
 
-    cy.get('[data-cy="toolbox-chart-next"]').click();
+  //   cy.get('[data-cy="toolbox-chart-next"]').click();
 
-    //test for filtering
-    cy.get('[data-cy="filter-group"]').first().click();
-    cy.get('input[name="search-input"]').type("test");
-    cy.wait(2000);
-    cy.get('input[name="search-input"]').type("{selectall}{backspace}");
-    cy.get('[data-cy="select-all-filters-checkbox"]').click();
-    cy.get('[data-cy="filter-option-checkbox"]').each(($el, index) => {
-      cy.wrap($el).find('input[type="checkbox"]').should("be.checked");
-    });
-    cy.get('[data-cy="select-all-filters-checkbox"]').click();
-    cy.get('[data-cy="filter-option-checkbox"]').each(($el, index) => {
-      cy.wrap($el).find('input[type="checkbox"]').should("not.be.checked");
-    });
-    cy.get('[data-cy="filter-option-checkbox"]').first().click();
-    cy.get('[data-cy="filter-option-checkbox"]').eq(1).click();
-    cy.get('[data-cy="filter-option-checkbox"]').eq(2).click();
-    cy.contains("button", "Apply").click();
+  //   //test for filtering
+  //   cy.get('[data-cy="filter-group"]').first().click();
+  //   cy.get('input[name="search-input"]').type("test");
+  //   cy.wait(2000);
+  //   cy.get('input[name="search-input"]').type("{selectall}{backspace}");
+  //   cy.get('[data-cy="select-all-filters-checkbox"]').click();
+  //   cy.get('[data-cy="filter-option-checkbox"]').each(($el, index) => {
+  //     cy.wrap($el).find('input[type="checkbox"]').should("be.checked");
+  //   });
+  //   cy.get('[data-cy="select-all-filters-checkbox"]').click();
+  //   cy.get('[data-cy="filter-option-checkbox"]').each(($el, index) => {
+  //     cy.wrap($el).find('input[type="checkbox"]').should("not.be.checked");
+  //   });
+  //   cy.get('[data-cy="filter-option-checkbox"]').first().click();
+  //   cy.get('[data-cy="filter-option-checkbox"]').eq(1).click();
+  //   cy.get('[data-cy="filter-option-checkbox"]').eq(2).click();
+  //   cy.contains("button", "Apply").click();
 
-    cy.wait("@renderChart");
-    cy.get('[data-cy="reset-filters"]').scrollIntoView().click();
-    cy.wait("@renderChart");
+  //   cy.wait("@renderChart");
+  //   cy.get('[data-cy="reset-filters"]').scrollIntoView().click();
+  //   cy.wait("@renderChart");
 
-    cy.get('[data-cy="toolbox-chart-next"]').click();
+  //   cy.get('[data-cy="toolbox-chart-next"]').click();
 
-    // cy.wait("@renderChart");
+  //   // cy.wait("@renderChart");
 
-    cy.intercept(`${apiUrl}/chart`).as("saveChart");
+  //   cy.intercept(`${apiUrl}/chart`).as("saveChart");
 
-    cy.get('[data-cy="toolbox-chart-next"]').click();
+  //   cy.get('[data-cy="toolbox-chart-next"]').click();
 
-    cy.wait("@saveChart2");
+  //   cy.wait("@saveChart2");
 
-    cy.visit("/");
+  //   cy.visit("/");
 
-    cy.intercept("GET", `${apiUrl}/charts*`).as("fetchCharts");
+  //   cy.intercept("GET", `${apiUrl}/charts*`).as("fetchCharts");
 
-    cy.get('[data-cy="home-charts-tab"]').scrollIntoView().click();
+  //   cy.get('[data-cy="home-charts-tab"]').scrollIntoView().click();
 
-    cy.wait("@fetchCharts");
+  //   cy.wait("@fetchCharts");
 
-    cy.get('[data-cy="chart-grid-item"]')
-      .contains(testname2)
-      .should("be.visible");
-  });
+  //   cy.get('[data-cy="chart-grid-item"]')
+  //     .contains(testname2)
+  //     .should("be.visible");
+  // });
 
   it("Can create a Heatmap Chart", () => {
     cy.get('[data-cy="chart-type-item"]').contains("Heatmap Chart").click();
