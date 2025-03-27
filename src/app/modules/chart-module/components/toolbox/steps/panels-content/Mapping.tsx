@@ -645,6 +645,7 @@ const NonStaticDimensionContainer = (props: {
 
             ::-webkit-scrollbar {
               width: 0px;
+              display: none;
             }
           `}
           data-cy="chart-dimension-mapping-container"
@@ -901,8 +902,6 @@ function ChartToolBoxMappingItem(
     type: MAPPING_ITEM_TYPE,
     item: { dragIndex: props.index, value: props.mappingItemValue },
     collect: (monitor) => {
-      console.log(monitor.isDragging(), "monitor.isDragging()");
-
       return { isDragging: !!monitor.isDragging() };
     },
   }));

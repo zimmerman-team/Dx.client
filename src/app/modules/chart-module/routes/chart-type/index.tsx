@@ -119,6 +119,9 @@ function ChartBuilderChartType(props: Readonly<ChartBuilderChartTypeProps>) {
         | null = [];
 
       const chartTypeSuggestionsArr: any = chartTypeSuggestions;
+      if (chartTypeSuggestionsArr?.error) {
+        return [];
+      }
       // check if the dimensions are valid for each chart type
       chartTypeSuggestionsArr?.forEach((cts: any) => {
         const chartDimensions = get(

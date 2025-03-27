@@ -286,7 +286,9 @@ export function ChartToolBoxChartType() {
                         `}
                       >
                         {d.validTypes.map((t: any) => (
-                          <>{typeIcon[t as keyof typeof typeIcon]}</>
+                          <React.Fragment key={t}>
+                            {typeIcon[t as keyof typeof typeIcon]}
+                          </React.Fragment>
                         ))}
                       </div>
                     </div>
@@ -322,6 +324,7 @@ export function ChartToolBoxChartType() {
               >
                 {echart?.metadata?.suitableFor?.map((s: any) => (
                   <div
+                    key={s}
                     css={`
                       display: flex;
                       gap: 8px;

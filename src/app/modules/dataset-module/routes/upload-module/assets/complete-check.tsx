@@ -10,7 +10,7 @@ const CompleteCheckIcon = (props: React.SVGProps<SVGSVGElement>) => {
       xmlns="http://www.w3.org/2000/svg"
       {...props}
     >
-      <g clip-path="url(#clip0_23908_3690)">
+      <g clipPath="url(#clip0_23908_3690)">
         <circle
           cx="16"
           cy="16"

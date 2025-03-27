@@ -7,7 +7,7 @@ export default function Icon() {
       viewBox="0 0 100 58"
       fill="none"
     >
-      <g clip-path="url(#clip0_23800_4049)">
+      <g clipPath="url(#clip0_23800_4049)">
         <rect width="100" height="57.9425" fill="#E4E4E4" />
         <rect
           x="9.0498"
