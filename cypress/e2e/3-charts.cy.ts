@@ -519,6 +519,8 @@ describe("Testing create chart on DX", () => {
           cy.get('[data-cy="chart-dimension-mapping-item"]').first().click();
         });
 
+        cy.wait(500);
+
         cy.get('[data-cy="chart-dimension-select"]').first().click();
         cy.get('[data-cy="chart-dimension-mapping-container"]').within(() => {
           cy.get('[data-cy="chart-dimension-mapping-item"]').eq(1).click();
@@ -1337,6 +1339,7 @@ describe("Testing create chart on DX", () => {
     cy.contains('[data-cy="nonstatic-dimension-container"]', "Metric").within(
       () => {
         cy.get('[data-cy="chart-dimension-select"]').first().click();
+        cy.wait(500);
         cy.get('[data-cy="chart-dimension-mapping-item"]').eq(2).click();
       }
     );
@@ -1722,11 +1725,14 @@ describe("Testing create chart on DX", () => {
       cy.get('[data-cy="chart-dimension-mapping-container"]').within(() => {
         cy.get('[data-cy="chart-dimension-mapping-item"]').first().click();
       });
+      cy.wait(500);
 
       cy.get('[data-cy="chart-dimension-select"]').first().click();
       cy.get('[data-cy="chart-dimension-mapping-container"]').within(() => {
         cy.get('[data-cy="chart-dimension-mapping-item"]').eq(1).click();
       });
+
+      cy.wait(500);
 
       cy.get('[data-cy="chart-dimension-select"]').first().click();
       cy.get('[data-cy="chart-dimension-mapping-container"]').within(() => {
