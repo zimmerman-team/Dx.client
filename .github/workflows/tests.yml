@@ -69,7 +69,7 @@ jobs:
         run: |
           cd ~/DX
           cd dx.client
-          npx cypress run --record --key $CYPRESS_RECORD_KEY
+          npx cypress run --record --key ${{ secrets.CYPRESS_RECORD_KEY }}
 
       - name: Stop pm2
         run: |
