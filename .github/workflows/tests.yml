@@ -70,41 +70,45 @@ jobs:
         run: yarn test
 
   cypress-run:
-    runs-on: ubuntu-latest
+    runs-on: [self-hosted, cypress]
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Set up Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: "16"
-          cache: "yarn"
-
-      - name: Install packages
-        run: yarn install --frozen-lockfile && yarn add "https://github.com/zimmerman-team/rawgraphs-charts.git#0fc0c9d"
-
-      - name: Build rawgraphs package
+      - name: Checkout to current branch
         run: |
-          if [ -d "node_modules/@rawgraphs/rawgraphs-charts" ]; then
-            cd node_modules/@rawgraphs/rawgraphs-charts
-            yarn 
-            yarn build
-          else
-            echo "Package directory not found"
-          fi
+          cd ~/DX
+          cd dx.client
+          git fetch origin
+          git checkout ${GITHUB_REF##*/}
+          git pull origin ${GITHUB_REF##*/}
+
+      - name: Build yarn
+        run: |
+          cd ~/DX
+          cd dx.client
+          yarn install
+
+      - name: Run app with pm2
+        run: |
+          cd ~/DX
+          cd dx.client
+          pm2 start yarn --name "dx.client" -- start
+
+      - name: Wait for app to be ready
+        run: |
+          cd ~/DX
+          cd dx.client
+          while ! curl -s -f -o /dev/null http://localhost:3000; do sleep 5; done
+          echo "App is ready"
 
       - name: Cypress run
         # Uses the official Cypress GitHub action https://github.com/cypress-io/github-action
-        uses: cypress-io/github-action@v6
-        with:
-          # Starts web server for E2E tests - replace with your own server invocation
-          # https://docs.cypress.io/guides/continuous-integration/introduction#Boot-your-server
-          start: yarn start
-          wait-on: "http://127.0.0.1:3000" # Waits for above
-          wait-on-timeout: 200
-          # Records to Cypress Cloud
-          # https://docs.cypress.io/guides/cloud/projects#Set-up-a-project-to-record
-          record: true
-          browser: electron
-          # parallel: true # Runs test in parallel using settings above
+        run: |
+          cd ~/DX
+          cd dx.client
+          npx cypress run --record --key $CYPRESS_RECORD_KEY
+
+      - name: Stop pm2
+        run: |
+          cd ~/DX
+          cd dx.client
+          pm2 stop dx.client
+          pm2 delete dx.client
