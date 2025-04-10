@@ -1729,7 +1729,7 @@ describe("Testing create chart on DX", () => {
       cy.get('[data-cy="chart-dimension-mapping-container"]').within(() => {
         cy.get('[data-cy="chart-dimension-mapping-item"]').first().click();
       });
-      cy.wait(100);
+      cy.wait(1000);
 
       cy.get('[data-cy="chart-dimension-select"]').first().click();
       cy.wait(500);
@@ -1737,7 +1737,7 @@ describe("Testing create chart on DX", () => {
         cy.get('[data-cy="chart-dimension-mapping-item"]').eq(1).click();
       });
 
-      cy.wait(100);
+      cy.wait(1000);
 
       cy.get('[data-cy="chart-dimension-select"]').first().click();
       cy.wait(500);
