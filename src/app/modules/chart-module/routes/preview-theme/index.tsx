@@ -18,6 +18,7 @@ import { mobileDescriptioncss } from "app/modules/dataset-module/routes/upload-m
 import moment from "moment";
 import AIIcon from "app/assets/icons/AIIcon";
 import ChartArea from "app/modules/chart-module/components/chart-area";
+import { MOBILE_BREAKPOINT } from "app/theme";
 
 export function ChartBuilderPreviewTheme(props: ChartBuilderPreviewThemeProps) {
   useTitle("Dataxplorer - Preview Chart");
@@ -264,7 +265,7 @@ export function ChartBuilderPreviewTheme(props: ChartBuilderPreviewThemeProps) {
       <div
         css={`
           display: none;
-          @media (max-width: 500px) {
+          @media (max-width: ${MOBILE_BREAKPOINT}) {
             display: block;
             height: 24px;
           }

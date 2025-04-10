@@ -64,7 +64,7 @@ import { APPLICATION_JSON } from "app/state/api";
 import HomeFooter from "app/modules/home-module/components/Footer";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import NotAvailableOnMobile from "app/modules/common/not-available";
-import { MOBILE_BREAKPOINT } from "app/theme";
+import { MOBILE_BREAKPOINT, TABLET_STARTPOINT } from "app/theme";
 
 // eslint-disable-next-line sonarjs/cognitive-complexity
 export default function ChartModule() {
@@ -610,7 +610,7 @@ export default function ChartModule() {
                         : "100%"};
 
                       transition: width 225ms cubic-bezier(0, 0, 0.2, 1) 0ms;
-                      @media (min-width: 768px) {
+                      @media (min-width: ${TABLET_STARTPOINT}) {
                         @media (max-width: 1024px) {
                           width: 100%;
                         }

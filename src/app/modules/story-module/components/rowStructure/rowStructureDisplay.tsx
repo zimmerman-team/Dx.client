@@ -29,6 +29,7 @@ import { css } from "styled-components";
 import { Updater } from "use-immer";
 import { useMediaQuery } from "@material-ui/core";
 import { rowStructureHeights } from "./data";
+import { TABLET_STARTPOINT } from "app/theme";
 
 interface RowStructureDisplayProps {
   gap: string;
@@ -68,7 +69,7 @@ export default function RowstructureDisplay(
   props: Readonly<RowStructureDisplayProps>
 ) {
   const isTablet = useMediaQuery("(max-width: 1110px)");
-  const RIGHT_PANEL_WIDTH = isTablet ? "36.83%" : "400px"; //percentage value of 274px which is the width at 768px as per design
+  const RIGHT_PANEL_WIDTH = isTablet ? "36.83%" : "400px"; //percentage value of 274px which is the width at 744px as per design
   const ref = useRef(null);
   useOnClickOutside(ref, () => setHandleDisplay(false));
   const location = useLocation();
@@ -242,7 +243,7 @@ export default function RowstructureDisplay(
             overflow-y: hidden;
             gap: ${props.gap};
             border: ${border};
-            @media (min-width: 768px) and (max-width: 1260px) {
+            @media (min-width: ${TABLET_STARTPOINT}) and (max-width: 1260px) {
               width: ${props.rightPanelOpen
                 ? `calc(100% - ${RIGHT_PANEL_WIDTH})`
                 : "100%"};

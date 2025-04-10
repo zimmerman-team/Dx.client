@@ -9,12 +9,12 @@ import { DatasetDataTable } from "app/modules/dataset-module/routes/upload-modul
 import { CssSnackbar, ISnackbarState } from "./previewFragment";
 import { ReactComponent as FullScreenIcon } from "app/modules/dataset-module/routes/upload-module/assets/full-screen.svg";
 import { ReactComponent as CloseFullScreenIcon } from "app/modules/dataset-module/routes/upload-module/assets/close-full-screen.svg";
-import { ArrowBack } from "@material-ui/icons";
 import { useMediaQuery } from "usehooks-ts";
 import { DatasetListItemAPIModel } from "app/modules/dataset-module/data";
 import moment from "moment";
 import { useAuth0 } from "@auth0/auth0-react";
 import { PrimaryButton } from "app/components/Styled/button";
+import { MOBILE_BREAKPOINT } from "app/theme";
 
 interface Props {
   data: any[];
@@ -29,7 +29,7 @@ interface Props {
 export default function FinishedFragment(props: Props) {
   const location = useLocation();
   const { user, isAuthenticated } = useAuth0();
-  const isSmallScreen = useMediaQuery("(max-width:767px)"); //at this breakpoint, we limit user creation abilities
+  const isSmallScreen = useMediaQuery(`(max-width:${MOBILE_BREAKPOINT})`); //at this breakpoint, we limit user creation abilities
   const queryParams = new URLSearchParams(location.search);
   const storyPage = queryParams.get("page") as string;
   const fromHome = location.search.includes("fromHome=true");

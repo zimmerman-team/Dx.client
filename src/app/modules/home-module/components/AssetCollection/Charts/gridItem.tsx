@@ -24,21 +24,12 @@ interface Props {
 }
 
 export default function GridItem(props: Props) {
-  const { user, isAuthenticated } = useAuth0();
   const [menuOptionsDisplay, setMenuOptionsDisplay] = React.useState(false);
-  const isMobile = useMediaQuery("(max-width: 767px)");
-
   const showMenuOptions = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     e.stopPropagation();
     setMenuOptionsDisplay(!menuOptionsDisplay);
   };
-
-  const canChartEditDelete = React.useMemo(() => {
-    return isAuthenticated && props.owner === user?.sub;
-  }, [user, isAuthenticated]);
-
-  const disabledStyle = "opacity: 0.5;pointer-events: none;";
 
   return (
     <div

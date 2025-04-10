@@ -13,6 +13,7 @@ import { useStoreActions } from "app/state/store/hooks";
 import { isChartAIAgentActive } from "app/state/recoil/atoms";
 import { useRecoilState } from "recoil";
 import MenuItems from "app/modules/home-module/components/AssetCollection/Datasets/menuItems";
+import { MOBILE_BREAKPOINT } from "app/theme";
 
 interface Props {
   path: string;
@@ -35,7 +36,6 @@ export default function GridItem(props: Readonly<Props>) {
     React.useState(false);
   const setIsAiSwitchActive = useRecoilState(isChartAIAgentActive)[1];
   const { user, isAuthenticated } = useAuth0();
-  const isMobile = useMediaQuery("(max-width: 767px)");
 
   const showMenuOptions = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
@@ -57,8 +57,6 @@ export default function GridItem(props: Readonly<Props>) {
   if (location.pathname === "/") {
     destinationPath += "?fromHome=true";
   }
-
-  const disabledStyle = "opacity: 0.5;pointer-events: none;";
 
   return (
     <div
@@ -207,6 +205,9 @@ export default function GridItem(props: Readonly<Props>) {
                 align-items: center;
                 gap: 8.3px;
                 background: #359c96;
+                @media (max-width: ${MOBILE_BREAKPOINT}) {
+                  display: none;
+                }
                 span {
                   margin: 0;
                   padding: 0;

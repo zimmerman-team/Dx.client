@@ -1,3 +1,4 @@
+import { DESKTOP_BREAKPOINT, MOBILE_BREAKPOINT } from "app/theme";
 import { css } from "styled-components/macro";
 
 export const subParagraphcss = css`
@@ -12,7 +13,7 @@ export const subParagraphcss = css`
     display: flex;
     column-gap: 97px;
     align-items: center;
-    @media (max-width: 1024px) {
+    @media (max-width: ${DESKTOP_BREAKPOINT}) {
       flex-direction: column;
       align-items: center;
       justify-content: center;
@@ -58,8 +59,8 @@ export const subParagraphcss = css`
     }
   }
   svg {
-    @media (max-width: 1024px) {
-      width: 100%;
+    @media (max-width: ${MOBILE_BREAKPOINT}) {
+      width: 90%;
       height: 100%;
     }
   }
