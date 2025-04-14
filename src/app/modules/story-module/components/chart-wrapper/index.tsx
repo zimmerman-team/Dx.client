@@ -8,6 +8,8 @@ import { ChartAPIModel, emptyChartAPI } from "app/modules/chart-module/data";
 import { useRenderChartFromAPI } from "./useRenderChartFromAPI";
 import { useLoadDatasetDetails } from "./useLoadDatasetDetailsAPI";
 import AIIcon from "app/assets/icons/AIIcon";
+import { getDatasetDetailsSource } from "app/modules/chart-module/util/getDatasetDetailsSource";
+import { DatasetListItemAPIModel } from "app/modules/dataset-module/data";
 
 interface Props {
   id: string;
@@ -15,6 +17,7 @@ interface Props {
   chartPreviewInStory?: boolean;
   setError: React.Dispatch<React.SetStateAction<boolean>>;
   error: boolean;
+  hideChartSource?: boolean;
 }
 
 export function StoryChartWrapper(props: Props) {
@@ -130,6 +133,15 @@ export function StoryChartWrapper(props: Props) {
   const boldText = "create or add a new chart";
 
   const parts = message.split(boldText);
+
+  const dataDetails = useStoreState(
+    (state) =>
+      (state.dataThemes.DatasetGet.crudData ?? {}) as DatasetListItemAPIModel
+  );
+  const { sourceUrl, filename } = getDatasetDetailsSource(
+    dataDetails,
+    datasetDetails
+  );
 
   if (notFound || dataError) {
     return (
@@ -274,6 +286,29 @@ export function StoryChartWrapper(props: Props) {
         mapping={chartFromAPI?.mapping}
         datasetDetails={datasetDetails}
       />
+
+      <p
+        id={`datasource-${props.id || "1"}`}
+        css={`
+          color: #70777e;
+          font-family: "GothamNarrow-Bold", sans-serif;
+          font-size: 12px;
+          margin: 0;
+          display: ${props.hideChartSource ? "none" : "block"};
+          a {
+            font-family: "GothamNarrow-Bold", sans-serif;
+
+            color: #70777e;
+            text-decoration: none;
+            border-bottom: 1px solid #70777e;
+          }
+        `}
+      >
+        Source:{" "}
+        <a href={sourceUrl} target="_blank" rel="noopener noreferrer">
+          {datasetDetails?.source ?? dataDetails.source} - Data file: {filename}
+        </a>
+      </p>
     </div>
   );
 }
