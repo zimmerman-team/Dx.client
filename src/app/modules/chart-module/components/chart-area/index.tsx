@@ -98,16 +98,15 @@ const ChartArea: React.FC<
                 font-family: "GothamNarrow-Bold", sans-serif;
 
                 color: #70777e;
-                text-decoration: none;
+                text-decoration: underline;
                 border-bottom: 1px solid #70777e;
                 margin: 0;
               }
             `}
           >
-            Source:{" "}
+            Data source:{" "}
             <a href={sourceUrl} target="_blank" rel="noopener noreferrer">
-              {props.datasetDetails?.source ?? datasetDetails.source} - Data
-              file: {filename}
+              {props.datasetDetails?.source ?? datasetDetails.source}
             </a>
           </p>
         </div>
