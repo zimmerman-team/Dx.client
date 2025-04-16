@@ -33,6 +33,14 @@ export default function Billing() {
   const [planMessage, setPlanMessage] = React.useState("");
 
   const token = useStoreState((state) => state.AuthToken.value);
+  const isInUpgradeFlow =
+    new URLSearchParams(window.location.search).get("flow") === "upgrade";
+  React.useEffect(() => {
+    // If we're not in the upgrade flow but have the localStorage item, clean it up
+    if (!isInUpgradeFlow && localStorage.getItem("upgradeReturnRoute")) {
+      localStorage.removeItem("upgradeReturnRoute");
+    }
+  }, [isInUpgradeFlow]);
 
   const getStripePaymentMethod = async () => {
     setLoading(true);
@@ -95,7 +103,7 @@ export default function Billing() {
       `${process.env.REACT_APP_API}/stripe/portal-session`,
       {
         userId: user?.sub,
-        returnUrl: `${window.location.origin}/user-management/billing`,
+        returnUrl: `${window.location.origin}/stripe-return`,
       },
       {
         headers: {

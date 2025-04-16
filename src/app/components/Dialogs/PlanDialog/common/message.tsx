@@ -123,7 +123,11 @@ export const Message = (props: MessageProps) => {
             font-size: 16px;
           `}
           onClick={() => {
-            history.push("/pricing");
+            localStorage.setItem(
+              "upgradeReturnRoute",
+              history.location.pathname
+            );
+            history.push("/pricing?flow=upgrade");
             setPlanDialog({
               open: false,
               message: "",
