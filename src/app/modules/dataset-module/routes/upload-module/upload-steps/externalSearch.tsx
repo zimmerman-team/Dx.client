@@ -222,6 +222,11 @@ export default function ExternalSearch(props: {
             placeholder="Search your dataset via Federated search"
             value={props.searchValue}
             onChange={handleSearch}
+            onKeyPress={(e) => {
+              if (e.key === "Enter") {
+                onSearch();
+              }
+            }}
             data-cy="external-search-input"
             aria-label="search"
             name="search"
