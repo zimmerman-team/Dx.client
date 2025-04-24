@@ -228,6 +228,18 @@ const IntercomBootupComponent = () => {
   return <></>;
 };
 
+const StripeReturn = () => {
+  const history = useHistory();
+  React.useEffect(() => {
+    // Get the saved return route, remove from LS and redirect
+    const returnRoute =
+      localStorage.getItem("upgradeReturnRoute") ?? "/user-management/billing";
+    localStorage.removeItem("upgradeReturnRoute");
+    history.replace(returnRoute);
+  }, []);
+  return <></>;
+};
+
 export function MainRoutes() {
   useScrollToTop();
   useRouteListener();
@@ -251,6 +263,9 @@ export function MainRoutes() {
         <Switch>
           <Route exact path="/callback">
             <AuthCallbackModule />
+          </Route>
+          <Route exact path="/stripe-return">
+            <StripeReturn />
           </Route>
           <RouteWithAppBar exact path="/">
             <HomeModule />

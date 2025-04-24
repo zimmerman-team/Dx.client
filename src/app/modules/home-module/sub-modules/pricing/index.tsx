@@ -12,7 +12,7 @@ import Features from "./components/features";
 import MFALogo from "./assets/mfa-logo";
 import TGFLogo from "./assets/tgf-logo";
 import IATILogo from "./assets/iati-logo";
-import { useHistory } from "react-router-dom";
+import { useHistory, useLocation } from "react-router-dom";
 import MobilePlanCard from "./components/mobile-plan-card";
 import { APPLICATION_JSON } from "app/state/api";
 import { PageLoader } from "app/modules/common/page-loader";
@@ -85,6 +85,7 @@ export default function PricingModule() {
 
   const { user, isAuthenticated } = useAuth0();
   const isMobile = useMediaQuery("(max-width: 1030px)");
+  const location = useLocation();
 
   const [subscriptionPlan, setSubscriptionPlan] = React.useState("monthly");
   const [currentPlan, setCurrentPlan] = React.useState(
@@ -169,8 +170,11 @@ export default function PricingModule() {
         `/onboarding/signin?to=${window.location.pathname}${window.location.search}`
       );
     }
+    const isInUpgradeFlow =
+      new URLSearchParams(location.search).get("flow") === "upgrade";
     if (currentPlan !== PLANS[0].name) {
-      history.push("/user-management/billing");
+      const flowParam = isInUpgradeFlow ? "?flow=upgrade" : "";
+      history.push(`/user-management/billing${flowParam}`);
       return;
     }
     switch (key) {
