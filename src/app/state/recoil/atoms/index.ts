@@ -65,7 +65,7 @@ export const shareAssetDetailsAtom = atom<{
 
 export const homeDisplayAtom = atom<"all" | "data" | "charts" | "stories">({
   key: "homeDisplayAtom",
-  default: "all",
+  default: "stories",
   effects_UNSTABLE: [persistAtom],
 });
 
