@@ -105,6 +105,11 @@ export default function NewsletterForm(
         ref={inputRef}
         onFocus={inputRefFocus}
         onBlur={inputRefBlur}
+        onKeyPress={(event) => {
+          if (event.key === "Enter") {
+            handleSubmit(handleSubscribeAction)();
+          }
+        }}
         autoComplete="email"
       />
       <button type="submit">SUBSCRIBE</button>
