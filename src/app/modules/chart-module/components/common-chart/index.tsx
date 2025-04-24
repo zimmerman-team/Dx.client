@@ -6,7 +6,6 @@ import GeomapLegend from "app/modules/chart-module/components/geomap-legend";
 import { ChartAPIModel } from "app/modules/chart-module/data";
 import { DatasetListItemAPIModel } from "app/modules/dataset-module/data";
 import { get } from "lodash";
-import { getDatasetDetailsSource } from "app/modules/chart-module/util/getDatasetDetailsSource";
 
 export type ChartType =
   | "echartsBarchart"
@@ -65,17 +64,8 @@ export function CommonChart(props: Readonly<Props>) {
   const loadDataset = useStoreActions(
     (actions) => actions.dataThemes.DatasetGet.fetch
   );
-  const datasetDetails = useStoreState(
-    (state) =>
-      (state.dataThemes.DatasetGet.crudData ?? {}) as DatasetListItemAPIModel
-  );
-  const { sourceUrl, filename } = getDatasetDetailsSource(
-    datasetDetails,
-    props.datasetDetails
-  );
 
   let content;
-  let contentHeight = "100%";
 
   React.useEffect(() => {
     if (token) {
@@ -147,7 +137,9 @@ export function CommonChart(props: Readonly<Props>) {
               | "bigNumber"),
           {
             ...visualOptions,
-            height: props.containerRef.current.clientHeight,
+            height: props.inChartWrapper
+              ? props.containerRef.current.clientHeight - 60
+              : props.containerRef.current.clientHeight,
           },
           props.mapping,
           `common-chart-render-container-${props.chartId || "1"}-${
@@ -170,7 +162,10 @@ export function CommonChart(props: Readonly<Props>) {
         width: 100%;
         overflow: hidden;
         position: relative;
-        height: ${contentHeight};
+        height: ${props.inChartWrapper &&
+        props.renderedChartType !== "bigNumber"
+          ? "calc(100% - 60px)"
+          : "100%"};
         * {
           font-family: "GothamNarrow-Book", "Helvetica Neue", sans-serif !important;
         }
