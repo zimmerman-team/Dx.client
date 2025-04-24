@@ -162,7 +162,10 @@ export function CommonChart(props: Readonly<Props>) {
         width: 100%;
         overflow: hidden;
         position: relative;
-        height: ${props.inChartWrapper ? "calc(100% - 60px)" : "100%"};
+        height: ${props.inChartWrapper &&
+        props.renderedChartType !== "bigNumber"
+          ? "calc(100% - 60px)"
+          : "100%"};
         * {
           font-family: "GothamNarrow-Book", "Helvetica Neue", sans-serif !important;
         }

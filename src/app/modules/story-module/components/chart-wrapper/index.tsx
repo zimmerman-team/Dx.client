@@ -287,28 +287,31 @@ export function StoryChartWrapper(props: Props) {
         datasetDetails={datasetDetails}
       />
 
-      <p
-        id={`datasource-${props.id || "1"}`}
-        css={`
-          color: #70777e;
-          font-family: "GothamNarrow-Bold", sans-serif;
-          font-size: 12px;
-          margin: 0;
-          display: ${props.hideChartSource ? "none" : "block"};
-          a {
-            font-family: "GothamNarrow-Bold", sans-serif;
-
+      {renderedChartType !== "bigNumber" && !props.hideChartSource && (
+        <p
+          id={`datasource-${props.id || "1"}`}
+          css={`
             color: #70777e;
-            text-decoration: none;
-            border-bottom: 1px solid #70777e;
-          }
-        `}
-      >
-        Source:{" "}
-        <a href={sourceUrl} target="_blank" rel="noopener noreferrer">
-          {datasetDetails?.source ?? dataDetails.source} - Data file: {filename}
-        </a>
-      </p>
+            font-family: "GothamNarrow-Bold", sans-serif;
+            font-size: 12px;
+            margin: 0;
+            display: ${props.hideChartSource ? "none" : "block"};
+            a {
+              font-family: "GothamNarrow-Bold", sans-serif;
+
+              color: #70777e;
+              text-decoration: none;
+              border-bottom: 1px solid #70777e;
+            }
+          `}
+        >
+          Source:{" "}
+          <a href={sourceUrl} target="_blank" rel="noopener noreferrer">
+            {datasetDetails?.source ?? dataDetails.source} - Data file:{" "}
+            {filename}
+          </a>
+        </p>
+      )}
     </div>
   );
 }

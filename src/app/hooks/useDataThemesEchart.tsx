@@ -1009,7 +1009,7 @@ export function useDataThemesEchart() {
             config: {
               method:
                 ["linear", "exponential", "logarithmic", "polynomial"].find(
-                  (m) => m === trendline.toLowerCase()
+                  (m) => m === trendline?.toLowerCase()
                 ) ?? "linear",
             },
           },
