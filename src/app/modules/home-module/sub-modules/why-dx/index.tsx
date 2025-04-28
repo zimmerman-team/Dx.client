@@ -64,7 +64,7 @@ export default function WhyDX() {
               <TryUsBlock />
               <div
                 css={`
-                  height: 120px;
+                  height: 100px;
                   @media (max-width: 1024px) {
                     height: 40px;
                   }

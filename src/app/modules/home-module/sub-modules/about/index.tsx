@@ -225,7 +225,7 @@ export default function AboutModule() {
     >
       <section
         css={`
-          padding-bottom: 120px;
+          padding-bottom: 100px;
           @media (max-width: 960px) {
             padding-bottom: 40px;
           }
@@ -584,7 +584,7 @@ export default function AboutModule() {
           height={{
             xs: 32,
             md: 40,
-            lg: 120,
+            lg: 80,
           }}
         />
 

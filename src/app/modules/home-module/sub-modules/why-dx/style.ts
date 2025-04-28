@@ -33,7 +33,7 @@ export const keyfeaturescss = {
   container: css`
     position: relative;
     z-index: 1;
-    padding-top: 120px;
+    padding-top: 80px;
 
     @media (max-width: 1024px) {
       padding-top: 40px;
