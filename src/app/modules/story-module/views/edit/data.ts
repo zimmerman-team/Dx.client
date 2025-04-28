@@ -23,7 +23,6 @@ export interface StoryEditViewProps {
   storyName: string;
   headerDetails: IHeaderDetails;
   setHeaderDetails: React.Dispatch<React.SetStateAction<IHeaderDetails>>;
-  setHasChangesBeenMade: React.Dispatch<React.SetStateAction<boolean>>;
   stopInitializeFramesWidth: boolean;
   setStopInitializeFramesWidth: React.Dispatch<React.SetStateAction<boolean>>;
   onSave: (type: "create" | "edit") => Promise<void>;

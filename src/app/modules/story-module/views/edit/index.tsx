@@ -26,7 +26,6 @@ import { IFramesArray } from "app/modules/story-module/views/create/data";
 import RowFrame from "app/modules/story-module/components/rowStructure";
 import TourGuide from "app/components/Dialogs/TourGuide";
 import useCookie from "@devhammed/use-cookie";
-import isEqual from "lodash/isEqual";
 import get from "lodash/get";
 import { PageLoader } from "app/modules/common/page-loader";
 import { handleDragOverScroll } from "app/utils/handleAutoScroll";
@@ -35,6 +34,7 @@ import {
   compareHeaderDetailsState,
 } from "app/modules/story-module/views/edit/compareStates";
 import PlaceHolder from "app/modules/story-module/components/placeholder";
+import useAutosave from "app/hooks/useAutoSave";
 
 function StoryEditView(props: Readonly<StoryEditViewProps>) {
   useTitle("Dataxplorer - Edit Story");
@@ -58,6 +58,10 @@ function StoryEditView(props: Readonly<StoryEditViewProps>) {
       rowType: "",
       disableAddRowStructureButton: false,
     });
+
+  const tempStoryData = useStoreState(
+    (state) => (state.stories.StoryGet.tempData ?? emptyStory) as StoryModel
+  );
 
   const fetchStoryData = useStoreActions(
     (actions) => actions.stories.StoryGet.fetch
@@ -154,8 +158,8 @@ function StoryEditView(props: Readonly<StoryEditViewProps>) {
     }
   };
 
-  const framesArrayFromStoryData = (): IFramesArray[] => {
-    return storyData.rows?.map((rowFrame, index) => {
+  const framesArrayFromStoryData = (story: StoryModel): IFramesArray[] => {
+    return story.rows?.map((rowFrame, index) => {
       const contentTypes = rowFrame.items.map(getContentType);
       const content = rowFrame.items.map((item, index) => {
         return contentTypes[index] === "text"
@@ -186,22 +190,22 @@ function StoryEditView(props: Readonly<StoryEditViewProps>) {
     });
   };
 
-  const headerDetailsFromStoryData = () => {
+  const headerDetailsFromStoryData = (story: StoryModel) => {
     return {
-      title: storyData.title,
-      showHeader: storyData.showHeader,
-      heading: storyData?.heading
+      title: story.title,
+      showHeader: story.showHeader,
+      heading: story?.heading
         ? EditorState.moveFocusToEnd(
-            EditorState.createWithContent(convertFromRaw(storyData?.heading))
+            EditorState.createWithContent(convertFromRaw(story?.heading))
           )
         : EditorState.moveFocusToEnd(EditorState.createEmpty()),
-      description: storyData?.description
-        ? EditorState.createWithContent(convertFromRaw(storyData?.description))
+      description: story?.description
+        ? EditorState.createWithContent(convertFromRaw(story?.description))
         : EditorState.createEmpty(),
-      backgroundColor: storyData.backgroundColor,
-      titleColor: storyData.titleColor,
-      descriptionColor: storyData.descriptionColor,
-      dateColor: storyData.dateColor,
+      backgroundColor: story.backgroundColor,
+      titleColor: story.titleColor,
+      descriptionColor: story.descriptionColor,
+      dateColor: story.dateColor,
       isUpdated: true,
     };
   };
@@ -210,13 +214,16 @@ function StoryEditView(props: Readonly<StoryEditViewProps>) {
     if (storyData.id !== page) {
       return;
     }
+    if (tempStoryData === null) {
+      return;
+    }
     const areHeaderDetailsStatesEqual = compareHeaderDetailsState(
       props.headerDetails,
-      headerDetailsFromStoryData()
+      headerDetailsFromStoryData(tempStoryData)
     );
     const areFramesArrayStatesEqual = compareFramesArrayState(
       props.framesArray,
-      framesArrayFromStoryData()
+      framesArrayFromStoryData(tempStoryData)
     );
 
     if (
@@ -224,40 +231,33 @@ function StoryEditView(props: Readonly<StoryEditViewProps>) {
       !areHeaderDetailsStatesEqual ||
       storyData.name !== props.storyName
     ) {
-      props.setHasChangesBeenMade(true);
-    }
-    if (
-      !isEqual(
-        props.headerDetails.heading.getCurrentContent().getPlainText(),
-        headerDetailsFromStoryData().heading.getCurrentContent().getPlainText()
-      )
-    ) {
-      setIsStoryHeadingModified(true);
+      props.onSave("edit");
     }
   };
+  useAutosave(
+    () => {
+      hasChangesBeenMadeCheck();
+    },
+    2 * 1000,
+    props.autoSave,
+    true,
+    [props.framesArray, props.storyName, props.headerDetails]
+  );
 
-  React.useEffect(() => {
-    hasChangesBeenMadeCheck();
-    return () => {
-      props.setHasChangesBeenMade(false);
-      setIsStoryHeadingModified(false);
-    };
-  }, [props.framesArray, props.storyName, props.headerDetails, props.autoSave]);
-
-  const updateStoryStatesWithStoryData = async () => {
+  const updateStoryStatesWithStoryData = () => {
     if (storyData.id !== page) {
       return;
     }
     props.setHasStoryNameFocused(storyData.name !== "Untitled story");
     props.setStoryName(storyData.name);
-    props.setHeaderDetails(headerDetailsFromStoryData());
-    props.updateFramesArray(framesArrayFromStoryData());
+    props.setHeaderDetails(headerDetailsFromStoryData(storyData));
+    props.updateFramesArray(framesArrayFromStoryData(storyData));
   };
 
   React.useEffect(() => {
-    updateStoryStatesWithStoryData().finally(() => {
-      props.setAutoSave({ isAutoSaveEnabled: true });
-    });
+    updateStoryStatesWithStoryData();
+
+    props.setAutoSave({ isAutoSaveEnabled: true });
   }, [storyData]);
 
   React.useEffect(() => {
