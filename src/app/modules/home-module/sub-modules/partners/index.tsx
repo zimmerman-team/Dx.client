@@ -19,6 +19,12 @@ import {
 } from "app/modules/home-module/sub-modules/partners/components/tabCard";
 import { useTitle } from "react-use";
 import Hero from "app/modules/home-module/components/hero";
+import { useAuth0 } from "@auth0/auth0-react";
+import { Box } from "@material-ui/core";
+import { PrimaryButton } from "app/components/Styled/button";
+import { Link } from "react-router-dom";
+import SignInButtons from "app/modules/home-module/components/SignInButtons";
+import InlineLogo from "app/modules/home-module/assets/inline-logo";
 
 const StyledTab = withStyles(() => ({
   root: {
@@ -114,6 +120,8 @@ const Pagination = (props: {
 export default function PartnersModule() {
   useTitle("Dataxplorer - Partners");
 
+  const { isAuthenticated } = useAuth0();
+
   const [displayTab, setDisplayTab] = React.useState<number>(0);
   const handleChange = (
     event: React.ChangeEvent<{}> | null,
@@ -154,7 +162,79 @@ export default function PartnersModule() {
         `}
       >
         <div>
-          <Hero />
+          <Hero title="Our Partners">
+            {isAuthenticated ? (
+              <div>
+                <p>
+                  Collaboration is at the heart of everything we do — meet the
+                  partners driving change with us.
+                </p>
+                <Box height={"40px"} />
+                <Box
+                  display={"flex"}
+                  gridColumnGap={"24px"}
+                  gridRowGap={"8px"}
+                  justifyContent={"center"}
+                  flexDirection={{ xs: "column", sm: "row" }}
+                  alignItems={"center"}
+                >
+                  <Link
+                    to="/"
+                    data-cy="empower-block-explore-stories-link"
+                    css={`
+                      text-decoration: none;
+                    `}
+                  >
+                    <PrimaryButton
+                      css={`
+                        height: 48px;
+                        @media (max-width: 600px) {
+                          width: max-content;
+                        }
+                      `}
+                      size="big"
+                      bg="light"
+                      type="button"
+                    >
+                      Go to the Dashboard
+                    </PrimaryButton>
+                  </Link>
+                  <Link
+                    to="/contact"
+                    css={`
+                      text-decoration: none;
+                    `}
+                  >
+                    <PrimaryButton
+                      css={`
+                        height: 48px;
+                        @media (max-width: 600px) {
+                          width: max-content;
+                        }
+                      `}
+                      size="big"
+                      bg="light"
+                      type="button"
+                    >
+                      Contact Us
+                    </PrimaryButton>
+                  </Link>
+                </Box>
+              </div>
+            ) : (
+              <div>
+                <p>
+                  Collaboration is at the heart of everything we do — meet the
+                  partners driving change with us.
+                  <br />
+                  Sign in to get the most out of <InlineLogo /> and keep things
+                  connected.
+                </p>
+                <Box height={"40px"} />
+                <SignInButtons />
+              </div>
+            )}
+          </Hero>
           <Container
             maxWidth="lg"
             css={`

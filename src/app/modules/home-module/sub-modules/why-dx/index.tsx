@@ -10,6 +10,12 @@ import KeyFeaturesBlock from "app/modules/home-module/sub-modules/why-dx/compone
 import { useTitle } from "react-use";
 import { useMediaQuery } from "usehooks-ts";
 import Hero from "app/modules/home-module/components/hero";
+import { useAuth0 } from "@auth0/auth0-react";
+import { Box } from "@material-ui/core";
+import AddAssetDropdown from "app/modules/home-module/components/AddAssetDropdown";
+import { Link } from "react-router-dom";
+import { PrimaryButton } from "app/components/Styled/button";
+import SignInButtons from "app/modules/home-module/components/SignInButtons";
 
 export default function WhyDX() {
   useTitle("Dataxplorer - Why Dataxplorer?");
@@ -21,6 +27,7 @@ export default function WhyDX() {
   } else if (isMobile) {
     Ellipses = EllipsesMobile;
   }
+  const { isAuthenticated } = useAuth0();
 
   return (
     <>
@@ -34,7 +41,62 @@ export default function WhyDX() {
         `}
       >
         <div>
-          <Hero />
+          <Hero
+            title={
+              <>
+                Create high impact data driven{" "}
+                <b
+                  css={`
+                    background: linear-gradient(90deg, #231d2c, #6061e5);
+                    -webkit-background-clip: text;
+                    -webkit-text-fill-color: transparent;
+                  `}
+                >
+                  stories
+                </b>
+              </>
+            }
+          >
+            {isAuthenticated ? (
+              <Box
+                display={"flex"}
+                gridColumnGap={"24px"}
+                gridRowGap={"8px"}
+                justifyContent={"center"}
+                flexDirection={{ xs: "column", sm: "row" }}
+                alignItems={"center"}
+              >
+                <AddAssetDropdown />
+                <Link
+                  to="/"
+                  data-cy="empower-block-explore-stories-link"
+                  css={`
+                    text-decoration: none;
+                  `}
+                >
+                  <PrimaryButton
+                    css={`
+                      height: 48px;
+                      @media (max-width: 600px) {
+                        width: max-content;
+                      }
+                    `}
+                    size="big"
+                    bg="light"
+                    type="button"
+                  >
+                    Explore the Dashboard
+                  </PrimaryButton>
+                </Link>
+              </Box>
+            ) : (
+              <div>
+                <p>Sign in for free to unlock data visualisation tools with</p>
+                <Box height={"10px"} />
+                <SignInButtons />
+              </div>
+            )}
+          </Hero>
           <div
             css={`
               background-color: #f2f7fd;
@@ -61,7 +123,12 @@ export default function WhyDX() {
                   }
                 `}
               />
-              <TryUsBlock />
+              <TryUsBlock
+                title="Try Dataxplorer for free"
+                subtitle="Dataxplorer turns data into impact"
+                contactUs
+                bestDecisions
+              />
               <div
                 css={`
                   height: 100px;

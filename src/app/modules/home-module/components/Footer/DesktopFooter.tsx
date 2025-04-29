@@ -38,8 +38,30 @@ export default function DesktopFooter(props: Props) {
                 margin-bottom: 40px;
               `}
             >
-              <Link to="/">
+              <Link
+                to="/"
+                css={`
+                  text-decoration: none;
+                  display: flex;
+                  align-items: center;
+                  gap: 8px;
+                `}
+              >
                 <LogoIcon />
+                <div
+                  css={`
+                    font-family: "Inter", sans-serif;
+                    color: #e75656;
+                    font-size: 14.978px;
+                    font-weight: 500;
+                    line-height: 14.978px;
+                    padding: 3.329px 10.922px;
+                    border-radius: 20.803px;
+                    border: 0.993px solid #e75656;
+                  `}
+                >
+                  beta
+                </div>
               </Link>
             </p>
             <Grid

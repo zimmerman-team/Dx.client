@@ -6,34 +6,44 @@ import { ReactComponent as GoogleIcon } from "app/modules/onboarding-module/asse
 import { ReactComponent as LinkedInIcon } from "app/modules/onboarding-module/asset/linkedIn-img.svg";
 import { ReactComponent as MicrosoftIcon } from "app/modules/onboarding-module/asset/microsoft-img.svg";
 
-export default function TryUsBlock() {
+interface TryUsBlockProps {
+  title: React.ReactNode;
+  subtitle: React.ReactNode;
+  bestDecisions?: boolean;
+  contactUs?: boolean;
+}
+
+export default function TryUsBlock(props: TryUsBlockProps) {
   const { isAuthenticated } = useAuth0();
 
   return (
     <>
-      <p
-        css={`
-          text-align: center;
-          font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
-          font-size: 48px;
-          font-style: normal;
-          line-height: normal;
-          margin-bottom: 34px;
-          margin-top: 0;
-          color: #231d2c;
-          @media (max-width: 1200px) {
-            font-size: 36px;
+      {props.bestDecisions ? (
+        <p
+          css={`
+            text-align: center;
+            font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
+            font-size: 48px;
+            font-style: normal;
             line-height: normal;
-          }
-          @media (max-width: 600px) {
-            font-size: 18px;
-            line-height: normal;
-            margin-bottom: 32px;
-          }
-        `}
-      >
-        Best decisions are based on data
-      </p>
+            margin-bottom: 34px;
+            margin-top: 0;
+            color: #231d2c;
+            @media (max-width: 1200px) {
+              font-size: 36px;
+              line-height: normal;
+            }
+            @media (max-width: 600px) {
+              font-size: 18px;
+              line-height: normal;
+              margin-bottom: 32px;
+            }
+          `}
+        >
+          Best decisions are based on data
+        </p>
+      ) : null}
+
       <div
         css={`
           background: #231d2c;
@@ -99,8 +109,7 @@ export default function TryUsBlock() {
         `}
       >
         <div>
-          <p>Try Dataxplorer for free</p>{" "}
-          <p>Dataxplorer turns data into impact </p>
+          <p>{props.title}</p> <p>{props.subtitle}</p>
         </div>
         {isAuthenticated && (
           <div
@@ -143,7 +152,7 @@ export default function TryUsBlock() {
             `}
           >
             <Link to="/story/new/initial">Explore the Dashboard</Link>
-            <Link to="/contact">Contact Us</Link>
+            {props.contactUs ? <Link to="/contact">Contact Us</Link> : null}
           </div>
         )}
         {!isAuthenticated && (
@@ -184,14 +193,14 @@ export default function TryUsBlock() {
                 justify-content: center;
                 > button {
                   gap: 8px;
-                  color: #231d2c;
+                  color: white;
                   display: flex;
-                  width: 147px;
+                  width: 145px;
                   height: 48px;
                   border-radius: 12px;
                   outline: none;
                   border: none;
-                  background: #a1a2ff;
+                  background: #6061e5;
                   align-items: center;
                   justify-content: center;
                   font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
@@ -225,7 +234,8 @@ export default function TryUsBlock() {
                 <MicrosoftIcon /> Microsoft
               </button>
             </div>
-            <Link to="/contact">Contact Us</Link>
+
+            {props.contactUs ? <Link to="/contact">Contact Us</Link> : null}
           </div>
         )}
       </div>
