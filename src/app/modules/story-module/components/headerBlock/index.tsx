@@ -1,7 +1,7 @@
 import React from "react";
 import get from "lodash/get";
 import { useDrop } from "react-dnd";
-import { ContentState, EditorState, convertToRaw } from "draft-js";
+import { DraftHandleValue, EditorState, Modifier } from "draft-js";
 import { useRecoilState } from "recoil";
 import Box from "@material-ui/core/Box";
 import Container from "@material-ui/core/Container";
@@ -17,6 +17,7 @@ import { Tooltip } from "@material-ui/core";
 import useDebounce from "react-use/lib/useDebounce";
 import { ToolbarPluginsType } from "app/modules/story-module/components/storySubHeaderToolbar/staticToolbar";
 import { IHeaderDetails } from "app/modules/story-module/components/right-panel/data";
+import { getComplexSelectionLength } from "app/utils/draftjs/getComplexSelectionLength";
 
 interface Props {
   isToolboxOpen: boolean;
@@ -100,43 +101,139 @@ export default function HeaderBlock(props: Props) {
   };
 
   const setTextContent = (
-    text: EditorState,
-    propsState: EditorState,
+    newEditorState: EditorState,
     type: "heading" | "description"
   ) => {
-    let max = type === "heading" ? 50 : 250;
-    setMaxCharCount(max);
-    const plainText = getPlainTextFromEditorState(text);
-    const plainDescr = getPlainTextFromEditorState(propsState);
-    if (updateCharCount) {
-      setCharCount(plainText.length);
-    }
-    if (plainText.length <= max) {
+    const max = type === "heading" ? 50 : 250;
+    const plainText = getPlainTextFromEditorState(newEditorState);
+    const currentLength = plainText.length;
+
+    // Update character count regardless of whether we update the state
+    setCharCount(Math.min(currentLength, max));
+
+    // Only update header details if within character limit
+    if (currentLength <= max) {
       if (type === "heading") {
         props.setHeaderDetails({
           ...props.headerDetails,
-          heading: text,
+          heading: newEditorState,
         });
       } else {
         props.setHeaderDetails({
           ...props.headerDetails,
-          description: text,
+          description: newEditorState,
         });
       }
     } else {
-      if (type === "heading") {
-        props.setHeaderDetails({
-          ...props.headerDetails,
-          heading: EditorState.moveFocusToEnd(propsState),
-        });
-      } else {
-        props.setHeaderDetails({
-          ...props.headerDetails,
-          description: EditorState.moveFocusToEnd(propsState),
-        });
-      }
-      setCharCount(plainDescr.length);
+      // If text exceeds limit, maintain the previous valid state
+      // This prevents showing text that exceeds the limit temporarily
+      // No need to update state here as we're keeping the previous valid state
     }
+  };
+
+  const handleBeforeInput = (
+    chars: string,
+    editorState: EditorState,
+    type: "heading" | "description"
+  ): DraftHandleValue => {
+    const max = type === "heading" ? 50 : 250;
+    const plainText = getPlainTextFromEditorState(editorState);
+    const selection = editorState.getSelection();
+
+    // If selection is not collapsed, those characters will be replaced
+    if (!selection.isCollapsed()) {
+      // Calculate net length after replacement
+      const startKey = selection.getStartKey();
+      const endKey = selection.getEndKey();
+      const startOffset = selection.getStartOffset();
+      const endOffset = selection.getEndOffset();
+      const selectedTextLength =
+        startKey === endKey
+          ? endOffset - startOffset
+          : getComplexSelectionLength(editorState);
+
+      // Check if new length would be within limit
+      if (plainText.length - selectedTextLength + chars.length <= max) {
+        return "not-handled"; // Allow input
+      } else {
+        return "handled"; // Prevent input
+      }
+    }
+
+    // Simple case - no selection, just check if adding chars would exceed limit
+    if (plainText.length + chars.length > max) {
+      return "handled"; // Prevent input
+    }
+
+    return "not-handled"; // Allow input
+  };
+
+  const handlePastedText = (
+    text: string,
+    html: string | undefined,
+    editorState: EditorState,
+    type: "heading" | "description"
+  ): DraftHandleValue => {
+    const max = type === "heading" ? 50 : 250;
+    const currentContent = editorState.getCurrentContent();
+    const selection = editorState.getSelection();
+    const currentText = currentContent.getPlainText();
+
+    // Calculate available space considering selection
+    let availableSpace = max;
+
+    if (selection.isCollapsed()) {
+      // No text selected, just calculate remaining space
+      availableSpace = max - currentText.length;
+    } else {
+      // Text is selected, it will be replaced by pasted text
+      const selectedTextLength =
+        selection.getStartKey() === selection.getEndKey()
+          ? selection.getEndOffset() - selection.getStartOffset()
+          : getComplexSelectionLength(editorState);
+
+      availableSpace = max - (currentText.length - selectedTextLength);
+    }
+
+    // If no space available, don't paste anything
+    if (availableSpace <= 0) {
+      return "handled";
+    }
+
+    // Limit the pasted text to available space
+    const limitedText = text.substring(0, availableSpace);
+
+    // Create a new content state with the limited text
+    const newContentState = Modifier.replaceText(
+      currentContent,
+      selection,
+      limitedText
+    );
+
+    // Create a new editor state with the modified content
+    const newEditorState = EditorState.push(
+      editorState,
+      newContentState,
+      "insert-characters"
+    );
+
+    // Update the state
+    if (type === "heading") {
+      props.setHeaderDetails({
+        ...props.headerDetails,
+        heading: newEditorState,
+      });
+    } else {
+      props.setHeaderDetails({
+        ...props.headerDetails,
+        description: newEditorState,
+      });
+    }
+
+    // Update char count directly
+    setCharCount(getPlainTextFromEditorState(newEditorState).length);
+
+    return "handled";
   };
 
   const onEdit = () => {
@@ -311,8 +408,12 @@ export default function HeaderBlock(props: Props) {
             <RichEditor
               invertColors
               editMode={!props.previewMode}
-              setTextContent={(text) =>
-                setTextContent(text, props.headerDetails.heading, "heading")
+              setTextContent={(text) => setTextContent(text, "heading")}
+              handlePastedText={(text, html, editorState) =>
+                handlePastedText(text, html, editorState, "heading")
+              }
+              handleBeforeInput={(chars, editorState) =>
+                handleBeforeInput(chars, editorState, "heading")
               }
               placeholder={headingPlaceholder}
               placeholderState={headingPlaceholderState}
@@ -328,6 +429,7 @@ export default function HeaderBlock(props: Props) {
               }}
               onFocus={() => {
                 setIsHeadingFocused(true);
+                setMaxCharCount(50);
               }}
               testId="heading-rich-text-editor"
             />
@@ -387,12 +489,12 @@ export default function HeaderBlock(props: Props) {
             <RichEditor
               invertColors
               editMode={true}
-              setTextContent={(text) =>
-                setTextContent(
-                  text,
-                  props.headerDetails.description,
-                  "description"
-                )
+              setTextContent={(text) => setTextContent(text, "description")}
+              handlePastedText={(text, html, editorState) =>
+                handlePastedText(text, html, editorState, "description")
+              }
+              handleBeforeInput={(chars, editorState) =>
+                handleBeforeInput(chars, editorState, "description")
               }
               placeholder={descriptionPlaceholder}
               placeholderState={descriptionPlaceholderState}
@@ -404,6 +506,7 @@ export default function HeaderBlock(props: Props) {
               }}
               onFocus={() => {
                 setIsDescriptionFocused(true);
+                setMaxCharCount(250);
               }}
               testId="description-rich-text-editor"
             />
