@@ -143,7 +143,8 @@ function MobileHeader(props: { navLocation: string }) {
                   margin-left: 16px;
                   border-radius: 50%;
                   align-items: center;
-                  background: #dadaf8;
+                  color: #ffffff !important;
+                  background: #6061e5 !important;
                   justify-content: center;
                   border: none;
                   font-family: "GothamNarrow-Medium", "Helvetica Neue",
@@ -160,11 +161,11 @@ function MobileHeader(props: { navLocation: string }) {
               <Link
                 to="/onboarding/signin"
                 css={`
-                  background: #dadaf8;
+                  color: #ffffff !important;
+                  background: #6061e5 !important;
                   display: flex;
                   justify-content: center;
                   align-items: center;
-                  color: var(--Primary-Dark, #231d2c);
                   font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
                   font-size: 16px;
                   font-weight: 400;

@@ -13,8 +13,10 @@ const SignInButtons = () => {
         row-gap: 8px;
         justify-content: center;
         flex-direction: row;
-        @media (max-width: 600px) {
+        @media (max-width: 743px) {
           flex-direction: column;
+          width: 100%;
+          align-items: center;
         }
         button {
           gap: 8px;

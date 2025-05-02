@@ -13,7 +13,7 @@ import { Link } from "react-router-dom";
 import { useAuth0 } from "@auth0/auth0-react";
 import InputField, { TextField } from "./components/input";
 import { ReactComponent as SuccessIcon } from "./assets/success-icon.svg";
-import TryUsBlock from "app/modules/home-module/sub-modules/why-dx/components/tryUsBlock";
+import TryUsBlock from "app/modules/home-module/components/TryUsBlock";
 
 export default function ContactModule() {
   useTitle("Dataxplorer - Contact");
@@ -175,6 +175,12 @@ export default function ContactModule() {
           css={`
             background: #ffffff;
             padding: 80px 0;
+            @media (max-width: 1439px) {
+              padding: 60px 0;
+            }
+            @media (max-width: 743px) {
+              padding: 50px 0;
+            }
           `}
         >
           <Container maxWidth="lg">
@@ -183,6 +189,10 @@ export default function ContactModule() {
                 display: flex;
                 flex-direction: row;
                 gap: 50px;
+                @media (max-width: 1439px) {
+                  flex-direction: column;
+                  gap: 30px;
+                }
               `}
             >
               <div
@@ -197,6 +207,13 @@ export default function ContactModule() {
                     font-weight: 325;
                     line-height: 24px;
                     margin: 0;
+                  }
+                  @media (max-width: 743px) {
+                    gap: 20px;
+                    p {
+                      font-size: 14px;
+                      line-height: 20px;
+                    }
                   }
                 `}
               >
@@ -233,6 +250,9 @@ export default function ContactModule() {
                     display: flex;
                     flex-direction: column;
                     align-items: center;
+                    @media (max-width: 1439px) {
+                      width: 100%;
+                    }
                   `}
                 >
                   <SuccessIcon />
@@ -283,16 +303,8 @@ export default function ContactModule() {
                     display: flex;
                     flex-direction: column;
                     gap: 18px;
-                    @media (max-width: 1024px) {
-                      width: 450px;
-                    }
-                    @media (max-width: 600px) {
-                      width: 95%;
-                      p {
-                        font-family: "GothamNarrow-Book", sans-serif;
-                        font-size: 16px;
-                        line-height: 19px;
-                      }
+                    @media (max-width: 1439px) {
+                      width: 100%;
                     }
                   `}
                 >
@@ -369,17 +381,6 @@ export default function ContactModule() {
                 </form>
               )}
             </div>
-            <div
-              css={`
-                display: none;
-                @media (max-width: 1024px) {
-                  @media (min-width: 601px) {
-                    display: block;
-                    height: 81px;
-                  }
-                }
-              `}
-            />
           </Container>{" "}
         </div>
 
@@ -387,6 +388,12 @@ export default function ContactModule() {
           css={`
             background: #f2f7fd;
             padding: 80px 0;
+            @media (max-width: 1439px) {
+              padding: 60px 0;
+            }
+            @media (max-width: 743px) {
+              padding: 50px 0;
+            }
           `}
         >
           <Container maxWidth="lg">
@@ -401,6 +408,12 @@ export default function ContactModule() {
                 css={`
                   display: flex;
                   gap: 50px;
+                  @media (max-width: 1439px) {
+                    flex-direction: column-reverse;
+                  }
+                  @media (max-width: 743px) {
+                    gap: 30px;
+                  }
                 `}
               >
                 <div>
@@ -408,10 +421,17 @@ export default function ContactModule() {
                     css={`
                       border-radius: 10px;
                       border: 1px solid #6061e5;
+                      width: 500px;
+                      height: 400px;
+                      @media (max-width: 1439px) {
+                        width: 100%;
+                        height: 544px;
+                      }
+                      @media (max-width: 743px) {
+                        height: 262px;
+                      }
                     `}
                     title="address"
-                    width="500"
-                    height="400"
                     src="https://www.openstreetmap.org/export/embed.html?bbox=4.884522557258606%2C52.364800565927666%2C4.888063073158265%2C52.366279512578515&layer=mapnik&marker=52.3655399,4.8866280"
                   ></iframe>
                 </div>
@@ -436,9 +456,16 @@ export default function ContactModule() {
                       display: flex;
                       align-items: center;
                       gap: 18px;
+                      flex-wrap: wrap;
                     `}
                   >
-                    <InlineLogo width={"309px"} height={"50px"} />
+                    <InlineLogo
+                      width={"309px"}
+                      height={"50px"}
+                      css={`
+                        flex-shrink: 0;
+                      `}
+                    />
                     <h3
                       css={`
                         font-size: 48px;

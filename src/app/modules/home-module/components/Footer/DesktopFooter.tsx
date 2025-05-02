@@ -8,6 +8,7 @@ import { Link } from "react-router-dom";
 import NewsletterForm from "app/modules/common/newsletterForm";
 import { FieldErrors } from "react-hook-form";
 import moment from "moment";
+import InlineLogo from "app/modules/home-module/assets/inline-logo";
 
 interface Props {
   mini?: boolean;
@@ -23,112 +24,94 @@ export default function DesktopFooter(props: Props) {
   >({});
   return (
     <div css={homeFootercss}>
-      <Container maxWidth="lg" data-cy="home-footer">
+      <Container
+        maxWidth="lg"
+        data-cy="home-footer"
+        css={`
+          @media (max-width: 1439px) {
+            padding: 0 32px !important;
+          }
+
+          @media (max-width: 743px) {
+            padding: 0 24px !important;
+          }
+        `}
+      >
         {props.mini ? null : (
           <div
             css={`
-              border-bottom: 1px solid #d9d9d9;
-              padding-top: 27px;
-              padding-bottom: 40px;
+              padding: 24px 0;
+              display: flex;
+              justify-content: space-between;
+              @media (max-width: 1439px) {
+                flex-direction: column;
+                justify-content: center;
+                gap: 24px;
+              }
             `}
           >
-            <p
-              data-cy="footer-logo"
+            <div
               css={`
-                margin-bottom: 40px;
+                display: flex;
+                flex-direction: column;
+                gap: 40px;
+                @media (max-width: 1439px) {
+                  gap: 24px;
+                }
               `}
             >
-              <Link
-                to="/"
+              <p
+                data-cy="footer-logo"
                 css={`
-                  text-decoration: none;
-                  display: flex;
-                  align-items: center;
-                  gap: 8px;
+                  margin: 0;
+                  margin-top: 12px;
                 `}
               >
-                <LogoIcon />
-                <div
+                <Link
+                  to="/"
                   css={`
-                    font-family: "Inter", sans-serif;
-                    color: #e75656;
-                    font-size: 14.978px;
-                    font-weight: 500;
-                    line-height: 14.978px;
-                    padding: 3.329px 10.922px;
-                    border-radius: 20.803px;
-                    border: 0.993px solid #e75656;
-                  `}
-                >
-                  beta
-                </div>
-              </Link>
-            </p>
-            <Grid
-              container
-              alignContent="space-between"
-              alignItems="flex-start"
-              spacing={2}
-            >
-              <Grid item lg={3} md={3} sm={2}>
-                <ul
-                  css={`
+                    text-decoration: none;
                     display: flex;
-                    flex-direction: column;
-                    gap: 16px;
-                    margin: 0;
-                    a {
-                      font-size: 16px;
-                      @media (max-width: 945px) {
-                        font-size: 14px;
-                      }
-                      text-decoration: none;
-                      font-weight: 400;
-                      color: #000;
-                      font-family: "GothamNarrow-Bold", sans-serif;
-                    }
+                    align-items: center;
+                    gap: 8px;
                   `}
                 >
-                  <li>
-                    <Link to="/">Explore</Link>{" "}
-                  </li>
-                  <li>
-                    <Link to="/why-dataxplorer"> Why Dataxplorer</Link>{" "}
-                  </li>
-                  <li>
-                    <Link to="/about">About</Link>
-                  </li>
-                  <li>
-                    <Link to="/partners">Partners</Link>
-                  </li>
-                  <li>
-                    <Link to="/pricing">Pricing</Link>
-                  </li>
-                  <li>
-                    <Link to="/contact">Contact</Link>
-                  </li>
-                </ul>
-              </Grid>
-              <Grid
-                item
-                lg={3}
-                md={3}
-                sm={4}
+                  <LogoIcon />
+                  <div
+                    css={`
+                      font-family: "Inter", sans-serif;
+                      color: #e75656;
+                      font-size: 14.978px;
+                      font-weight: 500;
+                      line-height: 14.978px;
+                      padding: 3.329px 10.922px;
+                      border-radius: 20.803px;
+                      border: 0.993px solid #e75656;
+                    `}
+                  >
+                    beta
+                  </div>
+                </Link>
+              </p>
+              <ul
                 css={`
-                  ul {
-                    color: #000;
-                    font-weight: 325;
-                    font-family: "GothamNarrow-Medium", sans-serif;
-                    @media (max-width: 945px) {
-                      /* padding-left: 40px; */
-                    }
+                  margin: 0;
+                  display: flex;
+                  flex-direction: column;
+                  gap: 16px;
+                  color: #000;
+                  font-weight: 325;
+                  font-family: "GothamNarrow-Medium", sans-serif;
+                  @media (max-width: 1439px) {
+                    flex-direction: row-reverse;
+                    justify-content: space-between;
                   }
                   a {
                     text-decoration: none;
                     color: #000;
                   }
                   li {
-                    font-size: 12px;
+                    font-size: 14px;
                     p {
                       margin: 0px;
                       line-height: normal;
@@ -136,179 +119,317 @@ export default function DesktopFooter(props: Props) {
                   }
                 `}
               >
-                <ul
+                <li>
+                  Tel: +3185 401 5241
+                  <a
+                    css={`
+                      display: none;
+                      @media (max-width: 743px) {
+                        display: block;
+                      }
+                    `}
+                    href="mailto:contact@dataxplorer.org"
+                  >
+                    Email: contact@dataxplorer.org
+                  </a>{" "}
+                </li>
+                <li
                   css={`
-                    margin: 0;
-                    display: flex;
-                    flex-direction: column;
-                    gap: 16px;
+                    @media (max-width: 743px) {
+                      display: none;
+                    }
                   `}
                 >
-                  <li>Tel: +3185 401 5241</li>
-                  <li>
-                    {" "}
-                    <a href="mailto:contact@dataxplorer.org">
-                      Email: contact@dataxplorer.org
-                    </a>{" "}
-                  </li>
-                  <li>
-                    <p>Keizersgracht 520H</p>
+                  {" "}
+                  <a href="mailto:contact@dataxplorer.org">
+                    Email: contact@dataxplorer.org
+                  </a>{" "}
+                </li>
+                <li>
+                  <p>Keizersgracht 520H</p>
 
-                    <p>1017 EK Amsterdam</p>
+                  <p>1017 EK Amsterdam</p>
 
-                    <p>The Netherlands</p>
-                  </li>
-                </ul>
-              </Grid>
+                  <p>The Netherlands</p>
+                </li>
+              </ul>
+            </div>
 
-              <Grid item lg={6} md={6} sm={6}>
-                <p
-                  css={`
-                    font-size: 18px;
+            <div
+              css={`
+                display: none;
+                @media (max-width: 1439px) {
+                  display: block;
+                  border-bottom: 1px solid #dadaf8;
+                }
+              `}
+            />
+            <div>
+              <ul
+                css={`
+                  display: flex;
+                  flex-direction: column;
+                  gap: 16px;
+                  margin: 0;
+                  a {
+                    font-size: 16px;
+                    text-decoration: none;
                     font-weight: 400;
                     color: #000;
                     font-family: "GothamNarrow-Bold", sans-serif;
-                    margin: 0;
-                    margin-bottom: 16px;
-                  `}
-                >
-                  Stay Up To Date
-                </p>
-                {formError.email && (
-                  <label
+                  }
+                  @media (max-width: 1439px) {
+                    display: grid;
+                    grid-template-columns: repeat(2, 1fr);
+                  }
+                `}
+              >
+                <li>
+                  <Link to="/">Dashboard</Link>{" "}
+                </li>
+                <li>
+                  <Link to="/about">Who We Are</Link>
+                </li>
+                <li>
+                  <Link
+                    to="/why-dataxplorer"
                     css={`
-                      font-family: "GothamNarrow-Book", "Helvetica Neue",
-                        sans-serif;
-                      font-size: 12px;
-                      text-align: left;
-                      width: 100%;
-                      padding-left: 10px;
-                      color: #e75656;
+                      display: flex;
+                      gap: 6px;
+                      align-items: center;
                     `}
                   >
-                    Please enter a valid email address.
-                  </label>
-                )}
-                <div
-                  css={`
-                    border-radius: 40px;
-                    background: #f7f7f7;
-                    /* width: 611px; */
-                    width: 100%;
-                    height: 47px;
-                    display: flex;
+                    Why
+                    <InlineLogo
+                      css={`
+                        width: 103px;
+                        height: 12px;
+                      `}
+                    />
+                  </Link>
+                </li>
 
-                    input {
-                      outline: none;
-                      border: none;
-                      border-radius: 34.5px 0 0 34.5px;
-                      flex: 1;
-                      font-size: 18px;
-                      padding-left: 24px;
-                      background: #f7f7f7;
+                <li>
+                  <Link to="/partners">Our Partners</Link>
+                </li>
+                <li>
+                  <Link to="/pricing">Pricing</Link>
+                </li>
+                <li>
+                  <Link to="/contact">Contact Us</Link>
+                </li>
+              </ul>
+            </div>
+            <div
+              css={`
+                display: none;
+                @media (max-width: 1439px) {
+                  display: block;
+                  border-bottom: 1px solid #dadaf8;
+                }
+              `}
+            />
+            <div
+              css={`
+                width: 606px;
+                @media (max-width: 1439px) {
+                  width: 100%;
+                }
+              `}
+            >
+              <p
+                css={`
+                  font-size: 16px;
+                  font-weight: 400;
+                  color: #000;
+                  font-family: "GothamNarrow-Bold", sans-serif;
+                  margin: 0;
+                  margin: 12px 0;
+                `}
+              >
+                Stay Up To Date
+              </p>
+              {formError.email && (
+                <label
+                  css={`
+                    font-family: "GothamNarrow-Book", "Helvetica Neue",
+                      sans-serif;
+                    font-size: 12px;
+                    text-align: left;
+                    width: 100%;
+                    padding-left: 10px;
+                    color: #e75656;
+                  `}
+                >
+                  Please enter a valid email address.
+                </label>
+              )}
+              <div
+                css={`
+                  width: 100%;
+                  display: flex;
+                  gap: 16px;
+
+                  input {
+                    outline: none;
+                    border: none;
+                    border-radius: 10px;
+                    flex: 1;
+                    font-size: 16px;
+                    padding: 11px 16px;
+                    border-bottom: 1px solid #98a1aa;
+                    background: #f1f3f5;
+                    font-family: "GothamNarrow-Book", "Helvetica Neue",
+                      sans-serif;
+                    font-weight: 325;
+                    ::placeholder {
                       font-family: "GothamNarrow-Book", "Helvetica Neue",
                         sans-serif;
                       font-weight: 325;
-                      ::placeholder {
-                        font-family: "GothamNarrow-Book", "Helvetica Neue",
-                          sans-serif;
-                        font-weight: 325;
-                        color: #000;
-                      }
+                      color: #98a1aa;
                     }
-                    button {
-                      border: none;
-                      outline: none;
-                      border-radius: 0 34.5px 34.5px 0;
-                      background: #231d2c;
-                      text-transform: uppercase;
-                      color: #fff;
-                      font-family: "GothamNarrow-Bold", "Helvetica Neue",
-                        sans-serif;
-                      font-size: 16px;
-                      padding: 0 24px;
-                      font-weight: 400;
-                      cursor: pointer;
-                    }
-                  `}
-                >
-                  <NewsletterForm
-                    setIsSubscribed={setIsSubscribed}
-                    setIsSubscriptionFailed={setIsSubscriptionFailed}
-                    setFormError={setFormError}
-                  />
-                </div>
-                <p
-                  css={`
-                    line-height: normal;
-                    font-size: 12px;
-                    height: 30px;
-                  `}
-                >
-                  {isSubscribed
-                    ? "Thank you for subscribing!"
-                    : isSubscriptionFailed
-                    ? "Oops! Something went wrong with the request! Please fill your email again."
-                    : "  You will receive occasional emails from Dataxplorer. You always have choice to unsubscribe within every Email."}
-                </p>
-              </Grid>
-            </Grid>
+                  }
+                  button {
+                    border: none;
+                    outline: none;
+                    border-radius: 10px;
+                    background: #6061e5;
+                    color: #fff;
+                    font-family: "GothamNarrow-Bold", "Helvetica Neue",
+                      sans-serif;
+                    font-size: 16px;
+                    height: 41px;
+                    padding: 10px 16px;
+                    font-weight: 400;
+                    cursor: pointer;
+                  }
+                `}
+              >
+                <NewsletterForm
+                  setIsSubscribed={setIsSubscribed}
+                  setIsSubscriptionFailed={setIsSubscriptionFailed}
+                  setFormError={setFormError}
+                />
+              </div>
+              <p
+                css={`
+                  font-size: 14px;
+                  line-height: 20px;
+                `}
+              >
+                {isSubscribed
+                  ? "Thank you for subscribing!"
+                  : isSubscriptionFailed
+                  ? "Oops! Something went wrong with the request! Please fill your email again."
+                  : "You will receive occasional emails from DataXplorer. You can unsubscribe anytime."}
+              </p>
+            </div>
           </div>
-        )}
-
-        <div
+        )}{" "}
+      </Container>
+      <div
+        css={`
+          background: #f2f7fd;
+        `}
+      >
+        <Container
+          maxWidth="lg"
+          data-cy="home-footer"
           css={`
-            display: flex;
-            gap: 16px;
-            align-items: center;
-            font-size: 12px;
-            padding: 24px 0;
-            line-height: normal;
-
-            a {
-              text-decoration: none;
-              color: #000;
+            @media (max-width: 1439px) {
+              padding: 0 32px !important;
             }
-            p {
-              margin: 0;
-              padding: 0;
+
+            @media (max-width: 743px) {
+              padding: 0 24px !important;
             }
           `}
         >
-          <p
+          <div
             css={`
               display: flex;
+              gap: 20px;
               align-items: center;
-              gap: 8px;
+              font-size: 12px;
+              padding: 8px 0;
+              line-height: normal;
+              font-family: "GothamNarrow-Book", "Helvetica Neue", sans-serif;
+              font-weight: 325;
+              color: #373d43;
+              flex-wrap: wrap;
+              @media (max-width: 743px) {
+                row-gap: 12px;
+              }
+
+              a {
+                text-decoration: none;
+                color: #000;
+              }
+              p {
+                margin: 0;
+                padding: 0;
+              }
             `}
           >
-            <CopyIcon />
-            {moment(new Date()).format("YYYY")} Dataxplorer All Rights Reserved
-          </p>
-          <p>
-            {" "}
-            <a
-              href="https://drive.google.com/file/d/1andhlQEoaEq5qDxMbtnApXiZborsg-bG/view"
-              className="privacy-link"
-              target="_blank"
-              rel="noreferrer"
+            <div
+              css={`
+                display: flex;
+                gap: 10px;
+                align-items: center;
+              `}
             >
-              Privacy
-            </a>{" "}
-          </p>
-          <p>
-            {" "}
-            <a
-              href="https://drive.google.com/file/d/1wgY5HYdE5-redIOF85E5fZZJT_YueOWP/view?usp=sharing"
-              className="privacy-link"
-              target="_blank"
-              rel="noreferrer"
-            >
-              Terms and conditions
-            </a>{" "}
-          </p>
-        </div>
-      </Container>
+              <CopyIcon />
+              <p
+                css={`
+                  display: flex;
+                  align-items: center;
+                  gap: 4px;
+                `}
+              >
+                {moment(new Date()).format("YYYY")}
+                <InlineLogo
+                  css={`
+                    width: 78.41px;
+                    height: 11px;
+                  `}
+                />
+                All Rights Reserved
+              </p>
+            </div>
+
+            <div
+              css={`
+                width: 3px;
+                height: 3px;
+                background: #373d43;
+                border-radius: 50%;
+              `}
+            />
+            <p>
+              {" "}
+              <a
+                href="https://drive.google.com/file/d/1andhlQEoaEq5qDxMbtnApXiZborsg-bG/view"
+                className="privacy-link"
+                target="_blank"
+                rel="noreferrer"
+              >
+                Privacy
+              </a>{" "}
+            </p>
+            <p>
+              {" "}
+              <a
+                href="https://drive.google.com/file/d/1wgY5HYdE5-redIOF85E5fZZJT_YueOWP/view?usp=sharing"
+                className="privacy-link"
+                target="_blank"
+                rel="noreferrer"
+              >
+                Terms and conditions
+              </a>{" "}
+            </p>
+          </div>
+        </Container>
+      </div>
     </div>
   );
 }

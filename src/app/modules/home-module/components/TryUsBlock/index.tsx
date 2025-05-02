@@ -2,9 +2,9 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { useAuth0 } from "@auth0/auth0-react";
 import { socialAuth } from "app/utils/socialAuth";
-import { ReactComponent as GoogleIcon } from "app/modules/onboarding-module/asset/google-img.svg";
-import { ReactComponent as LinkedInIcon } from "app/modules/onboarding-module/asset/linkedIn-img.svg";
-import { ReactComponent as MicrosoftIcon } from "app/modules/onboarding-module/asset/microsoft-img.svg";
+import { ReactComponent as GoogleIcon } from "app/modules/home-module/components/SignInButtons/assets/google-icon.svg";
+import { ReactComponent as LinkedInIcon } from "app/modules/home-module/components/SignInButtons/assets/linkedin-icon.svg";
+import { ReactComponent as MicrosoftIcon } from "app/modules/home-module/components/SignInButtons/assets/microsoft-icon.svg";
 
 interface TryUsBlockProps {
   title: React.ReactNode;
@@ -26,7 +26,7 @@ export default function TryUsBlock(props: TryUsBlockProps) {
             font-size: 48px;
             font-style: normal;
             line-height: normal;
-            margin-bottom: 34px;
+            margin-bottom: 32px;
             margin-top: 0;
             color: #231d2c;
             @media (max-width: 1200px) {
@@ -35,7 +35,7 @@ export default function TryUsBlock(props: TryUsBlockProps) {
             }
             @media (max-width: 600px) {
               font-size: 18px;
-              line-height: normal;
+              line-height: 24px;
               margin-bottom: 32px;
             }
           `}
@@ -47,69 +47,60 @@ export default function TryUsBlock(props: TryUsBlockProps) {
       <div
         css={`
           background: #231d2c;
-          box-shadow: 0px 4px 30px 4px rgba(206, 168, 188, 0.08);
-          border-radius: 24px;
+          box-shadow: 0px 0px 10px 0px rgba(152, 161, 170, 0.6);
+          border-radius: 16px;
           display: flex;
           justify-content: space-between;
-          padding: 58px 111px 45px 61px;
+          padding: 48px 64px;
           align-items: center;
-          height: 215px;
           width: 100%;
-          p {
-            &:nth-of-type(1) {
-              color: #ffffff;
-              font-size: 40px;
-              line-height: 48px;
-              font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
-              margin: 0;
-            }
-            &:nth-of-type(2) {
-              font-size: 24px;
-              color: #f4f4f4;
-              font-family: "GothamNarrow-Book", "Helvetica Neue", sans-serif;
-            }
-          }
-          @media (max-width: 1120px) {
+          @media (max-width: 1439px) {
             flex-direction: column;
-            height: 100%;
-            padding: unset;
-            padding-top: 58px;
-            padding-bottom: 45px;
+            padding: 48px 40px;
             align-items: center;
-            p {
-              &:nth-of-type(1) {
-                text-align: center;
-              }
-              &:nth-of-type(2) {
-                text-align: center;
-              }
-            }
-
-            @media (max-width: 774px) {
-              padding: 32px 32px;
-              flex-direction: column;
-              align-items: center;
-              gap: 20px;
-              p {
-                margin: 0;
-                &:nth-of-type(1) {
-                  font-size: 31px;
-                  font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
-                  line-height: normal;
-                }
-                &:nth-of-type(2) {
-                  font-size: 18px;
-                  font-family: "GothamNarrow-Book", "Helvetica Neue", sans-serif;
-                  line-height: normal;
-                  margin-top: 8px;
-                }
-              }
-            }
+            gap: 40px;
           }
         `}
       >
         <div>
-          <p>{props.title}</p> <p>{props.subtitle}</p>
+          <p
+            css={`
+              color: #ffffff;
+              font-size: 40px;
+              line-height: normal;
+              font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
+              margin: 0;
+              @media (max-width: 1439px) {
+                text-align: center;
+                font-size: 36px;
+              }
+              @media (max-width: 743px) {
+                font-size: 24px;
+              }
+            `}
+          >
+            {props.title}
+          </p>{" "}
+          <p
+            css={`
+              margin: 0;
+              font-size: 24px;
+              color: #f4f4f4;
+              font-family: "GothamNarrow-Book", "Helvetica Neue", sans-serif;
+              line-height: normal;
+              margin-top: 16px;
+              @media (max-width: 1439px) {
+                text-align: center;
+                margin-top: 8px;
+              }
+              @media (max-width: 743px) {
+                font-size: 14px;
+                line-height: 20px;
+              }
+            `}
+          >
+            {props.subtitle}
+          </p>
         </div>
         {isAuthenticated && (
           <div
@@ -118,8 +109,12 @@ export default function TryUsBlock(props: TryUsBlockProps) {
               flex-direction: column;
               gap: 24px;
               align-items: center;
-              @media (max-width: 774px) {
-                gap: 22px;
+              @media (max-width: 1439px) {
+                flex-direction: row;
+              }
+              @media (max-width: 743px) {
+                flex-direction: column;
+                gap: 8px;
               }
 
               a {
@@ -132,11 +127,18 @@ export default function TryUsBlock(props: TryUsBlockProps) {
                 border-radius: 12px;
                 white-space: nowrap;
                 width: 210px;
-                height: 41px;
+                height: 48px;
                 text-decoration: none;
+                padding: 18.5px 24px;
                 cursor: pointer;
                 :hover {
                   opacity: 0.9;
+                }
+                @media (max-width: 1439px) {
+                  width: max-content;
+                }
+                @media (max-width: 743px) {
+                  width: 210px;
                 }
               }
 
@@ -174,13 +176,12 @@ export default function TryUsBlock(props: TryUsBlockProps) {
                 font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
                 font-size: 18px;
                 text-decoration: none;
-                @media (max-width: 655px) {
-                  width: 100%;
+                @media (max-width: 743px) {
+                  width: 210px;
                 }
               }
-              @media (max-width: 655px) {
+              @media (max-width: 743px) {
                 width: 85%;
-
                 gap: 16px;
               }
             `}
@@ -191,6 +192,7 @@ export default function TryUsBlock(props: TryUsBlockProps) {
                 gap: 16px;
                 width: 100%;
                 justify-content: center;
+                align-items: center;
                 > button {
                   gap: 8px;
                   color: white;
@@ -214,12 +216,12 @@ export default function TryUsBlock(props: TryUsBlockProps) {
                     cursor: pointer;
                   }
                 }
-                @media (max-width: 655px) {
+                @media (max-width: 743px) {
                   flex-direction: column;
                   gap: 16px;
 
                   button {
-                    width: 100%;
+                    width: 210px;
                   }
                 }
               `}

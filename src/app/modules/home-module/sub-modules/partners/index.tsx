@@ -25,6 +25,7 @@ import { PrimaryButton } from "app/components/Styled/button";
 import { Link } from "react-router-dom";
 import SignInButtons from "app/modules/home-module/components/SignInButtons";
 import InlineLogo from "app/modules/home-module/assets/inline-logo";
+import TryUsBlock from "app/modules/home-module/components/TryUsBlock";
 
 const StyledTab = withStyles(() => ({
   root: {
@@ -36,20 +37,25 @@ const StyledTab = withStyles(() => ({
         textTransform: "none",
       },
     },
+
     "&.MuiTab-textColorPrimary": {
       "& .MuiTab-wrapper": {
-        fontSize: "24px",
-        fontWeight: 700,
-        fontFamily: "Inter, sans-serif",
-        "@media (max-width: 1024px)": {
+        width: "200px",
+        fontSize: "18px",
+        fontWeight: 325,
+        color: "#231D2C !important",
+        fontFamily: `"GothamNarrow-Book", "Helvetica Neue", sans-serif`,
+        "@media (max-width: 1439px)": {
+          width: "155px",
           fontSize: "16px",
         },
       },
       "&.Mui-selected": {
         "& .MuiTab-wrapper": {
-          fontSize: "24px",
-          fontWeight: 700,
-          fontFamily: "Inter, sans-serif",
+          fontSize: "18px",
+          fontWeight: 400,
+          color: "#161616 !important",
+          fontFamily: `"GothamNarrow-Bold", "Helvetica Neue", sans-serif`,
           "@media (max-width: 1024px)": {
             fontSize: "16px",
           },
@@ -63,12 +69,9 @@ const StyledTabs = withStyles({
   root: {
     "& .MuiTabs-scroller": {
       "& .MuiTabs-flexContainer": {
-        gap: "113px",
-        "@media (max-width: 744px)": {
-          gap: "36px",
-        },
-        "@media (max-width: 390px)": {
-          gap: "18px",
+        gap: "20px",
+        "@media (max-width: 1439px)": {
+          gap: "10px",
         },
       },
     },
@@ -87,11 +90,7 @@ const Pagination = (props: {
       display: flex;
       justify-content: center;
       align-items: center;
-      position: absolute;
-      left: 0%;
-      bottom: 26px;
       width: 100%;
-      height: 12px;
       gap: 8px;
       @media (max-width: 1129px) {
         top: unset;
@@ -106,7 +105,7 @@ const Pagination = (props: {
           width: 8px;
           height: 8px;
           border-radius: 50%;
-          background: ${props.index === i ? "#6061E5" : "#fff"};
+          background: ${props.index === i ? "#231D2C" : "#fff"};
           cursor: pointer;
 
           /* Tooltip */
@@ -138,17 +137,6 @@ export default function PartnersModule() {
     <PerformanceTabCard />,
   ];
 
-  const gap = (
-    <div
-      css={`
-        height: 120px;
-        @media (max-width: 960px) {
-          height: 72px;
-        }
-      `}
-    />
-  );
-
   return (
     <>
       <div
@@ -158,7 +146,7 @@ export default function PartnersModule() {
           flex-direction: column;
           margin-top: 50px;
           min-height: calc(100vh - 50px);
-          background: #f2f7fd;
+          background: #ffffff;
         `}
       >
         <div>
@@ -235,15 +223,18 @@ export default function PartnersModule() {
               </div>
             )}
           </Hero>
+          <OurPartnersBlock />
+
           <Container
             maxWidth="lg"
             css={`
-              @media (max-width: 1024px) {
-                padding: 0 32px !important;
+              padding: 80px 24px;
+              @media (max-width: 1439px) {
+                padding: 60px 32px !important;
               }
 
-              @media (max-width: 600px) {
-                padding: 0 24px !important;
+              @media (max-width: 743px) {
+                padding: 50px 24px !important;
               }
             `}
           >
@@ -254,21 +245,17 @@ export default function PartnersModule() {
               direction="column"
               css={`
                 width: 100%;
+                gap: 40px;
               `}
             >
-              {gap}
-              <OurPartnersBlock />
-              {gap}
               <DXBlock />
 
-              {gap}
               <div
                 onMouseEnter={() => setAutoPlay(false)}
                 onMouseLeave={() => setAutoPlay(true)}
                 css={`
                   width: 100%;
                   position: relative;
-                  height: 639px;
                   @media (max-width: 1129px) {
                     width: 100%;
                     height: 100%;
@@ -285,16 +272,17 @@ export default function PartnersModule() {
                     flex-direction: column;
                     justify-content: center;
                     align-items: center;
+                    @media (max-width: 743px) {
+                      overflow: auto;
+                      width: 100%;
+                    }
                   `}
                 >
                   <StyledTabs
-                    css={`
-                      margin-left: 5px;
-                    `}
                     TabIndicatorProps={{
                       style: {
                         bottom: "0px",
-                        height: "4px",
+                        height: "2px",
                       },
                     }}
                     value={displayTab}
@@ -303,6 +291,11 @@ export default function PartnersModule() {
                     textColor="primary"
                     className="Home-MuiTabs-flexContainer"
                     data-cy="partners-tabs"
+                    css={`
+                      @media (max-width: 743px) {
+                        margin-left: 240px;
+                      }
+                    `}
                   >
                     <StyledTab
                       disableTouchRipple
@@ -332,7 +325,7 @@ export default function PartnersModule() {
                 </div>
                 <div
                   css={`
-                    height: 32px;
+                    height: 40px;
                     @media (max-width: 1024px) {
                       height: 32px;
                     }
@@ -341,11 +334,11 @@ export default function PartnersModule() {
                 <div
                   css={`
                     position: relative;
-                    background: #dadaf8;
-                    border-radius: 29px;
-                    height: 622px;
-                    @media (max-width: 1179px) {
-                      height: 100%;
+                    background: #6061e5;
+                    border-radius: 30px;
+                    padding: 40px;
+                    @media (max-width: 1439px) {
+                      padding: 20px;
                     }
                   `}
                 >
@@ -358,12 +351,22 @@ export default function PartnersModule() {
                     interval={3000}
                   >
                     {cards.map((card, index) => (
-                      <div key={index} data-cy="partners-view">
+                      <div
+                        css={`
+                          height: 100%;
+                        `}
+                        key={index}
+                        data-cy="partners-view"
+                      >
                         {card}
                       </div>
                     ))}
                   </AutoPlaySwipeableViews>
-
+                  <div
+                    css={`
+                      height: 30px;
+                    `}
+                  />
                   <Pagination
                     dots={4}
                     index={displayTab}
@@ -371,28 +374,35 @@ export default function PartnersModule() {
                   />
                 </div>
               </div>
-              {gap}
+
               <QuoteBlock />
             </Grid>
-            <div
-              css={`
-                height: 120px;
-                @media (max-width: 960px) {
-                  height: 72px;
-                }
-              `}
-            />
-            <BestDecisionBlock />
           </Container>
-
           <div
             css={`
-              height: 120px;
-              @media (max-width: 960px) {
-                height: 72px;
-              }
+              background: #f2f7fd;
             `}
-          />
+          >
+            {" "}
+            <Container
+              maxWidth="lg"
+              css={`
+                padding: 80px 24px;
+                @media (max-width: 1439px) {
+                  padding: 60px 32px !important;
+                }
+
+                @media (max-width: 743px) {
+                  padding: 50px 24px !important;
+                }
+              `}
+            >
+              <TryUsBlock
+                title="Give Dataxplorer a try, on us"
+                subtitle="Dataxplorer turns data into impact in minutes"
+              />
+            </Container>
+          </div>
         </div>
         <HomeFooter />
       </div>
