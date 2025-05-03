@@ -367,7 +367,6 @@ export default function HeaderBlock(props: Props) {
           <div
             css={`
               width: 60%;
-              overflow-y: hidden;
               color: ${props.headerDetails.titleColor} !important;
               font-size: 24px;
               min-width: 600px;
@@ -439,8 +438,6 @@ export default function HeaderBlock(props: Props) {
           <div
             css={`
               width: 60%;
-              max-height: 90px;
-              overflow-y: hidden;
               color: ${props.headerDetails.descriptionColor} !important;
               font-size: 14px;
               font-weight: 400;
@@ -477,7 +474,6 @@ export default function HeaderBlock(props: Props) {
               }
               @media (max-width: 600px) {
                 max-height: 100%;
-                overflow-y: hidden;
                 display: -webkit-box;
                 width: 100%;
                 min-width: unset;

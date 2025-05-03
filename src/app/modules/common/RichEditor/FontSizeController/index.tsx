@@ -8,7 +8,7 @@ const MIN_FONT_SIZE = 1;
 const MAX_FONT_SIZE = 999;
 const HEADER_ONE_SIZE = 28;
 const HEADER_TWO_SIZE = 21;
-
+const fontFamily = '"GothamNarrow-Bold", "Helvetica Neue", sans-serif';
 interface Props {
   getEditorState: () => EditorState;
   setEditorState: (editorState: EditorState) => void;
@@ -177,7 +177,7 @@ export default function FontSizeController(props: Props) {
         style={{
           fontSize: "14px",
           color: "#70777e",
-          fontFamily: '"GothamNarrow-Bold", "Helvetica Neue", sans-serif',
+          fontFamily: fontFamily,
           cursor: "pointer",
         }}
       >
@@ -196,7 +196,7 @@ export default function FontSizeController(props: Props) {
           background: "transparent",
           border: "none",
           fontSize: "14px",
-          fontFamily: '"GothamNarrow-Bold", "Helvetica Neue", sans-serif',
+          fontFamily: fontFamily,
           color: "#70777e",
           outline: "none",
         }}
@@ -207,7 +207,7 @@ export default function FontSizeController(props: Props) {
         style={{
           fontSize: "14px",
           color: "#70777e",
-          fontFamily: '"GothamNarrow-Bold", "Helvetica Neue", sans-serif',
+          fontFamily: fontFamily,
           cursor: "pointer",
         }}
       >
