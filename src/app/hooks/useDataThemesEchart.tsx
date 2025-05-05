@@ -459,6 +459,8 @@ export function useDataThemesEchart() {
       roam,
       showTooltip,
       isMonetaryValue,
+      scaleLimitMin,
+      scaleLimitMax,
     } = visualOptions;
 
     if (!data.geoJSON) return {};
@@ -529,6 +531,11 @@ export function useDataThemesEchart() {
           left: marginLeft + left,
           right: marginRight,
           bottom: marginBottom,
+          scaleLimit: {
+            min: scaleLimitMin,
+            max: scaleLimitMax,
+          },
+
           emphasis: {
             label: {
               show: false,
@@ -561,10 +568,13 @@ export function useDataThemesEchart() {
       // chart options
       showLegend,
       dataZoom,
+      lineType,
+      lineWidth,
       // Tooltip
       showTooltip,
       isMonetaryValue,
     } = visualOptions;
+
     return {
       grid: {
         top: marginTop,
@@ -607,21 +617,21 @@ export function useDataThemesEchart() {
         : null,
       legend: {
         show: showLegend,
-        data: filter(
-          get(data, "lines", []).map((d: any) => d[0]),
-          (d: any) => d !== null
-        ),
+        icon: "roundRect",
       },
-      // backgroundColor: background,
       backgroundColor: "transparent",
 
       series: filter(get(data, "lines", []), (l: any) => l !== null).map(
         (d: any) => ({
           type: "line",
-          name: d[0],
+          name: "year",
           data: d[1].map((l: any) => l.y),
           z: -1,
           zlevel: -1,
+          lineStyle: {
+            type: lineType,
+            width: lineWidth,
+          },
         })
       ),
       tooltip: {
@@ -722,6 +732,8 @@ export function useDataThemesEchart() {
       marginRight,
       marginBottom,
       marginLeft,
+      lineType,
+      lineWidth,
       // chart options
       showLegend,
       dataZoom,
@@ -775,10 +787,7 @@ export function useDataThemesEchart() {
         : null,
       legend: {
         show: showLegend,
-        data: filter(
-          get(data, "lines", []).map((d: any) => d[0]),
-          (d: any) => d !== null
-        ),
+        icon: "roundRect",
       },
       // backgroundColor: background,
       backgroundColor: "transparent",
@@ -786,10 +795,14 @@ export function useDataThemesEchart() {
       series: filter(get(data, "lines", []), (l: any) => l !== null).map(
         (d: any) => ({
           type: "line",
-          name: d[0],
+          name: mapping?.y?.value?.[0],
           data: d[1].map((l: any) => l.y),
           stack: "Total",
           areaStyle: {},
+          lineStyle: {
+            type: lineType,
+            width: lineWidth,
+          },
           z: -1,
           zlevel: -1,
         })
@@ -1083,6 +1096,12 @@ export function useDataThemesEchart() {
     ]);
 
     return {
+      grid: {
+        top: marginTop,
+        left: marginLeft,
+        right: marginRight,
+        bottom: marginBottom,
+      },
       xAxis: {
         type: "category",
         data: uniqBy(xAxisData, (d: any) => d),
@@ -1131,10 +1150,6 @@ export function useDataThemesEchart() {
           },
           progressive: 1000,
           animation: false,
-          top: marginTop,
-          left: marginLeft,
-          right: marginRight,
-          bottom: marginBottom,
           width,
           height,
         },
@@ -1144,26 +1159,15 @@ export function useDataThemesEchart() {
 
   function echartsRadarchart(data: any, visualOptions: any) {
     const {
-      // margin
-      marginTop,
-      marginRight,
-      marginBottom,
-      marginLeft,
       // Tooltip
       showTooltip,
       isMonetaryValue,
       // Palette
       palette,
+      showLegend,
     } = visualOptions;
 
     return {
-      grid: {
-        top: marginTop,
-        left: marginLeft,
-        right: marginRight,
-        bottom: marginBottom,
-        containLabel: true,
-      },
       tooltip: {
         trigger: showTooltip ? "item" : "none",
         valueFormatter: (value: number | string) =>
@@ -1171,8 +1175,9 @@ export function useDataThemesEchart() {
       },
       legend: {
         type: "scroll",
-        bottom: 10,
+        top: 10,
         data: data.categories.map((color: any) => String(color)),
+        show: showLegend,
       },
       visualMap: {
         top: "middle",
@@ -1259,6 +1264,7 @@ export function useDataThemesEchart() {
       orient,
       // Labels
       showLabels,
+      showEdgeLabels,
       labelRotate,
       labelPosition,
       labelFontSize,
@@ -1285,6 +1291,9 @@ export function useDataThemesEchart() {
           height: height * 0.9,
           orient,
           nodeAlign,
+          edgeLabel: {
+            show: showEdgeLabels,
+          },
           top: marginTop + height * 0.05,
           left: showLabels
             ? labelPosition === "left"
@@ -1367,7 +1376,6 @@ export function useDataThemesEchart() {
       showLabels,
       labelFontSize,
       // chart
-      nodeSize,
       forceRepulsion,
       // Palette
       palette,
@@ -1392,7 +1400,7 @@ export function useDataThemesEchart() {
           data: data.categories?.map(function (a: { name: string }) {
             return a.name;
           }),
-          show: showLegend,
+          // show: showLegend,
         },
       ],
       tooltip: {
@@ -1458,11 +1466,11 @@ export function useDataThemesEchart() {
 
     data.nodes?.forEach(function (node: any) {
       node.symbolSize = (node.value / maxValue) * 50; // making the symbol size relative to the max value but max at 50
-      let show = false;
+      let show = true;
       if (showLabels === "largeNodes") {
         show = node.symbolSize > 30;
-      } else if (showLabels === "true") {
-        show = true;
+      } else if (showLabels === "false") {
+        show = false;
       }
       node.label = {
         show,
@@ -1477,10 +1485,6 @@ export function useDataThemesEchart() {
       color: checkLists.find((item) => item.label === palette)?.value,
       legend: [
         {
-          data: data.categories?.map(function (a: { name: string }) {
-            return a.name;
-          }),
-
           align: "left",
           show: showLegend,
         },
@@ -1600,18 +1604,20 @@ export function useDataThemesEchart() {
       marginLeft,
       // labels
       showLabels,
+      upperLabel,
       labelFontSize,
+      nodeClick,
       showBreadcrumbs,
       // tooltip
       showTooltip,
       isMonetaryValue,
     } = visualOptions;
-
     return {
       // backgroundColor: background,
       backgroundColor: "transparent",
       series: [
         {
+          nodeClick: nodeClick === "false" ? false : nodeClick,
           name: "All",
           type: "treemap",
           data,
@@ -1625,6 +1631,10 @@ export function useDataThemesEchart() {
           leafDepth: 1,
           label: {
             show: showLabels,
+            fontSize: labelFontSize,
+          },
+          upperLabel: {
+            show: upperLabel,
             fontSize: labelFontSize,
           },
           breadcrumb: {
@@ -1655,10 +1665,8 @@ export function useDataThemesEchart() {
       // artboard
       width,
       height,
-      marginTop,
-      marginRight,
-      marginBottom,
-      marginLeft,
+      centerX,
+      centerY,
       borderRadius,
       borderWidth,
       // labels
@@ -1719,13 +1727,11 @@ export function useDataThemesEchart() {
           width,
           height: height,
           roam: false,
-          top: marginTop,
-          left: marginLeft,
-          right: marginRight,
-          bottom: marginBottom,
+          center: [`${centerX}%`, `${centerY}%`],
+
           leafDepth: 1,
           label: {
-            show: showLabels === "true",
+            show: showLabels !== "false",
             fontSize: labelFontSize,
           },
         },
