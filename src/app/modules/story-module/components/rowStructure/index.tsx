@@ -1,6 +1,11 @@
 import React, { useRef } from "react";
 import get from "lodash/get";
-import { SetterOrUpdater, useRecoilState, useResetRecoilState } from "recoil";
+import {
+  SetterOrUpdater,
+  useRecoilState,
+  useRecoilValue,
+  useResetRecoilState,
+} from "recoil";
 import IconButton from "@material-ui/core/IconButton";
 import { useHistory, useLocation, useParams } from "react-router-dom";
 import { itemSpacing, containerGap } from "app/modules/story-module/data";
@@ -9,6 +14,7 @@ import { ReactComponent as CloseIcon } from "app/modules/story-module/asset/clos
 import { ReactComponent as DeleteIcon } from "app/modules/story-module/asset/deleteIcon.svg";
 import {
   isDividerOrRowFrameDraggingAtom,
+  storyContentContainerWidth,
   storyCreationTourStepAtom,
 } from "app/state/recoil/atoms";
 import {
@@ -121,6 +127,20 @@ const _rowStructureDetailItems = [
   ],
 ];
 
+export const calculateWidths = (count: number, containerWidth: number) => {
+  if (count <= 0) return [];
+
+  // Total gap space = gap size * (number of items - 1)
+  const totalGapWidth = containerGap * (count - 1);
+  // Available space for content after gap
+  const availableWidth = containerWidth - totalGapWidth;
+  // Calculate each item's width
+  const itemWidth = availableWidth / count;
+  // Convert to percentage
+  const itemWidthPercent = (itemWidth / containerWidth) * 100;
+
+  return Array(count).fill(itemWidthPercent);
+};
 interface RowFrameProps {
   rowIndex: number;
   rowId: string;
@@ -173,6 +193,7 @@ export default function RowFrame(props: RowFrameProps) {
   const [tempRowState, setTempRowState] = React.useState<IFramesArray>(
     {} as IFramesArray
   );
+  const containerWidth = useRecoilValue(storyContentContainerWidth);
 
   const [selectedTypeHistory, setSelectedTypeHistory] = React.useState<
     string[]
@@ -254,31 +275,31 @@ export default function RowFrame(props: RowFrameProps) {
       case "oneByOne":
         content = [null];
         contentTypes = [null];
-        contentWidths = [100];
+        contentWidths = calculateWidths(1, containerWidth);
         contentHeights = isTablet ? tabletHeight : desktopHeight;
         break;
       case "oneByTwo":
         content = [null, null];
         contentTypes = [null, null];
-        contentWidths = [50, 50];
+        contentWidths = calculateWidths(2, containerWidth);
         contentHeights = isTablet ? tabletHeight : desktopHeight;
         break;
       case "oneByThree":
         content = [null, null, null];
         contentTypes = [null, null, null];
-        contentWidths = [33, 33, 33];
+        contentWidths = calculateWidths(3, containerWidth);
         contentHeights = isTablet ? tabletHeight : desktopHeight;
         break;
       case "oneByFour":
         content = [null, null, null, null];
         contentTypes = [null, null, null, null];
-        contentWidths = [25, 25, 25, 25];
+        contentWidths = calculateWidths(4, containerWidth);
         contentHeights = isTablet ? tabletHeight : desktopHeight;
         break;
       case "oneByFive":
         content = [null, null, null, null, null];
         contentTypes = [null, null, null, null, null];
-        contentWidths = [20, 20, 20, 20, 20];
+        contentWidths = calculateWidths(5, containerWidth);
         contentHeights = isTablet ? tabletHeight : desktopHeight;
         break;
 
@@ -394,7 +415,7 @@ export default function RowFrame(props: RowFrameProps) {
   const checkSelectedType = {
     oneByOne: (
       <RowstructureDisplay
-        gap={containerGap}
+        gap={containerGap + "px"}
         height={desktopHeight}
         tabletHeight={tabletHeight}
         rowId={props.rowId}
@@ -419,7 +440,7 @@ export default function RowFrame(props: RowFrameProps) {
     ),
     oneByTwo: (
       <RowstructureDisplay
-        gap={containerGap}
+        gap={containerGap + "px"}
         height={desktopHeight}
         tabletHeight={tabletHeight}
         rowIndex={props.rowIndex}
@@ -444,7 +465,7 @@ export default function RowFrame(props: RowFrameProps) {
     ),
     oneByThree: (
       <RowstructureDisplay
-        gap={containerGap}
+        gap={containerGap + "px"}
         height={desktopHeight}
         tabletHeight={tabletHeight}
         rowId={props.rowId}
@@ -469,7 +490,7 @@ export default function RowFrame(props: RowFrameProps) {
     ),
     oneByFour: (
       <RowstructureDisplay
-        gap={containerGap}
+        gap={containerGap + "px"}
         height={desktopHeight}
         tabletHeight={tabletHeight}
         selectedType={selectedType}
@@ -494,7 +515,7 @@ export default function RowFrame(props: RowFrameProps) {
     ),
     oneByFive: (
       <RowstructureDisplay
-        gap={containerGap}
+        gap={containerGap + "px"}
         height={desktopHeight}
         tabletHeight={tabletHeight}
         rowId={props.rowId}
