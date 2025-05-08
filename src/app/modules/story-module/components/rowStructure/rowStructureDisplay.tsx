@@ -29,6 +29,7 @@ import { css } from "styled-components";
 import { Updater } from "use-immer";
 import { useMediaQuery } from "@material-ui/core";
 import { rowStructureHeights } from "./data";
+import { usehandleRowFrameItemResize } from "app/hooks/useHandleRowFrameItemResize";
 import { TABLET_STARTPOINT } from "app/theme";
 
 interface RowStructureDisplayProps {
@@ -79,6 +80,14 @@ export default function RowstructureDisplay(
   const viewOnlyMode =
     location.pathname === `/story/${page}` ||
     location.pathname === `/story/${page}/downloaded-view`;
+
+  const { handleRowHeightResize } = usehandleRowFrameItemResize(
+    props.updateFramesArray
+  );
+
+  const [_isResizing, setIsResizing] = useRecoilState(
+    storyContentIsResizingAtom
+  );
 
   const handlers = viewOnlyMode
     ? {}
@@ -137,6 +146,21 @@ export default function RowstructureDisplay(
     !viewOnlyMode && handleDisplay
       ? "0.722415px dashed  #ADB5BD"
       : "0.722415px dashed transparent";
+
+  const onResize = () => {
+    setIsResizing(true);
+  };
+
+  const onResizeStop = (
+    _event: MouseEvent | TouchEvent,
+    _direction: Direction,
+    elementRef: HTMLElement,
+    _delta: NumberSize
+  ) => {
+    let newHeight = elementRef.offsetHeight;
+    handleRowHeightResize(props.rowId, newHeight);
+    setIsResizing(false);
+  };
 
   return (
     <div
@@ -234,51 +258,65 @@ export default function RowstructureDisplay(
             </div>
           </div>
         )}
-        <div
-          css={`
-            width: 100%;
-            height: 100%;
-            display: flex;
-            overflow-x: hidden;
-            overflow-y: hidden;
-            gap: ${props.gap};
-            border: ${border};
-            @media (min-width: ${TABLET_STARTPOINT}) and (max-width: 1260px) {
-              width: ${props.rightPanelOpen
-                ? `calc(100% - ${RIGHT_PANEL_WIDTH})`
-                : "100%"};
-              :hover {
-                overflow-x: ${props.rightPanelOpen ? "scroll" : "hidden"};
-              }
-            }
-            @media (max-width: 767px) {
-              display: grid;
-              grid-template-columns: ${props.forceSelectedType ===
-                "oneByFive" || props.forceSelectedType === "oneByFour"
-                ? " auto auto"
-                : "auto"};
-            }
-          `}
-          data-cy={`row-frame-${props.rowIndex}`}
+        <Resizable
+          grid={[5, 5]}
+          onResize={onResize}
+          onResizeStop={onResizeStop}
+          size={{
+            width: "100%",
+            height: get(props.rowContentHeights, `[${0}]`, boxHeight),
+          }}
+          minWidth={78}
+          enable={{
+            bottom: !viewOnlyMode,
+          }}
         >
-          {props.rowStructureDetailItems.map((row, index) => (
-            <Box
-              key={row.rowId}
-              width={get(props.rowContentWidths, `[${index}]`, "fit-content")}
-              height={get(props.rowContentHeights, `[${index}]`, boxHeight)}
-              itemIndex={index}
-              rowId={props.rowId}
-              rowIndex={props.rowIndex}
-              rowType={row.rowType}
-              onRowBoxItemResize={props.onRowBoxItemResize}
-              updateFramesArray={props.updateFramesArray}
-              previewItem={get(props.previewItems, `[${index}]`, undefined)}
-              rowItemsCount={props.rowStructureDetailItems.length}
-              setPlugins={props.setPlugins}
-              onSave={props.onSave}
-            />
-          ))}
-        </div>
+          <div
+            css={`
+              width: 100%;
+              height: 100%;
+              display: flex;
+              overflow-x: hidden;
+              overflow-y: hidden;
+              gap: ${props.gap};
+              border: ${border};
+              @media (min-width: ${TABLET_STARTPOINT}) and (max-width: 1260px) {
+                width: ${props.rightPanelOpen
+                  ? `calc(100% - ${RIGHT_PANEL_WIDTH})`
+                  : "100%"};
+                :hover {
+                  overflow-x: ${props.rightPanelOpen ? "scroll" : "hidden"};
+                }
+              }
+              @media (max-width: 767px) {
+                display: grid;
+                grid-template-columns: ${props.forceSelectedType ===
+                  "oneByFive" || props.forceSelectedType === "oneByFour"
+                  ? " auto auto"
+                  : "auto"};
+              }
+            `}
+            data-cy={`row-frame-${props.rowIndex}`}
+          >
+            {props.rowStructureDetailItems.map((row, index) => (
+              <Box
+                key={row.rowId}
+                width={get(props.rowContentWidths, `[${index}]`, "fit-content")}
+                height={get(props.rowContentHeights, `[${index}]`, boxHeight)}
+                itemIndex={index}
+                rowId={props.rowId}
+                rowIndex={props.rowIndex}
+                rowType={row.rowType}
+                onRowBoxItemResize={props.onRowBoxItemResize}
+                updateFramesArray={props.updateFramesArray}
+                previewItem={get(props.previewItems, `[${index}]`, undefined)}
+                rowItemsCount={props.rowStructureDetailItems.length}
+                setPlugins={props.setPlugins}
+                onSave={props.onSave}
+              />
+            ))}
+          </div>
+        </Resizable>
       </div>
     </div>
   );
@@ -310,6 +348,10 @@ const Box = (props: {
   const smScreen = useMediaQuery("(max-width: 767px)");
   const setDataset = useStoreActions(
     (actions) => actions.charts.dataset.setValue
+  );
+
+  const { handleRowFrameItemResize } = usehandleRowFrameItemResize(
+    props.updateFramesArray
   );
 
   const [chartError, setChartError] = React.useState(false);
@@ -541,7 +583,7 @@ const Box = (props: {
   ) => {
     let newWidth = elementRef.offsetWidth;
     let newHeight = elementRef.offsetHeight;
-    props.onRowBoxItemResize(props.rowId, props.itemIndex, newWidth, newHeight);
+    handleRowFrameItemResize(props.rowId, props.itemIndex, newWidth, newHeight);
     setIsResizing(false);
   };
 
@@ -573,7 +615,6 @@ const Box = (props: {
           minWidth={78}
           enable={{
             right: !viewOnlyMode,
-            bottom: !viewOnlyMode,
             bottomRight: !viewOnlyMode,
           }}
           css={`
@@ -655,7 +696,6 @@ const Box = (props: {
           minWidth={78}
           enable={{
             right: !viewOnlyMode,
-            bottom: !viewOnlyMode,
             bottomRight: !viewOnlyMode,
           }}
         >
@@ -760,7 +800,6 @@ const Box = (props: {
           minWidth={78}
           enable={{
             right: !viewOnlyMode,
-            bottom: !viewOnlyMode,
             bottomRight: !viewOnlyMode,
           }}
           css={`
@@ -844,7 +883,6 @@ const Box = (props: {
           minWidth={78}
           enable={{
             right: !viewOnlyMode,
-            bottom: !viewOnlyMode,
             bottomRight: !viewOnlyMode,
           }}
           css={`
@@ -960,7 +998,6 @@ const Box = (props: {
         minWidth={78}
         enable={{
           right: !viewOnlyMode,
-          bottom: !viewOnlyMode,
           bottomRight: !viewOnlyMode,
         }}
       >
