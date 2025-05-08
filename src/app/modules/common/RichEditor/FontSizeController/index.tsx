@@ -1,6 +1,6 @@
-import React, { useEffect, useState, useCallback } from "react";
-import { RichUtils, EditorState } from "draft-js";
-import debounce from "lodash/debounce";
+import { EditorState, RichUtils } from "draft-js";
+import React, { useEffect, useCallback } from "react";
+import styled from "styled-components"; // Assuming you're using styled-components for CSS-in-JS
 
 // Define constants for better readability and maintainability
 const DEFAULT_FONT_SIZE = 14;
@@ -12,25 +12,55 @@ const fontFamily = '"GothamNarrow-Bold", "Helvetica Neue", sans-serif';
 interface Props {
   getEditorState: () => EditorState;
   setEditorState: (editorState: EditorState) => void;
-  onFontSizeChange?: (fontSize: number) => void;
 }
 
-export default function FontSizeController(props: Props) {
-  const [fontSize, setFontSize] = useState(DEFAULT_FONT_SIZE);
+const FontSizeContainer = styled.div`
+  width: 57px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+  border-radius: 8px;
+  background: #f4f4f4;
+`;
 
-  // Get current font size from editor state
-  const getFontSizeFromEditorState = useCallback(() => {
+const SizeButton = styled.span`
+  font-size: 14px;
+  color: #70777e;
+  font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
+  cursor: pointer;
+  user-select: none;
+`;
+
+const SizeInput = styled.input`
+  width: 32px;
+  height: 100%;
+  text-align: center;
+  background: transparent;
+  border: none;
+  font-size: 14px;
+  font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
+  color: #70777e;
+  outline: none;
+`;
+
+export default function FontSizeController(props: Props) {
+  const [fontSize, setFontSize] = React.useState(DEFAULT_FONT_SIZE);
+
+  // Helper to extract current font size from editor state
+  const getCurrentFontSize = useCallback(() => {
     const editorState = props.getEditorState();
     if (!editorState) return DEFAULT_FONT_SIZE;
-
     const currentStyle = editorState.getCurrentInlineStyle();
 
-    // More efficient way to find font size styles
-    for (const style of currentStyle.toArray()) {
-      if (style.startsWith("font-size-")) {
-        const size = parseInt(style.split("-")[2], 10);
-        return isNaN(size) ? DEFAULT_FONT_SIZE : size;
-      }
+    // Find any font-size style
+    const fontSizeStyle = currentStyle.findLast((style: any) =>
+      style.includes("font-size")
+    );
+
+    if (fontSizeStyle) {
+      const size = parseInt(fontSizeStyle.split("-")[2], 10);
+      return isNaN(size) ? DEFAULT_FONT_SIZE : size;
     }
 
     // If no inline font style, check block type
@@ -44,175 +74,97 @@ export default function FontSizeController(props: Props) {
       if (blockType === "header-one") return HEADER_ONE_SIZE;
       if (blockType === "header-two") return HEADER_TWO_SIZE;
     }
-
     return DEFAULT_FONT_SIZE;
   }, [props]);
 
-  // Update the editor state with new font size
-  const updateEditorStateWithFontSize = useCallback(
-    (newFontSize: number) => {
-      const editorState = props.getEditorState();
-      const currentStyle = editorState.getCurrentInlineStyle();
-      let nextEditorState = editorState;
+  useEffect(() => {
+    // Only update local state when editor state changes
+    setFontSize(getCurrentFontSize());
+  }, [props.getEditorState(), getCurrentFontSize]);
 
-      // First, remove any existing font-size styles
-      currentStyle.forEach((style) => {
-        if (style?.startsWith("font-size-")) {
-          nextEditorState = RichUtils.toggleInlineStyle(nextEditorState, style);
-        }
-      });
+  const updateEditorStateWithFontSize = (newSize: number) => {
+    if (newSize < MIN_FONT_SIZE || newSize > MAX_FONT_SIZE) return;
 
-      // Then add the new font-size style
-      nextEditorState = RichUtils.toggleInlineStyle(
-        nextEditorState,
-        `font-size-${newFontSize}`
-      );
+    const editorState = props.getEditorState();
+    const currentStyle = editorState.getCurrentInlineStyle();
+    let newEditorState = editorState;
 
-      props.setEditorState(nextEditorState);
-
-      // Call optional callback
-      if (props.onFontSizeChange) {
-        props.onFontSizeChange(newFontSize);
+    // Remove any existing font-size styles
+    currentStyle.forEach((style) => {
+      if (style && style.startsWith("font-size-")) {
+        newEditorState = RichUtils.toggleInlineStyle(newEditorState, style);
       }
-    },
-    [props]
-  );
+    });
 
-  // Debounced version of the update function to prevent excessive updates
-  const debouncedUpdateFontSize = useCallback(
-    debounce((size: number) => {
-      updateEditorStateWithFontSize(size);
-    }, 50),
-    [updateEditorStateWithFontSize]
-  );
+    // Apply the new font size
+    props.setEditorState(
+      RichUtils.toggleInlineStyle(newEditorState, `font-size-${newSize}`)
+    );
+  };
 
-  // Handle font size decrease
   const reduceFontSize = () => {
     if (fontSize <= MIN_FONT_SIZE) return;
     const newSize = fontSize - 1;
+    updateEditorStateWithFontSize(newSize);
     setFontSize(newSize);
-    debouncedUpdateFontSize(newSize);
   };
 
-  // Handle font size increase
   const increaseFontSize = () => {
     if (fontSize >= MAX_FONT_SIZE) return;
     const newSize = fontSize + 1;
+    updateEditorStateWithFontSize(newSize);
     setFontSize(newSize);
-    debouncedUpdateFontSize(newSize);
   };
 
-  // Handle direct input change
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value;
-
-    // Only accept numerical values
-    if (value === "" || /^[0-9\b]+$/.test(value)) {
-      if (value.length > 3) return;
-
-      const newSize = value === "" ? DEFAULT_FONT_SIZE : parseInt(value, 10);
+    // Number validation with regex so input only accepts number characters
+    if (e.target.value === "" || /^[0-9\b]+$/.test(e.target.value)) {
+      if (e.target.value.length > 3) return;
+      const newSize = e.target.value === "" ? 1 : Number(e.target.value);
+      updateEditorStateWithFontSize(newSize);
       setFontSize(newSize);
-      debouncedUpdateFontSize(newSize);
     }
   };
 
-  // Sync font size with editor state on selection or content changes
-  useEffect(() => {
-    const editorState = props.getEditorState();
-
-    // Create a function to update font size from editor state
-    const syncFontSize = () => {
-      const newSize = getFontSizeFromEditorState();
-      setFontSize(newSize);
-    };
-
-    // Initial sync
-    syncFontSize();
-
-    // Setup listeners for selection and content changes
-    const currentSelection = editorState.getSelection();
-    let prevSelection = currentSelection;
-
-    const checkForChanges = () => {
-      const newEditorState = props.getEditorState();
-      const newSelection = newEditorState.getSelection();
-
-      // Check if selection changed
-      if (
-        newSelection.getStartKey() !== prevSelection.getStartKey() ||
-        newSelection.getStartOffset() !== prevSelection.getStartOffset() ||
-        newSelection.getEndKey() !== prevSelection.getEndKey() ||
-        newSelection.getEndOffset() !== prevSelection.getEndOffset()
-      ) {
-        syncFontSize();
-        prevSelection = newSelection;
-      }
-    };
-
-    // Set an interval to check for selection changes
-    // This helps catch selection changes that might not trigger component re-renders
-    const interval = setInterval(checkForChanges, 100);
-
-    return () => {
-      clearInterval(interval);
-    };
-  }, [props.getEditorState, getFontSizeFromEditorState]);
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === "ArrowUp") {
+      e.preventDefault();
+      increaseFontSize();
+    } else if (e.key === "ArrowDown") {
+      e.preventDefault();
+      reduceFontSize();
+    }
+  };
 
   return (
-    <div
-      className="font-size-controller"
-      style={{
-        width: "57px",
-        height: "24px",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "space-evenly",
-        borderRadius: "8px",
-        background: "#f4f4f4",
-      }}
-    >
-      <span
+    <FontSizeContainer>
+      <SizeButton
         onClick={reduceFontSize}
         onMouseDown={(e) => e.preventDefault()}
-        style={{
-          fontSize: "14px",
-          color: "#70777e",
-          fontFamily: fontFamily,
-          cursor: "pointer",
-        }}
+        role="button"
+        aria-label="Decrease font size"
+        tabIndex={0}
       >
         -
-      </span>
-      <input
+      </SizeButton>
+      <SizeInput
         type="text"
-        name="font-size"
-        onChange={handleInputChange}
+        aria-label="Font size"
         value={fontSize}
+        onChange={handleInputChange}
+        onKeyDown={handleKeyDown}
         min={MIN_FONT_SIZE}
-        style={{
-          width: "32px",
-          height: "100%",
-          textAlign: "center",
-          background: "transparent",
-          border: "none",
-          fontSize: "14px",
-          fontFamily: fontFamily,
-          color: "#70777e",
-          outline: "none",
-        }}
+        max={MAX_FONT_SIZE}
       />
-      <span
+      <SizeButton
         onClick={increaseFontSize}
         onMouseDown={(e) => e.preventDefault()}
-        style={{
-          fontSize: "14px",
-          color: "#70777e",
-          fontFamily: fontFamily,
-          cursor: "pointer",
-        }}
+        role="button"
+        aria-label="Increase font size"
+        tabIndex={0}
       >
         +
-      </span>
-    </div>
+      </SizeButton>
+    </FontSizeContainer>
   );
 }

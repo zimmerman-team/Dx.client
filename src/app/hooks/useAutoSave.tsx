@@ -1,5 +1,3 @@
-import { IHeaderDetails } from "app/modules/story-module/components/right-panel/data";
-import { IFramesArray } from "app/modules/story-module/views/create/data";
 import React from "react";
 
 function useAutosave(

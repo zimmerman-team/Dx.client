@@ -7,10 +7,15 @@ import { ReactComponent as StoriesImg } from "app/modules/home-module/assets/why
 import { ReactComponent as SearchImg } from "app/modules/home-module/assets/whydx-search-illustration.svg";
 import { keyfeaturescss } from "app/modules/home-module/sub-modules/why-dx/style";
 import { useMediaQuery } from "@material-ui/core";
+import {
+  DESKTOP_BREAKPOINT,
+  MOBILE_BREAKPOINT,
+  TABLET_STARTPOINT,
+} from "app/theme";
 
 export default function KeyFeaturesBlock() {
   const isTablet = useMediaQuery("(max-width:1024px)");
-  const isMobile = useMediaQuery("(max-width:600px)");
+  const isMobile = useMediaQuery(`(max-width:${MOBILE_BREAKPOINT})`);
 
   let spacing: GridSpacing = 8;
   if (isTablet) {
@@ -22,23 +27,12 @@ export default function KeyFeaturesBlock() {
   return (
     <div css={keyfeaturescss.container}>
       <h3>Unlock the Power of Data with Dataxplorer</h3>
-      <Grid
-        container
-        spacing={spacing}
-        alignItems="center"
-        css={`
-          @media (min-width: 1111px) {
-            @media (max-width: 1279px) {
-              flex-wrap: nowrap;
-            }
-          }
-          @media (max-width: 1110px) {
-            flex-direction: column;
-            align-items: center;
-          }
-        `}
-      >
-        <Grid item lg={6} md={9} sm={12} xs={12}>
+      <div css={keyfeaturescss.flexContainer(false)}>
+        <div
+          css={`
+            flex-basis: 50%;
+          `}
+        >
           <SearchImg
             css={`
               border-radius: 16px;
@@ -48,8 +42,12 @@ export default function KeyFeaturesBlock() {
               width: 100%;
             `}
           />
-        </Grid>
-        <Grid item lg={6} md={9} sm={12} xs={12}>
+        </div>
+        <div
+          css={`
+            flex-basis: 50%;
+          `}
+        >
           <div css={keyfeaturescss.text}>
             <p>All-in-One Stack</p>
             <p>
@@ -62,8 +60,8 @@ export default function KeyFeaturesBlock() {
               mission more efficient, and saving you time and resources
             </p>
           </div>
-        </Grid>
-      </Grid>
+        </div>
+      </div>
       <div
         css={`
           height: 80px;
@@ -75,23 +73,16 @@ export default function KeyFeaturesBlock() {
           }
         `}
       />
-      <Grid
-        container
-        spacing={spacing}
-        alignItems="center"
+      <div
         css={`
-          @media (min-width: 1111px) {
-            @media (max-width: 1279px) {
-              flex-wrap: nowrap;
-            }
-          }
-          @media (max-width: 1110px) {
-            flex-direction: column-reverse;
-            align-items: center;
-          }
+          ${keyfeaturescss.flexContainer(true)};
         `}
       >
-        <Grid item lg={6} md={9} sm={12} xs={12}>
+        <div
+          css={`
+            flex-basis: 50%;
+          `}
+        >
           <div css={keyfeaturescss.text}>
             <p>Connect Data with Ease</p>
             <p>
@@ -103,8 +94,12 @@ export default function KeyFeaturesBlock() {
               making informed decisions.
             </p>
           </div>
-        </Grid>
-        <Grid item lg={6} md={9} sm={12} xs={12}>
+        </div>
+        <div
+          css={`
+            flex-basis: 50%;
+          `}
+        >
           <AIPoweredImg
             css={`
               box-shadow: 0px 14.97px 22.455px 0px rgba(0, 0, 0, 0.05),
@@ -113,8 +108,8 @@ export default function KeyFeaturesBlock() {
               border-radius: 16px;
             `}
           />
-        </Grid>
-      </Grid>
+        </div>
+      </div>
       <div
         css={`
           height: 80px;
@@ -126,23 +121,12 @@ export default function KeyFeaturesBlock() {
           }
         `}
       />
-      <Grid
-        container
-        spacing={spacing}
-        alignItems="center"
-        css={`
-          @media (min-width: 1111px) {
-            @media (max-width: 1279px) {
-              flex-wrap: nowrap;
-            }
-          }
-          @media (max-width: 1110px) {
-            flex-direction: column;
-            align-items: center;
-          }
-        `}
-      >
-        <Grid item lg={6} md={9} sm={12} xs={12}>
+      <div css={keyfeaturescss.flexContainer(false)}>
+        <div
+          css={`
+            flex-basis: 50%;
+          `}
+        >
           <CharVizImg
             css={`
               border-radius: 16px;
@@ -152,8 +136,12 @@ export default function KeyFeaturesBlock() {
                 0px 0.94px 9.399px 0px rgba(0, 0, 0, 0.05);
             `}
           />
-        </Grid>
-        <Grid item lg={6} md={9} sm={12} xs={12}>
+        </div>
+        <div
+          css={`
+            flex-basis: 50%;
+          `}
+        >
           <div css={keyfeaturescss.text}>
             <p>Visualize Your Impact</p>
             <p>
@@ -165,8 +153,8 @@ export default function KeyFeaturesBlock() {
               uncover trends and patterns.
             </p>
           </div>
-        </Grid>
-      </Grid>
+        </div>
+      </div>
       <div
         css={`
           height: 80px;
@@ -178,23 +166,12 @@ export default function KeyFeaturesBlock() {
           }
         `}
       />
-      <Grid
-        container
-        spacing={spacing}
-        alignItems="center"
-        css={`
-          @media (min-width: 1111px) {
-            @media (max-width: 1279px) {
-              flex-wrap: nowrap;
-            }
-          }
-          @media (max-width: 1110px) {
-            flex-direction: column-reverse;
-            align-items: center;
-          }
-        `}
-      >
-        <Grid item lg={6} md={9} sm={12} xs={12}>
+      <div css={keyfeaturescss.flexContainer(true)}>
+        <div
+          css={`
+            flex-basis: 50%;
+          `}
+        >
           <div css={keyfeaturescss.text}>
             <p>Interactive Stories </p>
             <p>
@@ -207,8 +184,12 @@ export default function KeyFeaturesBlock() {
               enhancing your ability to drive positive change.
             </p>
           </div>
-        </Grid>
-        <Grid item lg={6} md={9} sm={12} xs={12}>
+        </div>
+        <div
+          css={`
+            flex-basis: 50%;
+          `}
+        >
           <OpenSourceImg
             css={`
               border-radius: 16px;
@@ -218,36 +199,23 @@ export default function KeyFeaturesBlock() {
                 0px 0.672px 6.724px 0px rgba(0, 0, 0, 0.05);
             `}
           />
-        </Grid>
-      </Grid>
+        </div>
+      </div>
       <div
         css={`
           height: 80px;
-          @media (max-width: 1024px) {
-            height: 80px;
-          }
-          @media (max-width: 600px) {
+
+          @media (max-width: ${MOBILE_BREAKPOINT}) {
             height: 32px;
           }
         `}
       />
-      <Grid
-        container
-        spacing={spacing}
-        alignItems="center"
-        css={`
-          @media (min-width: 1111px) {
-            @media (max-width: 1279px) {
-              flex-wrap: nowrap;
-            }
-          }
-          @media (max-width: 1110px) {
-            flex-direction: column;
-            align-items: center;
-          }
-        `}
-      >
-        <Grid item lg={6} md={9} sm={12} xs={12}>
+      <div css={keyfeaturescss.flexContainer(false)}>
+        <div
+          css={`
+            flex-basis: 50%;
+          `}
+        >
           <StoriesImg
             css={`
               border-radius: 16px;
@@ -257,8 +225,12 @@ export default function KeyFeaturesBlock() {
                 0px 0.749px 7.485px 0px rgba(0, 0, 0, 0.05);
             `}
           />
-        </Grid>
-        <Grid item lg={6} md={9} sm={12} xs={12}>
+        </div>
+        <div
+          css={`
+            flex-basis: 50%;
+          `}
+        >
           <div css={keyfeaturescss.text}>
             <p>Join The Data Revolution</p>
             <p>
@@ -271,8 +243,8 @@ export default function KeyFeaturesBlock() {
               now.
             </p>
           </div>
-        </Grid>
-      </Grid>
+        </div>
+      </div>
     </div>
   );
 }

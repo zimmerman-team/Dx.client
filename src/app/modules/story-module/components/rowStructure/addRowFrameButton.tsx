@@ -5,6 +5,7 @@ import { IFramesArray } from "app/modules/story-module/views/create/data";
 import { ReactComponent as PlusIcon } from "app/modules/story-module/asset/addButton.svg";
 import { IRowFrameStructure } from "app/state/recoil/atoms";
 import { Updater } from "use-immer";
+import { TABLET_STARTPOINT } from "app/theme";
 interface Props {
   updateFramesArray: Updater<IFramesArray[]>;
   framesArray: IFramesArray[];
@@ -41,12 +42,12 @@ export default function AddRowFrameButton(props: Props) {
       disableAddRowStructureButton: false,
     });
   };
-  const RIGHT_PANEL_WIDTH = "36.83%"; //percentage value of 274px which is the width at 768px as per design
+  const RIGHT_PANEL_WIDTH = "36.83%"; //percentage value of 274px which is the width at 744px as per design
   return (
     <div
       css={`
         width: 100%;
-        @media (min-width: 768px) and (max-width: 1080px) {
+        @media (min-width: ${TABLET_STARTPOINT}) and (max-width: 1080px) {
           transition: width 225ms cubic-bezier(0, 0, 0.2, 1) 0ms;
           width: ${props.rightPanelOpen
             ? `calc(100% - ${RIGHT_PANEL_WIDTH})`

@@ -30,7 +30,6 @@ import {
 } from "app/state/recoil/atoms";
 import { StorySubheaderToolbar } from "app/modules/story-module/components/storySubHeaderToolbar";
 import { ToolbarPluginsType } from "app/modules/story-module/components/storySubHeaderToolbar/staticToolbar";
-import useAutosave from "app/hooks/useAutoSave";
 import DownloadedView from "./views/downloaded-view";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import NotAvailableOnMobile from "app/modules/common/not-available";
@@ -45,7 +44,7 @@ export default function StoryModule() {
     page: string;
     view: "initial" | "edit" | "create" | "preview" | typeof aiTemplateString;
   }>();
-  const [hasChangesBeenMade, setHasChangesBeenMade] = React.useState(false);
+
   const [autoSave, setAutoSave] = React.useState<{
     isAutoSaveEnabled: boolean;
   }>({ isAutoSaveEnabled: false });
@@ -99,6 +98,10 @@ export default function StoryModule() {
 
   const storyEditClear = useStoreActions(
     (actions) => actions.stories.StoryUpdate.clear
+  );
+
+  const fetchStoryData = useStoreActions(
+    (actions) => actions.stories.StoryGet.fetch
   );
 
   const storyError401 = useStoreState(
@@ -300,7 +303,7 @@ export default function StoryModule() {
 
   const onSave = async (type: "create" | "edit") => {
     const action = type === "create" ? storyCreate : storyEdit;
-    action({
+    await action({
       token,
       patchId: page === "new" ? "public" : page,
       values: {
@@ -340,6 +343,7 @@ export default function StoryModule() {
         dateColor: headerDetails.dateColor,
       },
     });
+    fetchStoryData({ token, getId: page, silent: true });
   };
 
   const handleSetButtonActive = (type: "basic" | "advanced" | "ai") => {
@@ -361,16 +365,6 @@ export default function StoryModule() {
       setStoryType(null);
     };
   }, [storyType]);
-
-  useAutosave(
-    () => {
-      onSave("edit");
-    },
-    2 * 1000,
-    autoSave.isAutoSaveEnabled,
-    hasChangesBeenMade,
-    [framesArray, storyName, headerDetails]
-  );
 
   const isSaveEnabled = React.useMemo(() => {
     let hasTextValue = !(
@@ -465,7 +459,6 @@ export default function StoryModule() {
               handleRightPanelOpen={() => setRightPanelOpen(true)}
               autoSave={autoSave.isAutoSaveEnabled}
               storyType={storyType}
-              setHasChangesBeenMade={setHasChangesBeenMade}
               setStoryName={setStoryName}
               storyName={storyName}
               framesArray={framesArray}

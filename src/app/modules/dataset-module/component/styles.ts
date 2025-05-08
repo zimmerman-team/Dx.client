@@ -110,8 +110,9 @@ export const styles = {
   `,
   nameInput: css`
     margin: 0;
-    width: 1200px;
+    /* width: 1200px; */
     display: flex;
+    justify-content: start;
     color: #262c34;
     font-size: 24px;
     font-weight: 700;

@@ -56,16 +56,32 @@ export const usehandleRowFrameItemResize = (
         // Apply adjusted width to neighbor only
         draft[frameIndex].contentWidths[neighborIndex] = neighborNewWidth;
       }
-
-      // Handle height updates
-      if (draft[frameIndex].contentHeights) {
-        draft[frameIndex].contentHeights[itemIndex] = height;
-      } else {
+      if (!draft[frameIndex].contentHeights) {
         draft[frameIndex].contentHeights = [];
-        draft[frameIndex].contentHeights[itemIndex] = height;
       }
+
+      draft[frameIndex].contentHeights.forEach((_, index) => {
+        draft[frameIndex].contentHeights[index] = height;
+      });
     });
   };
 
-  return { handleRowFrameItemResize };
+  const handleRowHeightResize = (rowId: string, height: number) => {
+    updateFramesArray((draft) => {
+      const frameIndex = draft.findIndex((frame) => frame.id === rowId);
+      if (frameIndex === -1) {
+        return draft;
+      }
+
+      if (!draft[frameIndex].contentHeights) {
+        draft[frameIndex].contentHeights = [];
+      }
+
+      draft[frameIndex].contentHeights.forEach((_, index) => {
+        draft[frameIndex].contentHeights[index] = height;
+      });
+    });
+  };
+
+  return { handleRowFrameItemResize, handleRowHeightResize };
 };

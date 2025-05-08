@@ -1,3 +1,8 @@
+import {
+  DESKTOP_BREAKPOINT,
+  MOBILE_BREAKPOINT,
+  TABLET_STARTPOINT,
+} from "app/theme";
 import { css } from "styled-components/macro";
 
 export const benefitscss = css`
@@ -66,13 +71,18 @@ export const keyfeaturescss = {
       }
     }
     p:nth-of-type(1) {
-      font-size: 36px;
+      font-size: 40px;
       line-height: 20px;
       font-family: "GothamNarrow-Bold", sans-serif;
       margin-bottom: 25px;
       margin-top: 0;
       color: #231d2c;
-      @media (max-width: 600px) {
+      @media (min-width: ${TABLET_STARTPOINT}) {
+        @media (max-width: ${DESKTOP_BREAKPOINT}) {
+          font-size: 36px;
+        }
+      }
+      @media (max-width: ${MOBILE_BREAKPOINT}) {
         font-size: 18px;
         line-height: normal;
         text-align: left;
@@ -85,7 +95,7 @@ export const keyfeaturescss = {
       letter-spacing: 0.5px;
       font-size: 24px;
       color: #231d2c;
-      @media (max-width: 600px) {
+      @media (max-width: ${MOBILE_BREAKPOINT}) {
         font-size: 12px;
         line-height: normal;
         text-align: left;
@@ -100,7 +110,21 @@ export const keyfeaturescss = {
       padding-top: 56px;
     }
   `,
-  flexContainer: css``,
+  flexContainer: (reverse: boolean) => css`
+    display: flex;
+    align-items: center;
+    column-gap: 83px;
+    @media (min-width: ${TABLET_STARTPOINT}) {
+      @media (max-width: ${DESKTOP_BREAKPOINT}) {
+        row-gap: 40px;
+        flex-direction: ${reverse ? "column-reverse" : "column"};
+      }
+    }
+    @media (max-width: ${MOBILE_BREAKPOINT}) {
+      row-gap: 40px;
+      flex-direction: ${reverse ? "column-reverse" : "column"};
+    }
+  `,
   text: css`
     @media (min-width: 1111px) {
       @media (max-width: 1279px) {

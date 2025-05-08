@@ -81,12 +81,6 @@ export const RichEditor = (props: {
     return "not-handled";
   };
 
-  React.useEffect(() => {
-    if (props.focusOnMount && props.editMode) {
-      focus();
-    }
-  }, []);
-
   const emojiPlugin = createEmojiPlugin({
     selectButtonContent: (
       <div css={styles.highlightPicker(false)}>{EmojiButton}</div>
@@ -131,7 +125,10 @@ export const RichEditor = (props: {
   }, []);
 
   React.useEffect(() => {
-    props.setPlugins?.(plugins);
+    if (props.focusOnMount && props.editMode) {
+      focus();
+      props.setPlugins?.(plugins);
+    }
   }, []);
 
   return (

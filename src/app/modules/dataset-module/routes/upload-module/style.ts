@@ -1,4 +1,5 @@
 import { Select, TextField, withStyles, InputLabel } from "@material-ui/core";
+import { MOBILE_BREAKPOINT } from "app/theme";
 import { pad } from "lodash";
 import { css } from "styled-components/macro";
 
@@ -98,7 +99,7 @@ export const dataSetsCss = css`
 `;
 export const mobileDescriptioncss = css`
   display: none;
-  @media (max-width: 500px) {
+  @media (max-width: ${MOBILE_BREAKPOINT}) {
     display: flex;
     padding: 24px;
     flex-direction: column;

@@ -400,7 +400,6 @@ const Box = (props: BoxProps) => {
     minWidth: 78,
     enable: {
       right: !viewOnlyMode && !props.last,
-      bottom: !viewOnlyMode,
       bottomRight: !viewOnlyMode && !props.last,
       left: !!props.last && !viewOnlyMode,
     },

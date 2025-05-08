@@ -12,6 +12,12 @@ import { useAuth0 } from "@auth0/auth0-react";
 import AddAssetDropdown from "app/modules/home-module/components/AddAssetDropdown";
 import { Link } from "react-router-dom";
 import { PrimaryButton } from "app/components/Styled/button";
+import {
+  DESKTOP_BREAKPOINT,
+  DESKTOP_STARTPOINT,
+  MOBILE_BREAKPOINT,
+  TABLET_STARTPOINT,
+} from "app/theme";
 
 export default function Hero() {
   const { isAuthenticated } = useAuth0();
@@ -54,10 +60,13 @@ export default function Hero() {
               -webkit-background-clip: text;
               -webkit-text-fill-color: transparent;
             }
-            @media (max-width: 960px) {
-              font-size: 64px;
+            @media (min-width: ${TABLET_STARTPOINT}) {
+              @media (max-width: ${DESKTOP_BREAKPOINT}) {
+                font-size: 64px;
+              }
             }
-            @media (max-width: 744px) {
+
+            @media (max-width: ${MOBILE_BREAKPOINT}) {
               font-size: 48px;
             }
           }
@@ -65,15 +74,13 @@ export default function Hero() {
           > p {
             color: #231d2c;
             font-family: "GothamNarrow-Bold", sans-serif;
-            font-size: 36px;
+            font-size: 24px;
             font-style: normal;
             text-align: center;
             margin: 40px 0 10px 0;
             line-height: 43px;
-            @media (max-width: 960px) {
+            @media (max-width: ${DESKTOP_BREAKPOINT}) {
               font-size: 18px;
-            }
-            @media (max-width: 744px) {
               line-height: normal;
             }
           }
@@ -85,11 +92,14 @@ export default function Hero() {
         css={`
           padding-top: 100px;
           padding-bottom: 80px;
-          @media (max-width: 960px) {
-            padding: 100px 32px 80px 32px;
+
+          @media (min-width: ${TABLET_STARTPOINT}) {
+            @media (max-width: ${DESKTOP_BREAKPOINT}) {
+              padding: 100px 32px 80px 32px;
+            }
           }
-          @media (max-width: 744px) {
-            padding: 80px 16px 40px 16px;
+          @media (max-width: ${MOBILE_BREAKPOINT}) {
+            padding: 100px 16px 40px 16px;
           }
         `}
       >
@@ -165,12 +175,17 @@ export default function Hero() {
               `}
             >
               <p>Sign in for free to unlock data visualisation tools with</p>
-              <Box
-                display={"flex"}
-                gridColumnGap={"16px"}
-                gridRowGap={"8px"}
-                justifyContent={"center"}
-                flexDirection={{ xs: "column", sm: "row" }}
+              <div
+                css={`
+                  flex-direction: row;
+                  display: flex;
+                  grid-column-gap: 16px;
+                  grid-row-gap: 8px;
+                  justify-content: center;
+                  @media (max-width: ${MOBILE_BREAKPOINT}) {
+                    flex-direction: column;
+                  }
+                `}
               >
                 <button
                   data-cy="google-button"
@@ -190,7 +205,7 @@ export default function Hero() {
                 >
                   <MicrosoftIcon /> Microsoft
                 </button>
-              </Box>
+              </div>
             </div>
           )}
         </div>

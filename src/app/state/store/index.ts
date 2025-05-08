@@ -90,7 +90,7 @@ const storeContent: StoreModel = {
     SelectedAIChartState: persist(SelectedAIChartState),
   },
   stories: {
-    StoryGet: persist(StoryGet),
+    StoryGet: StoryGet,
     StoryCreate: persist(StoryCreate),
     StoryUpdate: persist(StoryUpdate),
     StoryDelete: persist(StoryDelete),

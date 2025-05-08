@@ -62,6 +62,7 @@ import { useInfinityScroll } from "app/hooks/useInfinityScroll";
 import { IHeaderDetails } from "app/modules/story-module/components/right-panel/data";
 import { useCheckUserPlan } from "app/hooks/useCheckUserPlan";
 import { PrimaryButton, TertiaryButton } from "app/components/Styled/button";
+import { TABLET_STARTPOINT } from "app/theme";
 
 interface Props {
   showHeaderItem: boolean;
@@ -201,7 +202,7 @@ const UpgradeCard = (props: { onClose: () => void }) => {
           font-style: normal;
           font-weight: 400;
           line-height: normal;
-          @media (max-width: 768px) {
+          @media (max-width: ${TABLET_STARTPOINT}) {
             font-size: 18px;
           }
         `}
@@ -217,7 +218,7 @@ const UpgradeCard = (props: { onClose: () => void }) => {
           font-style: normal;
           font-weight: 325;
           line-height: normal;
-          @media (max-width: 768px) {
+          @media (max-width: ${TABLET_STARTPOINT}) {
             font-size: 14px;
           }
         `}
@@ -234,7 +235,7 @@ const UpgradeCard = (props: { onClose: () => void }) => {
           gap: 16px;
           padding-top: 24px;
           justify-content: flex-end;
-          @media (max-width: 768px) {
+          @media (max-width: ${TABLET_STARTPOINT}) {
             flex-direction: column;
             gap: 16px;
             button {
@@ -607,7 +608,7 @@ function StoryRightPanelCreateViewChartList(
           padding: 12px 23px;
           position: relative;
           flex-direction: row;
-          @media (min-width: 768px) and (max-width: 1090px) {
+          @media (min-width: ${TABLET_STARTPOINT}) and (max-width: 1090px) {
             flex-wrap: wrap;
             justify-content: flex-end;
           }
@@ -623,7 +624,7 @@ function StoryRightPanelCreateViewChartList(
             background: #dfe3e6;
             border-radius: 24px;
             padding: 0 8px;
-            @media (min-width: 768px) and (max-width: 1090px) {
+            @media (min-width: ${TABLET_STARTPOINT}) and (max-width: 1090px) {
               width: 100%;
             }
           `}
@@ -660,7 +661,7 @@ function StoryRightPanelCreateViewChartList(
                 fill: #fff;
               }
             }
-            @media (max-width: 768px) {
+            @media (max-width: ${TABLET_STARTPOINT}) {
               justify-self: flex-end;
             }
           `}

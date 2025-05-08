@@ -3,12 +3,15 @@ import get from "lodash/get";
 import { useOnClickOutside } from "usehooks-ts";
 import Tooltip from "@material-ui/core/Tooltip";
 import IconButton from "@material-ui/core/IconButton";
-import { useRecoilValue } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import { useLocation, useParams } from "react-router-dom";
 import { ReactComponent as EditIcon } from "app/modules/story-module/asset/editIcon.svg";
 import { ReactComponent as RedoIcon } from "app/modules/story-module/asset/redo-icon.svg";
 import { ReactComponent as DeleteIcon } from "app/modules/story-module/asset/deleteIcon.svg";
-import { storyContentContainerWidth } from "app/state/recoil/atoms";
+import {
+  storyContentContainerWidth,
+  storyContentIsResizingAtom,
+} from "app/state/recoil/atoms";
 import { IFramesArray } from "app/modules/story-module/views/create/data";
 import { ToolbarPluginsType } from "app/modules/story-module/components/storySubHeaderToolbar/staticToolbar";
 import { Updater } from "use-immer";
@@ -16,6 +19,10 @@ import { useMediaQuery } from "@material-ui/core";
 import { rowStructureHeights } from "./data";
 import { calculateWidths } from ".";
 import Box from "./box";
+import { usehandleRowFrameItemResize } from "app/hooks/useHandleRowFrameItemResize";
+import { TABLET_STARTPOINT } from "app/theme";
+import { NumberSize, Resizable } from "re-resizable";
+import { Direction } from "re-resizable/lib/resizer";
 
 interface RowStructureDisplayProps {
   gap: string;
@@ -55,7 +62,7 @@ export default function RowstructureDisplay(
   props: Readonly<RowStructureDisplayProps>
 ) {
   const isTablet = useMediaQuery("(max-width: 1110px)");
-  const RIGHT_PANEL_WIDTH = isTablet ? "36.83%" : "400px"; //percentage value of 274px which is the width at 768px as per design
+  const RIGHT_PANEL_WIDTH = isTablet ? "36.83%" : "400px"; //percentage value of 274px which is the width at 744px as per design
   const ref = useRef(null);
   useOnClickOutside(ref, () => setHandleDisplay(false));
   const location = useLocation();
@@ -73,6 +80,14 @@ export default function RowstructureDisplay(
     !viewOnlyMode && handleDisplay
       ? "0.722415px dashed  #ADB5BD"
       : "0.722415px dashed transparent";
+
+  const { handleRowHeightResize } = usehandleRowFrameItemResize(
+    props.updateFramesArray
+  );
+
+  const [_isResizing, setIsResizing] = useRecoilState(
+    storyContentIsResizingAtom
+  );
 
   const handlers = viewOnlyMode
     ? {}
@@ -133,6 +148,21 @@ export default function RowstructureDisplay(
     return itemIndex < props.rowContentWidths.length - 1
       ? itemIndex + 1
       : itemIndex - 1;
+  };
+
+  const onResize = () => {
+    setIsResizing(true);
+  };
+
+  const onResizeStop = (
+    _event: MouseEvent | TouchEvent,
+    _direction: Direction,
+    elementRef: HTMLElement,
+    _delta: NumberSize
+  ) => {
+    let newHeight = elementRef.offsetHeight;
+    handleRowHeightResize(props.rowId, newHeight);
+    setIsResizing(false);
   };
 
   return (
@@ -231,64 +261,78 @@ export default function RowstructureDisplay(
             </div>
           </div>
         )}
-        <div
-          css={`
-            width: 100%;
-            height: 100%;
-            display: flex;
-            overflow-x: hidden;
-            overflow-y: hidden;
-            gap: ${props.gap};
-            border: ${border};
-            @media (min-width: 768px) and (max-width: 1260px) {
-              width: ${props.rightPanelOpen
-                ? `calc(100% - ${RIGHT_PANEL_WIDTH})`
-                : "100%"};
-              :hover {
-                overflow-x: ${props.rightPanelOpen ? "scroll" : "hidden"};
-              }
-            }
-            @media (max-width: 767px) {
-              display: grid;
-              grid-template-columns: ${props.forceSelectedType ===
-                "oneByFive" || props.forceSelectedType === "oneByFour"
-                ? " auto auto"
-                : "auto"};
-            }
-          `}
-          data-cy={`row-frame-${props.rowIndex}`}
+        <Resizable
+          grid={[5, 5]}
+          onResize={onResize}
+          onResizeStop={onResizeStop}
+          size={{
+            width: "100%",
+            height: get(props.rowContentHeights, `[${0}]`, boxHeight),
+          }}
+          minWidth={78}
+          enable={{
+            bottom: !viewOnlyMode,
+          }}
         >
-          {props.rowStructureDetailItems.map((row, index) => (
-            <Box
-              key={row.rowId}
-              initialWidth={get(
-                props.rowContentWidths,
-                `[${index}]`,
-                "fit-content"
-              )}
-              initialHeight={get(
-                props.rowContentHeights,
-                `[${index}]`,
-                boxHeight
-              )}
-              last={index === props.rowStructureDetailItems.length - 1}
-              itemIndex={index}
-              neighbourIndex={getNeighbourIndex(index)}
-              rowId={props.rowId}
-              rowIndex={props.rowIndex}
-              rowType={row.rowType}
-              onRowBoxItemResize={props.onRowBoxItemResize}
-              updateFramesArray={props.updateFramesArray}
-              previewItem={get(props.previewItems, `[${index}]`, undefined)}
-              rowItemsCount={props.rowStructureDetailItems.length}
-              setPlugins={props.setPlugins}
-              onSave={props.onSave}
-              rowContentWidths={props.rowContentWidths}
-              temporaryWidths={temporaryWidths}
-              setTemporaryWidths={setTemporaryWidths}
-            />
-          ))}
-        </div>
+          <div
+            css={`
+              width: 100%;
+              height: 100%;
+              display: flex;
+              overflow-x: hidden;
+              overflow-y: hidden;
+              gap: ${props.gap};
+              border: ${border};
+              @media (min-width: ${TABLET_STARTPOINT}) and (max-width: 1260px) {
+                width: ${props.rightPanelOpen
+                  ? `calc(100% - ${RIGHT_PANEL_WIDTH})`
+                  : "100%"};
+                :hover {
+                  overflow-x: ${props.rightPanelOpen ? "scroll" : "hidden"};
+                }
+              }
+              @media (max-width: 767px) {
+                display: grid;
+                grid-template-columns: ${props.forceSelectedType ===
+                  "oneByFive" || props.forceSelectedType === "oneByFour"
+                  ? " auto auto"
+                  : "auto"};
+              }
+            `}
+            data-cy={`row-frame-${props.rowIndex}`}
+          >
+            {props.rowStructureDetailItems.map((row, index) => (
+              <Box
+                key={row.rowId}
+                initialWidth={get(
+                  props.rowContentWidths,
+                  `[${index}]`,
+                  "fit-content"
+                )}
+                initialHeight={get(
+                  props.rowContentHeights,
+                  `[${index}]`,
+                  boxHeight
+                )}
+                last={index === props.rowStructureDetailItems.length - 1}
+                itemIndex={index}
+                neighbourIndex={getNeighbourIndex(index)}
+                rowId={props.rowId}
+                rowIndex={props.rowIndex}
+                rowType={row.rowType}
+                onRowBoxItemResize={props.onRowBoxItemResize}
+                updateFramesArray={props.updateFramesArray}
+                previewItem={get(props.previewItems, `[${index}]`, undefined)}
+                rowItemsCount={props.rowStructureDetailItems.length}
+                setPlugins={props.setPlugins}
+                onSave={props.onSave}
+                rowContentWidths={props.rowContentWidths}
+                temporaryWidths={temporaryWidths}
+                setTemporaryWidths={setTemporaryWidths}
+              />
+            ))}
+          </div>
+        </Resizable>
       </div>
     </div>
   );
