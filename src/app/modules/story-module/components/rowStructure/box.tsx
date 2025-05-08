@@ -173,7 +173,9 @@ const Box = (props: BoxProps) => {
 
       // Only increase height of textbox if needed
       if (textHeight && textHeight > draft[frameId].contentHeights[itemIndex]) {
-        draft[frameId].contentHeights[itemIndex] = textHeight;
+        draft[frameId].contentHeights.forEach((_, index) => {
+          draft[frameId].contentHeights[index] = textHeight;
+        });
       }
     });
   };
@@ -195,6 +197,17 @@ const Box = (props: BoxProps) => {
     handleRowFrameItemRemoval(props.rowId, props.itemIndex);
   };
 
+  const [maxWidth, setMaxWidth] = useState(props.initialWidth);
+
+  const onResizeStart = (
+    _e: React.MouseEvent<HTMLElement> | React.TouchEvent<HTMLElement>,
+    _dir: Direction,
+    _elementRef: HTMLElement
+  ) => {
+    const neighborWidth = props.rowContentWidths[props.neighbourIndex];
+    const minWidthPercentage = (78 / containerWidth) * 100;
+    setMaxWidth(props.initialWidth + neighborWidth - minWidthPercentage);
+  };
   // Handle resize events
   const onResizeStop = (
     _event: MouseEvent | TouchEvent,
@@ -207,6 +220,7 @@ const Box = (props: BoxProps) => {
     props.onRowBoxItemResize(props.rowId, props.itemIndex, newWidth, newHeight);
     setIsResizing(false);
     props.setTemporaryWidths({});
+    setMaxWidth(newWidth);
   };
 
   const onResize = (
@@ -302,11 +316,13 @@ const Box = (props: BoxProps) => {
     },
   }));
 
-  // Width calculation
-  const width =
+  const widthNumberPercentage =
     isResizing && props.temporaryWidths[props.itemIndex] !== undefined
-      ? `${props.temporaryWidths[props.itemIndex]}%`
-      : `${props.initialWidth}%`;
+      ? props.temporaryWidths[props.itemIndex]
+      : props.initialWidth;
+
+  // Width calculation
+  const width = `${widthNumberPercentage}%`;
 
   // CSS constants
   const cursorDefault = "cursor: default;";
@@ -387,16 +403,22 @@ const Box = (props: BoxProps) => {
     border = "1px dashed #231d2c";
   }
 
+  console.log(props.rowContentWidths, "props.rowContentWidths");
   // Common resizable props
   const getResizableProps = () => ({
     grid: [5, 5] as [number, number],
+    onResizeStart,
     onResize,
     onResizeStop,
     size: {
       width: smScreen ? "100%" : width,
       height: `${props.initialHeight}px`,
     },
-    maxWidth: !viewOnlyMode ? containerWidth : undefined,
+    maxWidth: !viewOnlyMode
+      ? `${
+          maxWidth > widthNumberPercentage ? maxWidth : widthNumberPercentage
+        }%`
+      : undefined,
     minWidth: 78,
     enable: {
       right: !viewOnlyMode && !props.last,
