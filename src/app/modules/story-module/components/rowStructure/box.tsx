@@ -62,6 +62,7 @@ interface BoxProps {
 // Content type definition
 type ContentType = "chart" | "text" | "image" | "video" | null;
 
+// eslint-disable-next-line sonarjs/cognitive-complexity
 const Box = (props: BoxProps) => {
   // Hooks
   const location = useLocation();

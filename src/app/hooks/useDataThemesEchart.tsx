@@ -737,6 +737,7 @@ export function useDataThemesEchart() {
       // chart options
       showLegend,
       dataZoom,
+      label,
       // Tooltip
       showTooltip,
       isMonetaryValue,
@@ -762,6 +763,9 @@ export function useDataThemesEchart() {
         data: data.xAxisValues || [],
         zlevel: -1,
         z: -1,
+        axisLabel: {
+          show: label,
+        },
       },
       yAxis: {
         type: "value",
@@ -770,6 +774,9 @@ export function useDataThemesEchart() {
         name: mapping?.y?.value?.[0] ?? "",
         nameTextStyle: {
           align: "left",
+        },
+        axisLabel: {
+          show: label,
         },
       },
       dataZoom: dataZoom
@@ -889,11 +896,11 @@ export function useDataThemesEchart() {
             {
               type: "inside",
               start: 0,
-              end: 20,
+              end: 100,
             },
             {
               start: 0,
-              end: 20,
+              end: 100,
             },
           ]
         : null,
@@ -991,11 +998,11 @@ export function useDataThemesEchart() {
             {
               type: "inside",
               start: 0,
-              end: 20,
+              end: 100,
             },
             {
               start: 0,
-              end: 20,
+              end: 100,
             },
           ]
         : null,
