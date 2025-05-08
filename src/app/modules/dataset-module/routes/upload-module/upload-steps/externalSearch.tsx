@@ -8,7 +8,7 @@ import axios from "axios";
 import CircleLoader from "app/modules/home-module/components/Loader";
 import { useInfinityScroll } from "app/hooks/useInfinityScroll";
 import SourceCategoryList from "app/modules/dataset-module/routes/upload-module/component/externalSourcesList";
-import { useRecoilState, useSetRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import { externalDataSortByAtom, planDialogAtom } from "app/state/recoil/atoms";
 import SaveAltIcon from "@material-ui/icons/SaveAlt";
 import ExternalSearchTable from "app/modules/dataset-module/routes/upload-module/component/table/externalSearchTable";
@@ -16,6 +16,7 @@ import { useCheckUserPlan } from "app/hooks/useCheckUserPlan";
 import { PrimaryButton } from "app/components/Styled/button";
 import { SearchIcon } from "app/assets/icons/Search";
 import { ChevronRight } from "@material-ui/icons";
+import { set } from "lodash";
 
 export interface IExternalDataset {
   name: string;
@@ -47,7 +48,7 @@ export default function ExternalSearch(props: {
   setSources: React.Dispatch<React.SetStateAction<string[]>>;
 }) {
   const observerTarget = React.useRef(null);
-  const [view, setView] = React.useState<"grid" | "table">("grid");
+  const [view, setView] = React.useState<"grid" | "table">("table");
 
   // const [sortValue, setSortValue] = React.useState("name");
   const [sortValue, setSortValue] = useRecoilState(externalDataSortByAtom);
@@ -174,12 +175,12 @@ export default function ExternalSearch(props: {
   );
 
   const onSearch = () => {
+    setView("table");
     if (token) {
       setDatasets([]);
       loadSearch();
     }
   };
-
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     terminateSearch();
     props.setSearchValue?.(e.target.value);

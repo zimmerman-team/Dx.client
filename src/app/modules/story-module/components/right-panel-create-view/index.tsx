@@ -1422,7 +1422,7 @@ function ChartItem(
 
   return (
     <div
-      ref={added ? nullRef : drag}
+      ref={drag}
       id={`chart-${props.chartIndex}`}
       data-testid={props.chartIndex === 0 ? "chart-0" : "chart-n"}
       className={

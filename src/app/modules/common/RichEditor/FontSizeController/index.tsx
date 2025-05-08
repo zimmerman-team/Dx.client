@@ -2,10 +2,16 @@ import { EditorState, RichUtils } from "draft-js";
 import React, { useEffect, useCallback } from "react";
 import styled from "styled-components"; // Assuming you're using styled-components for CSS-in-JS
 
+// Define constants for better readability and maintainability
+const DEFAULT_FONT_SIZE = 14;
+const MIN_FONT_SIZE = 1;
+const MAX_FONT_SIZE = 999;
+const HEADER_ONE_SIZE = 28;
+const HEADER_TWO_SIZE = 21;
+const fontFamily = '"GothamNarrow-Bold", "Helvetica Neue", sans-serif';
 interface Props {
   getEditorState: () => EditorState;
-  setEditorState: (value: EditorState) => void;
-  theme: any;
+  setEditorState: (editorState: EditorState) => void;
 }
 
 const FontSizeContainer = styled.div`
@@ -39,11 +45,12 @@ const SizeInput = styled.input`
 `;
 
 export default function FontSizeController(props: Props) {
-  const [fontSize, setFontSize] = React.useState(14);
+  const [fontSize, setFontSize] = React.useState(DEFAULT_FONT_SIZE);
 
   // Helper to extract current font size from editor state
   const getCurrentFontSize = useCallback(() => {
     const editorState = props.getEditorState();
+    if (!editorState) return DEFAULT_FONT_SIZE;
     const currentStyle = editorState.getCurrentInlineStyle();
 
     // Find any font-size style
@@ -52,19 +59,22 @@ export default function FontSizeController(props: Props) {
     );
 
     if (fontSizeStyle) {
-      const size = fontSizeStyle.split("-")[2];
-      return Number(size);
+      const size = parseInt(fontSizeStyle.split("-")[2], 10);
+      return isNaN(size) ? DEFAULT_FONT_SIZE : size;
     }
 
-    // Default sizes based on block type
-    const blockType = editorState
-      .getCurrentContent()
-      .getBlockForKey(editorState.getSelection().getStartKey())
-      .getType();
+    // If no inline font style, check block type
+    const selection = editorState.getSelection();
+    if (selection.isCollapsed()) {
+      const currentContent = editorState.getCurrentContent();
+      const blockType = currentContent
+        .getBlockForKey(selection.getStartKey())
+        .getType();
 
-    if (blockType === "header-one") return 28;
-    if (blockType === "header-two") return 21;
-    return 14;
+      if (blockType === "header-one") return HEADER_ONE_SIZE;
+      if (blockType === "header-two") return HEADER_TWO_SIZE;
+    }
+    return DEFAULT_FONT_SIZE;
   }, [props]);
 
   useEffect(() => {
@@ -73,7 +83,7 @@ export default function FontSizeController(props: Props) {
   }, [props.getEditorState(), getCurrentFontSize]);
 
   const updateEditorStateWithFontSize = (newSize: number) => {
-    if (newSize < 1 || newSize > 999) return;
+    if (newSize < MIN_FONT_SIZE || newSize > MAX_FONT_SIZE) return;
 
     const editorState = props.getEditorState();
     const currentStyle = editorState.getCurrentInlineStyle();
@@ -93,14 +103,14 @@ export default function FontSizeController(props: Props) {
   };
 
   const reduceFontSize = () => {
-    if (fontSize <= 1) return;
+    if (fontSize <= MIN_FONT_SIZE) return;
     const newSize = fontSize - 1;
     updateEditorStateWithFontSize(newSize);
     setFontSize(newSize);
   };
 
   const increaseFontSize = () => {
-    if (fontSize >= 999) return;
+    if (fontSize >= MAX_FONT_SIZE) return;
     const newSize = fontSize + 1;
     updateEditorStateWithFontSize(newSize);
     setFontSize(newSize);
@@ -143,8 +153,8 @@ export default function FontSizeController(props: Props) {
         value={fontSize}
         onChange={handleInputChange}
         onKeyDown={handleKeyDown}
-        min={1}
-        max={999}
+        min={MIN_FONT_SIZE}
+        max={MAX_FONT_SIZE}
       />
       <SizeButton
         onClick={increaseFontSize}

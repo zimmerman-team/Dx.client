@@ -46,6 +46,9 @@ export function ChartToolBoxCustomize(props: ChartToolBoxCustomizeProps) {
     if (!fChart.visualOptions.width) {
       delete newOptionsConfig.width;
     }
+    if (!fChart.visualOptions.height) {
+      delete newOptionsConfig.height;
+    }
     if (!fChart.visualOptions.background) {
       delete newOptionsConfig.background;
     }

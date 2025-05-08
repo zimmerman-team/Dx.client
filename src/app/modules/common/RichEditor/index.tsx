@@ -45,6 +45,20 @@ export const RichEditor = (props: {
   placeholder: string;
   onBlur?: () => void;
   onFocus?: () => void;
+  handleBeforeInput?:
+    | ((
+        chars: string,
+        editorState: EditorState,
+        eventTimeStamp: number
+      ) => DraftHandleValue)
+    | undefined;
+  handlePastedText?:
+    | ((
+        text: string,
+        html: string | undefined,
+        editorState: EditorState
+      ) => DraftHandleValue)
+    | undefined;
   testId?: string;
 }): ReactElement => {
   const editor = useRef<Editor | null>(null);
@@ -173,6 +187,8 @@ export const RichEditor = (props: {
         readOnly={!props.editMode}
         editorState={props.textContent}
         onChange={props.setTextContent}
+        handlePastedText={props.handlePastedText}
+        handleBeforeInput={props.handleBeforeInput}
         handleKeyCommand={handleKeyCommand}
         onBlur={() => {
           props.onBlur?.();

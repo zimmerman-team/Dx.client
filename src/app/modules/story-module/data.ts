@@ -58,4 +58,4 @@ export const emptyStory: StoryModel = {
 };
 
 export const itemSpacing = "30px";
-export const containerGap = "16px";
+export const containerGap = 16;

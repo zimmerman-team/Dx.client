@@ -4,7 +4,7 @@ export const headerBlockcss = {
   container: (backgroundColor: string, istoolboxOpen: boolean) => css`
     width: 100%;
     transition: width 225ms cubic-bezier(0, 0, 0.2, 1) 0ms;
-    height: 215px;
+    height: 100%;
     padding: 35px 0;
     position: relative;
     background: ${backgroundColor};
