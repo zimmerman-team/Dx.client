@@ -57,6 +57,7 @@ interface BoxProps {
     height: number
   ) => void;
   last?: boolean;
+  tempHeight: number;
 }
 
 // Content type definition
@@ -403,7 +404,6 @@ const Box = (props: BoxProps) => {
     border = "1px dashed #231d2c";
   }
 
-  console.log(props.rowContentWidths, "props.rowContentWidths");
   // Common resizable props
   const getResizableProps = () => ({
     grid: [5, 5] as [number, number],
@@ -412,7 +412,10 @@ const Box = (props: BoxProps) => {
     onResizeStop,
     size: {
       width: smScreen ? "100%" : width,
-      height: `${props.initialHeight}px`,
+      height:
+        props.tempHeight > 0
+          ? `${props.tempHeight}px`
+          : `${props.initialHeight}px`,
     },
     maxWidth: !viewOnlyMode
       ? `${
@@ -625,6 +628,7 @@ const Box = (props: BoxProps) => {
               }
               div {
                 ${viewOnlyMode && cursorDefault}
+                height: 100%;
               }
             `}
           >
@@ -639,7 +643,7 @@ const Box = (props: BoxProps) => {
                 alt={imageContent?.imageId}
                 css={css`
                   width: 100%;
-                  height: ${props.initialHeight}px;
+                  height: 100%;
                   object-fit: cover;
                 `}
                 data-cy="story-image-content"
@@ -656,7 +660,7 @@ const Box = (props: BoxProps) => {
                 width: 100%;
                 border: ${border};
                 background: ${viewOnlyMode ? "transparent" : "#dfe3e6"};
-                height: ${props.initialHeight}px;
+                height: 100%;
               `}
               ref={drop}
               data-cy={`row-frame-item-drop-zone-${props.rowIndex}-${props.itemIndex}`}

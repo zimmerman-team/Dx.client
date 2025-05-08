@@ -1,6 +1,7 @@
 import { EditorState, RichUtils } from "draft-js";
 import React, { useEffect, useCallback } from "react";
-import styled from "styled-components"; // Assuming you're using styled-components for CSS-in-JS
+import styled from "styled-components";
+import debounce from "lodash/debounce";
 
 // Define constants for better readability and maintainability
 const DEFAULT_FONT_SIZE = 14;
@@ -82,37 +83,92 @@ export default function FontSizeController(props: Props) {
     setFontSize(getCurrentFontSize());
   }, [props.getEditorState(), getCurrentFontSize]);
 
-  const updateEditorStateWithFontSize = (newSize: number) => {
-    if (newSize < MIN_FONT_SIZE || newSize > MAX_FONT_SIZE) return;
+  // Update the editor state with new font size
+  const updateEditorStateWithFontSize = useCallback(
+    (newFontSize: number) => {
+      const editorState = props.getEditorState();
+      const currentStyle = editorState.getCurrentInlineStyle();
+      let nextEditorState = editorState;
 
+      // First, remove any existing font-size styles
+      currentStyle.forEach((style) => {
+        if (style?.startsWith("font-size-")) {
+          nextEditorState = RichUtils.toggleInlineStyle(nextEditorState, style);
+        }
+      });
+
+      // Then add the new font-size style
+      nextEditorState = RichUtils.toggleInlineStyle(
+        nextEditorState,
+        `font-size-${newFontSize}`
+      );
+
+      props.setEditorState(nextEditorState);
+    },
+    [props]
+  );
+
+  // Debounced version of the update function to prevent excessive updates
+  const debouncedUpdateFontSize = useCallback(
+    debounce((size: number) => {
+      updateEditorStateWithFontSize(size);
+    }, 50),
+    [updateEditorStateWithFontSize]
+  );
+
+  // Sync font size with editor state on selection or content changes
+  useEffect(() => {
     const editorState = props.getEditorState();
-    const currentStyle = editorState.getCurrentInlineStyle();
-    let newEditorState = editorState;
 
-    // Remove any existing font-size styles
-    currentStyle.forEach((style) => {
-      if (style && style.startsWith("font-size-")) {
-        newEditorState = RichUtils.toggleInlineStyle(newEditorState, style);
+    // Create a function to update font size from editor state
+    const syncFontSize = () => {
+      const newSize = getCurrentFontSize();
+      setFontSize(newSize);
+    };
+
+    // Initial sync
+    syncFontSize();
+
+    // Setup listeners for selection and content changes
+    const currentSelection = editorState.getSelection();
+    let prevSelection = currentSelection;
+
+    const checkForChanges = () => {
+      const newEditorState = props.getEditorState();
+      const newSelection = newEditorState.getSelection();
+
+      // Check if selection changed
+      if (
+        newSelection.getStartKey() !== prevSelection.getStartKey() ||
+        newSelection.getStartOffset() !== prevSelection.getStartOffset() ||
+        newSelection.getEndKey() !== prevSelection.getEndKey() ||
+        newSelection.getEndOffset() !== prevSelection.getEndOffset()
+      ) {
+        syncFontSize();
+        prevSelection = newSelection;
       }
-    });
+    };
 
-    // Apply the new font size
-    props.setEditorState(
-      RichUtils.toggleInlineStyle(newEditorState, `font-size-${newSize}`)
-    );
-  };
+    // Set an interval to check for selection changes
+    // This helps catch selection changes that might not trigger component re-renders
+    const interval = setInterval(checkForChanges, 100);
+
+    return () => {
+      clearInterval(interval);
+    };
+  }, [props.getEditorState, getCurrentFontSize]);
 
   const reduceFontSize = () => {
     if (fontSize <= MIN_FONT_SIZE) return;
     const newSize = fontSize - 1;
-    updateEditorStateWithFontSize(newSize);
+    debouncedUpdateFontSize(newSize);
     setFontSize(newSize);
   };
 
   const increaseFontSize = () => {
     if (fontSize >= MAX_FONT_SIZE) return;
     const newSize = fontSize + 1;
-    updateEditorStateWithFontSize(newSize);
+    debouncedUpdateFontSize(newSize);
     setFontSize(newSize);
   };
 
@@ -121,7 +177,7 @@ export default function FontSizeController(props: Props) {
     if (e.target.value === "" || /^[0-9\b]+$/.test(e.target.value)) {
       if (e.target.value.length > 3) return;
       const newSize = e.target.value === "" ? 1 : Number(e.target.value);
-      updateEditorStateWithFontSize(newSize);
+      debouncedUpdateFontSize(newSize);
       setFontSize(newSize);
     }
   };

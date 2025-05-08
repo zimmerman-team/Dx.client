@@ -73,6 +73,7 @@ export default function RowstructureDisplay(
   const [temporaryWidths, setTemporaryWidths] = useState<{
     [key: string]: number;
   }>({});
+  const [tempHeight, setTempHeight] = useState(0);
   const viewOnlyMode =
     location.pathname === `/story/${page}` ||
     location.pathname === `/story/${page}/downloaded-view`;
@@ -150,8 +151,15 @@ export default function RowstructureDisplay(
       : itemIndex - 1;
   };
 
-  const onResize = () => {
+  const onResize = (
+    _event: MouseEvent | TouchEvent,
+    _direction: Direction,
+    elementRef: HTMLElement,
+    _delta: NumberSize
+  ) => {
     setIsResizing(true);
+    const newHeight = elementRef.offsetHeight;
+    setTempHeight(newHeight);
   };
 
   const onResizeStop = (
@@ -163,6 +171,7 @@ export default function RowstructureDisplay(
     let newHeight = elementRef.offsetHeight;
     handleRowHeightResize(props.rowId, newHeight);
     setIsResizing(false);
+    setTempHeight(0);
   };
 
   return (
@@ -329,6 +338,7 @@ export default function RowstructureDisplay(
                 rowContentWidths={props.rowContentWidths}
                 temporaryWidths={temporaryWidths}
                 setTemporaryWidths={setTemporaryWidths}
+                tempHeight={tempHeight}
               />
             ))}
           </div>
