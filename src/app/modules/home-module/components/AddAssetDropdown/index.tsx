@@ -2,6 +2,7 @@ import Popover from "@material-ui/core/Popover";
 import AddIcon from "@material-ui/icons/Add";
 import { PrimaryButton } from "app/components/Styled/button";
 import { useCheckUserPlan } from "app/hooks/useCheckUserPlan";
+import { MOBILE_BREAKPOINT } from "app/theme";
 import React from "react";
 import { useHistory } from "react-router-dom";
 
@@ -40,7 +41,7 @@ export default function AddAssetDropdown() {
           font-size: 14px;
           text-transform: capitalize;
           cursor: pointer;
-          @media (max-width: 767px) {
+          @media (max-width: ${MOBILE_BREAKPOINT}) {
             display: none;
           }
         `}

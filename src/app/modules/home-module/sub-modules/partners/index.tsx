@@ -19,6 +19,7 @@ import {
 } from "app/modules/home-module/sub-modules/partners/components/tabCard";
 import { useTitle } from "react-use";
 import Hero from "app/modules/home-module/components/hero";
+import TryUsBlock from "app/modules/home-module/sub-modules/why-dx/components/tryUsBlock";
 
 const StyledTab = withStyles(() => ({
   root: {
@@ -302,7 +303,7 @@ export default function PartnersModule() {
                 }
               `}
             />
-            <BestDecisionBlock />
+            <TryUsBlock />
           </Container>
 
           <div

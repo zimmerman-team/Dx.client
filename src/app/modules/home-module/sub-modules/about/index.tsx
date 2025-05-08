@@ -32,6 +32,11 @@ import SamuelAvi from "app/modules/home-module/assets/team/samuel.png";
 import AnsonAvi from "app/modules/home-module/assets/team/anson.png";
 import EmptyAvi from "app/modules/home-module/assets/team/empty.png";
 import AddAssetDropdown from "app/modules/home-module/components/AddAssetDropdown";
+import {
+  DESKTOP_BREAKPOINT,
+  MOBILE_BREAKPOINT,
+  TABLET_STARTPOINT,
+} from "app/theme";
 
 export default function AboutModule() {
   useTitle("Dataxplorer - About");
@@ -275,7 +280,7 @@ export default function AboutModule() {
                 font-weight: 400;
                 line-height: 130%;
                 margin: 0;
-                @media (min-width: 600px) {
+                @media (min-width: ${TABLET_STARTPOINT}) {
                   display: none;
                 }
               `}
@@ -287,21 +292,16 @@ export default function AboutModule() {
                 display: flex;
                 justify-content: space-between;
                 align-items: center;
-                @media (max-width: 600px) {
+                @media (max-width: ${MOBILE_BREAKPOINT}) {
                   flex-direction: column-reverse;
                 }
               `}
             >
               <div
                 css={`
-                  width: 518px;
-                  @media (max-width: 1200px) {
-                    width: 62%;
-                  }
-                  @media (max-width: 805px) {
-                    width: 100%;
-                  }
-                  @media (max-width: 500px) {
+                  flex-basis: 50%;
+
+                  @media (max-width: ${MOBILE_BREAKPOINT}) {
                     p {
                       font-size: 16px;
                     }
@@ -320,7 +320,7 @@ export default function AboutModule() {
                     font-weight: 400;
                     line-height: 130%;
                     margin: 0;
-                    @media (max-width: 600px) {
+                    @media (max-width: ${MOBILE_BREAKPOINT}) {
                       display: none;
                     }
                   `}
@@ -363,15 +363,18 @@ export default function AboutModule() {
               <div
                 css={`
                   margin-right: -41px;
-                  @media (max-width: 1200px) {
+                  margin-bottom: -141px;
+                  flex-shrink: 0;
+                  flex-basis: 50%;
+                  @media (max-width: ${DESKTOP_BREAKPOINT}) {
                     margin-right: unset;
                     svg {
                       width: 100%;
                       height: 100%;
                     }
-                  }
-                  @media (max-width: 500px) {
-                    margin-top: 0;
+                    @media (max-width: ${MOBILE_BREAKPOINT}) {
+                      margin-bottom: unset;
+                    }
                   }
                 `}
               >
@@ -381,9 +384,6 @@ export default function AboutModule() {
             <div
               css={`
                 margin-top: 24px;
-                @media (max-width: 500px) {
-                  margin-top: 24px;
-                }
               `}
             >
               {isAuthenticated && (
@@ -394,7 +394,7 @@ export default function AboutModule() {
                     a {
                       text-decoration: none;
                     }
-                    @media (max-width: 425px) {
+                    @media (max-width: ${MOBILE_BREAKPOINT}) {
                       flex-direction: column;
                       gap: 10px;
                       justify-content: center;
@@ -423,6 +423,7 @@ export default function AboutModule() {
                   css={`
                     display: flex;
                     gap: 16px;
+
                     > button {
                       gap: 8px;
                       color: #231d2c;
@@ -447,11 +448,11 @@ export default function AboutModule() {
                         cursor: pointer;
                       }
                     }
-                    @media (max-width: 500px) {
+                    @media (max-width: ${MOBILE_BREAKPOINT}) {
                       flex-direction: column;
                       justify-content: center;
                       align-items: center;
-                      gap: 8px;
+                      gap: 16px;
 
                       button {
                         width: 95%;
@@ -484,12 +485,15 @@ export default function AboutModule() {
             <div
               css={`
                 display: flex;
-                column-gap: 180px;
                 justify-content: center;
-                @media (max-width: 1110px) {
-                  column-gap: 56px;
+                column-gap: 180px;
+                @media (min-width: ${TABLET_STARTPOINT}) {
+                  @media (max-width: ${DESKTOP_BREAKPOINT}) {
+                    column-gap: 56px;
+                  }
                 }
-                @media (max-width: 600px) {
+
+                @media (max-width: ${MOBILE_BREAKPOINT}) {
                   column-gap: unset;
                   flex-direction: column;
                   gap: 40px;
@@ -528,7 +532,7 @@ export default function AboutModule() {
                       margin: 0;
                       color: #fff;
 
-                      @media (max-width: 600px) {
+                      @media (max-width: ${MOBILE_BREAKPOINT}) {
                         font-size: 32px;
                       }
                     `}
@@ -546,10 +550,12 @@ export default function AboutModule() {
                       margin: 0;
                       color: #fff;
 
-                      @media (max-width: 960px) {
-                        font-size: 18px;
+                      @media (min-width: ${TABLET_STARTPOINT}) {
+                        @media (max-width: ${DESKTOP_BREAKPOINT}) {
+                          column-gap: 18px;
+                        }
                       }
-                      @media (max-width: 600px) {
+                      @media (max-width: ${MOBILE_BREAKPOINT}) {
                         font-size: 20px;
                       }
                     `}
@@ -565,12 +571,6 @@ export default function AboutModule() {
                       margin: 0;
                       margin-top: 16px;
                       font-size: 16px;
-                      @media (max-width: 960px) {
-                        font-size: 14px;
-                      }
-                      @media (max-width: 600px) {
-                        font-size: 16px;
-                      }
                     `}
                   >
                     {feature.text}
@@ -639,11 +639,11 @@ export default function AboutModule() {
           />
           <div
             css={`
-              @media (min-width: 501px) {
+              @media (min-width: ${TABLET_STARTPOINT}) {
                 display: none;
               }
               width: 55%;
-              height: 325px;
+              /* height: 344px; */
               margin: auto;
               img {
                 width: 100%;
@@ -684,7 +684,7 @@ export default function AboutModule() {
               column-gap: 48px;
               row-gap: 64px;
               @media (min-width: 880px) {
-                @media (max-width: 1314px) {
+                @media (max-width: ${DESKTOP_BREAKPOINT}) {
                   row-gap: 56px;
                   grid-template-columns: repeat(3, minmax(0, 1fr));
                   justify-items: center;
@@ -710,7 +710,7 @@ export default function AboutModule() {
                   object-fit: cover;
                 }
               }
-              @media (max-width: 500px) {
+              @media (max-width: ${MOBILE_BREAKPOINT}) {
                 display: none;
               }
             `}
@@ -797,8 +797,13 @@ export default function AboutModule() {
           <div
             css={`
               height: 120px;
-              @media (max-width: 960px) {
-                height: 72px;
+              @media (min-width: ${TABLET_STARTPOINT}) {
+                @media (max-width: ${DESKTOP_BREAKPOINT}) {
+                  height: 72px;
+                }
+              }
+              @media (max-width: ${MOBILE_BREAKPOINT}) {
+                height: 56px;
               }
             `}
           />
@@ -843,7 +848,7 @@ export default function AboutModule() {
           <div
             css={`
               ${subParagraphcss};
-              @media (max-width: 1024px) {
+              @media (max-width: ${DESKTOP_BREAKPOINT}) {
                 > div:nth-of-type(1) {
                   display: flex;
                   flex-direction: column-reverse;

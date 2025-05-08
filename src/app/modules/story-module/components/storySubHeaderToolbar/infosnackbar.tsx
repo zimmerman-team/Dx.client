@@ -1,20 +1,17 @@
 import { Snackbar } from "@material-ui/core";
+import { MOBILE_BREAKPOINT } from "app/theme";
 import styled, { css } from "styled-components/macro";
 
 export const InfoSnackbar = styled((props) => <Snackbar {...props} />)`
   && {
     bottom: 16px;
-    @media (max-width: 900px) {
-      width: 80%;
-    }
-    @media (max-width: 660px) {
-      width: 90%;
-    }
-    @media (max-width: 599px) {
+
+    @media (max-width: ${MOBILE_BREAKPOINT}) {
       width: 100%;
       left: auto;
       right: auto;
       bottom: 0px;
+      transform: translateX(0%);
     }
   }
 
