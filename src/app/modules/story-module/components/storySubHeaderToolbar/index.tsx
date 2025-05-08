@@ -45,7 +45,7 @@ import DuplicateMessage from "app/modules/common/mobile-duplicate-message";
 import { ExportStoryButton } from "./exportButton";
 import { PrimaryButton } from "app/components/Styled/button";
 import { ArrowBack } from "@material-ui/icons";
-import { MOBILE_BREAKPOINT } from "app/theme";
+import { MOBILE_BREAKPOINT, TABLET_STARTPOINT } from "app/theme";
 
 export const useStyles = makeStyles(() =>
   createStyles({
@@ -287,6 +287,7 @@ export function StorySubheaderToolbar(
               align-items: center;
               position: relative;
               width: 100%;
+              gap: 8px;
             `}
           >
             <Link
@@ -297,16 +298,7 @@ export function StorySubheaderToolbar(
                 font-size: 14px;
                 color: #231d2c;
                 text-decoration: none;
-                position: absolute;
-                left: -32px;
                 cursor: pointer;
-                @media (max-width: 960px) {
-                  position: static;
-                  margin-right: 8px;
-                }
-                @media (max-width: 450px) {
-                  position: static;
-                }
               `}
               data-cy="story-back-to-library-btn"
             >
@@ -326,16 +318,16 @@ export function StorySubheaderToolbar(
                 gap: 28px;
                 position: relative;
                 width: 70%;
-                @media (min-width: 768px) {
-                  @media (max-width: 800px) {
-                    width: 48%;
+                @media (min-width: ${TABLET_STARTPOINT}) {
+                  @media (max-width: 1199px) {
+                    width: 100%;
                   }
                 }
-                @media (min-width: 801px) {
+                /* @media (min-width: 801px) {
                   @media (max-width: 1199px) {
                     width: 49%;
                   }
-                }
+                } */
               `}
             >
               <AutoResizeInput
@@ -376,7 +368,7 @@ export function StorySubheaderToolbar(
                   display: flex;
                   flex-shrink: 0;
                   gap: 12px;
-                  @media (min-width: 768px) {
+                  @media (min-width: ${TABLET_STARTPOINT}) {
                     @media (max-width: 1200px) {
                       display: none;
                     }
@@ -497,7 +489,7 @@ export function StorySubheaderToolbar(
                             opacity: 0.5;
                           }
                           display: none;
-                          @media (min-width: 768px) {
+                          @media (min-width: ${TABLET_STARTPOINT}) {
                             @media (max-width: 1200px) {
                               display: block;
                             }

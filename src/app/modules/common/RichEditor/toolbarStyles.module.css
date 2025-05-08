@@ -9,10 +9,10 @@
   align-items: center;
   gap: 14px;
 }
-@media (min-width: 768px) {
+@media (min-width: 744px) {
   @media (max-width: 840px) {
     .toolbar {
-      padding: 5px 13px;
+      padding: 5px 2px;
       gap: 1.2%;
     }
   }

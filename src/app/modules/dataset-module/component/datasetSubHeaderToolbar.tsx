@@ -33,7 +33,11 @@ import DuplicateMessage from "app/modules/common/mobile-duplicate-message";
 import { PrimaryButton } from "app/components/Styled/button";
 import { ArrowBack } from "@material-ui/icons";
 import ArrowBackIosIcon from "@material-ui/icons/ArrowBackIos";
-import { MOBILE_BREAKPOINT } from "app/theme";
+import {
+  DESKTOP_BREAKPOINT,
+  MOBILE_BREAKPOINT,
+  TABLET_STARTPOINT,
+} from "app/theme";
 
 export default function DatasetSubHeaderToolbar(
   props: Readonly<{ name: string }>
@@ -256,46 +260,46 @@ export default function DatasetSubHeaderToolbar(
 
       <Container maxWidth="lg">
         <div css={styles.innercontainer}>
-          <Link
-            to={fromHome ? "/" : "/dashboard"}
+          <div
             css={`
               display: flex;
-              align-items: center;
-              font-size: 14px;
-              color: #231d2c;
-              text-decoration: none;
-              position: absolute;
-              left: -32px;
-              cursor: pointer;
-              @media (max-width: 960px) {
-                position: static;
-                margin-right: 8px;
-              }
-            `}
-            data-cy="dataset-back-to-library-btn"
-          >
-            <Tooltip title="Back to Dashboard">
-              {isSmallScreen ? (
-                <ArrowBackIosIcon fontSize="small" />
-              ) : (
-                <ArrowBack fontSize={"small"} />
-              )}
-            </Tooltip>
-          </Link>
-
-          <p
-            title={props.name}
-            css={`
-              ${styles.nameInput}
-              display: block;
-              max-width: 1000px;
-              white-space: nowrap;
-              overflow: hidden;
-              text-overflow: ellipsis;
+              gap: 4px;
+              width: 70%;
             `}
           >
-            {props.name}
-          </p>
+            <Link
+              to={fromHome ? "/" : "/dashboard"}
+              css={`
+                display: flex;
+                align-items: center;
+                font-size: 14px;
+                color: #231d2c;
+                text-decoration: none;
+                cursor: pointer;
+              `}
+              data-cy="dataset-back-to-library-btn"
+            >
+              <Tooltip title="Back to Dashboard">
+                {isSmallScreen ? (
+                  <ArrowBackIosIcon fontSize="small" />
+                ) : (
+                  <ArrowBack fontSize={"small"} />
+                )}
+              </Tooltip>
+            </Link>
+            <p
+              title={props.name}
+              css={`
+                ${styles.nameInput}
+                display: block;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+              `}
+            >
+              {props.name}
+            </p>
+          </div>
 
           <div css={styles.endContainer}>
             <div css={styles.iconbtns}>
