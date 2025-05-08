@@ -39,6 +39,7 @@ export const logocss = css`
   margin-right: 64px;
   justify-content: center;
   gap: 6px;
+  text-decoration: none;
 `;
 
 export const navLinkcss = (display: string, location: string) => css`

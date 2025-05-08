@@ -9,6 +9,8 @@ import NewsletterForm from "app/modules/common/newsletterForm";
 import { FieldErrors } from "react-hook-form";
 import moment from "moment";
 import InlineLogo from "app/modules/home-module/assets/inline-logo";
+import { DESKTOP_BREAKPOINT, MOBILE_BREAKPOINT } from "app/theme";
+import { useMediaQuery } from "usehooks-ts";
 
 interface Props {
   mini?: boolean;
@@ -22,18 +24,20 @@ export default function DesktopFooter(props: Props) {
       email: string;
     }>
   >({});
+  const mobile = useMediaQuery(`(max-width:${MOBILE_BREAKPOINT})`);
+  const tablet = useMediaQuery(`(max-width:${DESKTOP_BREAKPOINT})`);
   return (
     <div css={homeFootercss}>
       <Container
         maxWidth="lg"
         data-cy="home-footer"
         css={`
-          @media (max-width: 1439px) {
+          @media (max-width: ${DESKTOP_BREAKPOINT}) {
             padding: 0 32px !important;
           }
 
-          @media (max-width: 743px) {
-            padding: 0 24px !important;
+          @media (max-width: ${MOBILE_BREAKPOINT}) {
+            padding: 0 16px !important;
           }
         `}
       >
@@ -43,7 +47,7 @@ export default function DesktopFooter(props: Props) {
               padding: 24px 0;
               display: flex;
               justify-content: space-between;
-              @media (max-width: 1439px) {
+              @media (max-width: ${DESKTOP_BREAKPOINT}) {
                 flex-direction: column;
                 justify-content: center;
                 gap: 24px;
@@ -55,7 +59,7 @@ export default function DesktopFooter(props: Props) {
                 display: flex;
                 flex-direction: column;
                 gap: 40px;
-                @media (max-width: 1439px) {
+                @media (max-width: ${DESKTOP_BREAKPOINT}) {
                   gap: 24px;
                 }
               `}
@@ -102,7 +106,7 @@ export default function DesktopFooter(props: Props) {
                   color: #000;
                   font-weight: 325;
                   font-family: "GothamNarrow-Medium", sans-serif;
-                  @media (max-width: 1439px) {
+                  @media (max-width: ${DESKTOP_BREAKPOINT}) {
                     flex-direction: row-reverse;
                     justify-content: space-between;
                   }
@@ -119,23 +123,19 @@ export default function DesktopFooter(props: Props) {
                   }
                 `}
               >
-                <li>
-                  Tel: +3185 401 5241
-                  <a
-                    css={`
-                      display: none;
-                      @media (max-width: 743px) {
-                        display: block;
-                      }
-                    `}
-                    href="mailto:contact@dataxplorer.org"
-                  >
-                    Email: contact@dataxplorer.org
-                  </a>{" "}
-                </li>
                 <li
                   css={`
-                    @media (max-width: 743px) {
+                    @media (max-width: ${DESKTOP_BREAKPOINT}) {
+                      display: none;
+                    }
+                  `}
+                >
+                  Tel: +3185 401 5241
+                </li>
+
+                <li
+                  css={`
+                    @media (max-width: ${MOBILE_BREAKPOINT}) {
                       display: none;
                     }
                   `}
@@ -145,12 +145,34 @@ export default function DesktopFooter(props: Props) {
                     Email: contact@dataxplorer.org
                   </a>{" "}
                 </li>
+
+                <li
+                  css={`
+                    display: none;
+                    @media (max-width: ${DESKTOP_BREAKPOINT}) {
+                      display: block;
+                    }
+                  `}
+                >
+                  Tel: +3185 401 5241
+                  <a
+                    css={`
+                      display: none;
+                      @media (max-width: ${MOBILE_BREAKPOINT}) {
+                        display: block;
+                      }
+                    `}
+                    href="mailto:contact@dataxplorer.org"
+                  >
+                    Email: contact@dataxplorer.org
+                  </a>{" "}
+                </li>
                 <li>
-                  <p>Keizersgracht 520H</p>
-
-                  <p>1017 EK Amsterdam</p>
-
-                  <p>The Netherlands</p>
+                  <p>
+                    Keizersgracht 520H
+                    {mobile ? <br /> : tablet ? ", " : <br />}
+                    1017 EK Amsterdam <br /> The Netherlands
+                  </p>
                 </li>
               </ul>
             </div>
@@ -158,7 +180,7 @@ export default function DesktopFooter(props: Props) {
             <div
               css={`
                 display: none;
-                @media (max-width: 1439px) {
+                @media (max-width: ${DESKTOP_BREAKPOINT}) {
                   display: block;
                   border-bottom: 1px solid #dadaf8;
                 }
@@ -167,20 +189,73 @@ export default function DesktopFooter(props: Props) {
             <div>
               <ul
                 css={`
+                  display: none;
+                  @media (max-width: ${DESKTOP_BREAKPOINT}) {
+                    display: grid;
+                    grid-template-columns: 40% 60%;
+                    gap: 16px;
+                    margin: 0;
+                    a {
+                      font-size: 16px;
+                      text-decoration: none;
+                      font-weight: 400;
+                      color: #000;
+                      font-family: "GothamNarrow-Bold", sans-serif;
+                    }
+                  }
+                `}
+              >
+                <li>
+                  <Link to="/">Dashboard</Link>{" "}
+                </li>
+                <li>
+                  <Link to="/about">Who We Are</Link>
+                </li>
+
+                <li>
+                  <Link to="/pricing">Pricing</Link>
+                </li>
+                <li>
+                  <Link
+                    to="/why-dataxplorer"
+                    css={`
+                      display: flex;
+                      gap: 6px;
+                      align-items: center;
+                    `}
+                  >
+                    Why
+                    <InlineLogo
+                      css={`
+                        width: 103px;
+                        height: 12px;
+                      `}
+                    />
+                  </Link>
+                </li>
+                <li>
+                  <Link to="/contact">Contact Us</Link>
+                </li>
+                <li>
+                  <Link to="/partners">Our Partners</Link>
+                </li>
+              </ul>
+
+              <ul
+                css={`
                   display: flex;
                   flex-direction: column;
                   gap: 16px;
                   margin: 0;
+                  @media (max-width: ${DESKTOP_BREAKPOINT}) {
+                    display: none;
+                  }
                   a {
                     font-size: 16px;
                     text-decoration: none;
                     font-weight: 400;
                     color: #000;
                     font-family: "GothamNarrow-Bold", sans-serif;
-                  }
-                  @media (max-width: 1439px) {
-                    display: grid;
-                    grid-template-columns: repeat(2, 1fr);
                   }
                 `}
               >
@@ -223,7 +298,7 @@ export default function DesktopFooter(props: Props) {
             <div
               css={`
                 display: none;
-                @media (max-width: 1439px) {
+                @media (max-width: ${DESKTOP_BREAKPOINT}) {
                   display: block;
                   border-bottom: 1px solid #dadaf8;
                 }
@@ -232,7 +307,7 @@ export default function DesktopFooter(props: Props) {
             <div
               css={`
                 width: 606px;
-                @media (max-width: 1439px) {
+                @media (max-width: ${DESKTOP_BREAKPOINT}) {
                   width: 100%;
                 }
               `}
@@ -336,12 +411,12 @@ export default function DesktopFooter(props: Props) {
           maxWidth="lg"
           data-cy="home-footer"
           css={`
-            @media (max-width: 1439px) {
+            @media (max-width: ${DESKTOP_BREAKPOINT}) {
               padding: 0 32px !important;
             }
 
-            @media (max-width: 743px) {
-              padding: 0 24px !important;
+            @media (max-width: ${MOBILE_BREAKPOINT}) {
+              padding: 0 16px !important;
             }
           `}
         >
@@ -357,7 +432,7 @@ export default function DesktopFooter(props: Props) {
               font-weight: 325;
               color: #373d43;
               flex-wrap: wrap;
-              @media (max-width: 743px) {
+              @media (max-width: ${MOBILE_BREAKPOINT}) {
                 row-gap: 12px;
               }
 

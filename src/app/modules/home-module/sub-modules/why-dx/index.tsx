@@ -127,6 +127,7 @@ export default function WhyDX() {
                 subtitle="Dataxplorer turns data into impact"
                 contactUs
                 bestDecisions
+                center
               />
               <div
                 css={`

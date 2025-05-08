@@ -124,6 +124,20 @@ function MobileHeader(props: { navLocation: string }) {
             </button>
             <NavLink to="/" css={logocss}>
               <img src="/logo.svg" alt="logo" />
+              <div
+                css={`
+                  font-family: "Inter", sans-serif;
+                  color: #e75656;
+                  font-size: 11.095px;
+                  font-weight: 500;
+                  line-height: 11.095px;
+                  padding: 2.466px 8.09px;
+                  border: 0.736px solid #e75656;
+                  border-radius: 15.41px;
+                `}
+              >
+                beta
+              </div>
             </NavLink>
           </div>
           <div

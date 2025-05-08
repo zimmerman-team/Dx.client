@@ -49,7 +49,7 @@ export default function DXBlock() {
             font-size: 24px;
           }
           @media (max-width: 743px) {
-            font-size: 18px;
+            font-size: 24px;
             text-align: left;
           }
         `}

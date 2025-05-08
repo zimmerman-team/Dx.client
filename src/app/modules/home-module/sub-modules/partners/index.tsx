@@ -26,6 +26,7 @@ import SignInButtons from "app/modules/home-module/components/SignInButtons";
 import InlineLogo from "app/modules/home-module/assets/inline-logo";
 import TryUsBlock from "app/modules/home-module/components/TryUsBlock";
 import { DESKTOP_BREAKPOINT, MOBILE_BREAKPOINT } from "app/theme";
+import { ChevronLeft, ChevronRight } from "@material-ui/icons";
 
 const StyledTab = withStyles(() => ({
   root: {
@@ -47,7 +48,6 @@ const StyledTab = withStyles(() => ({
         fontFamily: `"GothamNarrow-Book", "Helvetica Neue", sans-serif`,
         [`@media (max-width: ${DESKTOP_BREAKPOINT})`]: {
           width: "155px",
-          fontSize: "16px",
         },
       },
       "&.Mui-selected": {
@@ -56,9 +56,6 @@ const StyledTab = withStyles(() => ({
           fontWeight: 400,
           color: "#161616 !important",
           fontFamily: `"GothamNarrow-Bold", "Helvetica Neue", sans-serif`,
-          [`@media (max-width: ${DESKTOP_BREAKPOINT})`]: {
-            fontSize: "16px",
-          },
         },
       },
     },
@@ -121,6 +118,8 @@ export default function PartnersModule() {
 
   const { isAuthenticated } = useAuth0();
 
+  const tabRef = React.useRef<HTMLDivElement>(null);
+
   const [displayTab, setDisplayTab] = React.useState<number>(0);
   const handleChange = (
     event: React.ChangeEvent<{}> | null,
@@ -128,6 +127,7 @@ export default function PartnersModule() {
   ) => {
     setDisplayTab(newValue);
   };
+
   const [autoPlay, setAutoPlay] = React.useState<boolean>(false);
 
   const cards = [
@@ -136,6 +136,26 @@ export default function PartnersModule() {
     <BudgetsTabCard />,
     <PerformanceTabCard />,
   ];
+
+  const scrollTab = (direction: "left" | "right") => {
+    if (tabRef.current) {
+      const scrollAmount = 200; // Adjust this value as needed
+      const scrollLeft = tabRef.current.scrollLeft;
+      if (direction === "left") {
+        tabRef.current.scrollTo({
+          left: scrollLeft - scrollAmount,
+          behavior: "smooth",
+        });
+        setDisplayTab((prev) => (prev > 0 ? prev - 1 : prev));
+      } else if (direction === "right") {
+        tabRef.current.scrollTo({
+          left: scrollLeft + scrollAmount,
+          behavior: "smooth",
+        });
+        setDisplayTab((prev) => (prev < cards.length - 1 ? prev + 1 : prev));
+      }
+    }
+  };
 
   return (
     <>
@@ -160,10 +180,10 @@ export default function PartnersModule() {
                 <Box height={"40px"} />
                 <Box
                   display={"flex"}
-                  gridColumnGap={"24px"}
+                  gridColumnGap={{ xs: "8px", sm: "24px" }}
                   gridRowGap={"8px"}
                   justifyContent={"center"}
-                  flexDirection={{ xs: "column", sm: "row" }}
+                  flexDirection={"row"}
                   alignItems={"center"}
                 >
                   <Link
@@ -177,7 +197,9 @@ export default function PartnersModule() {
                       css={`
                         height: 48px;
                         @media (max-width: ${MOBILE_BREAKPOINT}) {
-                          width: max-content;
+                          width: 175px;
+                          height: 35px;
+                          padding: 12px 12px;
                         }
                       `}
                       size="big"
@@ -197,7 +219,9 @@ export default function PartnersModule() {
                       css={`
                         height: 48px;
                         @media (max-width: ${MOBILE_BREAKPOINT}) {
-                          width: max-content;
+                          width: 106px;
+                          height: 35px;
+                          padding: 12px 12px;
                         }
                       `}
                       size="big"
@@ -267,6 +291,7 @@ export default function PartnersModule() {
                 `}
               >
                 <div
+                  ref={tabRef}
                   css={`
                     display: flex;
                     flex-direction: column;
@@ -274,10 +299,44 @@ export default function PartnersModule() {
                     align-items: center;
                     @media (max-width: ${MOBILE_BREAKPOINT}) {
                       overflow: auto;
-                      width: 100%;
+                      width: 70%;
+                      margin: 0 auto;
                     }
                   `}
                 >
+                  <div
+                    css={`
+                      position: absolute;
+                      top: 0;
+                      left: 0;
+                      display: none;
+                      justify-content: space-between;
+                      align-items: center;
+                      width: 100%;
+                      @media (max-width: ${MOBILE_BREAKPOINT}) {
+                        display: flex;
+                      }
+                      button {
+                        border-radius: 16px;
+                        width: 48px;
+                        height: 48px;
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                        background: #6061e5;
+                        color: #fff;
+                        border: none;
+                        cursor: pointer;
+                      }
+                    `}
+                  >
+                    <button onClick={() => scrollTab("left")}>
+                      <ChevronLeft />
+                    </button>
+                    <button onClick={() => scrollTab("right")}>
+                      <ChevronRight />
+                    </button>
+                  </div>
                   <StyledTabs
                     TabIndicatorProps={{
                       style: {
@@ -293,7 +352,7 @@ export default function PartnersModule() {
                     data-cy="partners-tabs"
                     css={`
                       @media (max-width: ${MOBILE_BREAKPOINT}) {
-                        margin-left: 240px;
+                        margin-left: 298px;
                       }
                     `}
                   >
@@ -400,6 +459,7 @@ export default function PartnersModule() {
               <TryUsBlock
                 title="Give Dataxplorer a try, on us"
                 subtitle="Dataxplorer turns data into impact in minutes"
+                signInWith
               />
             </Container>
           </div>

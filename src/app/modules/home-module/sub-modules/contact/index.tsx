@@ -14,6 +14,8 @@ import { useAuth0 } from "@auth0/auth0-react";
 import InputField, { TextField } from "./components/input";
 import { ReactComponent as SuccessIcon } from "./assets/success-icon.svg";
 import TryUsBlock from "app/modules/home-module/components/TryUsBlock";
+import { ChevronRight } from "@material-ui/icons";
+import { MOBILE_BREAKPOINT } from "app/theme";
 
 export default function ContactModule() {
   useTitle("Dataxplorer - Contact");
@@ -124,15 +126,16 @@ export default function ContactModule() {
                   <PrimaryButton
                     css={`
                       height: 48px;
-                      @media (max-width: 600px) {
-                        width: max-content;
+                      @media (max-width: ${MOBILE_BREAKPOINT}) {
+                        width: 194px;
+                        height: 41px;
                       }
                     `}
                     size="big"
                     bg="light"
                     type="button"
                   >
-                    Go to the Dashboard
+                    Explore the Dashboard
                   </PrimaryButton>
                 </Link>
                 <Link
@@ -144,15 +147,25 @@ export default function ContactModule() {
                   <PrimaryButton
                     css={`
                       height: 48px;
-                      @media (max-width: 600px) {
-                        width: max-content;
+                      width: 141px;
+                      @media (max-width: ${MOBILE_BREAKPOINT}) {
+                        width: 194px;
+                        height: 41px;
                       }
+                      display: flex;
+                      align-items: center;
+                      justify-content: space-between;
                     `}
                     size="big"
                     bg="light"
                     type="button"
                   >
-                    Contact Us
+                    Email Us
+                    <ChevronRight
+                      css={`
+                        margin-right: -12px;
+                      `}
+                    />
                   </PrimaryButton>
                 </Link>
               </Box>
@@ -502,6 +515,7 @@ export default function ContactModule() {
               <TryUsBlock
                 title="Give Dataxplorer a try, on us"
                 subtitle="Dataxplorer turns data into impact in minutes"
+                signInWith
               />
             </div>
           </Container>
