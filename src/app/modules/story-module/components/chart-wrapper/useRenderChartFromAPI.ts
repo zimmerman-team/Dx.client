@@ -51,9 +51,7 @@ export const useRenderChartFromAPI = (
       .then((response) => {
         const chart = response.data || {};
         if (!location.pathname.includes("downloaded-view")) {
-          console.log("view", location.pathname);
         } else {
-          console.log("view", location.pathname, id);
           setLoadedChartsList((prev) => [...prev, id]);
         }
         setLoading(false);
@@ -87,7 +85,6 @@ export const useRenderChartFromAPI = (
           "This chart has been deleted! You can create or add a new chart from Right Panel."
         );
         if (location.pathname.includes("downloaded-view")) {
-          console.log("view", location.pathname);
           setLoadedChartsList((prev) => [...prev, "deleted"]);
         }
       });

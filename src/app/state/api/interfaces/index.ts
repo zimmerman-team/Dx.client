@@ -26,6 +26,7 @@ export interface RequestValues<T> {
   filterString?: string;
   nonAuthCall?: boolean;
   storeInCrudData?: boolean;
+  silent?: boolean;
 }
 
 export interface ResponseData<T> {
@@ -33,6 +34,8 @@ export interface ResponseData<T> {
   count: number;
   addOnData?: boolean;
   isUpdateCrudData?: boolean;
+  silent?: boolean;
+  payload?: any;
 }
 
 export interface Errors {
@@ -48,6 +51,7 @@ export interface ApiModel<QueryModel, ResponseModel> {
   planWarning: string | null;
   data: ResponseData<ResponseModel> | null | ResponseData<ResponseModel>[];
   crudData: object | object[] | null;
+  tempData: object | object[] | null;
   setData: Action<ApiModel<QueryModel, ResponseModel>, any>;
   setCrudData: Action<ApiModel<QueryModel, object | object[] | null>, any>;
   errorData: Errors | null;

@@ -131,9 +131,7 @@ const PlaceHolder = (props: PlaceholderProps) => {
           height: 150px;
           top: -70px;
         `}
-        onMouseOver={() => {
-          console.log("onMouseOver");
-        }}
+        onMouseOver={() => {}}
       ></div>
     </div>
   );

@@ -44,7 +44,6 @@ export function InvoiceTable(props: InvoiceTableProps) {
     message: "Please select the invoice you want to download!",
   });
   const handleCheckUncheckAll = (e: React.ChangeEvent<HTMLInputElement>) => {
-    console.log(e.target.checked, "checked");
     setTableDataState((prev) => {
       return prev.map((val) => ({
         ...val,
@@ -52,8 +51,6 @@ export function InvoiceTable(props: InvoiceTableProps) {
       }));
     });
   };
-
-  console.log(tableDataState, "tableDataState");
 
   const handleCheckUncheck = (
     e: React.ChangeEvent<HTMLInputElement>,
