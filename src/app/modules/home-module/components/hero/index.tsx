@@ -1,26 +1,20 @@
 import React from "react";
-import { ReactComponent as GoogleIcon } from "app/modules/onboarding-module/asset/google-img.svg";
-import { ReactComponent as LinkedInIcon } from "app/modules/onboarding-module/asset/linkedIn-img.svg";
-import { ReactComponent as MicrosoftIcon } from "app/modules/onboarding-module/asset/microsoft-img.svg";
 import HeroEllipses from "app/modules/home-module/assets/hero-ellipses.png";
 import HeroEllipsesTablet from "app/modules/home-module/assets/hero-ellipses-tablet.svg";
 import HeroEllipsesMobile from "app/modules/home-module/assets/hero-ellipses-mobile.svg";
-
-import { socialAuth } from "app/utils/socialAuth";
 import { Box, Container } from "@material-ui/core";
-import { useAuth0 } from "@auth0/auth0-react";
-import AddAssetDropdown from "app/modules/home-module/components/AddAssetDropdown";
-import { Link } from "react-router-dom";
-import { PrimaryButton } from "app/components/Styled/button";
 import {
   DESKTOP_BREAKPOINT,
-  DESKTOP_STARTPOINT,
   MOBILE_BREAKPOINT,
   TABLET_STARTPOINT,
 } from "app/theme";
 
-export default function Hero() {
-  const { isAuthenticated } = useAuth0();
+interface HeroProps {
+  title?: React.ReactNode;
+  children?: React.ReactNode;
+}
+
+export default function Hero({ title, children }: HeroProps) {
   return (
     <div
       css={`
@@ -31,14 +25,14 @@ export default function Hero() {
         background-repeat: no-repeat;
         background-size: cover;
         background-position: 58px 0%;
-        @media (max-width: 960px) {
+        @media (max-width: ${DESKTOP_BREAKPOINT}) {
           background: url(${HeroEllipsesTablet}),
             linear-gradient(180deg, rgba(255, 255, 255, 0) 0%, #f2f7fd 100%);
           background-repeat: no-repeat;
           background-size: cover;
           background-position: bottom right;
         }
-        @media (max-width: 744px) {
+        @media (max-width: ${MOBILE_BREAKPOINT}) {
           background: url(${HeroEllipsesMobile}),
             linear-gradient(180deg, rgba(255, 255, 255, 0) 0%, #f2f7fd 100%);
           background-repeat: no-repeat;
@@ -55,15 +49,10 @@ export default function Hero() {
             text-transform: capitalize;
             line-height: normal;
             margin: 0px;
-            b {
-              background: linear-gradient(90deg, #231d2c, #6061e5);
-              -webkit-background-clip: text;
-              -webkit-text-fill-color: transparent;
+            @media (max-width: ${DESKTOP_BREAKPOINT}) {
             }
-            @media (min-width: ${TABLET_STARTPOINT}) {
-              @media (max-width: ${DESKTOP_BREAKPOINT}) {
-                font-size: 64px;
-              }
+            ) {
+              font-size: 64px;
             }
 
             @media (max-width: ${MOBILE_BREAKPOINT}) {
@@ -77,9 +66,11 @@ export default function Hero() {
             font-size: 24px;
             font-style: normal;
             text-align: center;
-            margin: 40px 0 10px 0;
-            line-height: 43px;
+            margin: 0;
+            line-height: normal;
             @media (max-width: ${DESKTOP_BREAKPOINT}) {
+            }
+            ) {
               font-size: 18px;
               line-height: normal;
             }
@@ -110,104 +101,9 @@ export default function Hero() {
             justify-content: center;
           `}
         >
-          <h1>
-            Create high impact data driven <b>stories</b>
-          </h1>
-          {isAuthenticated ? (
-            <Box
-              display={"flex"}
-              gridColumnGap={"24px"}
-              gridRowGap={"8px"}
-              justifyContent={"center"}
-              flexDirection={{ xs: "column", sm: "row" }}
-              marginTop={"40px"}
-              alignItems={"center"}
-            >
-              <AddAssetDropdown />
-              <Link
-                to="/"
-                data-cy="empower-block-explore-stories-link"
-                css={`
-                  text-decoration: none;
-                `}
-              >
-                <PrimaryButton
-                  css={`
-                    height: 48px;
-                    @media (max-width: 600px) {
-                      width: max-content;
-                    }
-                  `}
-                  size="big"
-                  bg="light"
-                  type="button"
-                >
-                  Explore the Dashboard
-                </PrimaryButton>
-              </Link>
-            </Box>
-          ) : (
-            <div
-              css={`
-                button {
-                  gap: 8px;
-                  color: #231d2c;
-                  display: flex;
-                  padding: 12px 24px !important;
-                  height: 48px;
-                  border-radius: 12px;
-                  outline: none;
-                  border: none;
-                  background: #a1a2ff;
-                  align-items: center;
-                  justify-content: center;
-                  font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
-                  white-space: nowrap;
-                  font-size: 16px;
-                  > svg {
-                    transform: scale(0.8);
-                  }
-                  :hover {
-                    opacity: 0.8;
-                    cursor: pointer;
-                  }
-                }
-              `}
-            >
-              <p>Sign in for free to unlock data visualisation tools with</p>
-              <div
-                css={`
-                  flex-direction: row;
-                  display: flex;
-                  grid-column-gap: 16px;
-                  grid-row-gap: 8px;
-                  justify-content: center;
-                  @media (max-width: ${MOBILE_BREAKPOINT}) {
-                    flex-direction: column;
-                  }
-                `}
-              >
-                <button
-                  data-cy="google-button"
-                  onClick={() => socialAuth("google-oauth2")}
-                >
-                  <GoogleIcon /> Google
-                </button>
-                <button
-                  data-cy="linkedin-button"
-                  onClick={() => socialAuth("linkedin")}
-                >
-                  <LinkedInIcon /> LinkedIn
-                </button>
-                <button
-                  data-cy="microsoft-button"
-                  onClick={() => socialAuth("windowslive")}
-                >
-                  <MicrosoftIcon /> Microsoft
-                </button>
-              </div>
-            </div>
-          )}
+          <h1>{title}</h1>
+          <Box height={"40px"} />
+          {children}
         </div>
       </Container>
     </div>

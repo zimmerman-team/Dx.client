@@ -139,98 +139,42 @@ export const quotesEllipseCss = css`
   }
 `;
 
-export const useDXcss = css`
-  color: #231d2c;
-  width: 100%;
-  p:nth-of-type(1) {
-    font-size: 40px;
-    line-height: normal;
-    text-align: center;
-    font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
-    margin-top: 0;
-    @media (max-width: 1024px) {
-      font-family: "GothamNarrow-Bold", sans-serif;
-      font-size: 36px;
-    }
-    @media (max-width: 600px) {
-      font-size: 24px;
-    }
-  }
-  h3 {
-    font-size: 24px;
-    line-height: 29px;
-    font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
-    text-align: center;
-    margin-bottom: 0;
-    margin-top: 48px;
-    @media (max-width: 1024px) {
-      font-family: "GothamNarrow-Bold", sans-serif;
-      font-size: 24px;
-    }
-    @media (max-width: 600px) {
-      font-size: 18px;
-    }
-  }
-  p {
-    font-size: 20px;
-    line-height: 24px;
-    text-align: center;
-    font-family: "GothamNarrow-Book", "Helvetica Neue", sans-serif;
-    width: 85%;
-    margin: 16px auto 0 auto;
-    @media (max-width: 1024px) {
-      margin: 16px 0 0 0;
-      font-size: 18px;
-      width: 100%;
-      font-family: "GothamNarrow-Book", sans-serif;
-      @media (max-width: 600px) {
-        font-size: 18px;
-      }
-    }
-  }
-`;
-
 export const quotecss = css`
   position: relative;
   z-index: 1;
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 20px 0;
-  width: 78%;
-  > p {
-    font-size: 40px;
-    line-height: 48px;
-    text-align: center;
-    font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
-    margin: 0;
-    @media (max-width: 1024px) {
-      font-size: 34px;
-      line-height: 40.8px;
-    }
-    @media (max-width: 1024px) {
-      font-size: 24px;
-      line-height: 28.8px;
-    }
-  }
-  img {
-    margin-bottom: 15px;
-  }
+  padding-top: 73px;
+  width: 822px;
   div {
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin-top: 28px;
+    margin-top: 34px;
     p {
-      color: #6061e5;
+      color: #231d2c;
       margin: 0;
       font-size: 18px;
-      line-height: 19px;
+      line-height: 24px;
       text-align: center;
       font-family: "GothamNarrow-Book", "Helvetica Neue", sans-serif;
-      @media (max-width: 1024px) {
+    }
+  }
+  @media (max-width: 1439px) {
+    width: 498px;
+    padding-top: 50px;
+    div {
+      p {
+      }
+    }
+  }
+  @media (max-width: 743px) {
+    width: 100%;
+    padding-top: 20px;
+    div {
+      p {
         font-size: 14px;
-        line-height: 16.8px;
       }
     }
   }

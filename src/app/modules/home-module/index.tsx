@@ -8,6 +8,10 @@ import AssetsCollection from "./components/AssetCollection";
 import Hero from "./components/hero";
 import NonAuthUserLibrary from "./components/nonAuthUserLibrary";
 import { Box } from "@material-ui/core";
+import AddAssetDropdown from "./components/AddAssetDropdown";
+import { Link } from "react-router-dom";
+import { PrimaryButton } from "app/components/Styled/button";
+import SignInButtons from "./components/SignInButtons";
 
 export default function HomeModule() {
   useTitle("Dataxplorer");
@@ -32,7 +36,30 @@ export default function HomeModule() {
       `}
     >
       <div>
-        {!isAuthenticated ? <Hero /> : <Box height={40} />}
+        {!isAuthenticated ? (
+          <Hero
+            title={
+              <>
+                Create high impact data driven{" "}
+                <b
+                  css={`
+                    background: linear-gradient(90deg, #231d2c, #6061e5);
+                    -webkit-background-clip: text;
+                    -webkit-text-fill-color: transparent;
+                  `}
+                >
+                  stories
+                </b>
+              </>
+            }
+          >
+            <p>Sign in for free to unlock data visualisation tools with</p>
+            <Box height={"10px"} />
+            <SignInButtons />
+          </Hero>
+        ) : (
+          <Box height={40} />
+        )}
 
         {!isAuthenticated ? <NonAuthUserLibrary /> : <AssetsCollection />}
       </div>

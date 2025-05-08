@@ -9,6 +9,7 @@ function TabCard(props: {
   alt: string;
   title: string;
   description: React.ReactNode;
+  reverse?: boolean;
 }) {
   return (
     <div
@@ -17,30 +18,31 @@ function TabCard(props: {
         z-index: 1;
         width: 100%;
         display: flex;
+        flex-direction: ${props.reverse ? "row-reverse" : "row"};
+        height: 100%;
         justify-content: center;
-        gap: 39px;
+        align-items: center;
+        gap: 56px;
         font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
-        padding: 72px 40px 0px 88px;
-        color: #231d2c;
+        color: #ffffff;
         overflow-x: hidden;
 
         a {
           text-decoration: none;
-          color: #6061e5;
-          border-bottom: 1px solid #6061e5;
+          color: #ffffff;
+          border-bottom: 1px solid #ffffff;
           cursor: pointer;
         }
-        div:nth-child(1) {
-          width: 60%;
-          img {
-            height: 363px;
-            object-fit: contain;
-            position: relative;
-            z-index: 2;
-          }
+
+        img {
+          width: 508px;
+          object-fit: contain;
+          position: relative;
+          z-index: 2;
         }
+
         h4 {
-          font-size: 40px;
+          font-size: 34px;
           line-height: normal;
           margin: 0;
           margin-bottom: 11px;
@@ -49,43 +51,21 @@ function TabCard(props: {
           font-family: "GothamNarrow-Book", "Helvetica Neue", sans-serif;
           white-space: pre-line;
           font-weight: 400;
-          line-height: normal;
-          color: #231d2c;
-          font-size: 24px;
+          line-height: 24px;
+          font-size: 18px;
         }
-        @media (max-width: 1179px) {
-          flex-direction: column;
-          align-items: center;
-          justify-content: flex-start;
-          height: 988px;
-          gap: 22px;
-          padding: 72px 80px 24px 80px;
-          div:nth-child(1) {
-            width: auto;
-            img {
-              width: 100%;
-              height: 100%;
-            }
-          }
-          @media (max-width: 744px) {
-            height: 100%;
-            padding: unset;
-            padding-top: 40px;
 
-            h4 {
-              font-size: 24px;
-              line-height: 24px;
-            }
-            p {
-              font-size: 16px;
-              line-height: 19.2px;
-            }
-            div:nth-child(1) {
-              img {
-                width: 100%;
-                height: 100%;
-              }
-            }
+        @media (max-width: 1439px) {
+          flex-direction: column;
+          gap: 30px;
+          img {
+            width: 473.5px;
+          }
+        }
+        @media (max-width: 743px) {
+          gap: 20px;
+          img {
+            width: 285.841px;
           }
         }
       `}
@@ -93,25 +73,7 @@ function TabCard(props: {
       <div>
         <img src={props.src} alt={props.alt} />
       </div>
-      <div
-        css={`
-          @media (max-width: 1179px) {
-            margin-top: -4%;
-            width: 100%;
-            padding: 0 calc((100% - 551px) / 2);
-          }
-          @media (max-width: 769px) {
-            margin-top: -4%;
-            width: 92%;
-            padding: 0;
-          }
-          @media (max-width: 600px) {
-            margin-top: -4%;
-            width: 91%;
-            padding: 0;
-          }
-        `}
-      >
+      <div>
         <h4>
           <b>{props.title}</b>
         </h4>
@@ -147,6 +109,7 @@ export const AboutTabCard = () => {
       alt="about_snippet"
       title="The Global Fund Data Explorer"
       description={description}
+      reverse
     />
   );
 };
@@ -204,6 +167,7 @@ export const BudgetsTabCard = () => {
   );
   return (
     <TabCard
+      reverse
       src={BudgetsCard}
       alt="budgets_snippet"
       title="Grant Budgeting"

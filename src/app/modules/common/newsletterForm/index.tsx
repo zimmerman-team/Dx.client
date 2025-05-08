@@ -87,6 +87,7 @@ export default function NewsletterForm(
       css={`
         width: 100%;
         display: flex;
+        gap: 16px;
         input {
           font-family: "GothamNarrow-Book", "Helvetica Neue", sans-serif;
         }
@@ -112,7 +113,7 @@ export default function NewsletterForm(
         }}
         autoComplete="email"
       />
-      <button type="submit">SUBSCRIBE</button>
+      <button type="submit">Subscribe</button>
     </form>
   );
 }

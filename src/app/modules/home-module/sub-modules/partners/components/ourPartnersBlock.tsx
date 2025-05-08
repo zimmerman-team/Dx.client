@@ -1,56 +1,60 @@
 import React from "react";
-import GFLogo from "app/modules/home-module/assets/gf-logo.png";
-import MFALogo from "app/modules/home-module/assets/mfa-finland-logo.png";
+import { ReactComponent as GFLogo } from "app/modules/home-module/assets/gf-logo.svg";
+import { ReactComponent as MFALogo } from "app/modules/home-module/assets/mfa-finland-logo.svg";
 import IatiLogo from "app/modules/home-module/assets/iati-logo.png";
+import { Container } from "@material-ui/core";
 export default function OurPartnersBlock() {
   return (
-    <div>
-      <h4
+    <div
+      css={`
+        background: #f2f7fd;
+      `}
+    >
+      <Container
+        maxWidth="lg"
         css={`
-          font-size: 18px;
-          line-height: 29px;
-          text-align: center;
-          margin: 0;
-          padding: 0;
           @media (max-width: 1024px) {
-            font-size: 16px;
-            line-height: 19px;
+            padding: 0 32px !important;
           }
-        `}
-      >
-        <b>Partners</b>
-      </h4>
-      <div
-        css={`
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          padding-top: 8px;
-          gap: 200px;
-          img {
-            width: 127px;
-            height: 78px;
-            object-fit: contain;
-          }
-          @media (max-width: 1024px) {
-            gap: 85px;
-          }
+
           @media (max-width: 600px) {
-            gap: 42.5px;
-            padding-top: 56px;
-            border-bottom: none;
-            img {
-              width: 66px;
-            }
+            padding: 0 24px !important;
           }
         `}
       >
-        <img src={MFALogo} alt="mfa-finland-logo" />
+        <div
+          css={`
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 80px 0;
+            width: 100%;
+            gap: 173px;
+            img {
+              width: 208.548px;
+              object-fit: contain;
+            }
+            @media (max-width: 1439px) {
+              padding: 60px 0;
+              gap: 66px;
+              img {
+                width: 168.896px;
+              }
+            }
+            @media (max-width: 743px) {
+              padding: 50px 0;
+              flex-direction: column;
+              gap: 20px;
+            }
+          `}
+        >
+          <MFALogo />
 
-        <img src={GFLogo} alt="globalfund_logo" />
+          <GFLogo />
 
-        <img src={IatiLogo} alt="iati-logo" />
-      </div>
+          <img src={IatiLogo} alt="iati-logo" />
+        </div>
+      </Container>
     </div>
   );
 }

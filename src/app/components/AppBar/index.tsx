@@ -124,6 +124,20 @@ function MobileHeader(props: { navLocation: string }) {
             </button>
             <NavLink to="/" css={logocss}>
               <img src="/logo.svg" alt="logo" />
+              <div
+                css={`
+                  font-family: "Inter", sans-serif;
+                  color: #e75656;
+                  font-size: 11.095px;
+                  font-weight: 500;
+                  line-height: 11.095px;
+                  padding: 2.466px 8.09px;
+                  border: 0.736px solid #e75656;
+                  border-radius: 15.41px;
+                `}
+              >
+                beta
+              </div>
             </NavLink>
           </div>
           <div
@@ -143,7 +157,8 @@ function MobileHeader(props: { navLocation: string }) {
                   margin-left: 16px;
                   border-radius: 50%;
                   align-items: center;
-                  background: #dadaf8;
+                  color: #ffffff !important;
+                  background: #6061e5 !important;
                   justify-content: center;
                   border: none;
                   font-family: "GothamNarrow-Medium", "Helvetica Neue",
@@ -160,11 +175,11 @@ function MobileHeader(props: { navLocation: string }) {
               <Link
                 to="/onboarding/signin"
                 css={`
-                  background: #dadaf8;
+                  color: #ffffff !important;
+                  background: #6061e5 !important;
                   display: flex;
                   justify-content: center;
                   align-items: center;
-                  color: var(--Primary-Dark, #231d2c);
                   font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
                   font-size: 16px;
                   font-weight: 400;
@@ -294,6 +309,20 @@ export function AppBar() {
                   >
                     <NavLink to="/" css={logocss}>
                       <img src="/logo.svg" alt="logo" />
+                      <div
+                        css={`
+                          font-family: "Inter", sans-serif;
+                          color: #e75656;
+                          font-size: 11.095px;
+                          font-weight: 500;
+                          line-height: 11.095px;
+                          padding: 2.466px 8.09px;
+                          border: 0.736px solid #e75656;
+                          border-radius: 15.41px;
+                        `}
+                      >
+                        beta
+                      </div>
                     </NavLink>
                   </Grid>
                   <Grid
@@ -366,15 +395,15 @@ const ActionMenu = () => {
             to="/onboarding/signin"
             data-cy="appbar-create-story/login"
             css={`
-              background: #dadaf8;
-              color: #231d2c;
+              background: #6061e5;
+              color: #ffffff !important;
               font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
               display: flex;
               justify-content: center;
               align-items: center;
               border-radius: 10px;
-              padding: 12px 24px;
-              line-height: 11px;
+              padding: 10px 16px;
+              line-height: normal;
             `}
           >
             Sign in
@@ -391,7 +420,8 @@ const ActionMenu = () => {
               display: flex;
               border-radius: 50%;
               align-items: center;
-              background: #dadaf8;
+              color: #ffffff !important;
+              background: #6061e5 !important;
               font-family: "GothamNarrow-Medium", "Helvetica Neue", sans-serif;
               justify-content: center;
               font-weight: 350;
