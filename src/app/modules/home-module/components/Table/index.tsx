@@ -79,6 +79,8 @@ export function HomepageTable(
     <TableContainer
       css={`
         border-radius: 8px;
+        padding-bottom: 20px;
+        padding-right: 16px;
       `}
     >
       <Table
