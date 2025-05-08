@@ -306,6 +306,7 @@ export function ChartSubheaderToolbar(
               align-items: center;
               position: relative;
               width: 100%;
+              gap: 8px;
             `}
           >
             <Link
@@ -316,16 +317,7 @@ export function ChartSubheaderToolbar(
                 font-size: 14px;
                 color: #231d2c;
                 text-decoration: none;
-                position: absolute;
-                left: -32px;
                 cursor: pointer;
-                @media (max-width: 960px) {
-                  position: static;
-                  margin-right: 8px;
-                }
-                @media (max-width: 450px) {
-                  position: static;
-                }
               `}
               data-cy="chart-back-to-library-btn"
             >

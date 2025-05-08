@@ -17,6 +17,7 @@ import MobilePlanCard from "./components/mobile-plan-card";
 import { APPLICATION_JSON } from "app/state/api";
 import { PageLoader } from "app/modules/common/page-loader";
 import { useCheckPricingActive } from "app/hooks/useCheckPricingActive";
+import { DESKTOP_BREAKPOINT } from "app/theme";
 
 const VIEWS = [
   {
@@ -84,7 +85,7 @@ export default function PricingModule() {
   useTitle("Dataxplorer - Pricing");
 
   const { user, isAuthenticated } = useAuth0();
-  const isMobile = useMediaQuery("(max-width: 1030px)");
+  const isMobile = useMediaQuery(`(max-width: ${DESKTOP_BREAKPOINT})`);
   const location = useLocation();
 
   const [subscriptionPlan, setSubscriptionPlan] = React.useState("monthly");

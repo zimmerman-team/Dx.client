@@ -6,9 +6,10 @@ import { styles } from "app/modules/story-module/components/right-panel/styles";
 import { StoryRightPanelProps } from "app/modules/story-module/components/right-panel/data";
 import { StoryRightPanelCreateView } from "app/modules/story-module/components/right-panel-create-view";
 import useTogglePanelWithKey from "app/hooks/useTogglePanelWithKey";
+import { MOBILE_BREAKPOINT } from "app/theme";
 
 export function StoryRightPanel(props: StoryRightPanelProps) {
-  const isMobile = useMediaQuery("(max-width: 767px)");
+  const isMobile = useMediaQuery(`(max-width: ${MOBILE_BREAKPOINT})`);
   useTogglePanelWithKey({
     openToolbox: props.open,
     setToolboxOpen: props.setOpen,

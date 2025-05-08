@@ -5,6 +5,11 @@ import { socialAuth } from "app/utils/socialAuth";
 import { ReactComponent as GoogleIcon } from "app/modules/onboarding-module/asset/google-img.svg";
 import { ReactComponent as LinkedInIcon } from "app/modules/onboarding-module/asset/linkedIn-img.svg";
 import { ReactComponent as MicrosoftIcon } from "app/modules/onboarding-module/asset/microsoft-img.svg";
+import {
+  DESKTOP_BREAKPOINT,
+  MOBILE_BREAKPOINT,
+  TABLET_STARTPOINT,
+} from "app/theme";
 
 export default function TryUsBlock() {
   const { isAuthenticated } = useAuth0();
@@ -25,7 +30,8 @@ export default function TryUsBlock() {
             font-size: 36px;
             line-height: normal;
           }
-          @media (max-width: 600px) {
+
+          @media (max-width: ${MOBILE_BREAKPOINT}) {
             font-size: 18px;
             line-height: normal;
             margin-bottom: 32px;
@@ -59,40 +65,42 @@ export default function TryUsBlock() {
               font-family: "GothamNarrow-Book", "Helvetica Neue", sans-serif;
             }
           }
-          @media (max-width: 1120px) {
-            flex-direction: column;
-            height: 100%;
-            padding: unset;
-            padding-top: 58px;
-            padding-bottom: 45px;
-            align-items: center;
-            p {
-              &:nth-of-type(1) {
-                text-align: center;
-              }
-              &:nth-of-type(2) {
-                text-align: center;
+          @media (min-width: ${TABLET_STARTPOINT}) {
+            @media (max-width: ${DESKTOP_BREAKPOINT}) {
+              flex-direction: column;
+              justify-content: center;
+              align-items: center;
+              padding: 48px 40px;
+              height: 100%;
+              p {
+                &:nth-of-type(1) {
+                  color: #ffffff;
+                  font-size: 36px;
+                  line-height: normal;
+                }
               }
             }
+          }
+          @media (max-width: ${MOBILE_BREAKPOINT}) {
+            padding: 48px 40px;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+            height: 100%;
 
-            @media (max-width: 774px) {
-              padding: 32px 32px;
-              flex-direction: column;
-              align-items: center;
-              gap: 20px;
-              p {
-                margin: 0;
-                &:nth-of-type(1) {
-                  font-size: 31px;
-                  font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
-                  line-height: normal;
-                }
-                &:nth-of-type(2) {
-                  font-size: 18px;
-                  font-family: "GothamNarrow-Book", "Helvetica Neue", sans-serif;
-                  line-height: normal;
-                  margin-top: 8px;
-                }
+            p {
+              margin: 0;
+              text-align: center;
+              &:nth-of-type(1) {
+                font-size: 24px;
+                font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
+                line-height: normal;
+              }
+              &:nth-of-type(2) {
+                font-size: 14px;
+                font-family: "GothamNarrow-Book", "Helvetica Neue", sans-serif;
+                line-height: normal;
+                margin-top: 8px;
               }
             }
           }
@@ -109,10 +117,6 @@ export default function TryUsBlock() {
               flex-direction: column;
               gap: 24px;
               align-items: center;
-              @media (max-width: 774px) {
-                gap: 22px;
-              }
-
               a {
                 display: flex;
                 align-items: center;
@@ -123,7 +127,7 @@ export default function TryUsBlock() {
                 border-radius: 12px;
                 white-space: nowrap;
                 width: 210px;
-                height: 41px;
+                height: 48px;
                 text-decoration: none;
                 cursor: pointer;
                 :hover {
@@ -139,6 +143,23 @@ export default function TryUsBlock() {
               a:nth-child(2) {
                 background: #dadaf8;
                 color: #231d2c;
+              }
+              @media (min-width: ${TABLET_STARTPOINT}) {
+                @media (max-width: ${DESKTOP_BREAKPOINT}) {
+                  flex-direction: row;
+                  gap: 24px;
+                  margin-top: 0;
+                  a:nth-child(2) {
+                    width: 124px;
+                  }
+                }
+              }
+              @media (max-width: ${MOBILE_BREAKPOINT}) {
+                gap: 8px;
+                margin-top: 40px;
+                a:nth-child(2) {
+                  width: 210px;
+                }
               }
             `}
           >
@@ -165,14 +186,13 @@ export default function TryUsBlock() {
                 font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
                 font-size: 18px;
                 text-decoration: none;
-                @media (max-width: 655px) {
+              }
+              @media (max-width: ${MOBILE_BREAKPOINT}) {
+                width: 85%;
+                gap: 16px;
+                a {
                   width: 100%;
                 }
-              }
-              @media (max-width: 655px) {
-                width: 85%;
-
-                gap: 16px;
               }
             `}
           >
@@ -205,7 +225,8 @@ export default function TryUsBlock() {
                     cursor: pointer;
                   }
                 }
-                @media (max-width: 655px) {
+
+                @media (max-width: ${MOBILE_BREAKPOINT}) {
                   flex-direction: column;
                   gap: 16px;
 

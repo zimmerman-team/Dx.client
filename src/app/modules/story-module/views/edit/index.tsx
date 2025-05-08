@@ -35,6 +35,7 @@ import {
 } from "app/modules/story-module/views/edit/compareStates";
 import PlaceHolder from "app/modules/story-module/components/placeholder";
 import useAutosave from "app/hooks/useAutoSave";
+import { MOBILE_BREAKPOINT, TABLET_STARTPOINT } from "app/theme";
 
 function StoryEditView(props: Readonly<StoryEditViewProps>) {
   useTitle("Dataxplorer - Edit Story");
@@ -337,7 +338,7 @@ function StoryEditView(props: Readonly<StoryEditViewProps>) {
               ? "calc(100vw - ((100vw - 1280px) / 2) - 400px - 50px)"
               : "100%"};
             position: relative;
-            @media (min-width: 768px) and (max-width: 1260px) {
+            @media (min-width: ${TABLET_STARTPOINT}) and (max-width: 1260px) {
               width: 100%;
             }
           `}
