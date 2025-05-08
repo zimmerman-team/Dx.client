@@ -9,6 +9,7 @@ import {
 import { uploadAreacss } from "app/modules/dataset-module/routes/upload-module/style";
 import { ReactComponent as UploadIcon } from "app/modules/dataset-module/routes/upload-module/assets/upload.svg";
 import { formatBytes } from "app/utils/formatBytes";
+import { APPLICATION_JSON } from "app/state/api";
 
 interface DropzoneProps {
   uploadError: boolean;
@@ -19,6 +20,8 @@ interface DropzoneProps {
 export const DropZone = (props: DropzoneProps) => {
   const ACCEPTED_FILES = {
     "text/csv": [".csv"],
+    [APPLICATION_JSON]: [".json"],
+    "application/vnd.oasis.opendocument.spreadsheet": [".ods"],
     "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet": [
       ".xlsx",
     ],
@@ -78,25 +81,25 @@ export const DropZone = (props: DropzoneProps) => {
                   font-weight: 500;
                   font-size: 12px;
                   color: #231d2c;
-                  margin-top: 5px;
-                  font-family: "Inter", sans-serif;
+                  font-family: "GothamNarrow-Book", sans-serif;
                   margin: 0;
                   padding: 0;
-                  margin-top: 18px;
+                  margin-top: 8px;
+                  line-height: 16px;
                 `}
               >
-                Supports: XMl, XLSX, CSV
+                Supports: XML, XLSX, CSV, JSON, ODS
               </p>
               <p
                 css={`
-                  font-size: 20px;
+                  font-size: 18px;
                   line-height: normal;
                   font-style: normal;
                   font-family: "GothamNarrow-Book", "Helvetica Neue", sans-serif;
                   font-weight: 325;
                   margin: 0;
                   padding: 0;
-                  margin-top: 18px;
+                  margin-top: 8px;
                 `}
               >
                 Drag and Drop Spreadsheets File here

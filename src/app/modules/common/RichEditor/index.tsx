@@ -1,10 +1,15 @@
 import React, { ReactElement, useMemo, useRef } from "react";
 import picker from "app/modules/common/RichEditor/ColorModal/Picker";
 import bgPicker from "app/modules/common/RichEditor/BGColorModal/Picker";
-import { ToolbarPluginsType } from "app/modules/report-module/components/reportSubHeaderToolbar/staticToolbar";
+import { ToolbarPluginsType } from "app/modules/story-module/components/storySubHeaderToolbar/staticToolbar";
 
 /*plugins */
-import { EditorState, SelectionState } from "draft-js";
+import {
+  DraftHandleValue,
+  EditorState,
+  RichUtils,
+  SelectionState,
+} from "draft-js";
 import Editor from "@draft-js-plugins/editor";
 import createLinkPlugin from "@draft-js-plugins/anchor";
 import createEmojiPlugin from "@draft-js-plugins/emoji";
@@ -25,7 +30,7 @@ import "@draft-js-plugins/inline-toolbar/lib/plugin.css";
 import "@draft-js-plugins/static-toolbar/lib/plugin.css";
 import "@draft-js-plugins/emoji/lib/plugin.css";
 import fontSizeStyleMap from "app/modules/common/RichEditor/FontSizeController/styleMap";
-import { styles } from "app/modules/report-module/components/reportSubHeaderToolbar/styles";
+import { styles } from "app/modules/story-module/components/storySubHeaderToolbar/styles";
 
 export const RichEditor = (props: {
   editMode: boolean;
@@ -46,6 +51,20 @@ export const RichEditor = (props: {
 
   const focus = (): void => {
     editor.current?.focus();
+  };
+  const handleKeyCommand = (
+    command: string,
+    editorState: EditorState
+  ): DraftHandleValue => {
+    // Handle key commands like Cmd+B (or Ctrl+B) and Cmd+U (or Ctrl+U)
+    const newState = RichUtils.handleKeyCommand(editorState, command);
+
+    if (newState) {
+      props.setTextContent(newState);
+      return "handled";
+    }
+
+    return "not-handled";
   };
 
   React.useEffect(() => {
@@ -157,6 +176,7 @@ export const RichEditor = (props: {
         readOnly={!props.editMode}
         editorState={props.textContent}
         onChange={props.setTextContent}
+        handleKeyCommand={handleKeyCommand}
         onBlur={() => {
           props.onBlur?.();
           if (props.textContent.getCurrentContent().getPlainText().length === 0)

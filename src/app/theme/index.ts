@@ -12,9 +12,15 @@ interface Icon {
   black: string;
 }
 
-interface ProjectPalette extends Palette {
+interface IProjectPalette extends Palette {
   icon: Icon;
 }
+
+export const MOBILE_BREAKPOINT = "743px";
+export const TABLET_STARTPOINT = "744px";
+
+export const DESKTOP_BREAKPOINT = "1439px";
+export const DESKTOP_STARTPOINT = "1440px";
 
 const TextStyle: FontStyle = {
   fontFamily: '"GothamNarrow-Book", "Helvetica", "Arial", sans-serif',
@@ -258,21 +264,13 @@ export default createTheme({
         fontSize: 12,
       },
     },
-    MuiListItem: {
-      button: {
-        "&:hover": {
-          color: "#231d2c",
-          backgroundColor: "#fff",
-          transition: "background 0.2s ease-in-out",
-        },
-      },
-    },
     MuiTooltip: {
       tooltip: {
         fontSize: 12,
         color: "#fff",
-        backgroundColor: "#373d43",
+        backgroundColor: "#626262",
         fontFamily: '"GothamNarrow-Book", "Helvetica", "Arial", sans-serif',
+        borderRadius: "4px",
       },
     },
     MuiBottomNavigationAction: {
@@ -297,6 +295,13 @@ export default createTheme({
         "&:hover": {
           color: "#231d2c",
           background: "#f1f3f5",
+        },
+      },
+      button: {
+        "&:hover": {
+          color: "#231d2c",
+          backgroundColor: "#fff",
+          transition: "background 0.2s ease-in-out",
         },
       },
     },

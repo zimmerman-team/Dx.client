@@ -9,7 +9,6 @@ import withStyles from "@material-ui/core/styles/withStyles";
 import HomeFooter from "app/modules/home-module/components/Footer";
 import DXBlock from "app/modules/home-module/sub-modules/partners/components/useDXBlock";
 import QuoteBlock from "app/modules/home-module/sub-modules/partners/components/quoteBlock";
-import EmpowerBlock from "app/modules/home-module/sub-modules/partners/components/empowerBlock";
 import OurPartnersBlock from "app/modules/home-module/sub-modules/partners/components/ourPartnersBlock";
 import BestDecisionBlock from "app/modules/home-module/sub-modules/partners/components/bestDecisionBlock";
 import {
@@ -19,6 +18,8 @@ import {
   PerformanceTabCard,
 } from "app/modules/home-module/sub-modules/partners/components/tabCard";
 import { useTitle } from "react-use";
+import Hero from "app/modules/home-module/components/hero";
+import TryUsBlock from "app/modules/home-module/sub-modules/why-dx/components/tryUsBlock";
 
 const StyledTab = withStyles(() => ({
   root: {
@@ -58,7 +59,7 @@ const StyledTabs = withStyles({
     "& .MuiTabs-scroller": {
       "& .MuiTabs-flexContainer": {
         gap: "113px",
-        "@media (max-width: 768px)": {
+        "@media (max-width: 744px)": {
           gap: "36px",
         },
         "@media (max-width: 390px)": {
@@ -100,8 +101,11 @@ const Pagination = (props: {
           width: 8px;
           height: 8px;
           border-radius: 50%;
-          background: ${props.index === i ? "#DADAF8" : "#fff"};
+          background: ${props.index === i ? "#6061E5" : "#fff"};
           cursor: pointer;
+
+          /* Tooltip */
+          box-shadow: 0px 0px 10px 0px rgba(152, 161, 170, 0.6);
         `}
         onClick={() => props.onChangeIndex(i)}
       />
@@ -109,7 +113,7 @@ const Pagination = (props: {
   </div>
 );
 export default function PartnersModule() {
-  useTitle("DX Dataxplorer - Partners");
+  useTitle("Dataxplorer - Partners");
 
   const [displayTab, setDisplayTab] = React.useState<number>(0);
   const handleChange = (
@@ -127,132 +131,192 @@ export default function PartnersModule() {
     <PerformanceTabCard />,
   ];
 
+  const gap = (
+    <div
+      css={`
+        height: 120px;
+        @media (max-width: 960px) {
+          height: 72px;
+        }
+      `}
+    />
+  );
+
   return (
     <>
-      <EmpowerBlock view="partners" />
-      <Container maxWidth="lg">
-        <Grid
-          container
-          justifyContent="center"
-          alignItems="center"
-          direction="column"
-          css={`
-            width: 100%;
-          `}
-        >
-          <OurPartnersBlock />
-          <DXBlock />
-          <div
-            onMouseEnter={() => setAutoPlay(false)}
-            onMouseLeave={() => setAutoPlay(true)}
+      <div
+        css={`
+          display: flex;
+          justify-content: space-between;
+          flex-direction: column;
+          margin-top: 50px;
+          min-height: calc(100vh - 50px);
+          background: #f2f7fd;
+        `}
+      >
+        <div>
+          <Hero />
+          <Container
+            maxWidth="lg"
             css={`
-              width: 100%;
-              margin-top: 78px;
-              position: relative;
-              height: 639px;
-              @media (max-width: 1129px) {
-                width: 83%;
-                height: 100%;
+              @media (max-width: 1024px) {
+                padding: 0 32px !important;
               }
+
               @media (max-width: 600px) {
-                width: 100%;
-                height: 100%;
+                padding: 0 24px !important;
               }
             `}
           >
-            <div
+            <Grid
+              container
+              justifyContent="center"
+              alignItems="center"
+              direction="column"
               css={`
-                display: flex;
-                flex-direction: column;
-                justify-content: center;
-                align-items: center;
+                width: 100%;
               `}
             >
-              <StyledTabs
+              {gap}
+              <OurPartnersBlock />
+              {gap}
+              <DXBlock />
+
+              {gap}
+              <div
+                onMouseEnter={() => setAutoPlay(false)}
+                onMouseLeave={() => setAutoPlay(true)}
                 css={`
-                  margin-left: 5px;
+                  width: 100%;
+                  position: relative;
+                  height: 639px;
+                  @media (max-width: 1129px) {
+                    width: 100%;
+                    height: 100%;
+                  }
+                  @media (max-width: 600px) {
+                    width: 100%;
+                    height: 100%;
+                  }
                 `}
-                TabIndicatorProps={{
-                  style: {
-                    bottom: "0px",
-                    height: "4px",
-                  },
-                }}
-                value={displayTab}
-                onChange={handleChange}
-                indicatorColor="primary"
-                textColor="primary"
-                className="Home-MuiTabs-flexContainer"
               >
-                <StyledTab disableTouchRipple label="About" value={0} />
-                <StyledTab disableTouchRipple label="Grants" value={1} />
-                <StyledTab disableTouchRipple label="Budgets" value={2} />
-                <StyledTab disableTouchRipple label="Performance" value={3} />
-              </StyledTabs>
-            </div>
+                <div
+                  css={`
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: center;
+                    align-items: center;
+                  `}
+                >
+                  <StyledTabs
+                    css={`
+                      margin-left: 5px;
+                    `}
+                    TabIndicatorProps={{
+                      style: {
+                        bottom: "0px",
+                        height: "4px",
+                      },
+                    }}
+                    value={displayTab}
+                    onChange={handleChange}
+                    indicatorColor="primary"
+                    textColor="primary"
+                    className="Home-MuiTabs-flexContainer"
+                    data-cy="partners-tabs"
+                  >
+                    <StyledTab
+                      disableTouchRipple
+                      label="About"
+                      value={0}
+                      data-cy="about-tab"
+                    />
+                    <StyledTab
+                      disableTouchRipple
+                      label="Grants"
+                      value={1}
+                      data-cy="grants-tab"
+                    />
+                    <StyledTab
+                      disableTouchRipple
+                      label="Budgets"
+                      value={2}
+                      data-cy="budgets-tab"
+                    />
+                    <StyledTab
+                      disableTouchRipple
+                      label="Performance"
+                      value={3}
+                      data-cy="performance-tab"
+                    />
+                  </StyledTabs>
+                </div>
+                <div
+                  css={`
+                    height: 32px;
+                    @media (max-width: 1024px) {
+                      height: 32px;
+                    }
+                  `}
+                />
+                <div
+                  css={`
+                    position: relative;
+                    background: #dadaf8;
+                    border-radius: 29px;
+                    height: 622px;
+                    @media (max-width: 1179px) {
+                      height: 100%;
+                    }
+                  `}
+                >
+                  <AutoPlaySwipeableViews
+                    index={displayTab}
+                    onChangeIndex={(index) =>
+                      autoPlay && handleChange(null, index)
+                    }
+                    animateTransitions={true}
+                    interval={3000}
+                  >
+                    {cards.map((card, index) => (
+                      <div key={index} data-cy="partners-view">
+                        {card}
+                      </div>
+                    ))}
+                  </AutoPlaySwipeableViews>
+
+                  <Pagination
+                    dots={4}
+                    index={displayTab}
+                    onChangeIndex={(index) => handleChange(null, index)}
+                  />
+                </div>
+              </div>
+              {gap}
+              <QuoteBlock />
+            </Grid>
             <div
               css={`
-                height: 55px;
-                @media (max-width: 1024px) {
-                  height: 32px;
+                height: 120px;
+                @media (max-width: 960px) {
+                  height: 72px;
                 }
               `}
             />
-            <div
-              css={`
-                position: relative;
-                background: linear-gradient(
-                  180deg,
-                  #a4a0ff -61.62%,
-                  #f8fcfc 114.5%
-                );
-                border-radius: 29px;
-              `}
-            >
-              <AutoPlaySwipeableViews
-                index={displayTab}
-                onChangeIndex={(index) => autoPlay && handleChange(null, index)}
-                animateTransitions={true}
-                interval={3000}
-              >
-                {cards.map((card, index) => (
-                  <div key={index}>{card}</div>
-                ))}
-              </AutoPlaySwipeableViews>
-              <Pagination
-                dots={4}
-                index={displayTab}
-                onChangeIndex={(index) => handleChange(null, index)}
-              />
-            </div>
-            <div
-              css={`
-                height: 110px;
-                @media (max-width: 1129px) {
-                  display: none;
-                }
-              `}
-            />
-          </div>
+            <TryUsBlock />
+          </Container>
+
           <div
             css={`
-              height: 75px;
+              height: 120px;
+              @media (max-width: 960px) {
+                height: 72px;
+              }
             `}
           />
-          <QuoteBlock />
-        </Grid>
-        <div
-          css={`
-            height: 150px;
-            @media (max-width: 1129px) {
-              height: 130px;
-            }
-          `}
-        />
-        <BestDecisionBlock />
-      </Container>
-      <div css="width: 100%;height: 148px;" />
-      <HomeFooter />
+        </div>
+        <HomeFooter />
+      </div>
     </>
   );
 }

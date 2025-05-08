@@ -1,3 +1,8 @@
+import {
+  DESKTOP_BREAKPOINT,
+  MOBILE_BREAKPOINT,
+  TABLET_STARTPOINT,
+} from "app/theme";
 import { css } from "styled-components/macro";
 
 export const benefitscss = css`
@@ -33,7 +38,11 @@ export const keyfeaturescss = {
   container: css`
     position: relative;
     z-index: 1;
-    padding-top: 114px;
+    padding-top: 120px;
+
+    @media (max-width: 1024px) {
+      padding-top: 40px;
+    }
 
     svg {
       @media (max-width: 1200px) {
@@ -47,9 +56,9 @@ export const keyfeaturescss = {
       font-size: 48px;
       line-height: 43px;
       text-align: center;
-      color: #000000;
+      color: #231d2c;
       margin-top: 0;
-      margin-bottom: 83px;
+      margin-bottom: 80px;
       font-family: "GothamNarrow-Bold", sans-serif;
       @media (max-width: 1200px) {
         font-size: 36px;
@@ -62,30 +71,34 @@ export const keyfeaturescss = {
       }
     }
     p:nth-of-type(1) {
-      font-size: 36px;
+      font-size: 40px;
       line-height: 20px;
-      font-weight: 350;
-      font-family: "GothamNarrow-Medium", sans-serif;
+      font-family: "GothamNarrow-Bold", sans-serif;
       margin-bottom: 25px;
       margin-top: 0;
       color: #231d2c;
-      @media (max-width: 600px) {
-        font-size: 24px;
+      @media (min-width: ${TABLET_STARTPOINT}) {
+        @media (max-width: ${DESKTOP_BREAKPOINT}) {
+          font-size: 36px;
+        }
+      }
+      @media (max-width: ${MOBILE_BREAKPOINT}) {
+        font-size: 18px;
         line-height: normal;
-        text-align: center;
+        text-align: left;
       }
     }
     p:nth-of-type(2) {
-      font-family: "GothamNarrow-Medium", sans-serif;
-      font-weight: 350;
+      margin: 0;
+      font-family: "GothamNarrow-Book", sans-serif;
       line-height: 30px;
       letter-spacing: 0.5px;
-      font-size: 20px;
+      font-size: 24px;
       color: #231d2c;
-      @media (max-width: 600px) {
-        font-size: 14px;
+      @media (max-width: ${MOBILE_BREAKPOINT}) {
+        font-size: 12px;
         line-height: normal;
-        text-align: center;
+        text-align: left;
       }
     }
     @media (min-width: 750px) {
@@ -97,7 +110,21 @@ export const keyfeaturescss = {
       padding-top: 56px;
     }
   `,
-  flexContainer: css``,
+  flexContainer: (reverse: boolean) => css`
+    display: flex;
+    align-items: center;
+    column-gap: 83px;
+    @media (min-width: ${TABLET_STARTPOINT}) {
+      @media (max-width: ${DESKTOP_BREAKPOINT}) {
+        row-gap: 40px;
+        flex-direction: ${reverse ? "column-reverse" : "column"};
+      }
+    }
+    @media (max-width: ${MOBILE_BREAKPOINT}) {
+      row-gap: 40px;
+      flex-direction: ${reverse ? "column-reverse" : "column"};
+    }
+  `,
   text: css`
     @media (min-width: 1111px) {
       @media (max-width: 1279px) {
@@ -105,7 +132,7 @@ export const keyfeaturescss = {
       }
     }
     @media (max-width: 1110px) {
-      width: 75%;
+      width: 85%;
       display: flex;
       flex-direction: column;
       align-items: flex-start;
@@ -116,8 +143,6 @@ export const keyfeaturescss = {
       width: 100%;
       display: flex;
       flex-direction: column;
-      align-items: center;
-      justify-content: center;
     }
   `,
 };

@@ -30,12 +30,22 @@ interface Props {
   userOnly?: boolean;
 }
 
+export const getLimit = () => {
+  let rows = 4;
+  const size = Math.floor(window.innerHeight / 400);
+  if (window.innerHeight <= 1050) {
+    return rows * 4;
+  } else {
+    rows += size;
+    return rows * 4;
+  }
+};
 export default function DatasetsGrid(props: Readonly<Props>) {
+  const limit = getLimit();
   const observerTarget = React.useRef(null);
   const [cardId, setCardId] = React.useState<string>("");
   const [enableButton, setEnableButton] = React.useState<boolean>(false);
   const [modalDisplay, setModalDisplay] = React.useState<boolean>(false);
-  const limit = 15;
   const initialRender = React.useRef(true);
   const [offset, setOffset] = React.useState(0);
   const { isObserved } = useInfinityScroll(observerTarget);
@@ -43,7 +53,6 @@ export default function DatasetsGrid(props: Readonly<Props>) {
   const setPlanDialog = useSetRecoilState(planDialogAtom);
   const [loadedDatasets, setLoadedDatasets] =
     useRecoilState(loadedDatasetsAtom);
-
   const datasets = useStoreState(
     (state) =>
       (state.dataThemes.DatasetGetList.crudData ??
@@ -65,6 +74,7 @@ export default function DatasetsGrid(props: Readonly<Props>) {
   const datasetLoadSuccess = useStoreState(
     (state) => state.dataThemes.DatasetGetList.success
   );
+
   const getFilterString = (fromZeroOffset?: boolean) => {
     const value =
       props.searchStr?.length > 0
@@ -73,7 +83,9 @@ export default function DatasetsGrid(props: Readonly<Props>) {
 
     return `${props.userOnly ? "userOnly=true&" : ""}filter={${value}"order":"${
       props.sortBy
-    } desc","limit":${limit},"offset":${fromZeroOffset ? 0 : offset}}`;
+    } ${props.sortBy === "name" ? "asc" : "desc"}","limit":${limit},"offset":${
+      fromZeroOffset ? 0 : offset
+    }}`;
   };
 
   const getWhereString = () => {
@@ -114,13 +126,15 @@ export default function DatasetsGrid(props: Readonly<Props>) {
 
   React.useEffect(() => {
     //load data if intersection observer is triggered
-    if (datasetCount > limit) {
-      if (isObserved && datasetLoadSuccess) {
-        if (loadedDatasets.length !== datasetCount) {
-          //update the offset value for the next load
-          setOffset(offset + limit);
-        }
-      }
+
+    if (
+      datasetCount > limit &&
+      isObserved &&
+      datasetLoadSuccess &&
+      loadedDatasets.length !== datasetCount
+    ) {
+      //update the offset value for the next load
+      setOffset(offset + limit);
     }
   }, [isObserved]);
 
@@ -209,7 +223,7 @@ export default function DatasetsGrid(props: Readonly<Props>) {
 
   React.useEffect(() => {
     reloadData();
-  }, [props.sortBy, token, props.categories]);
+  }, [props.sortBy, token, props.categories, props.userOnly]);
 
   const [,] = useDebounce(
     () => {
@@ -253,17 +267,6 @@ export default function DatasetsGrid(props: Readonly<Props>) {
                   a{
                     pointer-events: none;
                   }
-                  > div {
-                    >div{
-
-                      width: 100%;
-                    
-                      &:hover {
-                        cursor: pointer;
-                        border: 1px solid #6061E5;
-                      }
-                    }
-                  }
               `
                   : ""
               }
@@ -271,21 +274,22 @@ export default function DatasetsGrid(props: Readonly<Props>) {
               <GridItem
                 path={`/dataset/${data.id}/edit`}
                 title={data.name}
-                date={data.createdDate}
+                date={data.updatedDate}
                 handleDelete={() => {
                   handleModal(data.id);
                 }}
-                descr={data.description}
                 handleDuplicate={() => {
                   handleDuplicate(data.id);
                 }}
+                descr={data.description}
                 showMenu={!props.inChartBuilder}
                 id={data.id}
                 owner={data.owner}
                 inChartBuilder={props.inChartBuilder as boolean}
+                ownerName={data.ownerName ?? ""}
               />
 
-              {!props.inChartBuilder && <Box height={16} />}
+              {!props.inChartBuilder && <Box height={{ xs: 0, lg: 8 }} />}
             </Grid>
           ))}
         </Grid>
@@ -295,11 +299,13 @@ export default function DatasetsGrid(props: Readonly<Props>) {
         <HomepageTable
           onItemClick={props.onItemClick}
           inChartBuilder={props.inChartBuilder}
+          handleDelete={handleModal}
+          handleDuplicate={handleDuplicate}
           tableData={{
             columns: [
               { key: "name", label: "Name" },
               { key: "description", label: "Description" },
-              { key: "createdDate", label: "Date" },
+              { key: "updatedDate", label: "Last modified" },
             ],
             data: loadedDatasets.map((data) => ({
               ...data,

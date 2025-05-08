@@ -1,5 +1,5 @@
 import React from "react";
-import { tabcss } from "../style";
+import { tabcss } from "app/modules/user-profile-module/style";
 
 interface TabProps {
   title: string;
@@ -11,7 +11,11 @@ interface TabProps {
 
 export default function Tab(props: TabProps) {
   return (
-    <div onClick={props.handleClick} css={tabcss(props.active, props.disabled)}>
+    <div
+      onClick={props.handleClick}
+      css={tabcss(props.active, props.disabled)}
+      data-cy="profile-tab"
+    >
       <p>{props.title}</p>
       <div
         css={`

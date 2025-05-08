@@ -28,6 +28,7 @@ import {
   multiUnCheckFilterOptions,
 } from "app/modules/chart-module/routes/filters/utils";
 import { isEmpty } from "lodash";
+import { PrimaryButton } from "app/components/Styled/button";
 
 interface ExpandedFilterGroupProps extends FilterGroupModel, FilterGroupProps {
   goBack: () => void;
@@ -72,72 +73,33 @@ export function ExpandedFilterGroup(props: ExpandedFilterGroupProps) {
   const handleSearch = (value: string) => {
     if (value.length === 0) {
       setOptionsToShow(props.options);
-    } else {
-      const options: FilterGroupOptionModel[] = [];
-      props.options.forEach((option: FilterGroupOptionModel) => {
-        if (option.label.toLowerCase().indexOf(value.toLowerCase()) > -1) {
-          options.push(option);
-        } else if (option.subOptions) {
-          option.subOptions.forEach((subOption: FilterGroupOptionModel) => {
-            if (
-              subOption.label.toLowerCase().indexOf(value.toLowerCase()) > -1
-            ) {
-              const fParentIndex = findIndex(options, { label: option.label });
-              if (fParentIndex > -1) {
-                options[fParentIndex].subOptions?.push(subOption);
-              } else {
-                options.push({
-                  ...option,
-                  subOptions: [subOption],
-                });
-              }
-            } else if (subOption.subOptions) {
-              subOption.subOptions.forEach(
-                (subSubOption: FilterGroupOptionModel) => {
-                  if (
-                    (subSubOption.label || "")
-                      .toLowerCase()
-                      .indexOf(value.toLowerCase()) > -1
-                  ) {
-                    const fGrandParentIndex = findIndex(options, {
-                      label: option.label,
-                    });
-                    if (fGrandParentIndex > -1) {
-                      const fParentIndex = findIndex(
-                        options[fGrandParentIndex]?.subOptions,
-                        { label: subOption.label }
-                      );
-                      if (fParentIndex > -1) {
-                        // @ts-ignore
-                        options[fGrandParentIndex]?.subOptions[
-                          fParentIndex
-                        ]?.subOptions.push(subSubOption);
-                      } else {
-                        // @ts-ignore
-                        options[fGrandParentIndex]?.subOptions.push({
-                          ...subOption,
-                          subOptions: [subSubOption],
-                        });
-                      }
-                    } else {
-                      options.push({
-                        ...option,
-                        subOptions: [
-                          {
-                            ...subOption,
-                            subOptions: [subSubOption],
-                          },
-                        ],
-                      });
-                    }
-                  }
-                }
-              );
+      return;
+    }
+    const results: FilterGroupOptionModel[] = [];
+    try {
+      const searchOptions = (options: FilterGroupOptionModel[]) => {
+        options.forEach((option) => {
+          if (
+            option.label.toString().toLowerCase().indexOf(value.toLowerCase()) >
+            -1
+          ) {
+            results.push(option);
+          } else if (option?.subOptions) {
+            const searchResponse = searchOptions(option.subOptions);
+
+            if (searchResponse.length) {
+              results.push({
+                ...option,
+                subOptions: searchResponse,
+              });
             }
-          });
-        }
-      });
-      setOptionsToShow(options);
+          }
+        });
+        return results;
+      };
+      setOptionsToShow(searchOptions(props.options));
+    } catch (e) {
+      return results;
     }
   };
 
@@ -276,7 +238,12 @@ export function ExpandedFilterGroup(props: ExpandedFilterGroupProps) {
             `}
           >
             {splitStrBasedOnCapitalLetters(
-              `${props.name[0].toUpperCase()}${props.name.slice(1)}`
+              `${props.name[0].toUpperCase()}${props.name.slice(
+                1
+              )} (${props.options.reduce(
+                (prev, curr) => prev + (curr.count ?? 0),
+                0
+              )})`
             ).replace(/_/g, "")}
           </div>
         </div>
@@ -288,6 +255,7 @@ export function ExpandedFilterGroup(props: ExpandedFilterGroupProps) {
                 checked={allSelected}
                 onChange={handleChangeAll}
                 disabled={searchValue.length > 0}
+                data-cy="select-all-filters-checkbox"
               />
             }
             label="Select all"
@@ -394,27 +362,14 @@ export function ExpandedFilterGroup(props: ExpandedFilterGroupProps) {
           />
         ))}
       </div>
-
-      <button
-        type="button"
-        onClick={handleApply}
+      <div
         css={`
-          color: #fff;
-          font-size: 14px;
-          cursor: pointer;
-          margin-top: 15px;
-          font-weight: 500;
-          width: fit-content;
-          padding: 12px 27px;
-          border-style: none;
-          border-radius: 30px;
-          background: #231d2c;
-          box-shadow: 0px 0px 10px rgba(152, 161, 170, 0.05);
-          font-family: "Inter", sans-serif;
+          height: 15px;
         `}
-      >
+      />
+      <PrimaryButton size="big" bg="dark" type="button" onClick={handleApply}>
         Apply
-      </button>
+      </PrimaryButton>
     </React.Fragment>
   );
 }
@@ -443,7 +398,7 @@ function FilterOption(props: FilterOptionProps) {
       <div
         css={`
           width: 100%;
-          padding: 5px;
+          padding: 5px 24px;
           display: flex;
           position: relative;
           flex-direction: row;
@@ -472,6 +427,7 @@ function FilterOption(props: FilterOptionProps) {
               color="primary"
               checked={props.selected}
               data-testid="filter-option-checkbox"
+              data-cy="filter-option-checkbox"
               onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                 props.onOptionChange(
                   e.target.checked,
@@ -485,7 +441,7 @@ function FilterOption(props: FilterOptionProps) {
               }
             />
           }
-          label={props.label}
+          label={props.label + ` (${props?.count ?? ""})`}
         />
         {props.subOptions && (
           <React.Fragment>

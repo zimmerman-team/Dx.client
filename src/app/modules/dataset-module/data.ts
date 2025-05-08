@@ -5,7 +5,9 @@ export interface DatasetListItemAPIModel {
   public: boolean;
   category: string;
   createdDate: Date;
+  updatedDate: Date;
   owner: string;
   source: string;
   sourceUrl: string;
+  ownerName?: string;
 }

@@ -26,10 +26,11 @@ interface ChartBuilderPreviewProps {
   chartError: boolean;
   dataError: boolean;
   chartErrorMessage: string;
+  datasetId: string;
 }
 
 export function ChartBuilderPreview(props: ChartBuilderPreviewProps) {
-  useTitle("DX Dataxplorer - Preview Data");
+  useTitle("Dataxplorer - Preview Data");
   const history = useHistory();
   const { page } = useParams<{ page: string }>();
   const datasetId = useStoreState((state) => state.charts.dataset.value);
@@ -51,6 +52,11 @@ export function ChartBuilderPreview(props: ChartBuilderPreviewProps) {
           dataError={props.dataError}
           chartError={props.chartError}
           page={page}
+          view="preview-data"
+          selectDataProps={{
+            datasetId: props.datasetId,
+            loadDataset: props.loadDataset,
+          }}
         />
       </>
     );

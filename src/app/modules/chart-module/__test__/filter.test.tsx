@@ -95,13 +95,15 @@ const defaultStoreValue = (name: string) => ({
 
 const emptyStoreValue = () => ({});
 
+const filterSubOptionsId = "filter-sub-options";
+
 const checkIfAllOptionsAreChecked = (options: FilterGroupOptionModel[]) => {
-  const isOptionExpanded = screen.queryByTestId("filter-sub-options");
+  const isOptionExpanded = screen.queryByTestId(filterSubOptionsId);
   //check if all options are checked including suboptions
   options.forEach((option: FilterGroupOptionModel) => {
     expect(
       screen.getByRole("checkbox", {
-        name: option.label,
+        name: option.label + " ()",
       })
     ).toBeChecked();
     if (option.subOptions && isOptionExpanded) {
@@ -111,12 +113,12 @@ const checkIfAllOptionsAreChecked = (options: FilterGroupOptionModel[]) => {
 };
 
 const checkIfAllOptionsAreUnchecked = (options: FilterGroupOptionModel[]) => {
-  const isOptionExpanded = screen.queryByTestId("filter-sub-options");
+  const isOptionExpanded = screen.queryByTestId(filterSubOptionsId);
   //check if all options are checked including suboptions
   options.forEach((option: FilterGroupOptionModel) => {
     expect(
       screen.getByRole("checkbox", {
-        name: option.label,
+        name: option.label + " ()",
       })
     ).not.toBeChecked();
     if (option.subOptions && isOptionExpanded) {
@@ -170,6 +172,8 @@ test("filter group should be expandable when clicked", async () => {
   expect(props.expandGroup).toHaveBeenCalled();
 });
 
+const removeAppliedFilterId = "remove-applied-filter";
+
 test("applied filters list should decrease by 1 when an applied filter is clickecd", async () => {
   const user = userEvent.setup();
   const props = defaultProps();
@@ -181,7 +185,7 @@ test("applied filters list should decrease by 1 when an applied filter is clicke
 
   render(app);
 
-  const appliedFiltersList = screen.getAllByTestId("remove-applied-filter");
+  const appliedFiltersList = screen.getAllByTestId(removeAppliedFilterId);
   expect(screen.getByTestId("applied-filters")).toBeInTheDocument();
 
   expect(appliedFiltersList.length).toBe(7);
@@ -190,15 +194,17 @@ test("applied filters list should decrease by 1 when an applied filter is clicke
 
   await user.click(appliedFilter);
 
-  expect(screen.getAllByTestId("remove-applied-filter").length).toBe(6);
-  await user.click(screen.getAllByTestId("remove-applied-filter")[0]);
-  expect(screen.getAllByTestId("remove-applied-filter").length).toBe(5);
+  expect(screen.getAllByTestId(removeAppliedFilterId).length).toBe(6);
+  await user.click(screen.getAllByTestId(removeAppliedFilterId)[0]);
+  expect(screen.getAllByTestId(removeAppliedFilterId).length).toBe(5);
 
-  screen.getAllByTestId("remove-applied-filter").forEach((appliedFilter) => {
+  screen.getAllByTestId(removeAppliedFilterId).forEach((appliedFilter) => {
     expect(appliedFilter).toBeInTheDocument();
     fireEvent.click(appliedFilter);
   });
-  expect(mockStore.getState().charts.appliedFilters.value[props.name]).toBeNull;
+  expect(mockStore.getState().charts.appliedFilters.value[props.name]).toBe(
+    undefined
+  );
 });
 
 test("expanded filter group should close when back button is clicked", async () => {
@@ -240,10 +246,10 @@ test("clicking expand button should expand suboptions", async () => {
   const expandButton = screen.getByTestId("expand-filter-option-button");
   expect(expandButton).toBeInTheDocument();
   await user.click(expandButton);
-  expect(screen.getByTestId("filter-sub-options")).toBeInTheDocument();
+  expect(screen.getByTestId(filterSubOptionsId)).toBeInTheDocument();
   const toggleOverlay = screen.getByTestId("expand-filter-option-overlay");
   await user.click(toggleOverlay);
-  expect(screen.queryByTestId("filter-sub-options")).not.toBeInTheDocument();
+  expect(screen.queryByTestId(filterSubOptionsId)).not.toBeInTheDocument();
 });
 
 test("checking 'select all' checkbox should select all filter options", async () => {
@@ -348,14 +354,14 @@ test("search input should filter options", async () => {
   expect(screen.getAllByTestId("filter-option-checkbox").length).toBe(5);
   const filteredOptions = ["100", "1000", "10016", "10033", "1005"];
   filteredOptions.forEach((option: string) => {
-    expect(screen.getByLabelText(option)).toBeInTheDocument();
+    expect(screen.getByLabelText(option + " ()")).toBeInTheDocument();
   });
 
   //delete search input
   await user.clear(searchInput);
   expect(screen.getAllByTestId("filter-option-checkbox").length).toBe(3);
   props.options.forEach((option: any) => {
-    expect(screen.getByLabelText(option.label)).toBeInTheDocument();
+    expect(screen.getByLabelText(option.label + " ()")).toBeInTheDocument();
   });
 });
 
@@ -374,7 +380,9 @@ test("should multi check and uncheck filter options", async () => {
   render(app);
   const checkboxList: HTMLElement[] = [];
   props.options.forEach((option: any) => {
-    checkboxList.push(screen.getByRole("checkbox", { name: option.label }));
+    checkboxList.push(
+      screen.getByRole("checkbox", { name: option.label + " ()" })
+    );
   });
   expect(checkboxList.length).toBe(3);
   //multi check filte options

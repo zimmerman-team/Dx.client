@@ -13,7 +13,7 @@ import Processing from "app/modules/dataset-module/routes/upload-module/upload-s
 import FinishedFragment from "app/modules/dataset-module/routes/upload-module/upload-steps/finishedFragment";
 import AddDatasetFragment from "app/modules/dataset-module/routes/upload-module/upload-steps/addDatasetFragment";
 import ObjectId from "app/utils/ObjectId";
-import { useOnUploadProgress } from "app/hooks/useOnUploadProgress";
+import { useUploadProgress } from "app/hooks/useOnUploadProgress";
 import ExternalSearch, {
   IExternalDataset,
 } from "app/modules/dataset-module/routes/upload-module/upload-steps/externalSearch";
@@ -22,12 +22,15 @@ import { Box } from "@material-ui/core";
 import { useTitle } from "react-use";
 import { DatasetListItemAPIModel } from "app/modules/dataset-module/data";
 import BreadCrumbs from "app/modules/home-module/components/Breadcrumbs";
+import { useLocation } from "react-router-dom";
 import SmallFooter from "app/modules/home-module/components/Footer/smallFooter";
 import { useRecoilState } from "recoil";
 import { dataUploadTabAtom, planDialogAtom } from "app/state/recoil/atoms";
 import BasicSwitch from "app/components/Switch/BasicSwitch";
 import Search from "@material-ui/icons/Search";
 import DesktopWindowsIcon from "@material-ui/icons/DesktopWindows";
+import { APPLICATION_JSON } from "app/state/api";
+import HomeFooter from "app/modules/home-module/components/Footer";
 
 interface Props {
   datasetId: string;
@@ -35,9 +38,10 @@ interface Props {
 }
 
 function DatasetUploadSteps(props: Props) {
-  useTitle("DX Dataxplorer - Upload Dataset");
+  useTitle("Dataxplorer - Upload Dataset");
 
   const { user } = useAuth0();
+  const location = useLocation();
   const token = useStoreState((state) => state.AuthToken.value);
   const steps = ["Connect", "Processing Data", "Description", "Finished"];
   const [_, setPlanDialog] = useRecoilState(planDialogAtom);
@@ -97,10 +101,11 @@ function DatasetUploadSteps(props: Props) {
   const {
     loadedProgress,
     percentageLoadedProgress,
-    estUploadTime,
-    setEstUploadTime,
+    remainingTime,
+    resetProgress,
     onUploadProgress,
-  } = useOnUploadProgress();
+  } = useUploadProgress();
+
   const {
     loadDataset: loadSampleDataset,
     sampleData,
@@ -113,23 +118,6 @@ function DatasetUploadSteps(props: Props) {
     setChartFromAPI: () => {},
     chartFromAPI: null,
   });
-
-  React.useEffect(() => {
-    let timer: any;
-
-    if (estUploadTime > 0) {
-      timer = setInterval(() => {
-        setEstUploadTime((prevEstUploadTime) => prevEstUploadTime - 1);
-      }, 1000); // 1000 milliseconds = 1 second
-    }
-
-    //Cleanup the timer when estUploadTime becomes 0 or less
-    return () => {
-      if (timer) {
-        clearInterval(timer);
-      }
-    };
-  }, [estUploadTime]);
 
   const handleNext = () => {
     //handles stepper navigation
@@ -169,7 +157,7 @@ function DatasetUploadSteps(props: Props) {
         { ...formDetails, authId: user?.sub, id: props.datasetId },
         {
           headers: {
-            "Content-Type": "application/json",
+            "Content-Type": APPLICATION_JSON,
             Authorization: `Bearer ${token}`,
           },
         }
@@ -205,6 +193,8 @@ function DatasetUploadSteps(props: Props) {
       });
   };
 
+  const dataUploadError = "Dataset upload error";
+
   const onFileSubmit = (file: File) => {
     setSelectedFile(file);
     const formData = new FormData();
@@ -235,7 +225,7 @@ function DatasetUploadSteps(props: Props) {
         }
         if (response.data?.errorType !== "planError") {
           setProcessingError(response.data.error);
-          console.debug("Dataset upload error", response.data.error);
+          console.debug(dataUploadError, response.data.error);
           return;
         }
         if (response.data?.processingMessage) {
@@ -257,7 +247,7 @@ function DatasetUploadSteps(props: Props) {
         }
       })
       .catch((error) => {
-        console.debug("Dataset upload error", error);
+        console.debug(dataUploadError, error);
         setProcessingError(defaultProcessingError);
         setSelectedFile(null);
       });
@@ -269,13 +259,14 @@ function DatasetUploadSteps(props: Props) {
     props.setDatasetId(id);
     //set active step to processing
     setActiveStep(1);
+    resetProgress();
     axios
       .post(
         `${process.env.REACT_APP_API}/external-sources/download`,
         { ...externalDataset, id },
         {
           headers: {
-            "Content-Type": "application/json",
+            "Content-Type": APPLICATION_JSON,
             Authorization: `Bearer ${token}`,
           },
           onUploadProgress,
@@ -283,10 +274,10 @@ function DatasetUploadSteps(props: Props) {
       )
       .then((response) => {
         //populate formDetails with externalDataset fields to be used in metadata
-
+        resetProgress();
         if (response.data.error) {
           setProcessingError(response.data.error);
-          console.debug("Dataset upload error", response.data.error);
+          console.debug(dataUploadError, response.data.error);
         } else {
           setFormDetails({
             category: "",
@@ -302,7 +293,8 @@ function DatasetUploadSteps(props: Props) {
         }
       })
       .catch((error) => {
-        console.debug("Dataset upload error", error);
+        console.debug(dataUploadError, error);
+        resetProgress();
         setActiveStep(0);
         setProcessingError(defaultProcessingError);
       });
@@ -312,10 +304,14 @@ function DatasetUploadSteps(props: Props) {
     setActiveStep(0);
   };
 
-  useEffect(() => {
+  const disableActiveOption = () => {
     if (activeOption) {
       setActiveOption(null);
     }
+  };
+
+  useEffect(() => {
+    disableActiveOption();
   }, [activeTab]);
 
   const currentStep = () => {
@@ -323,36 +319,44 @@ function DatasetUploadSteps(props: Props) {
       case 0:
         return (
           <>
-            <Box height={32} />
-            <BreadCrumbs
-              items={[
-                {
-                  title: "Library",
-                  path: location.search.includes("fromHome=true")
-                    ? "/"
-                    : "/dashboard",
-                },
-                {
-                  title: (
-                    <span
-                      onClick={() => {
-                        if (activeOption) {
-                          setActiveOption(null);
-                        }
-                      }}
-                    >
-                      Connect Data
-                    </span>
-                  ),
-                  path: "#",
-                },
-                ...(activeOption ? [{ title: activeOption }] : []),
-              ]}
-            />
-            <Box height={24} />
             <div
               css={`
-                width: 434px;
+                h1 {
+                  font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
+                  font-size: 24px;
+                  font-weight: 400;
+                  color: #231d2c;
+                  margin: 0px;
+                }
+                p {
+                  color: #231d2c;
+                  font-family: "GothamNarrow-Book", "Helvetica Neue", sans-serif;
+                  font-size: 14px;
+                  font-weight: 325;
+                  line-height: 20px;
+                  letter-spacing: 0.5px;
+                  margin: 0px;
+                  padding: 0px;
+                }
+              `}
+            >
+              <h1>
+                {" "}
+                {activeTab === "search"
+                  ? "Search External Data Sources"
+                  : "Connect Your Data"}
+              </h1>
+              <p>
+                {activeTab === "search"
+                  ? "External search allows you to search and import data from WHO, World Bank, The Global Fund, Kaggle and the Humanitarian Data Exchange"
+                  : "Connect your data by uploading a file or connect to your cloud storage."}
+              </p>
+            </div>
+            <Box height={24} />
+
+            <div
+              css={`
+                width: 322px;
                 height: 56px;
               `}
             >
@@ -362,13 +366,13 @@ function DatasetUploadSteps(props: Props) {
                 setActiveTab={setActiveTab}
                 tabs={[
                   {
-                    label: "Federated search",
+                    label: "External search",
                     value: "search",
-                    testId: "federated-search-tab",
+                    testId: "external-search-tab",
                     icon: <Search />,
                   },
                   {
-                    label: "File upload",
+                    label: "Connect Data",
                     value: "file",
                     testId: "file-upload-tab",
                     icon: <DesktopWindowsIcon />,
@@ -410,7 +414,7 @@ function DatasetUploadSteps(props: Props) {
             fileName={(selectedFile && selectedFile.name) as string}
             loaded={loadedProgress}
             percentageLoaded={percentageLoadedProgress}
-            estimatedUploadTime={estUploadTime}
+            estimatedUploadTime={remainingTime}
             processingMessage={processingMessage}
             tryAgain={tryAgain}
           />
@@ -466,7 +470,15 @@ function DatasetUploadSteps(props: Props) {
     <>
       <div
         css={`
-          min-height: calc(100vh - 73px);
+          min-height: calc(100vh - 50px);
+          margin-top: 50px;
+          display: flex;
+          flex-direction: column;
+          justify-content: space-between;
+          @media (max-width: 881px) {
+            min-height: calc(100vh - 66px);
+            margin-top: 66px;
+          }
         `}
       >
         <Container maxWidth="lg">
@@ -485,11 +497,11 @@ function DatasetUploadSteps(props: Props) {
           </div>
 
           <>
-            <PageTopSpacer /> <div>{currentStep()}</div>
+            <div>{currentStep()}</div>
           </>
         </Container>
+        <HomeFooter mini />
       </div>
-      {activeStep === 0 ? <SmallFooter /> : null}
     </>
   );
 }

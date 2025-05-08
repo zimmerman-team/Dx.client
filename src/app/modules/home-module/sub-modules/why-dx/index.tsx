@@ -9,9 +9,10 @@ import EmpowerBlock from "app/modules/home-module/sub-modules/partners/component
 import KeyFeaturesBlock from "app/modules/home-module/sub-modules/why-dx/components/keyFeaturesBlock";
 import { useTitle } from "react-use";
 import { useMediaQuery } from "usehooks-ts";
+import Hero from "app/modules/home-module/components/hero";
 
 export default function WhyDX() {
-  useTitle("DX Dataxplorer - Why Dataxplorer?");
+  useTitle("Dataxplorer - Why Dataxplorer?");
   const isTablet = useMediaQuery("(max-width: 1024px)");
   const isMobile = useMediaQuery("(max-width: 641px)");
   let Ellipses = EllipsesDesktop;
@@ -23,39 +24,57 @@ export default function WhyDX() {
 
   return (
     <>
-      <EmpowerBlock view="why-dx" />
       <div
         css={`
-          background-image: url(${Ellipses});
-          background-repeat: no-repeat;
-          background-position: ${isTablet ? "49% 58%" : "44% 4%"};
+          display: flex;
+          flex-direction: column;
+          justify-content: space-between;
+          margin-top: 50px;
+          min-height: calc(100vh - 50px);
         `}
       >
-        <Container maxWidth="lg">
-          <KeyFeaturesBlock />
+        <div>
+          <Hero />
           <div
             css={`
-              height: 50px;
+              background-color: #f2f7fd;
             `}
-          />
-          <div
-            css={`
-              height: 129px;
-              @media (max-width: 1024px) {
-                height: 39px;
-              }
-            `}
-          />
-          <TryUsBlock />
-          <div
-            css={`
-              height: 50px;
-            `}
-          />
-        </Container>
+          >
+            <Container
+              maxWidth="lg"
+              css={`
+                @media (max-width: 1024px) {
+                  padding: 0 32px !important;
+                }
+
+                @media (max-width: 600px) {
+                  padding: 0 24px !important;
+                }
+              `}
+            >
+              <KeyFeaturesBlock />
+              <div
+                css={`
+                  height: 120px;
+                  @media (max-width: 1024px) {
+                    height: 72px;
+                  }
+                `}
+              />
+              <TryUsBlock />
+              <div
+                css={`
+                  height: 120px;
+                  @media (max-width: 1024px) {
+                    height: 40px;
+                  }
+                `}
+              />
+            </Container>
+          </div>
+        </div>
+        <HomeFooter />
       </div>
-      <div css="width: 100%;height: 19px" />
-      <HomeFooter />
     </>
   );
 }

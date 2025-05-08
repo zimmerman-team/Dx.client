@@ -4,17 +4,22 @@ import { useTitle } from "react-use";
 import { useAuth0 } from "@auth0/auth0-react";
 import { useStoreState } from "app/state/store/hooks";
 import BgEllipses from "app/modules/home-module/assets/full-bg-ellipses.svg";
-import { Box, Container } from "@material-ui/core";
+import { Box, Container, useMediaQuery } from "@material-ui/core";
 import PlanCard from "./components/plan-card";
 
-import HomeFooter from "../../components/Footer";
+import HomeFooter from "app/modules/home-module/components/Footer";
 import Features from "./components/features";
 import MFALogo from "./assets/mfa-logo";
 import TGFLogo from "./assets/tgf-logo";
 import IATILogo from "./assets/iati-logo";
-import { useHistory } from "react-router-dom";
+import { useHistory, useLocation } from "react-router-dom";
+import MobilePlanCard from "./components/mobile-plan-card";
+import { APPLICATION_JSON } from "app/state/api";
+import { PageLoader } from "app/modules/common/page-loader";
+import { useCheckPricingActive } from "app/hooks/useCheckPricingActive";
+import { DESKTOP_BREAKPOINT } from "app/theme";
 
-const views = [
+const VIEWS = [
   {
     name: "Monthly Plan",
     key: "monthly",
@@ -25,12 +30,73 @@ const views = [
   },
 ];
 
+const PLANS = [
+  {
+    name: "Free Plan",
+    yearlyPrice: "Free forever",
+    monthlyPrice: "Free forever",
+    text: "For individuals or teams just getting started in Dataxplorer",
+    current: false,
+    recommended: true,
+    buttonText: "Activate",
+    discount: "",
+    key: "free",
+    available: true,
+  },
+  {
+    name: "Pro",
+    yearlyPrice: "€720",
+    monthlyPrice: "€75",
+    text: "For individual users.",
+    current: false,
+    recommended: false,
+    buttonText: "Activate a free trial",
+    discount: "(Save 20%)",
+    key: "pro",
+    available: true,
+  },
+  {
+    name: "Team",
+    yearlyPrice: "€576",
+    monthlyPrice: "€60",
+    text: "Scale up to 100 users and connect your team.",
+    current: false,
+    recommended: false,
+    buttonText: "Activate free trial",
+    discount: "(Save 20%)",
+    key: "team",
+    available: true,
+  },
+  {
+    name: "Enterprise",
+    yearlyPrice: "Custom",
+    monthlyPrice: "Custom",
+    text: "For organisations looking scale into powerful data visualization, with full support and security",
+    current: false,
+    recommended: false,
+    buttonText: "Contact us",
+    discount: "",
+    key: "enterprise",
+    available: true,
+  },
+];
+
 export default function PricingModule() {
-  useTitle("DX Dataxplorer - Pricing");
+  useTitle("Dataxplorer - Pricing");
 
   const { user, isAuthenticated } = useAuth0();
+  const isMobile = useMediaQuery(`(max-width: ${DESKTOP_BREAKPOINT})`);
+  const location = useLocation();
 
   const [subscriptionPlan, setSubscriptionPlan] = React.useState("monthly");
+  const [currentPlan, setCurrentPlan] = React.useState(
+    isAuthenticated ? PLANS[0].name : ""
+  );
+
+  const { loading: pricingActiveLoading, pricingActive } =
+    useCheckPricingActive();
+
+  const [loading, setLoading] = React.useState(false);
 
   const token = useStoreState((state) => state.AuthToken.value);
 
@@ -46,65 +112,35 @@ export default function PricingModule() {
       },
       {
         headers: {
-          "Content-Type": "application/json",
+          "Content-Type": APPLICATION_JSON,
           Authorization: `Bearer ${token}`,
         },
       }
     );
-    const customerId = customerCreationResponse.data.data;
-    return customerId;
+    return customerCreationResponse.data.data;
   };
 
-  const plans = [
-    {
-      name: "Free Plan",
-      yearlyPrice: "Free forever",
-      monthlyPrice: "Free forever",
-      text: "For individuals or teams just getting started in Dataxplorer",
-      current: isAuthenticated ? true : false,
-      recommended: isAuthenticated ? false : true,
-      buttonText: "Activate",
-      discount: "",
-      key: "free",
-      available: true,
-    },
-    {
-      name: "Pro",
-      yearlyPrice: "€720",
-      monthlyPrice: "€75",
-      text: "For individual users.",
-      current: false,
-      recommended: false,
-      buttonText: "Activate a free trial",
-      discount: "(Save 20%)",
-      key: "pro",
-      available: false,
-    },
-    {
-      name: "Team",
-      yearlyPrice: "€576",
-      monthlyPrice: "€60",
-      text: "Scale up to 100 users and connect your team.",
-      current: false,
-      recommended: false,
-      buttonText: "Activate free trial",
-      discount: "(Save 20%)",
-      key: "team",
-      available: false,
-    },
-    {
-      name: "Enterprise",
-      yearlyPrice: "Custom",
-      monthlyPrice: "Custom",
-      text: "For organisations looking scale into powerful data visualization, with full support and security",
-      current: false,
-      recommended: false,
-      buttonText: "Contact us",
-      discount: "",
-      key: "enterprise",
-      available: false,
-    },
-  ];
+  const getCurrentSubscriptionPlan = async () => {
+    setLoading(true);
+    await axios
+      .get(`${process.env.REACT_APP_API}/stripe/subscription/${user?.sub}`, {
+        headers: {
+          "Content-Type": APPLICATION_JSON,
+          Authorization: `Bearer ${token}`,
+        },
+      })
+      .then((response) => {
+        setCurrentPlan(
+          response.data.data.plan === "Free"
+            ? "Free Plan"
+            : response.data.data.plan
+        );
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+    setLoading(false);
+  };
 
   const createStripeCheckoutSession = async (
     customerId: string,
@@ -121,68 +157,106 @@ export default function PricingModule() {
       },
       {
         headers: {
-          "Content-Type": "application/json",
+          "Content-Type": APPLICATION_JSON,
           Authorization: `Bearer ${token}`,
         },
       }
     );
-    const sessionUrl = checkoutSessionResponse.data.data;
-    return sessionUrl;
+    return checkoutSessionResponse.data.data;
   };
 
   const handlePlanButtonClick = async (key: string) => {
     if (!isAuthenticated) {
       return history.replace(
-        `/onboarding/login?to=${location.pathname}${location.search}`
+        `/onboarding/signin?to=${window.location.pathname}${window.location.search}`
       );
+    }
+    const isInUpgradeFlow =
+      new URLSearchParams(location.search).get("flow") === "upgrade";
+    if (currentPlan !== PLANS[0].name) {
+      const flowParam = isInUpgradeFlow ? "?flow=upgrade" : "";
+      history.push(`/user-management/billing${flowParam}`);
+      return;
     }
     switch (key) {
       case plans[0].key:
+      case plans[1].key:
+      case plans[2].key:
         const customerId = await createNewStripeCustomer();
         if (customerId) {
           const sessionUrl = await createStripeCheckoutSession(customerId, key);
           if (sessionUrl) window.location.href = sessionUrl;
         }
         break;
-      case plans[1].key:
-      case plans[2].key:
       case plans[3].key:
+        history.push("/contact");
+        break;
       default:
         break;
     }
   };
 
+  const plans = React.useMemo(() => {
+    return PLANS.map((plan) => {
+      return {
+        ...plan,
+        current: pricingActive
+          ? plan.name === currentPlan
+          : currentPlan
+          ? plan.name === "Free Plan"
+          : false,
+        available: plan.name === "Free Plan" ? true : pricingActive,
+        recommended: pricingActive
+          ? plan.name === "Pro"
+          : plan.name === "Free Plan",
+      };
+    });
+  }, [currentPlan, pricingActive]);
+
+  React.useEffect(() => {
+    if (isAuthenticated) {
+      getCurrentSubscriptionPlan();
+    } else {
+      setCurrentPlan("");
+    }
+  }, [isAuthenticated]);
+
   return (
     <section
       css={`
-        background: url(${BgEllipses});
-        background-size: 100%;
-        background-position: center 72px;
-        background-repeat: no-repeat;
-        padding-top: 48px; // AppBar height
+        background: linear-gradient(180deg, #fff 0%, #f2f7fd 100%);
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        margin-top: 50px; // AppBar height
+        min-height: calc(100vh - 50px);
       `}
     >
+      {(loading || pricingActiveLoading) && <PageLoader />}
       <Container maxWidth="lg">
         <h1
           css={`
             margin: 0;
             padding: 0;
             margin-top: 124px;
-            font-size: 55px;
+            font-size: 48px;
             font-weight: 400;
             font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
             line-height: normal;
             color: #231d2c;
             text-align: center;
+            @media (max-width: 1300px) {
+              font-size: 40px;
+            }
           `}
         >
-          Create reports that aren't a pain to build
+          Create stories that aren't a pain to build
         </h1>
         <p
           css={`
             margin: 0;
             padding: 0;
-            font-size: 14px;
+            font-size: 16px;
             font-weight: 325;
             font-family: "GothamNarrow-Book", "Helvetica Neue", sans-serif;
             line-height: normal;
@@ -190,10 +264,19 @@ export default function PricingModule() {
             color: #231d2c;
             text-align: center;
             margin-top: 10px;
+            @media (max-width: 1300px) {
+              font-size: 18px;
+            }
+            @media (max-width: 600px) {
+              font-size: 16px;
+              b {
+                font-weight: 350;
+              }
+            }
           `}
         >
-          DATAXPLORER simplifies and empowers visual data reporting for all.
-          <b> Free for all.</b>
+          Dataxplorer simplifies and empowers visual data storytelling for all.
+          Free for all.
         </p>
         <Box height={65} />
         <div
@@ -202,6 +285,10 @@ export default function PricingModule() {
             justify-content: center;
             align-items: center;
             column-gap: 20px;
+            @media (max-width: 600px) {
+              flex-direction: column;
+              row-gap: 8px;
+            }
           `}
         >
           <div>
@@ -211,7 +298,7 @@ export default function PricingModule() {
                 padding: 0;
                 font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
                 color: #231d2c;
-                font-size: 20px;
+                font-size: 18px;
                 font-weight: 400;
                 line-height: normal;
               `}
@@ -256,7 +343,7 @@ export default function PricingModule() {
               }
             `}
           >
-            {views.map((view) => (
+            {VIEWS.map((view) => (
               <button
                 key={view.key}
                 css={`
@@ -277,26 +364,42 @@ export default function PricingModule() {
           </div>
         </div>
         <Box height={65} />
-
-        <div
-          css={`
-            display: flex;
-            justify-content: flex-end;
-            column-gap: 24px;
-          `}
-        >
-          {plans.map((plan) => (
-            <PlanCard
-              plan={plan}
-              activeView={subscriptionPlan}
+        {isMobile ? (
+          <>
+            <MobilePlanCard
+              plans={plans}
+              subscriptionPlan={subscriptionPlan}
               onButtonClick={handlePlanButtonClick}
             />
-          ))}
-        </div>
+          </>
+        ) : (
+          <>
+            <div
+              css={`
+                display: flex;
+                justify-content: flex-end;
+                column-gap: 24px;
+              `}
+            >
+              {plans.map((plan) => (
+                <PlanCard
+                  key={plan.key}
+                  plan={plan}
+                  activeView={subscriptionPlan}
+                  onButtonClick={handlePlanButtonClick}
+                />
+              ))}
+            </div>
+            <Features />
+          </>
+        )}
 
-        <Features />
-
-        <Box height={100} />
+        <Box
+          height={{
+            xs: 32,
+            lg: 100,
+          }}
+        />
         <div>
           <h2
             css={`
@@ -307,6 +410,7 @@ export default function PricingModule() {
               font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
               color: #262c34;
               text-align: center;
+              margin: 0;
             `}
           >
             Trusted by
@@ -318,11 +422,19 @@ export default function PricingModule() {
               justify-content: center;
               align-items: center;
               column-gap: 200px;
+
+              @media (max-width: 1024px) {
+                column-gap: 85px;
+              }
+              @media (max-width: 600px) {
+                column-gap: 42.5px;
+              }
             `}
           >
             <MFALogo /> <TGFLogo /> <IATILogo />
           </div>
         </div>
+
         <Box height={100} />
       </Container>
       <HomeFooter />

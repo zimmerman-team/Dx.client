@@ -1,3 +1,4 @@
+import { APPLICATION_JSON } from "app/state/api";
 import { useStoreState } from "app/state/store/hooks";
 import axios from "axios";
 import { get } from "lodash";
@@ -17,6 +18,8 @@ export function useSearchMediaSources(source: string, elementType: string) {
 
   const DEFAULT_SEARCH_QUERY = "figma";
 
+  const contentType = APPLICATION_JSON;
+
   const getYoutubeVideos = async (q: string, nextPage: boolean) => {
     await axios
       .get(
@@ -27,7 +30,7 @@ export function useSearchMediaSources(source: string, elementType: string) {
         }`,
         {
           headers: {
-            "Content-Type": "application/json",
+            "Content-Type": contentType,
             Authorization: `Bearer ${token}`,
           },
         }
@@ -67,7 +70,7 @@ export function useSearchMediaSources(source: string, elementType: string) {
         }`,
         {
           headers: {
-            "Content-Type": "application/json",
+            "Content-Type": contentType,
             Authorization: `Bearer ${token}`,
           },
         }
@@ -107,7 +110,7 @@ export function useSearchMediaSources(source: string, elementType: string) {
         }`,
         {
           headers: {
-            "Content-Type": "application/json",
+            "Content-Type": contentType,
             Authorization: `Bearer ${token}`,
           },
         }
@@ -149,7 +152,7 @@ export function useSearchMediaSources(source: string, elementType: string) {
         }`,
         {
           headers: {
-            "Content-Type": "application/json",
+            "Content-Type": contentType,
             Authorization: `Bearer ${token}`,
           },
         }

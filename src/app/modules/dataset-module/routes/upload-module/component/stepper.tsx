@@ -1,4 +1,5 @@
 import React from "react";
+import CompleteCheckIcon from "app/modules/dataset-module/routes/upload-module/assets/complete-check";
 
 export default function Stepper(
   props: Readonly<{
@@ -13,7 +14,7 @@ export default function Stepper(
   return (
     <div
       css={`
-        gap: 1rem;
+        gap: 8px;
         display: flex;
         align-items: center;
       `}
@@ -22,42 +23,78 @@ export default function Stepper(
         <div
           css={`
             width: 80px;
-            border: 1px solid
-              ${props.index <= props.activeStep ? "#6061e5" : "#231D2C"};
+            border-top: 2px solid
+              ${props.index <= props.activeStep ? "#6061e5" : "#868E96"};
           `}
         />
       )}
-      <button
-        type="button"
+      <div
+        css={`
+          position: relative;
+        `}
         onClick={() => {
+          if (props.disabled) return;
           if (props.activeStep > 0) {
             props.setActiveStep(props.index);
           }
         }}
-        css={`
-          outline: none;
-          border: none;
-          height: 27px;
-          display: flex;
-          cursor: pointer;
-          padding: 5px 16px;
-          width: max-content;
-          align-items: center;
-          border-radius: 32px;
-          justify-content: center;
-          font-weight: ${props.index === props.activeStep && "bold"};
-          border: ${props.index === props.activeStep && "1px solid #6061E5"};
-          background: ${props.index <= props.activeStep
-            ? "#dadaf8"
-            : "#E4E4E4"};
-          :disabled {
-            cursor: not-allowed;
-          }
-        `}
-        disabled={props.disabled}
       >
-        {props.tab}
-      </button>
+        {props.index < props.activeStep || props.activeStep === 3 ? (
+          <div
+            css={`
+              width: 32px;
+              height: 32px;
+            `}
+          >
+            <CompleteCheckIcon />
+          </div>
+        ) : (
+          <button
+            type="button"
+            css={`
+              outline: none;
+              border: none;
+              height: 32px;
+              width: 32px;
+              display: flex;
+              cursor: pointer;
+              align-items: center;
+              border-radius: 50%;
+              justify-content: center;
+              font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
+              font-weight: 400;
+              font-size: 14px;
+              border: 2px solid
+                ${props.index <= props.activeStep ? "#6061E5" : "#868E96"};
+              background: white;
+              color: ${props.index <= props.activeStep ? "#6061E5" : "#868E96"};
+              :disabled {
+                cursor: not-allowed;
+              }
+            `}
+            disabled={props.disabled}
+          >
+            0{props.index + 1}
+          </button>
+        )}
+        <p
+          css={`
+            position: absolute;
+            margin: 0;
+            left: -48px;
+            width: 128px;
+            text-align: center;
+            font-size: 14px;
+            font-family: ${props.index <= props.activeStep
+                ? "GothamNarrow-Bold"
+                : "GothamNarrow-Book"},
+              "Helvetica Neue", sans-serif;
+            color: ${props.index <= props.activeStep ? "#6061E5" : "#868E96"};
+          `}
+        >
+          {props.tab}
+        </p>
+      </div>
     </div>
   );
 }

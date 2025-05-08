@@ -28,14 +28,21 @@ export const turnsDataCss = css`
   h2 {
     font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
     font-weight: 400;
-    font-size: 34px;
-    line-height: 42px;
-    color: #2b3674;
+    font-size: 36px;
+    line-height: normal;
+    color: #231d2c;
     margin: 0;
     padding: 0;
     @media (max-width: 700px) {
       font-size: 29px;
     }
+  }
+
+  h4 {
+    line-height: 24px;
+    margin: 0;
+    color: #231d2c;
+    font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
   }
 
   p {
@@ -49,7 +56,6 @@ export const turnsDataCss = css`
     justify-content: center;
   }
 
-  button,
   a {
     padding: 8px 27px;
     height: 41px;
@@ -82,22 +88,6 @@ export const featuredAssetsCss = css`
     line-height: 29px;
     color: #000000;
     margin: 0;
-  }
-`;
-
-export const datsetDetailImgcss = css`
-  width: 710px;
-  height: 428px;
-  border-radius: 14px;
-  @media (max-width: 1240px) {
-    width: 70%;
-    object-fit: contain;
-    height: 100%;
-  }
-  @media (max-width: 700px) {
-    width: 95%;
-    object-fit: contain;
-    height: 100%;
   }
 `;
 
@@ -145,7 +135,7 @@ export const searchInputCss = (
 export const iconButtonCss = (active?: boolean) => css`
   padding: 3px;
   ${active
-    ? ` svg > circle {
+    ? ` svg > circle, rect {
       fill:  #231d2c;
     }
     svg > path,
@@ -159,7 +149,8 @@ export const iconButtonCss = (active?: boolean) => css`
     background: transparent;
     padding: none;
 
-    svg > circle {
+    svg > circle,
+    rect {
       fill: #231d2c;
     }
     svg > path,
@@ -175,10 +166,10 @@ export const sortByItemCss = (active: boolean) => css`
   font-size: 12px;
   padding: 8px 22px;
   font-family: "GothamNarrow-Book", "Helvetica Neue", sans-serif;
-  background: ${active ? "#f1f3f5" : "transparent"};
+  background: ${active ? "#DFE3E5" : "transparent"};
 
   &:hover {
     cursor: pointer;
-    background: #f1f3f5;
+    background: #dfe3e5;
   }
 `;

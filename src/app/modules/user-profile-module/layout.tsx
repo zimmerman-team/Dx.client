@@ -1,14 +1,14 @@
 import React from "react";
 import Tab from "./component/tab";
 import Profile from "./sub-module/profile";
-import Settings from "./sub-module/settings";
 import { useAuth0 } from "@auth0/auth0-react";
 import { bigAvicss, layoutcss } from "./style";
 import { Box, Container, Grid } from "@material-ui/core";
-import { PageTopSpacer } from "../common/page-top-spacer";
 import { Route, Switch, useHistory, useParams } from "react-router-dom";
 import { LogOutIcon, RightIcon } from "./component/icons";
 import LogOutDialog from "app/components/Dialogs/logOutDialog";
+import Billing from "app/modules/user-profile-module/sub-module/billing";
+import HomeFooter from "app/modules/home-module/components/Footer";
 
 export default function UserProfileLayout() {
   const { user } = useAuth0();
@@ -22,23 +22,22 @@ export default function UserProfileLayout() {
     {
       title: "profile",
       component: (active: boolean) => <RightIcon active={active} />,
-    },
-    {
-      title: "settings",
-      component: (active: boolean) => <RightIcon active={active} />,
+      testId: "",
     },
     {
       title: "billing",
       component: (active: boolean) => <RightIcon active={active} />,
+      testId: "",
     },
     {
-      title: "Log Out",
+      title: "Sign Out",
       component: (active: boolean) => <LogOutIcon active={active} />,
+      testId: "sign-out-btn",
     },
   ];
 
   const handleTabClick = (index: number, title: string) => {
-    if (title === "Log Out") {
+    if (title === "Sign Out") {
       setLogoutModalDisplay(true);
     } else {
       history.push(`/user-management/${title}`);
@@ -48,9 +47,34 @@ export default function UserProfileLayout() {
   return (
     <div css={layoutcss}>
       <Container maxWidth="lg">
-        <PageTopSpacer />
-        <Grid container spacing={3}>
-          <Grid item xs={12} sm={6} md={5} lg={4}>
+        <div
+          css={`
+            height: 56px;
+          `}
+        />
+        <div
+          css={`
+            display: flex;
+            gap: 120px;
+            @media (max-width: 960px) {
+              flex-direction: column;
+              gap: 72px;
+            }
+            @media (max-width: 600px) {
+              gap: 40px;
+            }
+          `}
+        >
+          <div
+            css={`
+              @media (max-width: 960px) {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+              }
+            `}
+          >
             <Box height={20} />
             <div css={bigAvicss}>
               <p>
@@ -58,38 +82,55 @@ export default function UserProfileLayout() {
                 {user?.family_name?.slice(0, 1)}
               </p>
             </div>
-            <Box height={109} />
-            <div>
+            <Box height={64} />
+            <div
+              css={`
+                @media (max-width: 960px) {
+                  width: 100%;
+                }
+              `}
+            >
               {tabList.map((tab, index) => (
-                <div key={tab.title}>
+                <div key={tab.title} data-cy={tab.testId}>
                   <Tab
                     title={tab.title}
                     active={tab.title === activeTab}
                     handleClick={() => handleTabClick(index, tab.title)}
                     component={() => tab.component(tab.title === activeTab)}
-                    disabled={tab.title === "billing"}
+                    disabled={false}
                   />
                   <Box height={10} />
                 </div>
               ))}
             </div>
-          </Grid>
-          <Grid item xs={12} sm={6} md={5} lg={6}>
+          </div>
+          <div
+            css={`
+              flex: 1;
+            `}
+          >
             <Switch>
               <Route path="/user-management/profile">
                 <Profile />
               </Route>
-              <Route path="/user-management/settings">
-                <Settings />
+              <Route path="/user-management/billing">
+                <Billing />
               </Route>
             </Switch>
-          </Grid>
-          <LogOutDialog
-            modalDisplay={logoutModalDisplay}
-            setModalDisplay={setLogoutModalDisplay}
-          />
-        </Grid>
+          </div>
+        </div>
+        <LogOutDialog
+          modalDisplay={logoutModalDisplay}
+          setModalDisplay={setLogoutModalDisplay}
+        />
+        <div
+          css={`
+            height: 56px;
+          `}
+        />
       </Container>
+
+      <HomeFooter mini />
     </div>
   );
 }

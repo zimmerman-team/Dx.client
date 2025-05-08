@@ -8,7 +8,7 @@ import { useScrollToTop } from "app/hooks/useScrollToTop";
 import { useRouteListener } from "app/hooks/useRouteListener";
 import { PageLoader } from "app/modules/common/page-loader";
 import { RouteWithAppBar } from "app/utils/RouteWithAppBar";
-import { Route, Switch, useHistory } from "react-router-dom";
+import { Route, Switch, useHistory, useLocation } from "react-router-dom";
 import { NoMatchPage } from "app/modules/common/no-match-page";
 import { useGoogleOneTapLogin } from "react-google-one-tap-login";
 import {
@@ -21,6 +21,13 @@ import {
 } from "@auth0/auth0-react";
 import axios from "axios";
 import { AuthProtectedRoute } from "./utils/AuthProtectedRoute";
+import {
+  PaymentSuccessCallbackModule,
+  PaymentCanceledCallbackModule,
+} from "app/modules/callback-module/payment";
+import { useRecoilValue } from "recoil";
+import { fetchPlanLoadingAtom } from "./state/recoil/atoms";
+import { APPLICATION_JSON } from "./state/api";
 
 const LandingModule = lazy(
   () => import("app/modules/home-module/sub-modules/landing")
@@ -45,15 +52,9 @@ const PricingModule = lazy(
 const EmbedChartModule = lazy(
   () => import("app/modules/embed-module/embedChart")
 );
-import {
-  PaymentSuccessCallbackModule,
-  PaymentCanceledCallbackModule,
-} from "app/modules/callback-module/payment";
-import { useRecoilValue } from "recoil";
-import { fetchPlanLoadingAtom } from "./state/recoil/atoms";
 
 const ChartModule = lazy(() => import("app/modules/chart-module"));
-const ReportModule = lazy(() => import("app/modules/report-module"));
+const StoryModule = lazy(() => import("app/modules/story-module"));
 
 const AuthCallbackModule = lazy(() => import("app/modules/callback-module"));
 const OnboardingModule = lazy(() => import("app/modules/onboarding-module"));
@@ -170,6 +171,7 @@ const OneTapLoginComponent = () => {
 
 const IntercomBootupComponent = () => {
   const { isAuthenticated, user, getAccessTokenSilently } = useAuth0();
+  const location = useLocation();
 
   React.useEffect(() => {
     if (window?.Intercom) {
@@ -183,7 +185,7 @@ const IntercomBootupComponent = () => {
         `${process.env.REACT_APP_API}/users/intercom-hash`,
         {
           headers: {
-            "Content-Type": "application/json",
+            "Content-Type": APPLICATION_JSON,
             Authorization: `Bearer ${newToken}`,
           },
         }
@@ -226,6 +228,18 @@ const IntercomBootupComponent = () => {
   return <></>;
 };
 
+const StripeReturn = () => {
+  const history = useHistory();
+  React.useEffect(() => {
+    // Get the saved return route, remove from LS and redirect
+    const returnRoute =
+      localStorage.getItem("upgradeReturnRoute") ?? "/user-management/billing";
+    localStorage.removeItem("upgradeReturnRoute");
+    history.replace(returnRoute);
+  }, []);
+  return <></>;
+};
+
 export function MainRoutes() {
   useScrollToTop();
   useRouteListener();
@@ -250,6 +264,9 @@ export function MainRoutes() {
           <Route exact path="/callback">
             <AuthCallbackModule />
           </Route>
+          <Route exact path="/stripe-return">
+            <StripeReturn />
+          </Route>
           <RouteWithAppBar exact path="/">
             <HomeModule />
           </RouteWithAppBar>
@@ -267,9 +284,9 @@ export function MainRoutes() {
               <DashboardModule />
             </AuthProtectedRoute>
           </RouteWithAppBar>
-          <RouteWithAppBar exact path="/report/:page/:view?">
+          <RouteWithAppBar exact path="/story/:page/:view?">
             <AuthProtectedRoute>
-              <ReportModule />
+              <StoryModule />
             </AuthProtectedRoute>
           </RouteWithAppBar>
           <RouteWithAppBar exact path="/dataset/:page/:view?">
@@ -312,6 +329,7 @@ export function MainRoutes() {
           <RouteWithAppBar exact path="/payment/canceled">
             <PaymentCanceledCallbackModule />
           </RouteWithAppBar>
+
           <RouteWithAppBar path="*">
             <NoMatchPage />
           </RouteWithAppBar>

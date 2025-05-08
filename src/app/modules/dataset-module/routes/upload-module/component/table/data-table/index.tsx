@@ -37,7 +37,7 @@ export function DatasetDataTable(props: DataThemesDataTableProps) {
     { [key: string]: number | string | null | boolean }[]
   >([]);
   const observerTarget = React.useRef(null);
-  const { isObserved } = useInfinityScroll(observerTarget);
+  const { isObserved } = useInfinityScroll(observerTarget, 0);
 
   const {
     data: tableData,
@@ -47,10 +47,8 @@ export function DatasetDataTable(props: DataThemesDataTableProps) {
 
   React.useEffect(() => {
     //load data if intersection observer is triggered
-    if (data.length > 0) {
-      if (isObserved) {
-        refetch(true);
-      }
+    if (data.length > 0 && isObserved) {
+      refetch(true);
     }
   }, [isObserved]);
 

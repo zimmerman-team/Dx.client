@@ -26,13 +26,7 @@ function Providers(props: ProviderProps) {
               <AppContainer>
                 {/* react router */}
                 <Router>
-                  <div
-                    css={`
-                      min-height: calc(100vh - 60px);
-                    `}
-                  >
-                    {props.children}
-                  </div>
+                  <div>{props.children}</div>
                 </Router>
               </AppContainer>
             </StoreProvider>

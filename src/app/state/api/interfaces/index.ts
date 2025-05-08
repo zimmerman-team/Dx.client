@@ -11,8 +11,8 @@ import {
   ChartsEnabledFilterOptionGroupsStateModel,
   ChartsMappingStateModel,
   SelectedAIChartModel,
-} from "../action-reducers/sync/charts";
-import { ChartsAppliedFiltersStateModel } from "../action-reducers/sync/charts/filters";
+} from "app/state/api/action-reducers/sync/charts";
+import { ChartsAppliedFiltersStateModel } from "app/state/api/action-reducers/sync/charts/filters";
 
 export interface RequestValues<T> {
   values?: T;
@@ -111,7 +111,7 @@ export interface StoreModel {
   };
   charts: {
     ChartGet: ApiCallModel;
-    ChartGetInReport: ApiCallModel;
+    ChartGetInStory: ApiCallModel;
     ChartCreate: ApiCallModel;
     ChartUpdate: ApiCallModel;
     ChartDelete: ApiCallModel;
@@ -127,18 +127,18 @@ export interface StoreModel {
     appliedFilters: ChartsAppliedFiltersStateModel;
     enabledFilterOptionGroups: ChartsEnabledFilterOptionGroupsStateModel;
   };
-  reports: {
-    ReportGet: ApiCallModel;
-    ReportCreate: ApiCallModel;
-    ReportUpdate: ApiCallModel;
-    ReportDelete: ApiCallModel;
-    ReportDuplicate: ApiCallModel;
-    ReportGetList: ApiCallModel;
-    ReportsCount: ApiCallModel;
+  stories: {
+    StoryGet: ApiCallModel;
+    StoryCreate: ApiCallModel;
+    StoryUpdate: ApiCallModel;
+    StoryDelete: ApiCallModel;
+    StoryDuplicate: ApiCallModel;
+    StoryGetList: ApiCallModel;
+    StoriesCount: ApiCallModel;
   };
   search: {
     charts: ApiCallModel;
-    reports: ApiCallModel;
+    stories: ApiCallModel;
     datasets: ApiCallModel;
   };
 }

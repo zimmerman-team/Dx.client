@@ -13,16 +13,21 @@ import CircleLoader from "app/modules/home-module/components/Loader";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 import DeleteChartDialog from "app/components/Dialogs/deleteChartDialog";
 import { HomepageTable } from "app/modules/home-module/components/Table";
-import { coloredEchartTypes } from "app/modules/chart-module/routes/chart-type/data";
+import {
+  coloredEchartTypes,
+  echartTypes,
+} from "app/modules/chart-module/routes/chart-type/data";
 import ChartAddnewCard from "app/modules/home-module/components/AssetCollection/Charts/chartAddNewCard";
 import GridItem from "app/modules/home-module/components/AssetCollection/Charts/gridItem";
 import { useAuth0 } from "@auth0/auth0-react";
 import { useSetRecoilState } from "recoil";
 import { planDialogAtom } from "app/state/recoil/atoms";
+import { getLimit } from "app/modules/home-module/components/AssetCollection/Datasets/datasetsGrid";
 
 interface Props {
   sortBy: string;
   searchStr: string;
+  userOnly?: boolean;
   view: "grid" | "table";
   addCard?: boolean;
 }
@@ -45,7 +50,8 @@ export default function ChartsGrid(props: Props) {
   const [enableButton, setEnableButton] = React.useState<boolean>(false);
   const token = useStoreState((state) => state.AuthToken.value);
   const initialRender = React.useRef(true);
-  const limit = 15;
+  const limit = getLimit();
+
   const [offset, setOffset] = React.useState(0);
 
   const { isObserved } = useInfinityScroll(observerTarget);
@@ -77,15 +83,20 @@ export default function ChartsGrid(props: Props) {
       props.searchStr?.length > 0
         ? `"where":{"name":{"like":"${props.searchStr}.*","options":"i"}},`
         : "";
-    return `filter={${value}"order":"${
+
+    return `${props.userOnly ? "userOnly=true&" : ""}filter={${value}"order":"${
       props.sortBy
-    } desc","limit":${limit},"offset":${fromZeroOffset ? 0 : offset}}`;
+    } ${props.sortBy === "name" ? "asc" : "desc"}","limit":${limit},"offset":${
+      fromZeroOffset ? 0 : offset
+    }}`;
   };
 
   const getWhereString = () => {
-    return props.searchStr?.length > 0
-      ? `where={"name":{"like":"${props.searchStr}.*","options":"i"}}`
-      : "";
+    const value =
+      props.searchStr?.length > 0
+        ? `where={"name":{"like":"${props.searchStr}.*","options":"i"}}`
+        : "";
+    return `${props.userOnly ? "userOnly=true&" : ""}${value}`;
   };
 
   const loadData = (fromZeroOffset?: boolean) => {
@@ -118,13 +129,14 @@ export default function ChartsGrid(props: Props) {
 
   React.useEffect(() => {
     //load data if intersection observer is triggered
-    if (chartsCount > limit) {
-      if (isObserved && chartsLoadSuccess) {
-        if (loadedCharts.length !== chartsCount) {
-          //update the offset value for the next load
-          setOffset(offset + limit);
-        }
-      }
+    if (
+      chartsCount > limit &&
+      isObserved &&
+      chartsLoadSuccess &&
+      loadedCharts.length !== chartsCount
+    ) {
+      //update the offset value for the next load
+      setOffset(offset + limit);
     }
   }, [isObserved]);
 
@@ -211,7 +223,7 @@ export default function ChartsGrid(props: Props) {
     if (!chartsLoadSuccess) {
       return;
     }
-    //update the loaded reports
+    //update the loaded stories
     setLoadedCharts((prevCharts) => {
       const prevChartsIds = prevCharts.map((c) => c.id);
       const f = charts.filter((chart) => !prevChartsIds.includes(chart.id));
@@ -221,7 +233,7 @@ export default function ChartsGrid(props: Props) {
 
   React.useEffect(() => {
     reloadData();
-  }, [props.sortBy, token]);
+  }, [props.sortBy, token, props.userOnly]);
 
   const [,] = useDebounce(
     () => {
@@ -245,7 +257,7 @@ export default function ChartsGrid(props: Props) {
               <GridItem
                 id={c.id}
                 title={c.name}
-                date={c.createdDate}
+                date={c.updatedDate}
                 viz={getIcon(c.vizType)}
                 vizType={c.vizType}
                 isMappingValid={c.isMappingValid}
@@ -253,6 +265,7 @@ export default function ChartsGrid(props: Props) {
                 handleDuplicate={() => handleDuplicate(c.id)}
                 owner={c.owner}
                 isAIAssisted={c.isAIAssisted}
+                ownerName={c.ownerName}
               />
               <div
                 css={`
@@ -268,15 +281,19 @@ export default function ChartsGrid(props: Props) {
       )}
       {props.view === "table" && (
         <HomepageTable
+          handleDelete={handleModal}
+          handleDuplicate={handleDuplicate}
           tableData={{
             columns: [
               { key: "name", label: "Name" },
-              { key: "title", label: "Description" },
-              { key: "createdDate", label: "Date" },
+              { key: "vizType", label: "Chart Type" },
+              { key: "updatedDate", label: "Last modified" },
             ],
             data: loadedCharts.map((data) => ({
               ...data,
               type: "chart",
+              vizType: echartTypes(false).find((e) => e.id === data.vizType)
+                ?.label,
             })),
           }}
         />

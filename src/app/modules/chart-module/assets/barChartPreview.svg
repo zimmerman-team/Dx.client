@@ -1,17 +1,13 @@
-<svg width="225" height="213" viewBox="0 0 225 213" fill="none" xmlns="http://www.w3.org/2000/svg">
-<rect x="15" y="208" width="27" height="5" rx="2.5" fill="#BCBEC2"/>
-<rect x="76" y="208" width="27" height="5" rx="2.5" fill="#BCBEC2"/>
-<rect x="127" y="208" width="26" height="5" rx="2.5" fill="#BCBEC2"/>
-<rect x="185" y="208" width="26" height="5" rx="2.5" fill="#BCBEC2"/>
-<line y1="41.7932" x2="225" y2="41.7932" stroke="#CBCBCB" stroke-width="0.413664"/>
-<line y1="111.793" x2="225" y2="111.793" stroke="#CBCBCB" stroke-width="0.413664"/>
-<line y1="188.793" x2="225" y2="188.793" stroke="#CBCBCB" stroke-width="0.413664"/>
-<rect x="15" y="196.104" width="152.642" height="24.8198" rx="12.4099" transform="rotate(-90 15 196.104)" fill="#98A1AA"/>
-<rect x="77" y="196" width="164" height="25" rx="12.5" transform="rotate(-90 77 196)" fill="#98A1AA"/>
-<rect x="15" y="196" width="74.4595" height="24.8198" rx="12.4099" transform="rotate(-90 15 196)" fill="#373D43"/>
-<rect x="77" y="196" width="102" height="25" rx="12.5" transform="rotate(-90 77 196)" fill="#373D43"/>
-<rect x="127" y="196" width="135" height="25" rx="12.5" transform="rotate(-90 127 196)" fill="#98A1AA"/>
-<rect x="185" y="196" width="196" height="25" rx="12.5" transform="rotate(-90 185 196)" fill="#98A1AA"/>
-<rect x="127" y="196" width="58" height="25" rx="12.5" transform="rotate(-90 127 196)" fill="#373D43"/>
-<rect x="185" y="196" width="94" height="25" rx="12.5" transform="rotate(-90 185 196)" fill="#373D43"/>
+<svg width="226" height="214" viewBox="0 0 226 214" fill="none" xmlns="http://www.w3.org/2000/svg">
+<line x1="0.5" y1="42.2932" x2="225.5" y2="42.2932" stroke="#CFD4DA" stroke-width="0.413664"/>
+<line x1="0.5" y1="116.293" x2="225.5" y2="116.293" stroke="#CFD4DA" stroke-width="0.413664"/>
+<line x1="0.5" y1="190.293" x2="225.5" y2="190.293" stroke="#CFD4DA" stroke-width="0.413664"/>
+<rect x="15.5" y="208.038" width="27" height="5" rx="2.5" fill="#CFD4DA"/>
+<rect x="16.5" y="196.142" width="152.642" height="25" rx="12.5" transform="rotate(-90 16.5 196.142)" fill="#373D43"/>
+<rect x="72.5" y="208.5" width="27" height="5" rx="2.5" fill="#CFD4DA"/>
+<rect x="73.5" y="196.5" width="164" height="25" rx="12.5" transform="rotate(-90 73.5 196.5)" fill="#373D43"/>
+<rect x="129.5" y="208.5" width="27" height="5" rx="2.5" fill="#CFD4DA"/>
+<rect x="130.5" y="196.5" width="135" height="25" rx="12.5" transform="rotate(-90 130.5 196.5)" fill="#373D43"/>
+<rect x="186.5" y="208.5" width="27" height="5" rx="2.5" fill="#CFD4DA"/>
+<rect x="187.5" y="196.5" width="196" height="25" rx="12.5" transform="rotate(-90 187.5 196.5)" fill="#373D43"/>
 </svg>

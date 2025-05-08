@@ -2,19 +2,18 @@ import React from "react";
 import moment from "moment";
 import IconButton from "@material-ui/core/IconButton";
 import { ReactComponent as ClockIcon } from "app/modules/home-module/assets/clock-icon.svg";
-import { ReactComponent as EditIcon } from "app/modules/home-module/assets/edit.svg";
-import { ReactComponent as DuplicateIcon } from "app/modules/home-module/assets/duplicate.svg";
-import { ReactComponent as DeleteIcon } from "app/modules/home-module/assets/delete.svg";
+import { ReactComponent as OwnerIcon } from "app/modules/home-module/assets/owner-icon.svg";
 import { ReactComponent as MenuIcon } from "app/modules/home-module/assets/menu.svg";
 import { ReactComponent as DataCardImg } from "app/modules/home-module/assets/data-card-img.svg";
 import { ReactComponent as InfoIcon } from "app/modules/home-module/assets/info-icon.svg";
-
-import { Tooltip, useMediaQuery } from "@material-ui/core";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
+import { useMediaQuery } from "@material-ui/core";
 import { useAuth0 } from "@auth0/auth0-react";
 import { useStoreActions } from "app/state/store/hooks";
 import { isChartAIAgentActive } from "app/state/recoil/atoms";
 import { useRecoilState } from "recoil";
+import MenuItems from "app/modules/home-module/components/AssetCollection/Datasets/menuItems";
+import { MOBILE_BREAKPOINT } from "app/theme";
 
 interface Props {
   path: string;
@@ -27,15 +26,16 @@ interface Props {
   id?: string;
   owner: string;
   inChartBuilder: boolean;
+  ownerName: string;
 }
 
 export default function GridItem(props: Readonly<Props>) {
+  const location = useLocation();
   const [menuOptionsDisplay, setMenuOptionsDisplay] = React.useState(false);
   const [displayCreateChartButton, setDisplayCreateChartButton] =
     React.useState(false);
   const setIsAiSwitchActive = useRecoilState(isChartAIAgentActive)[1];
   const { user, isAuthenticated } = useAuth0();
-  const isMobile = useMediaQuery("(max-width: 767px)");
 
   const showMenuOptions = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
@@ -53,7 +53,7 @@ export default function GridItem(props: Readonly<Props>) {
     setDataset(props.id as string);
     setIsAiSwitchActive(true);
   }
-  let destinationPath = `/dataset/${props.id}/detail`;
+  let destinationPath = `/dataset/${props.id}`;
   if (location.pathname === "/") {
     destinationPath += "?fromHome=true";
   }
@@ -76,7 +76,7 @@ export default function GridItem(props: Readonly<Props>) {
         <div
           css={`
             width: 100%;
-            height: 161.59px;
+            height: 162px;
             display: flex;
             color: #262c34;
             background: #fff;
@@ -89,6 +89,7 @@ export default function GridItem(props: Readonly<Props>) {
             &:hover {
               box-shadow: 0px 7px 22px 0px rgba(0, 0, 0, 0.1);
             }
+            overflow: hidden;
           `}
         >
           <div
@@ -157,14 +158,13 @@ export default function GridItem(props: Readonly<Props>) {
           <div
             css={`
               display: flex;
-              flex-direction: row;
-              align-items: flex-end;
-              justify-content: space-between;
+              position: relative;
             `}
           >
             <div
               css={`
-                margin-top: 8px;
+                position: absolute;
+                bottom: -14px;
                 svg {
                   width: 119.084px;
                   height: 69.761px;
@@ -172,23 +172,6 @@ export default function GridItem(props: Readonly<Props>) {
               `}
             >
               <DataCardImg />
-            </div>
-            <div
-              css={`
-                display: flex;
-                font-size: 12px;
-                justify-content: flex-end;
-                align-items: center;
-                gap: 3px;
-
-                > p {
-                  margin: 0;
-                  font-size: 8.814px;
-                }
-              `}
-            >
-              <ClockIcon />
-              <p>{moment(props.date).format("MMMM YYYY")}</p>
             </div>
           </div>
         </div>
@@ -213,7 +196,7 @@ export default function GridItem(props: Readonly<Props>) {
                 color: #ffffff;
                 font-family: "GothamNarrow-Book", "Helvetica Neue", sans-serif;
                 right: 8px;
-                bottom: 30px;
+                bottom: 40px;
                 z-index: 2;
                 border: none;
                 outline: none;
@@ -222,6 +205,9 @@ export default function GridItem(props: Readonly<Props>) {
                 align-items: center;
                 gap: 8.3px;
                 background: #359c96;
+                @media (max-width: ${MOBILE_BREAKPOINT}) {
+                  display: none;
+                }
                 span {
                   margin: 0;
                   padding: 0;
@@ -235,107 +221,49 @@ export default function GridItem(props: Readonly<Props>) {
           </Link>
         )}
       {menuOptionsDisplay && (
-        <React.Fragment>
-          <div
-            onClick={() => setMenuOptionsDisplay(false)}
-            css={`
-              top: 0;
-              left: 0;
-              z-index: 1;
-              width: 100vw;
-              height: 100vh;
-              position: fixed;
-            `}
-          />
-          <div
-            css={`
-              top: 38px;
-
-              gap: 1rem;
-              right: 3%;
-              z-index: 2;
-
-              display: flex;
-              height: 38px;
-              padding: 0 23px;
-              position: absolute;
-              background: #adb5bd;
-              border-radius: 100px;
-              align-items: center;
-              justify-content: center;
-              a {
-                :hover {
-                  svg {
-                    path {
-                      fill: #fff;
-                    }
-                  }
-                }
-              }
-              button {
-                padding: 4px;
-                :hover {
-                  background: transparent;
-                  svg {
-                    path {
-                      fill: #fff;
-                    }
-                  }
-                }
-              }
-            `}
-          >
-            <div
-              css={!isAuthenticated ? "opacity: 0.5;pointer-events: none;" : ""}
-            >
-              <Tooltip
-                title="Duplicate"
-                data-cy="dataset-grid-item-duplicate-btn"
-              >
-                <IconButton
-                  onClick={() => props.handleDuplicate?.(props.id as string)}
-                >
-                  <DuplicateIcon />
-                </IconButton>
-              </Tooltip>
-            </div>
-            {!isMobile && (
-              <div
-                css={
-                  !canDatasetEditDelete
-                    ? "opacity: 0.5;pointer-events: none;"
-                    : ""
-                }
-              >
-                <Link to={props.path}>
-                  <Tooltip title="Edit" data-cy="dataset-grid-item-edit-btn">
-                    <EditIcon
-                      css={`
-                        margin-top: 4px;
-                      `}
-                    />
-                  </Tooltip>
-                </Link>
-              </div>
-            )}
-            <div
-              css={
-                !canDatasetEditDelete
-                  ? "opacity: 0.5;pointer-events: none;"
-                  : ""
-              }
-            >
-              <Tooltip title="Delete" data-cy="dataset-grid-item-delete-btn">
-                <IconButton
-                  onClick={() => props.handleDelete?.(props.id as string)}
-                >
-                  <DeleteIcon />
-                </IconButton>
-              </Tooltip>
-            </div>
-          </div>
-        </React.Fragment>
+        <MenuItems
+          handleClose={() => setMenuOptionsDisplay(false)}
+          handleDelete={() => props.handleDelete?.(props.id as string)}
+          handleDuplicate={() => props.handleDuplicate?.(props.id as string)}
+          id={props.id as string}
+          owner={props.owner}
+          path={props.path}
+          type="dataset"
+        />
       )}
+      <div
+        css={`
+          position: absolute;
+          bottom: 12px;
+          right: 16px;
+          p {
+            margin: 0;
+            font-size: 10px;
+            line-height: normal;
+          }
+        `}
+      >
+        <div
+          css={`
+            display: flex;
+            align-items: center;
+            gap: 3px;
+          `}
+        >
+          <OwnerIcon />
+          <p>{props.ownerName?.split(" ")?.[0]}</p>
+        </div>
+        <div
+          css={`
+            display: flex;
+            align-items: center;
+            gap: 3px;
+          `}
+        >
+          <ClockIcon width={12} height={12} />
+          <p>{moment(props.date).format("MMMM YYYY")}</p>
+        </div>
+      </div>
     </div>
   );
 }

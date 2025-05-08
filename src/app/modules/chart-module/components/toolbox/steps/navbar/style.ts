@@ -1,13 +1,15 @@
 import { css } from "styled-components";
 
 export const stepcss = (activeStep: boolean) => css`
-  width: 79px;
+  width: 80px;
   display: flex;
   justify-content: center;
   align-items: center;
   border: none;
   outline: none;
   cursor: pointer;
+  border-right: #f1f3f5 1px solid;
+  position: relative;
   &:disabled {
     cursor: not-allowed;
   }

@@ -1,6 +1,12 @@
 import BarChartIcon from "app/assets/icons/data-themes-chart-types/bar";
 import ColoredBarChartIcon from "app/assets/icons/data-themes-chart-types/coloredBarChart";
 
+import MultisetBarChartIcon from "app/assets/icons/data-themes-chart-types/multisetBarChart";
+import ColoredMultisetBarChartIcon from "app/assets/icons/data-themes-chart-types/coloredBarChart";
+
+import StackedBarChartIcon from "app/assets/icons/data-themes-chart-types/stackedBarChart";
+import ColoredStackedBarChartIcon from "app/assets/icons/data-themes-chart-types/coloredBarChart";
+
 import GeomapChartIcon from "app/assets/icons/data-themes-chart-types/geomap";
 import ColoredGeomapChartIcon from "app/assets/icons/data-themes-chart-types/coloredGeomap";
 
@@ -52,12 +58,14 @@ import ColoredAreaTimeAxisIcon from "app/assets/icons/data-themes-chart-types/co
 import GraphGLIcon from "app/assets/icons/data-themes-chart-types/graphgl";
 import ColoredGraphGLIcon from "app/assets/icons/data-themes-chart-types/coloredGraphGl";
 
-import { ReactComponent as GeomapPreviewImg } from "app/modules/chart-module/assets/geomapPreview.svg";
+import GeomapPreviewImg from "app/modules/chart-module/assets/geomapPreview.svg";
 import { ReactComponent as BigNumberPreviewImg } from "app/modules/chart-module/assets/bigNumberPreview.svg";
 import { ReactComponent as LineChartPreviewImg } from "app/modules/chart-module/assets/lineChartPreview.svg";
 import { ReactComponent as TreeMapPreviewImg } from "app/modules/chart-module/assets/treemapPreview.svg";
 import { ReactComponent as SankeyPreviewImg } from "app/modules/chart-module/assets/sankeyPreview.svg";
 import { ReactComponent as BarChartPreviewImg } from "app/modules/chart-module/assets/barChartPreview.svg";
+import { ReactComponent as MultisetBarChartPreviewImg } from "app/modules/chart-module/assets/multisetBarChartPreview.svg";
+import { ReactComponent as StackedBarChartPreviewImg } from "app/modules/chart-module/assets/stackedBarChartPreview.svg";
 
 import { ReactComponent as SunburstPreviewImg } from "app/modules/chart-module/assets/sunburstPreview.svg";
 import { ReactComponent as PieChartPreviewImg } from "app/modules/chart-module/assets/pieChartPreview.svg";
@@ -124,50 +132,63 @@ interface IEchartTypes {
   ssr: boolean;
   description: string;
 }
+const networkAndFlows = "Network and flows";
+const barChartDescription =
+  "Bar charts present data by visually displaying and comparing categorical information or discrete values through the use of bars of varying lengths or heights.";
+const changesOverTime = "changes over time";
+const graphDescription =
+  "Network graphs illustrate relationships between nodes in a network. Nodes are represented as points, and connections between nodes are depicted as lines";
 
 export const echartTypes = (big: boolean): IEchartTypes[] => {
   return [
     {
       id: "echartsBarchart",
-      label: "Bar chart",
+      label: "Bar Chart",
       icon: <BarChartIcon big={big} />,
       preview: <BarChartPreviewImg />,
       categories: ["Correllations"],
       class: "basic",
       ssr: false,
-      description:
-        "Bar charts present data by visually displaying and comparing categorical information or discrete values through the use of bars of varying lengths or heights.",
+      description: barChartDescription,
     },
     {
       id: "echartsMultisetBarchart",
       label: "Multi-set Bar chart",
-      icon: <BarChartIcon big={big} />,
-      preview: <BarChartPreviewImg />,
+      icon: <MultisetBarChartIcon big={big} />,
+      preview: <MultisetBarChartPreviewImg />,
       categories: ["Correllations", "Proportions"],
       class: "advanced",
       ssr: false,
-      description:
-        "Bar charts present data by visually displaying and comparing categorical information or discrete values through the use of bars of varying lengths or heights.",
+      description: barChartDescription,
     },
     {
       id: "echartsStackedBarchart",
-      label: "Stacked Bar chart",
-      icon: <BarChartIcon big={big} />,
-      preview: <BarChartPreviewImg />,
+      label: "Stacked Bar Chart",
+      icon: <StackedBarChartIcon big={big} />,
+      preview: <StackedBarChartPreviewImg />,
       categories: ["Correllations", "Proportions"],
       class: "advanced",
       ssr: false,
+      description: barChartDescription,
+    },
+    {
+      id: "echartsAreastack",
+      label: "Line Stacked Chart",
+      icon: <AreastackedIcon big={big} />,
+      preview: <AreastackedPreviewImg />,
+      categories: ["Trends", changesOverTime],
+      class: "advanced",
+      ssr: false,
       description:
-        "Bar charts present data by visually displaying and comparing categorical information or discrete values through the use of bars of varying lengths or heights.",
+        "Line stacked charts present data by illustrating trends and changes in continuous or sequential data points over time, making them ideal for visualizing patterns, fluctuations, or relationships in data.",
     },
     {
       id: "echartsLinechart",
-      label: "Line chart",
+      label: "Line Chart",
       icon: <LineChartIcon big={big} />,
       preview: <LineChartPreviewImg />,
-      categories: ["Trends", "changes over time"],
+      categories: ["Trends", changesOverTime],
       class: "basic",
-
       ssr: false,
       description:
         "Line charts present data by illustrating trends and changes in continuous or sequential data points over time, making them ideal for visualizing patterns, fluctuations, or relationships in data.",
@@ -188,7 +209,7 @@ export const echartTypes = (big: boolean): IEchartTypes[] => {
       label: "Scatter Chart",
       icon: <ScatterIcon big={big} />,
       preview: <ScatterChartPreviewImg />,
-      categories: ["Correlations", "Proportions"],
+      categories: ["Relationships", "distribution"],
       class: "basic",
       ssr: false,
       description:
@@ -198,7 +219,9 @@ export const echartTypes = (big: boolean): IEchartTypes[] => {
       id: "echartsGeomap",
       label: "Geo map",
       icon: <GeomapChartIcon big={big} />,
-      preview: <GeomapPreviewImg />,
+      preview: (
+        <img src={GeomapPreviewImg} alt="Geo map" width={305} height={150} />
+      ),
       categories: ["Locations"],
       class: "basic",
 
@@ -206,37 +229,46 @@ export const echartTypes = (big: boolean): IEchartTypes[] => {
       description:
         "A geomap is a map of a country, continent, or region map, with colors and values assigned to specific regions. Values are displayed as a color scale, and you can specify optional hovertext for regions. ",
     },
+    {
+      id: "bigNumber",
+      label: "Big number",
+      icon: <BigNumberIcon />,
+      preview: <BigNumberPreviewImg />,
+      categories: ["Key data points"],
+      class: "basic",
+      ssr: true,
+      description:
+        "Big number charts present specific, standout numerical values or key performance indicators in a visually prominent and easily digestible format, enabling quick recognition of important data points.",
+    },
 
     {
       id: "echartsSankey",
-      label: "Sankey diagram",
+      label: "Sankey Diagram",
       icon: <SankeyChartIcon big={big} />,
       preview: <SankeyPreviewImg />,
       categories: ["Networks"],
-      class: "advanced",
-
+      class: "basic",
       ssr: false,
       description:
         "Sankey diagrams represent flows among nodes of a network. Nodes are represented as rectangles, the height represents their value. Flows are represented with curved lines whose width is proportional to their value.",
     },
     {
       id: "echartsTreemap",
-      label: "Treemap diagram",
+      label: "Tree Map",
       icon: <TreeMapIcon big={big} />,
       preview: <TreeMapPreviewImg />,
       categories: ["Hierarchies", "Proportions"],
       class: "advanced",
-
       ssr: false,
       description:
         "Tree maps present hierarchical data structures by visually depicting the relative proportions and relationships among different categories or subcategories, making them useful for displaying complex data in a compact and informative manner.",
     },
     {
       id: "echartsHeatmap",
-      label: "Heat map",
+      label: "Heatmap Chart",
       icon: <HeatmapIcon big={big} />,
       preview: <HeatmapPreviewImg />,
-      categories: ["Correlations", "Proportions"],
+      categories: ["Intensities", "distribution"],
       class: "advanced",
       ssr: false,
       description:
@@ -247,7 +279,7 @@ export const echartTypes = (big: boolean): IEchartTypes[] => {
       label: "Bubble Chart",
       icon: <BubblechartIcon big={big} />,
       preview: <BubbleChartPreviewImg />,
-      categories: ["Correlations", "Proportions"],
+      categories: ["Relationships", "Proportions"],
       class: "advanced",
       ssr: false,
       description:
@@ -258,41 +290,19 @@ export const echartTypes = (big: boolean): IEchartTypes[] => {
       label: "Radar Chart",
       icon: <RadarchartIcon big={big} />,
       preview: <RadarChartPreviewImg />,
-      categories: ["Correlations"],
+      categories: ["Proportions, percentages"],
       class: "advanced",
       ssr: false,
       description:
         "Radar charts are particularly useful for assessing and comparing the strengths and weaknesses of different data points or individuals across various attributes.",
     },
-    {
-      id: "bigNumber",
-      label: "Big number",
-      icon: <BigNumberIcon />,
-      preview: <BigNumberPreviewImg />,
-      categories: ["Key data points"],
-      class: "advanced",
 
-      ssr: true,
-      description:
-        "Big number charts present specific, standout numerical values or key performance indicators in a visually prominent and easily digestible format, enabling quick recognition of important data points.",
-    },
-    {
-      id: "echartsAreastack",
-      label: "Line Stacked Chart",
-      icon: <AreastackedIcon big={big} />,
-      preview: <AreastackedPreviewImg />,
-      categories: ["Trends", "changes over time"],
-      class: "compound",
-      ssr: false,
-      description:
-        "Line stacked charts present data by illustrating trends and changes in continuous or sequential data points over time, making them ideal for visualizing patterns, fluctuations, or relationships in data.",
-    },
     {
       id: "echartsAreatimeaxis",
       label: "Area Time Axis Chart",
       icon: <AreaTimeAxisIcon big={big} />,
       preview: <AreatimeaxisPreviewImg />,
-      categories: ["Trends", "changes over time"],
+      categories: ["Trends", changesOverTime],
       class: "compound",
       ssr: false,
       description:
@@ -300,7 +310,7 @@ export const echartTypes = (big: boolean): IEchartTypes[] => {
     },
     {
       id: "echartsSunburst",
-      label: "Sunburst diagram",
+      label: "Sunburst Diagram",
       icon: <SunburstIcon big={big} />,
       preview: <SunburstPreviewImg />,
       categories: ["Hierarchies", "Proportions"],
@@ -327,22 +337,20 @@ export const echartTypes = (big: boolean): IEchartTypes[] => {
       label: "Circular Network Graph",
       icon: <CircularGraphIcon big={big} />,
       preview: <CirculargraphPreviewImg />,
-      categories: ["Networks"],
+      categories: [networkAndFlows],
       class: "compound",
       ssr: false,
-      description:
-        "Network graphs illustrate relationships between nodes in a network. Nodes are represented as points, and connections between nodes are depicted as lines",
+      description: graphDescription,
     },
     {
       id: "echartsForcegraph",
       label: "Network Graph",
       icon: <ForceGraphIcon big={big} />,
       preview: <ForcegraphPreviewImg />,
-      categories: ["Networks"],
+      categories: [networkAndFlows],
       class: "compound",
       ssr: false,
-      description:
-        "Network graphs illustrate relationships between nodes in a network. Nodes are represented as points, and connections between nodes are depicted as lines",
+      description: graphDescription,
     },
 
     {
@@ -350,11 +358,10 @@ export const echartTypes = (big: boolean): IEchartTypes[] => {
       label: "Graph GL Chart",
       icon: <GraphGLIcon big={big} />,
       preview: <GraphGlPreviewImg />,
-      categories: ["Networks"],
+      categories: [networkAndFlows],
       class: "compound",
       ssr: false,
-      description:
-        "Network graphs illustrate relationships between nodes in a network. Nodes are represented as points, and connections between nodes are depicted as lines",
+      description: graphDescription,
     },
   ];
 };
@@ -367,26 +374,23 @@ export const coloredEchartTypes = () => {
       icon: <ColoredBarChartIcon />,
       categories: ["Correllations"],
       ssr: false,
-      description:
-        "It displays a categorical dimension and related amounts. Each bar represents a category, width is proportional to the quantitative dimension.",
+      description: barChartDescription,
     },
     {
       id: "echartsMultisetBarchart",
       label: "Multi-set Bar chart",
-      icon: <ColoredBarChartIcon />,
+      icon: <ColoredMultisetBarChartIcon />,
       categories: ["Correllations", "Proportions"],
       ssr: false,
-      description:
-        "It displays a categorical dimension and related amounts. Each bar represents a category, width is proportional to the quantitative dimension.",
+      description: barChartDescription,
     },
     {
       id: "echartsStackedBarchart",
       label: "Stacked Bar chart",
-      icon: <ColoredBarChartIcon />,
+      icon: <ColoredStackedBarChartIcon />,
       categories: ["Correllations", "Proportions"],
       ssr: false,
-      description:
-        "It displays a categorical dimension and related amounts. Each bar represents a category, width is proportional to the quantitative dimension.",
+      description: barChartDescription,
     },
     {
       id: "echartsGeomap",
@@ -406,7 +410,7 @@ export const coloredEchartTypes = () => {
       id: "echartsLinechart",
       label: "Line chart",
       icon: <ColoredLineChartIcon />,
-      categories: ["Trends", "changes over time"],
+      categories: ["Trends", changesOverTime],
       ssr: false,
       description:
         "It displays a quantitative dimension over a continuous interval or time period. Colour can be optionally used to encode an additional quantitative or categorical dimension.",
@@ -451,7 +455,7 @@ export const coloredEchartTypes = () => {
       id: "echartsPiechart",
       label: "Pie Chart",
       icon: <ColoredPieIcon />,
-      categories: ["Proportions"],
+      categories: ["Correlations and Proportions"],
       ssr: false,
       description:
         "Pie charts display data as slices of a circular pie, where each slice represents a category or value.",
@@ -471,8 +475,7 @@ export const coloredEchartTypes = () => {
       icon: <ColoredForceGraphIcon />,
       categories: ["Networks"],
       ssr: false,
-      description:
-        "Network graphs illustrate relationships between nodes in a network. Nodes are represented as points, and connections between nodes are depicted as lines",
+      description: graphDescription,
     },
     {
       id: "echartsCirculargraph",
@@ -480,14 +483,13 @@ export const coloredEchartTypes = () => {
       icon: <ColoredCircularGraphIcon />,
       categories: ["Networks"],
       ssr: false,
-      description:
-        "Network graphs illustrate relationships between nodes in a network. Nodes are represented as points, and connections between nodes are depicted as lines",
+      description: graphDescription,
     },
     {
       id: "echartsAreastack",
       label: "Line Stacked Chart",
       icon: <ColoredAreastackedIcon />,
-      categories: ["Trends", "changes over time"],
+      categories: ["Trends", changesOverTime],
       ssr: false,
       description:
         "Line stacked charts present data by illustrating trends and changes in continuous or sequential data points over time, making them ideal for visualizing patterns, fluctuations, or relationships in data.",
@@ -503,7 +505,7 @@ export const coloredEchartTypes = () => {
     },
     {
       id: "echartsHeatmap",
-      label: "Heat map",
+      label: "Heatmap Chart",
       icon: <ColoredHeatmapIcon />,
       categories: ["Correlations", "Proportions"],
       ssr: false,
@@ -525,15 +527,14 @@ export const coloredEchartTypes = () => {
       icon: <ColoredGraphGLIcon />,
       categories: ["Networks"],
       ssr: false,
-      description:
-        "Network graphs illustrate relationships between nodes in a network. Nodes are represented as points, and connections between nodes are depicted as lines",
+      description: graphDescription,
     },
 
     {
       id: "echartsAreatimeaxis",
       label: "Area Time Axis Chart",
       icon: <ColoredAreaTimeAxisIcon />,
-      categories: ["Trends", "changes over time"],
+      categories: ["Trends", changesOverTime],
       ssr: false,
       description:
         "Area time Axis charts present data by illustrating trends and changes in continuous or sequential data points over time, making them ideal for visualizing patterns, fluctuations, or relationships in data.",
