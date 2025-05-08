@@ -108,13 +108,17 @@ export default function ContactModule() {
                 something to share? We're listening.
               </p>
               <Box height={"40px"} />
-              <Box
-                display={"flex"}
-                gridColumnGap={"24px"}
-                gridRowGap={"8px"}
-                justifyContent={"center"}
-                flexDirection={{ xs: "column", sm: "row" }}
-                alignItems={"center"}
+              <div
+                css={`
+                  display: flex;
+                  column-gap: 24px;
+                  row-gap: 8px;
+                  justify-content: center;
+                  align-items: center;
+                  @media (max-width: ${MOBILE_BREAKPOINT}) {
+                    flex-direction: column;
+                  }
+                `}
               >
                 <Link
                   to="/"
@@ -168,7 +172,7 @@ export default function ContactModule() {
                     />
                   </PrimaryButton>
                 </Link>
-              </Box>
+              </div>
             </div>
           ) : (
             <div>
