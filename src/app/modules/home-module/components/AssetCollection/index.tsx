@@ -29,7 +29,13 @@ import AssetsGrid from "app/modules/home-module/components/AssetCollection/All/a
 import BreadCrumbs from "app/modules/home-module/components/Breadcrumbs";
 import Filter from "app/modules/home-module/components/Filter";
 import AddAssetDropdown from "app/modules/home-module/components/AddAssetDropdown";
-import { useMediaQuery } from "@material-ui/core";
+import {
+  DESKTOP_BREAKPOINT,
+  DESKTOP_STARTPOINT,
+  MOBILE_BREAKPOINT,
+  TABLET_STARTPOINT,
+} from "app/theme";
+import useMediaQuery from "@material-ui/core/useMediaQuery";
 
 function AssetsCollection() {
   const { isAuthenticated, user } = useAuth0();
@@ -142,9 +148,11 @@ function AssetsCollection() {
               sm={5}
               xs={1}
               css={`
+                display: block;
+
                 @media (max-width: 965px) {
                   margin-top: 16px;
-                  @media (max-width: 767px) {
+                  @media (max-width: ${MOBILE_BREAKPOINT}) {
                     display: none;
                   }
                 }
@@ -216,8 +224,10 @@ function AssetsCollection() {
           <Grid item lg={6} md={6} sm={6} xs={12}>
             <div
               css={`
-                @media (max-width: 960px) {
-                  display: none;
+                display: none;
+
+                @media (min-width: ${DESKTOP_STARTPOINT}) {
+                  display: block;
                 }
               `}
             >
@@ -252,11 +262,13 @@ function AssetsCollection() {
         <div
           css={`
             display: none;
-            @media (max-width: 960px) {
-              padding-top: 16px;
-              display: block;
+            @media (min-width: ${TABLET_STARTPOINT}) {
+              @media (max-width: ${DESKTOP_BREAKPOINT}) {
+                padding-top: 16px;
+                display: block;
+              }
             }
-            @media (max-width: 599px) {
+            @media (max-width: ${MOBILE_BREAKPOINT}) {
               display: none;
             }
           `}

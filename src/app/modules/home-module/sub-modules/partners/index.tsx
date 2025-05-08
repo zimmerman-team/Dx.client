@@ -10,7 +10,6 @@ import HomeFooter from "app/modules/home-module/components/Footer";
 import DXBlock from "app/modules/home-module/sub-modules/partners/components/useDXBlock";
 import QuoteBlock from "app/modules/home-module/sub-modules/partners/components/quoteBlock";
 import OurPartnersBlock from "app/modules/home-module/sub-modules/partners/components/ourPartnersBlock";
-import BestDecisionBlock from "app/modules/home-module/sub-modules/partners/components/bestDecisionBlock";
 import {
   AboutTabCard,
   BudgetsTabCard,
@@ -26,6 +25,7 @@ import { Link } from "react-router-dom";
 import SignInButtons from "app/modules/home-module/components/SignInButtons";
 import InlineLogo from "app/modules/home-module/assets/inline-logo";
 import TryUsBlock from "app/modules/home-module/components/TryUsBlock";
+import { DESKTOP_BREAKPOINT, MOBILE_BREAKPOINT } from "app/theme";
 
 const StyledTab = withStyles(() => ({
   root: {
@@ -45,7 +45,7 @@ const StyledTab = withStyles(() => ({
         fontWeight: 325,
         color: "#231D2C !important",
         fontFamily: `"GothamNarrow-Book", "Helvetica Neue", sans-serif`,
-        "@media (max-width: 1439px)": {
+        [`@media (max-width: ${DESKTOP_BREAKPOINT})`]: {
           width: "155px",
           fontSize: "16px",
         },
@@ -56,7 +56,7 @@ const StyledTab = withStyles(() => ({
           fontWeight: 400,
           color: "#161616 !important",
           fontFamily: `"GothamNarrow-Bold", "Helvetica Neue", sans-serif`,
-          "@media (max-width: 1024px)": {
+          [`@media (max-width: ${DESKTOP_BREAKPOINT})`]: {
             fontSize: "16px",
           },
         },
@@ -70,7 +70,7 @@ const StyledTabs = withStyles({
     "& .MuiTabs-scroller": {
       "& .MuiTabs-flexContainer": {
         gap: "20px",
-        "@media (max-width: 1439px)": {
+        [`@media (max-width: ${DESKTOP_BREAKPOINT})`]: {
           gap: "10px",
         },
       },
@@ -176,7 +176,7 @@ export default function PartnersModule() {
                     <PrimaryButton
                       css={`
                         height: 48px;
-                        @media (max-width: 600px) {
+                        @media (max-width: ${MOBILE_BREAKPOINT}) {
                           width: max-content;
                         }
                       `}
@@ -196,7 +196,7 @@ export default function PartnersModule() {
                     <PrimaryButton
                       css={`
                         height: 48px;
-                        @media (max-width: 600px) {
+                        @media (max-width: ${MOBILE_BREAKPOINT}) {
                           width: max-content;
                         }
                       `}
@@ -229,11 +229,11 @@ export default function PartnersModule() {
             maxWidth="lg"
             css={`
               padding: 80px 24px;
-              @media (max-width: 1439px) {
+              @media (max-width: ${DESKTOP_BREAKPOINT}) {
                 padding: 60px 32px !important;
               }
 
-              @media (max-width: 743px) {
+              @media (max-width: ${MOBILE_BREAKPOINT}) {
                 padding: 50px 24px !important;
               }
             `}
@@ -260,7 +260,7 @@ export default function PartnersModule() {
                     width: 100%;
                     height: 100%;
                   }
-                  @media (max-width: 600px) {
+                  @media (max-width: ${MOBILE_BREAKPOINT}) {
                     width: 100%;
                     height: 100%;
                   }
@@ -272,7 +272,7 @@ export default function PartnersModule() {
                     flex-direction: column;
                     justify-content: center;
                     align-items: center;
-                    @media (max-width: 743px) {
+                    @media (max-width: ${MOBILE_BREAKPOINT}) {
                       overflow: auto;
                       width: 100%;
                     }
@@ -292,7 +292,7 @@ export default function PartnersModule() {
                     className="Home-MuiTabs-flexContainer"
                     data-cy="partners-tabs"
                     css={`
-                      @media (max-width: 743px) {
+                      @media (max-width: ${MOBILE_BREAKPOINT}) {
                         margin-left: 240px;
                       }
                     `}
@@ -337,7 +337,7 @@ export default function PartnersModule() {
                     background: #6061e5;
                     border-radius: 30px;
                     padding: 40px;
-                    @media (max-width: 1439px) {
+                    @media (max-width: ${DESKTOP_BREAKPOINT}) {
                       padding: 20px;
                     }
                   `}
@@ -388,11 +388,11 @@ export default function PartnersModule() {
               maxWidth="lg"
               css={`
                 padding: 80px 24px;
-                @media (max-width: 1439px) {
+                @media (max-width: ${DESKTOP_BREAKPOINT}) {
                   padding: 60px 32px !important;
                 }
 
-                @media (max-width: 743px) {
+                @media (max-width: ${MOBILE_BREAKPOINT}) {
                   padding: 50px 24px !important;
                 }
               `}

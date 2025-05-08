@@ -19,6 +19,9 @@ interface IProjectPalette extends Palette {
 export const MOBILE_BREAKPOINT = "743px";
 export const TABLET_STARTPOINT = "744px";
 
+export const DESKTOP_BREAKPOINT = "1439px";
+export const DESKTOP_STARTPOINT = "1440px";
+
 const TextStyle: FontStyle = {
   fontFamily: '"GothamNarrow-Book", "Helvetica", "Arial", sans-serif',
   fontSize: 14,

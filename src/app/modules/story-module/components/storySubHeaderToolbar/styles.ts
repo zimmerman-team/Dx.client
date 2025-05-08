@@ -1,3 +1,4 @@
+import { MOBILE_BREAKPOINT, TABLET_STARTPOINT } from "app/theme";
 import { css } from "styled-components/macro";
 
 export const styles = {
@@ -107,7 +108,7 @@ export const styles = {
     z-index: 2;
     padding-left: 0px;
     outline: none;
-    @media (max-width: 600px) {
+    @media (max-width: ${MOBILE_BREAKPOINT}) {
       font-size: 20px;
     }
   `,
@@ -118,7 +119,7 @@ export const styles = {
     width: 30%;
     justify-content: flex-end;
     flex-shrink: 0;
-    @media (min-width: 768px) {
+    @media (min-width: ${TABLET_STARTPOINT}) {
       @media (max-width: 800px) {
         width: 52%;
       }
@@ -155,7 +156,7 @@ export const styles = {
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
-    @media (max-width: 600px) {
+    @media (max-width: ${MOBILE_BREAKPOINT}) {
       font-size: 20px;
       left: 25px;
     }

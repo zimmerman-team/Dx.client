@@ -5,6 +5,11 @@ import { socialAuth } from "app/utils/socialAuth";
 import { ReactComponent as GoogleIcon } from "app/modules/home-module/components/SignInButtons/assets/google-icon.svg";
 import { ReactComponent as LinkedInIcon } from "app/modules/home-module/components/SignInButtons/assets/linkedin-icon.svg";
 import { ReactComponent as MicrosoftIcon } from "app/modules/home-module/components/SignInButtons/assets/microsoft-icon.svg";
+import {
+  DESKTOP_BREAKPOINT,
+  MOBILE_BREAKPOINT,
+  TABLET_STARTPOINT,
+} from "app/theme";
 
 interface TryUsBlockProps {
   title: React.ReactNode;
@@ -29,11 +34,11 @@ export default function TryUsBlock(props: TryUsBlockProps) {
             margin-bottom: 32px;
             margin-top: 0;
             color: #231d2c;
-            @media (max-width: 1200px) {
+            @media (max-width: ${DESKTOP_BREAKPOINT}) {
               font-size: 36px;
               line-height: normal;
             }
-            @media (max-width: 600px) {
+            @media (max-width: ${MOBILE_BREAKPOINT}) {
               font-size: 18px;
               line-height: 24px;
               margin-bottom: 32px;
@@ -54,7 +59,7 @@ export default function TryUsBlock(props: TryUsBlockProps) {
           padding: 48px 64px;
           align-items: center;
           width: 100%;
-          @media (max-width: 1439px) {
+          @media (max-width: ${DESKTOP_BREAKPOINT}) {
             flex-direction: column;
             padding: 48px 40px;
             align-items: center;
@@ -70,11 +75,11 @@ export default function TryUsBlock(props: TryUsBlockProps) {
               line-height: normal;
               font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
               margin: 0;
-              @media (max-width: 1439px) {
+              @media (max-width: ${DESKTOP_BREAKPOINT}) {
                 text-align: center;
                 font-size: 36px;
               }
-              @media (max-width: 743px) {
+              @media (max-width: ${MOBILE_BREAKPOINT}) {
                 font-size: 24px;
               }
             `}
@@ -89,11 +94,11 @@ export default function TryUsBlock(props: TryUsBlockProps) {
               font-family: "GothamNarrow-Book", "Helvetica Neue", sans-serif;
               line-height: normal;
               margin-top: 16px;
-              @media (max-width: 1439px) {
+              @media (max-width: ${DESKTOP_BREAKPOINT}) {
                 text-align: center;
                 margin-top: 8px;
               }
-              @media (max-width: 743px) {
+              @media (max-width: ${MOBILE_BREAKPOINT}) {
                 font-size: 14px;
                 line-height: 20px;
               }
@@ -109,10 +114,10 @@ export default function TryUsBlock(props: TryUsBlockProps) {
               flex-direction: column;
               gap: 24px;
               align-items: center;
-              @media (max-width: 1439px) {
+              @media (max-width: ${DESKTOP_BREAKPOINT}) {
                 flex-direction: row;
               }
-              @media (max-width: 743px) {
+              @media (max-width: ${MOBILE_BREAKPOINT}) {
                 flex-direction: column;
                 gap: 8px;
               }
@@ -134,10 +139,10 @@ export default function TryUsBlock(props: TryUsBlockProps) {
                 :hover {
                   opacity: 0.9;
                 }
-                @media (max-width: 1439px) {
+                @media (max-width: ${DESKTOP_BREAKPOINT}) {
                   width: max-content;
                 }
-                @media (max-width: 743px) {
+                @media (max-width: ${MOBILE_BREAKPOINT}) {
                   width: 210px;
                 }
               }
@@ -150,6 +155,23 @@ export default function TryUsBlock(props: TryUsBlockProps) {
               a:nth-child(2) {
                 background: #dadaf8;
                 color: #231d2c;
+              }
+              @media (min-width: ${TABLET_STARTPOINT}) {
+                @media (max-width: ${DESKTOP_BREAKPOINT}) {
+                  flex-direction: row;
+                  gap: 24px;
+                  margin-top: 0;
+                  a:nth-child(2) {
+                    width: 124px;
+                  }
+                }
+              }
+              @media (max-width: ${MOBILE_BREAKPOINT}) {
+                gap: 8px;
+                margin-top: 40px;
+                a:nth-child(2) {
+                  width: 210px;
+                }
               }
             `}
           >
@@ -176,11 +198,11 @@ export default function TryUsBlock(props: TryUsBlockProps) {
                 font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
                 font-size: 18px;
                 text-decoration: none;
-                @media (max-width: 743px) {
+                @media (max-width: ${MOBILE_BREAKPOINT}) {
                   width: 210px;
                 }
               }
-              @media (max-width: 743px) {
+              @media (max-width: ${MOBILE_BREAKPOINT}) {
                 width: 85%;
                 gap: 16px;
               }
@@ -216,7 +238,7 @@ export default function TryUsBlock(props: TryUsBlockProps) {
                     cursor: pointer;
                   }
                 }
-                @media (max-width: 743px) {
+                @media (max-width: ${MOBILE_BREAKPOINT}) {
                   flex-direction: column;
                   gap: 16px;
 

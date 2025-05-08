@@ -3,6 +3,11 @@ import HeroEllipses from "app/modules/home-module/assets/hero-ellipses.png";
 import HeroEllipsesTablet from "app/modules/home-module/assets/hero-ellipses-tablet.svg";
 import HeroEllipsesMobile from "app/modules/home-module/assets/hero-ellipses-mobile.svg";
 import { Box, Container } from "@material-ui/core";
+import {
+  DESKTOP_BREAKPOINT,
+  MOBILE_BREAKPOINT,
+  TABLET_STARTPOINT,
+} from "app/theme";
 
 interface HeroProps {
   title?: React.ReactNode;
@@ -20,14 +25,14 @@ export default function Hero({ title, children }: HeroProps) {
         background-repeat: no-repeat;
         background-size: cover;
         background-position: 58px 0%;
-        @media (max-width: 960px) {
+        @media (max-width: ${DESKTOP_BREAKPOINT}) {
           background: url(${HeroEllipsesTablet}),
             linear-gradient(180deg, rgba(255, 255, 255, 0) 0%, #f2f7fd 100%);
           background-repeat: no-repeat;
           background-size: cover;
           background-position: bottom right;
         }
-        @media (max-width: 744px) {
+        @media (max-width: ${MOBILE_BREAKPOINT}) {
           background: url(${HeroEllipsesMobile}),
             linear-gradient(180deg, rgba(255, 255, 255, 0) 0%, #f2f7fd 100%);
           background-repeat: no-repeat;
@@ -44,11 +49,13 @@ export default function Hero({ title, children }: HeroProps) {
             text-transform: capitalize;
             line-height: normal;
             margin: 0px;
-
-            @media (max-width: 960px) {
+            @media (max-width: ${DESKTOP_BREAKPOINT}) {
+            }
+            ) {
               font-size: 64px;
             }
-            @media (max-width: 744px) {
+
+            @media (max-width: ${MOBILE_BREAKPOINT}) {
               font-size: 48px;
             }
           }
@@ -61,10 +68,10 @@ export default function Hero({ title, children }: HeroProps) {
             text-align: center;
             margin: 0;
             line-height: normal;
-            @media (max-width: 960px) {
-              font-size: 18px;
+            @media (max-width: ${DESKTOP_BREAKPOINT}) {
             }
-            @media (max-width: 744px) {
+            ) {
+              font-size: 18px;
               line-height: normal;
             }
           }
@@ -76,11 +83,14 @@ export default function Hero({ title, children }: HeroProps) {
         css={`
           padding-top: 100px;
           padding-bottom: 80px;
-          @media (max-width: 960px) {
-            padding: 100px 32px 80px 32px;
+
+          @media (min-width: ${TABLET_STARTPOINT}) {
+            @media (max-width: ${DESKTOP_BREAKPOINT}) {
+              padding: 100px 32px 80px 32px;
+            }
           }
-          @media (max-width: 744px) {
-            padding: 80px 16px 40px 16px;
+          @media (max-width: ${MOBILE_BREAKPOINT}) {
+            padding: 100px 16px 40px 16px;
           }
         `}
       >

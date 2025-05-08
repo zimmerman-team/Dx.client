@@ -5,6 +5,7 @@ import { ReactComponent as EditIcon } from "app/modules/home-module/assets/edit.
 import { ReactComponent as DuplicateIcon } from "app/modules/home-module/assets/duplicate.svg";
 import { ReactComponent as DeleteIcon } from "app/modules/home-module/assets/delete.svg";
 import { useAuth0 } from "@auth0/auth0-react";
+import { MOBILE_BREAKPOINT } from "app/theme";
 
 export default function MenuItems(props: {
   handleClose: () => void;
@@ -18,7 +19,7 @@ export default function MenuItems(props: {
   right?: string;
 }) {
   const { user, isAuthenticated } = useAuth0();
-  const isMobile = useMediaQuery("(max-width: 767px)");
+  const isMobile = useMediaQuery(`(max-width: ${MOBILE_BREAKPOINT})`);
   const canEditDelete = React.useMemo(() => {
     return isAuthenticated && props.owner === user?.sub;
   }, [user, isAuthenticated]);
