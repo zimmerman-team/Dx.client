@@ -26,6 +26,7 @@ import { useDrop } from "react-dnd";
 import { useStoreActions } from "app/state/store/hooks";
 import { ReactComponent as EditIcon } from "app/modules/story-module/asset/editIcon.svg";
 import { ReactComponent as DeleteIcon } from "app/modules/story-module/asset/deleteIcon.svg";
+import { MIN_BOX_WIDTH } from "app/modules/story-module/data";
 
 // Types
 interface BoxProps {
@@ -57,6 +58,7 @@ interface BoxProps {
     height: number
   ) => void;
   last?: boolean;
+  tempHeight: number;
 }
 
 // Content type definition
@@ -205,7 +207,7 @@ const Box = (props: BoxProps) => {
     _elementRef: HTMLElement
   ) => {
     const neighborWidth = props.rowContentWidths[props.neighbourIndex];
-    const minWidthPercentage = (78 / containerWidth) * 100;
+    const minWidthPercentage = (MIN_BOX_WIDTH / containerWidth) * 100;
     setMaxWidth(props.initialWidth + neighborWidth - minWidthPercentage);
   };
   // Handle resize events
@@ -246,8 +248,8 @@ const Box = (props: BoxProps) => {
     const widthDelta = percentage - originalWidth;
     const newNeighborWidth = originalNeighborWidth - widthDelta;
 
-    // Minimum width check (78px)
-    const minWidthPercentage = (78 / containerWidth) * 100;
+    // Minimum width check (MIN_BOX_WIDTHpx)
+    const minWidthPercentage = (MIN_BOX_WIDTH / containerWidth) * 100;
 
     // Update temporary widths if both are above minimum
     if (
@@ -403,7 +405,6 @@ const Box = (props: BoxProps) => {
     border = "1px dashed #231d2c";
   }
 
-  console.log(props.rowContentWidths, "props.rowContentWidths");
   // Common resizable props
   const getResizableProps = () => ({
     grid: [5, 5] as [number, number],
@@ -412,14 +413,17 @@ const Box = (props: BoxProps) => {
     onResizeStop,
     size: {
       width: smScreen ? "100%" : width,
-      height: `${props.initialHeight}px`,
+      height:
+        props.tempHeight > 0
+          ? `${props.tempHeight}px`
+          : `${props.initialHeight}px`,
     },
     maxWidth: !viewOnlyMode
       ? `${
           maxWidth > widthNumberPercentage ? maxWidth : widthNumberPercentage
         }%`
       : undefined,
-    minWidth: 78,
+    minWidth: MIN_BOX_WIDTH,
     enable: {
       right: !viewOnlyMode && !props.last,
       bottomRight: !viewOnlyMode && !props.last,
@@ -625,6 +629,7 @@ const Box = (props: BoxProps) => {
               }
               div {
                 ${viewOnlyMode && cursorDefault}
+                height: 100%;
               }
             `}
           >
@@ -639,7 +644,7 @@ const Box = (props: BoxProps) => {
                 alt={imageContent?.imageId}
                 css={css`
                   width: 100%;
-                  height: ${props.initialHeight}px;
+                  height: 100%;
                   object-fit: cover;
                 `}
                 data-cy="story-image-content"
@@ -656,7 +661,7 @@ const Box = (props: BoxProps) => {
                 width: 100%;
                 border: ${border};
                 background: ${viewOnlyMode ? "transparent" : "#dfe3e6"};
-                height: ${props.initialHeight}px;
+                height: 100%;
               `}
               ref={drop}
               data-cy={`row-frame-item-drop-zone-${props.rowIndex}-${props.itemIndex}`}

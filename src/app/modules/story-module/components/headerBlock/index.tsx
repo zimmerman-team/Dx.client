@@ -168,6 +168,37 @@ export default function HeaderBlock(props: Props) {
     return "not-handled"; // Allow input
   };
 
+  const getCurrentFontSizeFromEditorState = (editorState: EditorState) => {
+    const DEFAULT_FONT_SIZE = 14;
+    const HEADER_ONE_SIZE = 28;
+    const HEADER_TWO_SIZE = 21;
+    if (!editorState) return DEFAULT_FONT_SIZE;
+    const currentStyle = editorState.getCurrentInlineStyle();
+
+    // Find any font-size style
+    const fontSizeStyle = currentStyle.findLast((style: any) =>
+      style.includes("font-size")
+    );
+
+    if (fontSizeStyle) {
+      const size = parseInt(fontSizeStyle.split("-")[2], 10);
+      return isNaN(size) ? DEFAULT_FONT_SIZE : size;
+    }
+
+    // If no inline font style, check block type
+    const selection = editorState.getSelection();
+    if (selection.isCollapsed()) {
+      const currentContent = editorState.getCurrentContent();
+      const blockType = currentContent
+        .getBlockForKey(selection.getStartKey())
+        .getType();
+
+      if (blockType === "header-one") return HEADER_ONE_SIZE;
+      if (blockType === "header-two") return HEADER_TWO_SIZE;
+    }
+    return DEFAULT_FONT_SIZE;
+  };
+
   const handlePastedText = (
     text: string,
     html: string | undefined,
@@ -178,6 +209,9 @@ export default function HeaderBlock(props: Props) {
     const currentContent = editorState.getCurrentContent();
     const selection = editorState.getSelection();
     const currentText = currentContent.getPlainText();
+
+    const currentFontSize = getCurrentFontSizeFromEditorState(editorState);
+    const fontSizeStyle = `font-size-${currentFontSize}`;
 
     // Calculate available space considering selection
     let availableSpace = max;
@@ -204,10 +238,26 @@ export default function HeaderBlock(props: Props) {
     const limitedText = text.substring(0, availableSpace);
 
     // Create a new content state with the limited text
-    const newContentState = Modifier.replaceText(
+    let newContentState = Modifier.replaceText(
       currentContent,
       selection,
       limitedText
+    );
+
+    // Apply the current font size to the pasted text
+    // We need to create a selection that spans just the newly pasted content
+    const pasteStart = selection.getStartOffset();
+    const pasteEnd = pasteStart + limitedText.length;
+    const pasteSelection = selection.merge({
+      anchorOffset: pasteStart,
+      focusOffset: pasteEnd,
+    });
+
+    // Apply the font size style to the pasted text
+    newContentState = Modifier.applyInlineStyle(
+      newContentState,
+      pasteSelection,
+      fontSizeStyle
     );
 
     // Create a new editor state with the modified content
@@ -297,19 +347,21 @@ export default function HeaderBlock(props: Props) {
             height: 100%;
             display: flex;
             gap: 4px;
-            z-index: 101;
+            z-index: 99;
             position: absolute;
             @media (max-width: 881px) {
               top: 16.5px;
-              svg {
-                rect {
-                  height: 91%;
-                }
-              }
             }
           `}
         >
-          <HeaderHandlesvg />
+          <div
+            css={`
+              background: #adb5bd;
+              height: 100%;
+              width: 23px;
+              border-radius: 3.45px;
+            `}
+          />
           <div
             css={`
               width: 22px;
@@ -368,7 +420,7 @@ export default function HeaderBlock(props: Props) {
             css={`
               width: 60%;
               color: ${props.headerDetails.titleColor} !important;
-              font-size: 24px;
+              /* font-size: 24px; */
               min-width: 600px;
               line-height: 16.8px;
               background: inherit;
@@ -386,17 +438,12 @@ export default function HeaderBlock(props: Props) {
                   position: absolute;
                   color: ${props.headerDetails.titleColor};
                   opacity: 0.5;
-                  font-size: 29px; !important;
-                  font-family: "GothamNarrow-Bold", sans-serif;
+                  /* font-size: 14px; !important; */
                 }
-                span {
-                  font-family: "GothamNarrow-Bold", sans-serif;
-                }
+
                 > div {
                   > div {
                     > div {
-                      font-family: "GothamNarrow-Bold", sans-serif;
-
                       min-height: 32px !important;
                     }
                   }
@@ -439,7 +486,6 @@ export default function HeaderBlock(props: Props) {
             css={`
               width: 60%;
               color: ${props.headerDetails.descriptionColor} !important;
-              font-size: 14px;
               font-weight: 400;
               min-width: 600px;
               line-height: 16.8px;
@@ -459,7 +505,6 @@ export default function HeaderBlock(props: Props) {
                   color: #ffffff;
 
                   font-weight: 325;
-                  font-size: 14px !important;
                 }
                 > div {
                   > div {
