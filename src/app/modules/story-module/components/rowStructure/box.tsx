@@ -26,6 +26,7 @@ import { useDrop } from "react-dnd";
 import { useStoreActions } from "app/state/store/hooks";
 import { ReactComponent as EditIcon } from "app/modules/story-module/asset/editIcon.svg";
 import { ReactComponent as DeleteIcon } from "app/modules/story-module/asset/deleteIcon.svg";
+import { MIN_BOX_WIDTH } from "app/modules/story-module/data";
 
 // Types
 interface BoxProps {
@@ -206,7 +207,7 @@ const Box = (props: BoxProps) => {
     _elementRef: HTMLElement
   ) => {
     const neighborWidth = props.rowContentWidths[props.neighbourIndex];
-    const minWidthPercentage = (78 / containerWidth) * 100;
+    const minWidthPercentage = (MIN_BOX_WIDTH / containerWidth) * 100;
     setMaxWidth(props.initialWidth + neighborWidth - minWidthPercentage);
   };
   // Handle resize events
@@ -247,8 +248,8 @@ const Box = (props: BoxProps) => {
     const widthDelta = percentage - originalWidth;
     const newNeighborWidth = originalNeighborWidth - widthDelta;
 
-    // Minimum width check (78px)
-    const minWidthPercentage = (78 / containerWidth) * 100;
+    // Minimum width check (MIN_BOX_WIDTHpx)
+    const minWidthPercentage = (MIN_BOX_WIDTH / containerWidth) * 100;
 
     // Update temporary widths if both are above minimum
     if (
@@ -422,7 +423,7 @@ const Box = (props: BoxProps) => {
           maxWidth > widthNumberPercentage ? maxWidth : widthNumberPercentage
         }%`
       : undefined,
-    minWidth: 78,
+    minWidth: MIN_BOX_WIDTH,
     enable: {
       right: !viewOnlyMode && !props.last,
       bottomRight: !viewOnlyMode && !props.last,

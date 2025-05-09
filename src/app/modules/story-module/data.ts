@@ -59,3 +59,5 @@ export const emptyStory: StoryModel = {
 
 export const itemSpacing = "30px";
 export const containerGap = 16;
+export const MIN_BOX_WIDTH = 78; //px
+export const MIN_BOX_HEIGHT = 25; //px

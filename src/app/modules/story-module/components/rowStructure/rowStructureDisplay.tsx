@@ -23,6 +23,7 @@ import { usehandleRowFrameItemResize } from "app/hooks/useHandleRowFrameItemResi
 import { TABLET_STARTPOINT } from "app/theme";
 import { NumberSize, Resizable } from "re-resizable";
 import { Direction } from "re-resizable/lib/resizer";
+import { MIN_BOX_HEIGHT, MIN_BOX_WIDTH } from "app/modules/story-module/data";
 
 interface RowStructureDisplayProps {
   gap: string;
@@ -159,7 +160,11 @@ export default function RowstructureDisplay(
   ) => {
     setIsResizing(true);
     const newHeight = elementRef.offsetHeight;
-    setTempHeight(newHeight);
+    if (newHeight > MIN_BOX_HEIGHT) {
+      setTempHeight(newHeight);
+    } else {
+      setTempHeight(MIN_BOX_HEIGHT);
+    }
   };
 
   const onResizeStop = (
@@ -169,6 +174,9 @@ export default function RowstructureDisplay(
     _delta: NumberSize
   ) => {
     let newHeight = elementRef.offsetHeight;
+    if (newHeight < MIN_BOX_HEIGHT) {
+      newHeight = MIN_BOX_HEIGHT;
+    }
     handleRowHeightResize(props.rowId, newHeight);
     setIsResizing(false);
     setTempHeight(0);
@@ -278,7 +286,8 @@ export default function RowstructureDisplay(
             width: "100%",
             height: get(props.rowContentHeights, `[${0}]`, boxHeight),
           }}
-          minWidth={78}
+          minWidth={MIN_BOX_WIDTH}
+          minHeight={MIN_BOX_HEIGHT}
           enable={{
             bottom: !viewOnlyMode,
           }}
