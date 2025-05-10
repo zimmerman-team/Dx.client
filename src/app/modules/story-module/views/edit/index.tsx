@@ -186,6 +186,7 @@ function StoryEditView(props: Readonly<StoryEditViewProps>) {
         content,
         contentWidths: [...rowFrame.contentWidths?.widths],
         contentHeights: [...rowFrame.contentHeights?.heights],
+        textEditorHeights: [...rowFrame.contentHeights?.heights],
         contentTypes,
       };
     });

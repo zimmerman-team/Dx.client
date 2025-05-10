@@ -2,9 +2,12 @@ import { EditorState, RichUtils } from "draft-js";
 import React, { useEffect, useCallback } from "react";
 import styled from "styled-components";
 import debounce from "lodash/debounce";
+import { useRecoilValue } from "recoil";
+import { textEditorElementIdAtom } from "app/state/recoil/atoms";
 
 // Define constants for better readability and maintainability
 const DEFAULT_FONT_SIZE = 14;
+const DEFAULT_HEADER_TITLE_SIZE = 24;
 const MIN_FONT_SIZE = 1;
 const MAX_FONT_SIZE = 999;
 const HEADER_ONE_SIZE = 28;
@@ -47,6 +50,7 @@ const SizeInput = styled.input`
 
 export default function FontSizeController(props: Props) {
   const [fontSize, setFontSize] = React.useState(DEFAULT_FONT_SIZE);
+  const elementId = useRecoilValue(textEditorElementIdAtom);
 
   // Helper to extract current font size from editor state
   const getCurrentFontSize = useCallback(() => {
@@ -75,8 +79,10 @@ export default function FontSizeController(props: Props) {
       if (blockType === "header-one") return HEADER_ONE_SIZE;
       if (blockType === "header-two") return HEADER_TWO_SIZE;
     }
-    return DEFAULT_FONT_SIZE;
-  }, [props]);
+    return elementId === "headerTitle"
+      ? DEFAULT_HEADER_TITLE_SIZE
+      : DEFAULT_FONT_SIZE;
+  }, [props, elementId]);
 
   useEffect(() => {
     // Only update local state when editor state changes
@@ -120,16 +126,13 @@ export default function FontSizeController(props: Props) {
   useEffect(() => {
     const editorState = props.getEditorState();
 
-    // Create a function to update font size from editor state
     const syncFontSize = () => {
       const newSize = getCurrentFontSize();
       setFontSize(newSize);
     };
 
-    // Initial sync
     syncFontSize();
 
-    // Setup listeners for selection and content changes
     const currentSelection = editorState.getSelection();
     let prevSelection = currentSelection;
 
@@ -137,7 +140,6 @@ export default function FontSizeController(props: Props) {
       const newEditorState = props.getEditorState();
       const newSelection = newEditorState.getSelection();
 
-      // Check if selection changed
       if (
         newSelection.getStartKey() !== prevSelection.getStartKey() ||
         newSelection.getStartOffset() !== prevSelection.getStartOffset() ||

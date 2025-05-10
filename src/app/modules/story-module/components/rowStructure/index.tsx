@@ -8,7 +8,10 @@ import {
 } from "recoil";
 import IconButton from "@material-ui/core/IconButton";
 import { useHistory, useLocation, useParams } from "react-router-dom";
-import { itemSpacing, containerGap } from "app/modules/story-module/data";
+import {
+  itemSpacing,
+  containerGap,
+} from "app/modules/story-module/components/rowStructure/data";
 import RowstructureDisplay from "app/modules/story-module/components/rowStructure/rowStructureDisplay";
 import { ReactComponent as CloseIcon } from "app/modules/story-module/asset/closeIcon.svg";
 import { ReactComponent as DeleteIcon } from "app/modules/story-module/asset/deleteIcon.svg";

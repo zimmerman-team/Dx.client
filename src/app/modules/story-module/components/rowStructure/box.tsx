@@ -26,7 +26,7 @@ import { useDrop } from "react-dnd";
 import { useStoreActions } from "app/state/store/hooks";
 import { ReactComponent as EditIcon } from "app/modules/story-module/asset/editIcon.svg";
 import { ReactComponent as DeleteIcon } from "app/modules/story-module/asset/deleteIcon.svg";
-import { MIN_BOX_WIDTH } from "app/modules/story-module/data";
+import { MIN_BOX_WIDTH } from "app/modules/story-module/components/rowStructure/data";
 
 // Types
 interface BoxProps {
@@ -98,6 +98,7 @@ const Box = (props: BoxProps) => {
   const [chartError, setChartError] = useState(false);
   const [chartId, setChartId] = useState<string | null>(null);
   const [displayMode, setDisplayMode] = useState<ContentType>(null);
+  const [maxWidth, setMaxWidth] = useState(props.initialWidth);
   const [textContent, setTextContent] = useState<EditorState>(
     EditorState.createEmpty()
   );
@@ -124,7 +125,7 @@ const Box = (props: BoxProps) => {
   const firstUpdate = useRef(true);
 
   // Derived state
-  const editorHeight = textResizableRef.current?.clientHeight;
+  const editorHeight = textResizableRef.current?.offsetHeight;
   const viewOnlyMode =
     location.pathname === `/story/${page}` ||
     location.pathname === `/story/${page}/downloaded-view`;
@@ -172,6 +173,7 @@ const Box = (props: BoxProps) => {
 
       draft[frameId].content[itemIndex] = itemContent;
       draft[frameId].contentTypes[itemIndex] = itemContentType;
+      draft[frameId].textEditorHeights[itemIndex] = textHeight || 0;
 
       // Only increase height of textbox if needed
       if (textHeight && textHeight > draft[frameId].contentHeights[itemIndex]) {
@@ -199,8 +201,7 @@ const Box = (props: BoxProps) => {
     handleRowFrameItemRemoval(props.rowId, props.itemIndex);
   };
 
-  const [maxWidth, setMaxWidth] = useState(props.initialWidth);
-
+  // Handle resize events
   const onResizeStart = (
     _e: React.MouseEvent<HTMLElement> | React.TouchEvent<HTMLElement>,
     _dir: Direction,
@@ -210,7 +211,6 @@ const Box = (props: BoxProps) => {
     const minWidthPercentage = (MIN_BOX_WIDTH / containerWidth) * 100;
     setMaxWidth(props.initialWidth + neighborWidth - minWidthPercentage);
   };
-  // Handle resize events
   const onResizeStop = (
     _event: MouseEvent | TouchEvent,
     _direction: Direction,

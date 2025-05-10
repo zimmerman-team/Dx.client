@@ -31,6 +31,11 @@ import "@draft-js-plugins/static-toolbar/lib/plugin.css";
 import "@draft-js-plugins/emoji/lib/plugin.css";
 import fontSizeStyleMap from "app/modules/common/RichEditor/FontSizeController/styleMap";
 import { styles } from "app/modules/story-module/components/storySubHeaderToolbar/styles";
+import { useRecoilState } from "recoil";
+import {
+  textEditorElementIdAtom,
+  textEditorElementIdAtomType,
+} from "app/state/recoil/atoms";
 
 export const RichEditor = (props: {
   editMode: boolean;
@@ -45,6 +50,7 @@ export const RichEditor = (props: {
   placeholder: string;
   onBlur?: () => void;
   onFocus?: () => void;
+  elementId?: textEditorElementIdAtomType;
   handleBeforeInput?:
     | ((
         chars: string,
@@ -62,8 +68,9 @@ export const RichEditor = (props: {
   testId?: string;
 }): ReactElement => {
   const editor = useRef<Editor | null>(null);
-
+  const [_elementId, setElementId] = useRecoilState(textEditorElementIdAtom);
   const focus = (): void => {
+    setElementId(props.elementId as textEditorElementIdAtomType);
     editor.current?.focus();
   };
   const handleKeyCommand = (
@@ -140,7 +147,7 @@ export const RichEditor = (props: {
 
         font-family: "GothamNarrow-Book", "Helvetica Neue", sans-serif;
         line-height: normal;
-        font-weight: 12px;
+        font-size: ${props.elementId === "headerTitle" ? "24px" : "14px"};
         h1,
         h2 {
           font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
@@ -164,7 +171,7 @@ export const RichEditor = (props: {
         .public-DraftEditorPlaceholder-inner {
           position: absolute;
           color: #adb5bd;
-          font-size: 14px;
+          font-size: ${props.elementId === "headerTitle" ? "24px" : "14px"};
           font-family: "GothamNarrow-Book", "Helvetica Neue", sans-serif;
         }
       `}
@@ -192,6 +199,7 @@ export const RichEditor = (props: {
         handleKeyCommand={handleKeyCommand}
         onBlur={() => {
           props.onBlur?.();
+          setElementId(null);
           if (props.textContent.getCurrentContent().getPlainText().length === 0)
             props.setPlaceholderState(props.placeholder);
         }}

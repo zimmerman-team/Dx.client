@@ -1,4 +1,3 @@
-import { containerGap } from "app/modules/story-module/data";
 import { IFramesArray } from "app/modules/story-module/views/create/data";
 import { Updater } from "use-immer";
 
