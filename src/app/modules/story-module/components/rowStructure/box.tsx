@@ -266,7 +266,7 @@ const Box = (props: BoxProps) => {
   // Drag and drop configuration
   const [{ isOver }, drop] = useDrop(() => ({
     accept:
-      props.rowType === "oneByFive"
+      props.rowType === "oneByFive" || props.rowType === "oneByFour"
         ? elementTypes
         : elementTypes.filter((type) => type !== StoryElementsType.BIG_NUMBER),
     collect: (monitor) => ({
