@@ -148,6 +148,7 @@ export const RichEditor = (props: {
         font-family: "GothamNarrow-Book", "Helvetica Neue", sans-serif;
         line-height: normal;
         font-size: ${props.elementId === "headerTitle" ? "24px" : "14px"};
+        font-weight: ${props.elementId === "headerTitle" ? "bold" : "normal"};
         h1,
         h2 {
           font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;

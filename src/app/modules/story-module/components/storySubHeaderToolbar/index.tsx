@@ -323,11 +323,6 @@ export function StorySubheaderToolbar(
                     width: 100%;
                   }
                 }
-                /* @media (min-width: 801px) {
-                  @media (max-width: 1199px) {
-                    width: 49%;
-                  }
-                } */
               `}
             >
               <AutoResizeInput
