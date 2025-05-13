@@ -102,7 +102,7 @@ export const DropZone = (props: DropzoneProps) => {
                   margin-top: 8px;
                 `}
               >
-                Drag and Drop Spreadsheets File here
+                Drag and drop your CSV file here
               </p>
             </>
           )}
