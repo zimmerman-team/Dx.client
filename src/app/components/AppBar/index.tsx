@@ -12,30 +12,203 @@ import { headercss, logocss, navLinkcss } from "app/components/AppBar/style";
 import { isChartAIAgentActive } from "app/state/recoil/atoms";
 import { useRecoilState } from "recoil";
 import MenuIcon from "@material-ui/icons/Menu";
+import InlineLogo from "app/modules/home-module/assets/inline-logo";
+import { KeyboardArrowDown, KeyboardArrowUp } from "@material-ui/icons";
+import { ClickAwayListener } from "@material-ui/core";
+
+const DropDownNav = ({
+  item,
+  mobile,
+  handleNavigation,
+}: {
+  item: {
+    name: React.ReactNode;
+    path: string;
+    dropdown: boolean;
+    options: {
+      name: React.ReactNode;
+      path: string;
+      cy?: string;
+    }[];
+    cy?: string;
+    class?: undefined;
+  };
+  mobile?: boolean;
+  handleNavigation?: () => void;
+}) => {
+  const [open, setOpen] = React.useState(false);
+  return (
+    <>
+      <span
+        data-cy={item.cy}
+        css={`
+          display: flex;
+          align-items: center;
+          gap: 6px;
+          cursor: pointer;
+          position: relative;
+          color: #231d2c;
+          :hover {
+            color: #6061e5;
+            path {
+              fill: #6061e5;
+            }
+          }
+          font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
+        `}
+        onClick={() => {
+          setOpen(!open);
+        }}
+      >
+        <b>{item.name}</b> {item.dropdown && <KeyboardArrowDown />}
+        {open ? (
+          mobile ? null : (
+            <ClickAwayListener onClickAway={() => setOpen(false)}>
+              <div
+                css={`
+                  border-radius: 10px;
+                  background: #ffffff;
+                  padding: 0 10px 10px 10px;
+                  position: absolute;
+                  top: -8px;
+                  left: -10px;
+                  width: calc(100% + 20px);
+                  box-shadow: 0px 3px 3px 0px rgba(152, 161, 170, 0.3);
+                `}
+              >
+                <span
+                  data-cy={item.cy}
+                  css={`
+                    display: flex;
+                    align-items: center;
+                    gap: 6px;
+                    cursor: pointer;
+                    position: relative;
+                    border-bottom: 1px solid #dadaf8;
+                    padding-bottom: 12px;
+                    padding-top: 8px;
+                    ${open
+                      ? `color: #6061E5;
+                    path {
+                    fill: #6061E5;
+                    }`
+                      : ""}
+                  `}
+                >
+                  <b>{item.name}</b> {item.dropdown && <KeyboardArrowUp />}
+                </span>
+                <div
+                  css={`
+                    display: flex;
+                    flex-direction: column;
+                    gap: 8px;
+                    padding-top: 8px;
+                  `}
+                >
+                  {item.options.map((option) => (
+                    <NavLink
+                      to={option.path}
+                      data-cy={option.cy}
+                      css={`
+                        margin: 0px;
+                        line-height: normal;
+                        padding: 8px 0px;
+                        cursor: pointer;
+                      `}
+                    >
+                      <b>{option.name}</b>
+                    </NavLink>
+                  ))}
+                </div>
+              </div>
+            </ClickAwayListener>
+          )
+        ) : null}
+      </span>
+      {open && mobile ? (
+        <div
+          css={`
+            display: flex;
+            flex-direction: column;
+            padding-left: 40px;
+            padding-top: 8px;
+          `}
+        >
+          {item.options.map((option) => (
+            <NavLink
+              to={option.path}
+              data-cy={option.cy}
+              onClick={handleNavigation}
+              css={`
+                margin: 0px;
+                line-height: normal;
+                padding: 16px 0px;
+                padding-left: 6px;
+                border-bottom: 1px solid #dadaf8;
+                :last-of-type {
+                  padding-bottom: 0px;
+                  border-bottom: none;
+                }
+                cursor: pointer;
+              `}
+            >
+              <b>{option.name}</b>
+            </NavLink>
+          ))}
+        </div>
+      ) : null}
+    </>
+  );
+};
 
 const NavList = (props: {
   navLocation: string;
   setIsNavExpanded?: React.Dispatch<React.SetStateAction<boolean>>;
+  mobile?: boolean;
 }) => {
   const list = [
     { name: "Dashboard", path: "/", cy: "nav-explore", class: "" },
     {
-      name: "Why Dataxplorer",
-      path: "/why-dataxplorer",
-      cy: "nav-why",
-      class: "why-dataxplorer",
-    },
-    {
-      name: "About",
-      path: "/about",
-      cy: "nav-about",
-      class: "about",
-    },
-    {
-      name: "Partners",
-      path: "/partners",
-      cy: "nav-partners",
-      class: "partners",
+      name: (
+        <b
+          css={`
+            display: flex;
+            align-items: center;
+            gap: 6px;
+          `}
+        >
+          About <InlineLogo width={103} />
+        </b>
+      ),
+      path: ".",
+      dropdown: true,
+      options: [
+        {
+          name: "Who We Are",
+          path: "/about",
+          cy: "nav-about",
+        },
+        {
+          name: (
+            <b
+              css={`
+                display: flex;
+                align-items: center;
+                gap: 6px;
+              `}
+            >
+              Why <InlineLogo width={103} />
+            </b>
+          ),
+          path: "/why-dataxplorer",
+          cy: "nav-why-dataxplorer",
+        },
+        {
+          name: "Our Partners",
+          path: "/partners",
+          cy: "nav-partners",
+        },
+      ],
     },
     { name: "Pricing", path: "/pricing", cy: "nav-pricing", class: "pricing" },
     { name: "Contact", path: "/contact", cy: "nav-contact", class: "contact" },
@@ -48,12 +221,26 @@ const NavList = (props: {
       {list.map((item) => (
         <div
           key={item.cy}
-          css={navLinkcss(item.class ?? item.path, props.navLocation)}
-          onClick={handleNavigation}
+          css={`
+            ${navLinkcss(item.class ?? item.path, props.navLocation)}
+            ${props.mobile
+              ? `padding: 16px 0px 16px 20px;
+            border-bottom: 1px solid #dadaf8;`
+              : ""}
+          `}
+          onClick={item.dropdown ? undefined : handleNavigation}
         >
-          <NavLink to={item.path} data-cy={item.cy}>
-            <b>{item.name}</b>
-          </NavLink>
+          {item.dropdown ? (
+            <DropDownNav
+              item={item}
+              handleNavigation={handleNavigation}
+              mobile={props.mobile}
+            />
+          ) : (
+            <NavLink to={item.path} data-cy={item.cy}>
+              <b>{item.name}</b>
+            </NavLink>
+          )}
         </div>
       ))}
     </>
@@ -80,7 +267,7 @@ function MobileHeader(props: { navLocation: string }) {
           overflow: ${isNavExpanded ? "auto" : "hidden"};
           padding: 0px 16px 16px 16px;
           width: 100%;
-          background: #f2f7fd;
+          background: ${isNavExpanded ? "#ffffff" : "#f2f7fd"};
           transition: all cubic-bezier(0.4, 0, 0.2, 1) 0.3s;
           position: fixed;
           top: 0;
@@ -197,19 +384,17 @@ function MobileHeader(props: { navLocation: string }) {
         </div>
         <div
           css={`
-            padding: 16px 32px;
-            border-bottom: 1px solid #e4e4e4;
-            border-top: 1px solid #e4e4e4;
+            border-top: 1px solid #dadaf8;
             display: flex;
             flex-direction: column;
             opacity: ${isNavExpanded ? 1 : 0};
-            background: #f2f7fd;
+            background: ${isNavExpanded ? "#ffffff" : "#f2f7fd"};
             transition: all cubic-bezier(0.4, 0, 0.2, 1) 0.3s;
-            gap: 32px;
-            a {
+            a,
+            span {
               color: #000000;
               font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
-              font-size: 24px;
+              font-size: 16px;
               text-decoration: none;
             }
           `}
@@ -217,6 +402,7 @@ function MobileHeader(props: { navLocation: string }) {
           <NavList
             navLocation={props.navLocation}
             setIsNavExpanded={setIsNavExpanded}
+            mobile
           />
         </div>
       </div>
@@ -331,7 +517,7 @@ export function AppBar() {
                     md={10}
                     sm={10}
                     css={`
-                      gap: 20px;
+                      gap: 44px;
                       display: flex;
                       align-items: center;
                       justify-content: flex-end;
