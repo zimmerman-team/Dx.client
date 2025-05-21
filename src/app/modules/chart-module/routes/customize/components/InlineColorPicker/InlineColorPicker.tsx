@@ -1,16 +1,24 @@
 import React, { useState } from "react";
-import { SketchPicker } from "react-color";
+import { ColorResult, SketchPicker } from "react-color";
 import styles from "./InlineColorPicker.module.css";
+import CustomColorPicker from "app/components/ColorPicker";
+import { on } from "events";
 
+interface Props {
+  color?: string;
+  onChange: (
+    color: ColorResult,
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => void;
+}
 export default function InlineColorPicker({
   color: maybeColor,
   onChange,
-  disabled,
-}) {
+}: Props) {
   const [displayColorPicker, setDisplayColorPicker] = useState(false);
   const color = maybeColor ?? "#000000"; // Same as <input type='color' />
 
-  const pickerRef = React.useRef(null);
+  const pickerRef = React.useRef<HTMLDivElement | null>(null);
 
   const rect = pickerRef?.current?.getBoundingClientRect();
 
@@ -54,12 +62,16 @@ export default function InlineColorPicker({
             data-cy="sketch-picker"
             css={`
               .sketch-pickerz {
-                padding: 16px !important;
-                box-shadow: 0px 0px 6px 0px rgba(31, 41, 55, 0.05),
-                  0px 10px 15px 0px rgba(31, 41, 55, 0.1) !important;
+                padding: 6px !important;
+                width: 274px !important;
+
                 border: none;
+                border-radius: 10px !important;
+                background: var(--Secondary-Grey-Grey-8, #f1f3f5);
+                box-shadow: 0px 0px 10px 0px rgba(152, 161, 170, 0.6) !important;
                 > div:nth-of-type(1) {
                   padding-bottom: 45% !important;
+                  /* border-radius: 4px; */
                 }
                 > .flexbox-fix:nth-of-type(4) {
                   div {
@@ -78,14 +90,15 @@ export default function InlineColorPicker({
               }
             `}
           >
-            <SketchPicker
-              disabled={disabled}
+            <CustomColorPicker onChange={onChange} colorValue={color} />
+            {/* <SketchPicker
+              // disabled={disabled}
               disableAlpha
+              // width="286px"
               color={color}
-              onChangeComplete={(color) => onChange(color.hex)}
-              width={264}
+              onChangeComplete={(color, e) => onChange(color, e)}
               className="sketch-pickerz"
-            />
+            /> */}
           </div>
         </div>
       )}

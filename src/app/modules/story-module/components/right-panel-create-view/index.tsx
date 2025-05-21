@@ -63,6 +63,8 @@ import { IHeaderDetails } from "app/modules/story-module/components/right-panel/
 import { useCheckUserPlan } from "app/hooks/useCheckUserPlan";
 import { PrimaryButton, TertiaryButton } from "app/components/Styled/button";
 import { TABLET_STARTPOINT } from "app/theme";
+import { ColorResult } from "react-color";
+import InlineColorPicker from "app/modules/chart-module/routes/customize/components/InlineColorPicker";
 
 interface Props {
   showHeaderItem: boolean;
@@ -1572,44 +1574,42 @@ function EditHeaderPanelView(props: Props) {
               }
             `}
           >
-            <ChartOptionColor
-              isEnabled
-              error={false}
-              value={props.headerDetails.backgroundColor}
-              default={props.headerDetails.backgroundColor}
-              onChange={(value: string) => {
+            <InlineColorPicker
+              color={props.headerDetails.backgroundColor}
+              onChange={(
+                value: ColorResult,
+                e: React.ChangeEvent<HTMLInputElement>
+              ) => {
                 props.setHeaderDetails({
                   ...props.headerDetails,
-                  backgroundColor: value,
+                  backgroundColor: value.hex,
                 });
               }}
-              label="Background color"
+              // label="Background color"
             />
-            <ChartOptionColor
-              isEnabled
-              error={false}
-              value={props.headerDetails.titleColor}
-              default={props.headerDetails.titleColor}
-              onChange={(value: string) => {
+            <InlineColorPicker
+              color={props.headerDetails.titleColor}
+              onChange={(
+                value: ColorResult,
+                e: React.ChangeEvent<HTMLInputElement>
+              ) => {
                 props.setHeaderDetails({
                   ...props.headerDetails,
-                  titleColor: value,
+                  titleColor: value.hex,
                 });
               }}
-              label="Title color"
             />
-            <ChartOptionColor
-              isEnabled
-              error={false}
-              value={props.headerDetails.descriptionColor}
-              default={props.headerDetails.descriptionColor}
-              onChange={(value: string) => {
+            <InlineColorPicker
+              color={props.headerDetails.descriptionColor}
+              onChange={(
+                value: ColorResult,
+                e: React.ChangeEvent<HTMLInputElement>
+              ) => {
                 props.setHeaderDetails({
                   ...props.headerDetails,
-                  descriptionColor: value,
+                  descriptionColor: value.hex,
                 });
               }}
-              label="Description color"
             />
           </div>
         )}
