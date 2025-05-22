@@ -1,15 +1,15 @@
 import React, { useState } from "react";
-import { ColorResult, SketchPicker } from "react-color";
 import styles from "./InlineColorPicker.module.css";
-import CustomColorPicker from "app/components/ColorPicker";
-import { on } from "events";
+import { ColorPicker } from "app/components/ColorPicker";
+import {
+  ColorService,
+  IColor,
+} from "app/components/ColorPicker/services/color";
+import { ClickAwayListener } from "@material-ui/core";
 
 interface Props {
   color?: string;
-  onChange: (
-    color: ColorResult,
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => void;
+  onChange: (color: IColor) => void;
 }
 export default function InlineColorPicker({
   color: maybeColor,
@@ -29,69 +29,75 @@ export default function InlineColorPicker({
   const heightCheck = 350;
 
   return (
-    <div
-      css={`
-        position: relative;
-      `}
-    >
+    <ClickAwayListener onClickAway={() => setDisplayColorPicker(false)}>
       <div
-        className={styles.swatch}
-        onClick={() => setDisplayColorPicker(true)}
-        id="inline-color-picker-swatch"
-        ref={pickerRef}
-        data-cy="color-picker"
+        css={`
+          position: relative;
+        `}
       >
-        <div className={styles.color} style={{ background: color }} />
-        {color.toUpperCase()}
-      </div>
-      {displayColorPicker && (
         <div
-          css={`
-            position: absolute;
-            z-index: 2000;
-            right: 0;
-            ${heightDifference < heightCheck ? "bottom: 100%;" : "top: 100%;"};
-          `}
-          id="inline-color-picker-popover"
+          className={styles.swatch}
+          onClick={() => setDisplayColorPicker(true)}
+          id="inline-color-picker-swatch"
+          ref={pickerRef}
+          data-cy="color-picker"
         >
+          <div className={styles.color} style={{ background: color }} />
+          {color.toUpperCase()}
+        </div>
+        {displayColorPicker && (
           <div
+            css={`
+              position: absolute;
+              z-index: 2000;
+              right: 0;
+              ${heightDifference < heightCheck
+                ? "bottom: 100%;"
+                : "top: 100%;"};
+            `}
+            id="inline-color-picker-popover"
+          >
+            {/* <div
             className={styles.cover}
             onClick={() => setDisplayColorPicker(false)}
-          />
-          <div
-            data-cy="sketch-picker"
-            css={`
-              .sketch-pickerz {
-                padding: 6px !important;
-                width: 274px !important;
+          /> */}
+            <div
+              data-cy="sketch-picker"
+              css={`
+                .sketch-pickerz {
+                  padding: 6px !important;
+                  width: 274px !important;
 
-                border: none;
-                border-radius: 10px !important;
-                background: var(--Secondary-Grey-Grey-8, #f1f3f5);
-                box-shadow: 0px 0px 10px 0px rgba(152, 161, 170, 0.6) !important;
-                > div:nth-of-type(1) {
-                  padding-bottom: 45% !important;
-                  /* border-radius: 4px; */
-                }
-                > .flexbox-fix:nth-of-type(4) {
-                  div {
-                    width: 24px !important;
-                    height: 24px !important;
-                    border-radius: 50% !important;
-                    border: none !important;
-                    &:hover {
-                      border-radius: 100px;
-                      border: 2px solid var(--white, #fff);
-                      background: var(--indigo-500, #6467f2);
-                      box-shadow: 0px 0px 0px 2px rgba(0, 0, 0, 0.25);
+                  border: none;
+                  border-radius: 10px !important;
+                  background: var(--Secondary-Grey-Grey-8, #f1f3f5);
+                  box-shadow: 0px 0px 10px 0px rgba(152, 161, 170, 0.6) !important;
+                  > div:nth-of-type(1) {
+                    padding-bottom: 45% !important;
+                    /* border-radius: 4px; */
+                  }
+                  > .flexbox-fix:nth-of-type(4) {
+                    div {
+                      width: 24px !important;
+                      height: 24px !important;
+                      border-radius: 50% !important;
+                      border: none !important;
+                      &:hover {
+                        border-radius: 100px;
+                        border: 2px solid var(--white, #fff);
+                        background: var(--indigo-500, #6467f2);
+                        box-shadow: 0px 0px 0px 2px rgba(0, 0, 0, 0.25);
+                      }
                     }
                   }
                 }
-              }
-            `}
-          >
-            <CustomColorPicker onChange={onChange} colorValue={color} />
-            {/* <SketchPicker
+              `}
+            >
+              <ColorPicker
+                onChange={onChange}
+                color={ColorService.convert("hex", color)}
+              />
+              {/* <SketchPicker
               // disabled={disabled}
               disableAlpha
               // width="286px"
@@ -99,9 +105,10 @@ export default function InlineColorPicker({
               onChangeComplete={(color, e) => onChange(color, e)}
               className="sketch-pickerz"
             /> */}
+            </div>
           </div>
-        </div>
-      )}
-    </div>
+        )}
+      </div>
+    </ClickAwayListener>
   );
 }

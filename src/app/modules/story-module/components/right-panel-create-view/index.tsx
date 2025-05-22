@@ -63,8 +63,8 @@ import { IHeaderDetails } from "app/modules/story-module/components/right-panel/
 import { useCheckUserPlan } from "app/hooks/useCheckUserPlan";
 import { PrimaryButton, TertiaryButton } from "app/components/Styled/button";
 import { TABLET_STARTPOINT } from "app/theme";
-import { ColorResult } from "react-color";
 import InlineColorPicker from "app/modules/chart-module/routes/customize/components/InlineColorPicker";
+import { IColor } from "app/components/ColorPicker/services/color";
 
 interface Props {
   showHeaderItem: boolean;
@@ -1576,10 +1576,7 @@ function EditHeaderPanelView(props: Props) {
           >
             <InlineColorPicker
               color={props.headerDetails.backgroundColor}
-              onChange={(
-                value: ColorResult,
-                e: React.ChangeEvent<HTMLInputElement>
-              ) => {
+              onChange={(value: IColor) => {
                 props.setHeaderDetails({
                   ...props.headerDetails,
                   backgroundColor: value.hex,
@@ -1589,10 +1586,7 @@ function EditHeaderPanelView(props: Props) {
             />
             <InlineColorPicker
               color={props.headerDetails.titleColor}
-              onChange={(
-                value: ColorResult,
-                e: React.ChangeEvent<HTMLInputElement>
-              ) => {
+              onChange={(value: IColor) => {
                 props.setHeaderDetails({
                   ...props.headerDetails,
                   titleColor: value.hex,
@@ -1601,10 +1595,7 @@ function EditHeaderPanelView(props: Props) {
             />
             <InlineColorPicker
               color={props.headerDetails.descriptionColor}
-              onChange={(
-                value: ColorResult,
-                e: React.ChangeEvent<HTMLInputElement>
-              ) => {
+              onChange={(value: IColor) => {
                 props.setHeaderDetails({
                   ...props.headerDetails,
                   descriptionColor: value.hex,
