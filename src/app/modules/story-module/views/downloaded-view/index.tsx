@@ -6,7 +6,10 @@ import { Link, useLocation } from "react-router-dom";
 import { useStoreState } from "app/state/store/hooks";
 import { emptyStory, StoryModel } from "app/modules/story-module/data";
 import { useRecoilValue } from "recoil";
-import { loadedChartsInStoryAtom } from "app/state/recoil/atoms";
+import {
+  chartsRenderedAtom,
+  loadedChartsInStoryAtom,
+} from "app/state/recoil/atoms";
 
 export default function DownloadedView(props: {
   setIsPreviewView: React.Dispatch<React.SetStateAction<boolean>>;
@@ -22,6 +25,7 @@ export default function DownloadedView(props: {
     (state) => (state.stories.StoryGet.crudData ?? emptyStory) as StoryModel
   );
   const loadedChartsInStory = useRecoilValue(loadedChartsInStoryAtom);
+  const chartRenders = useRecoilValue(chartsRenderedAtom);
 
   const getNumberOfRequests = () => {
     let numberOfRequests = 0;
@@ -43,6 +47,7 @@ export default function DownloadedView(props: {
       ?.style.setProperty("display", "none");
     if (!storyData.id) return;
     let timeout: NodeJS.Timeout;
+
     if (loadedChartsInStory.length === getNumberOfRequests()) {
       if (getNumberOfRequests() === 0) {
         timeout = setTimeout(() => {
@@ -53,11 +58,21 @@ export default function DownloadedView(props: {
           );
         }, 500);
       } else {
-        exportPage(
-          queryParams.get("type") ?? "",
-          "",
-          queryParams.get("filename") ?? ""
-        );
+        if (
+          loadedChartsInStory.every((chartId) => {
+            if (chartId === "deleted") return true;
+            return (
+              chartRenders[chartId]?.finishedCount ===
+              chartRenders[chartId]?.renderCount
+            );
+          })
+        ) {
+          exportPage(
+            queryParams.get("type") ?? "",
+            "",
+            queryParams.get("filename") ?? ""
+          );
+        }
       }
     }
     return () => {
@@ -67,7 +82,7 @@ export default function DownloadedView(props: {
         .getElementById("app-bar-desktop")
         ?.style.setProperty("display", "flex");
     };
-  }, [storyData.id, loadedChartsInStory]);
+  }, [storyData.id, loadedChartsInStory, chartRenders]);
 
   return (
     <div

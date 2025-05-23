@@ -127,6 +127,16 @@ export const loadedChartsInStoryAtom = atom<string[]>({
   default: [],
 });
 
+export const chartsRenderedAtom = atom<{
+  [key: string]: {
+    renderCount: number;
+    finishedCount: number;
+  };
+}>({
+  key: "chartsRenderedAtom",
+  default: {},
+});
+
 export const chartFromStoryAtom = atom<{
   state: boolean;
   view: string;

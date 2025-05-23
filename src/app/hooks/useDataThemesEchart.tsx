@@ -36,6 +36,8 @@ import { drillDown } from "app/utils/getCirclePackingOption";
 import { checkLists } from "app/modules/chart-module/routes/customize/data";
 //@ts-ignore
 import { transform } from "echarts-stat";
+import { useSetRecoilState } from "recoil";
+import { chartsRenderedAtom } from "app/state/recoil/atoms";
 
 echarts.use([
   BarChart,
@@ -60,6 +62,8 @@ echarts.use([
 ]);
 
 export function useDataThemesEchart() {
+  const setChartsRendered = useSetRecoilState(chartsRenderedAtom);
+
   function onResize(chart: echarts.EChartsType, id: string, height?: number) {
     const container = document.getElementById(id);
     chart.resize({
@@ -1785,8 +1789,19 @@ export function useDataThemesEchart() {
 
     visualOptions: any,
     mapping: any,
-    id: string
+    id: string,
+    chartId: string = ""
   ) {
+    if (chartId) {
+      setChartsRendered((prev: any) => ({
+        ...prev,
+        [chartId]: {
+          ...prev?.[chartId],
+          renderCount: (prev?.[chartId]?.renderCount ?? 0) + 1,
+        },
+      }));
+    }
+
     if (chartType === "bigNumber") {
       bigNumberRender(data, node);
     } else {
@@ -1828,6 +1843,18 @@ export function useDataThemesEchart() {
         echartsCirclepacking: () =>
           echartsCirclepacking(data, visualOptions, null),
       };
+      // @ts-expect-error jbh
+      chart.one("finished", () => {
+        if (chartId) {
+          setChartsRendered((prev: any) => ({
+            ...prev,
+            [chartId]: {
+              ...prev?.[chartId],
+              finishedCount: (prev?.[chartId]?.finishedCount ?? 0) + 1,
+            },
+          }));
+        }
+      });
 
       chart.setOption(CHART_TYPE_TO_COMPONENT[chartType](), true);
 

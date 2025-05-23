@@ -144,7 +144,8 @@ export function CommonChart(props: Readonly<Props>) {
           props.mapping,
           `common-chart-render-container-${props.chartId || "1"}-${
             props.chartPreviewInStory
-          }`
+          }`,
+          props.chartId
         );
       } catch (e: any) {
         if (process.env.NODE_ENV === "development") {
