@@ -4,9 +4,11 @@ import { useAuth0 } from "@auth0/auth0-react";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import { Route, Switch, useHistory, useLocation } from "react-router-dom";
 import AuthCard from "app/modules/onboarding-module/component/card";
-import OnboardingRightDeco from "app/modules/onboarding-module/asset/onboardingRight-img.png";
+import MainImage from "app/modules/onboarding-module/asset/main-image.png";
+import Ellipsis from "app/modules/onboarding-module/asset/ellipses.svg";
 import { useTitle } from "react-use";
 import HomeFooter from "app/modules/home-module/components/Footer";
+import InlineLogo from "app/modules/home-module/assets/inline-logo";
 
 export default function Onboarding() {
   useTitle("Dataxplorer - Onboarding");
@@ -55,12 +57,11 @@ export default function Onboarding() {
             @media (max-width: 1024px) {
               padding-bottom: 7rem;
             }
-            padding-top: 222px;
+            padding-top: 104px;
           `}
         >
           <div
             css={`
-              width: 60%;
               margin: auto;
               @media (max-width: 1140px) {
                 width: 395px;
@@ -72,19 +73,32 @@ export default function Onboarding() {
           >
             <h2
               css={`
-                color: #6061e5;
-                font-size: 24px;
+                color: #231d2c;
+                font-size: 40px;
                 font-weight: 700;
                 font-style: normal;
                 font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
                 padding: 0;
                 margin: 0;
+                text-align: center;
+                line-height: normal;
               `}
             >
-              {location.pathname.includes("signin")
-                ? "Welcome back!"
-                : "Create your free account."}
+              Sign in to get started
             </h2>
+            <p
+              css={`
+                padding: 0;
+                margin: 0;
+                line-height: 24px;
+                font-size: 18px;
+                font-family: "GothamNarrow-Book", "Helvetica Neue", sans-serif;
+                text-align: center;
+                margin-top: 8px;
+              `}
+            >
+              Choose your preferred login method below.
+            </p>
 
             <Switch>
               <Route path="/onboarding/signup">
@@ -104,16 +118,55 @@ export default function Onboarding() {
             lg={"auto"}
             css={`
               right: 0;
-              width: 54.375%;
+              width: 50%;
+              background: url(${Ellipsis}), #f2f7fd;
               background-size: cover;
               background-position: center;
-              background-repeat: no-repeat;
-              background-image: url(${OnboardingRightDeco});
+              background-repeat: no-repeat, no-repeat;
+              display: flex;
+              flex-direction: column;
+              align-items: center;
             `}
-          />
+          >
+            <h1
+              css={`
+                font-size: 40px;
+                line-height: normal;
+                font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
+                color: #231d2c;
+                display: flex;
+                align-items: center;
+                gap: 8px;
+                margin: 0;
+                margin-top: 104px;
+              `}
+            >
+              Welcome to <InlineLogo width={"239.968px"} height={"25.669px"} />
+            </h1>
+            <p
+              css={`
+                font-size: 18px;
+                line-height: normal;
+                font-family: "GothamNarrow-Book", "Helvetica Neue", sans-serif;
+                color: #231d2c;
+                margin-top: 8px;
+              `}
+            >
+              Create high-impact, data-driven stories.
+            </p>
+
+            <img
+              src={MainImage}
+              alt=""
+              css={`
+                width: 512px;
+                margin-top: 50px;
+              `}
+            />
+          </Grid>
         )}
       </Grid>
-      <HomeFooter mini />
+      <HomeFooter />
     </div>
   );
 }

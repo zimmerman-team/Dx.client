@@ -3,9 +3,9 @@ import Checkbox from "@material-ui/core/Checkbox";
 import { socialAuth } from "app/utils/socialAuth";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import { socialloginbuttoncss, termsOfServiceCss } from "./style";
-import { ReactComponent as GoogleIcon } from "app/modules/onboarding-module/asset/google-img.svg";
-import { ReactComponent as LinkedInIcon } from "app/modules/onboarding-module/asset/linkedIn-img.svg";
-import { ReactComponent as MicrosoftIcon } from "app/modules/onboarding-module/asset/microsoft-img.svg";
+import { ReactComponent as GoogleIcon } from "app/modules/home-module/components/SignInButtons/assets/google-icon.svg";
+import { ReactComponent as LinkedInIcon } from "app/modules/home-module/components/SignInButtons/assets/linkedin-icon.svg";
+import { ReactComponent as MicrosoftIcon } from "app/modules/home-module/components/SignInButtons/assets/microsoft-icon.svg";
 import { useLocation } from "react-router-dom";
 
 export default function AuthCard(props: { isSignIn?: boolean }) {
@@ -25,7 +25,7 @@ export default function AuthCard(props: { isSignIn?: boolean }) {
       css={`
         display: flex;
         color: #231d2c;
-        padding-top: 38px;
+        padding-top: 50px;
         align-items: center;
         flex-direction: column;
         justify-content: center;

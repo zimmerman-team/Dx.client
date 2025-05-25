@@ -27,7 +27,12 @@ export default function DesktopFooter(props: Props) {
   const mobile = useMediaQuery(`(max-width:${MOBILE_BREAKPOINT})`);
   const tablet = useMediaQuery(`(max-width:${DESKTOP_BREAKPOINT})`);
   return (
-    <div css={homeFootercss}>
+    <div
+      css={`
+        ${homeFootercss}
+        border-top: ${props.mini ? "none" : "1px solid #dadaf8"};
+      `}
+    >
       <Container
         maxWidth="lg"
         data-cy="home-footer"
@@ -45,6 +50,7 @@ export default function DesktopFooter(props: Props) {
           <div
             css={`
               padding: 24px 0;
+
               display: flex;
               justify-content: space-between;
               @media (max-width: ${DESKTOP_BREAKPOINT}) {
