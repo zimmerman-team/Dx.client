@@ -1,50 +1,31 @@
-import { CompositeDecorator, ContentBlock, ContentState } from "draft-js";
-import React from "react";
+import { CompositeDecorator, ContentState, EditorState } from "draft-js";
+import { LinkDecorator, linkStrategy } from "./linkDecorator";
+import { colorDecorator, colorStrategy } from "./colorDecorator";
 
-type Decorator = {
+export type Decorator = {
   contentState: ContentState;
   entityKey: string;
-  children: string;
+  children: React.ReactNode;
 };
 
-function strategy(
-  block: ContentBlock,
-  callback: (start: number, end: number) => void,
-  contentState: ContentState
-) {
-  block.findEntityRanges((character) => {
-    const entityKey = character.getEntity();
-    return (
-      entityKey !== null &&
-      contentState.getEntity(entityKey).getType() === "LINK"
-    );
-  }, callback);
-}
+export const Decorators = () =>
+  new CompositeDecorator([
+    {
+      strategy: colorStrategy,
+      component: colorDecorator,
+    },
+    // {
+    //   strategy: linkStrategy,
+    //   component: LinkDecorator,
+    // },
+  ]);
 
-const LinkDecorator = ({
-  contentState,
-  entityKey,
-  children,
-  ...props
-}: Decorator) => {
-  const { url } = contentState.getEntity(entityKey).getData();
-  return (
-    <a
-      css={`
-        color: #6061e5;
-      `}
-      href={url}
-      target="_blank"
-      rel="noopener noreferrer"
-    >
-      {children}
-    </a>
-  );
+export const addColorDecorator = (editorState: EditorState): EditorState => {
+  const currentDecorator = editorState.getDecorator();
+
+  // For now, always set the color decorator
+  // If you have other decorators, you'll need to manage them in a combined decorator
+  return EditorState.set(editorState, {
+    decorator: Decorators(),
+  });
 };
-
-export const linkDecorator = new CompositeDecorator([
-  {
-    strategy: strategy,
-    component: LinkDecorator,
-  },
-]);

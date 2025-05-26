@@ -34,6 +34,7 @@ import DownloadedView from "./views/downloaded-view";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import NotAvailableOnMobile from "app/modules/common/not-available";
 import { MOBILE_BREAKPOINT } from "app/theme";
+import { Decorators } from "app/modules/common/RichEditor/decorators";
 
 export default function StoryModule() {
   const { user, isAuthenticated } = useAuth0();
@@ -149,14 +150,16 @@ export default function StoryModule() {
 
   const [headerDetails, setHeaderDetails] = React.useState({
     title: "",
-    description: EditorState.createEmpty(),
-    heading: EditorState.createEmpty(),
+    description: EditorState.createEmpty(Decorators()),
+    heading: EditorState.createEmpty(Decorators()),
     showHeader: true,
     backgroundColor: "#252c34",
     titleColor: "#ffffff",
     descriptionColor: "#ffffff",
     dateColor: "#ffffff",
   });
+
+  console.log("headerDetails", headerDetails);
 
   const [stopInitializeFramesWidth, setStopInitializeFramesWidth] =
     React.useState(false);
@@ -287,8 +290,8 @@ export default function StoryModule() {
     updateFramesArray(initialFramesArray);
     setHeaderDetails({
       title: "",
-      heading: EditorState.createEmpty(),
-      description: EditorState.createEmpty(),
+      heading: EditorState.createEmpty(Decorators()),
+      description: EditorState.createEmpty(Decorators()),
       showHeader: true,
       backgroundColor: "#252c34",
       titleColor: "#ffffff",
@@ -314,12 +317,12 @@ export default function StoryModule() {
         heading: convertToRaw(
           headerDetails.showHeader
             ? headerDetails.heading.getCurrentContent()
-            : EditorState.createEmpty().getCurrentContent()
+            : EditorState.createEmpty(Decorators()).getCurrentContent()
         ),
         description: convertToRaw(
           headerDetails.showHeader
             ? headerDetails.description.getCurrentContent()
-            : EditorState.createEmpty().getCurrentContent()
+            : EditorState.createEmpty(Decorators()).getCurrentContent()
         ),
         rows: framesArray.map((frame) => ({
           structure: frame.structure,

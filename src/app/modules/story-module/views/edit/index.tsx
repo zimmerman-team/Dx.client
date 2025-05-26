@@ -36,6 +36,7 @@ import {
 import PlaceHolder from "app/modules/story-module/components/placeholder";
 import useAutosave from "app/hooks/useAutoSave";
 import { MOBILE_BREAKPOINT, TABLET_STARTPOINT } from "app/theme";
+import { Decorators } from "app/modules/common/RichEditor/decorators";
 
 function StoryEditView(props: Readonly<StoryEditViewProps>) {
   useTitle("Dataxplorer - Edit Story");
@@ -164,7 +165,10 @@ function StoryEditView(props: Readonly<StoryEditViewProps>) {
       const contentTypes = rowFrame.items.map(getContentType);
       const content = rowFrame.items.map((item, index) => {
         return contentTypes[index] === "text"
-          ? EditorState.createWithContent(convertFromRaw(item as any))
+          ? EditorState.createWithContent(
+              convertFromRaw(item as any),
+              Decorators()
+            )
           : item;
       });
       const isDivider =
@@ -197,12 +201,18 @@ function StoryEditView(props: Readonly<StoryEditViewProps>) {
       showHeader: story.showHeader,
       heading: story?.heading
         ? EditorState.moveFocusToEnd(
-            EditorState.createWithContent(convertFromRaw(story?.heading))
+            EditorState.createWithContent(
+              convertFromRaw(story?.heading),
+              Decorators()
+            )
           )
-        : EditorState.moveFocusToEnd(EditorState.createEmpty()),
+        : EditorState.moveFocusToEnd(EditorState.createEmpty(Decorators())),
       description: story?.description
-        ? EditorState.createWithContent(convertFromRaw(story?.description))
-        : EditorState.createEmpty(),
+        ? EditorState.createWithContent(
+            convertFromRaw(story?.description),
+            Decorators()
+          )
+        : EditorState.createEmpty(Decorators()),
       backgroundColor: story.backgroundColor,
       titleColor: story.titleColor,
       descriptionColor: story.descriptionColor,

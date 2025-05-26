@@ -27,6 +27,7 @@ import { useStoreActions } from "app/state/store/hooks";
 import { ReactComponent as EditIcon } from "app/modules/story-module/asset/editIcon.svg";
 import { ReactComponent as DeleteIcon } from "app/modules/story-module/asset/deleteIcon.svg";
 import { MIN_BOX_WIDTH } from "app/modules/story-module/data";
+import { Decorators } from "app/modules/common/RichEditor/decorators";
 
 // Types
 interface BoxProps {
@@ -99,7 +100,7 @@ const Box = (props: BoxProps) => {
   const [chartId, setChartId] = useState<string | null>(null);
   const [displayMode, setDisplayMode] = useState<ContentType>(null);
   const [textContent, setTextContent] = useState<EditorState>(
-    EditorState.createEmpty()
+    EditorState.createEmpty(Decorators())
   );
   const [displayBoxIcons, setDisplayBoxIcons] = useState(false);
   const [videoContent, setVideoContent] = useState<{
@@ -195,7 +196,7 @@ const Box = (props: BoxProps) => {
   const resetContent = () => {
     setDisplayMode(null);
     setChartId(null);
-    setTextContent(EditorState.createEmpty());
+    setTextContent(EditorState.createEmpty(Decorators()));
     handleRowFrameItemRemoval(props.rowId, props.itemIndex);
   };
 
@@ -394,6 +395,8 @@ const Box = (props: BoxProps) => {
       }
     }
   }, [props.previewItem]);
+
+  console.log(textContent, "textContent in box component");
 
   // Determine border style based on drag state
   let border = "none";

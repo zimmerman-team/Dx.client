@@ -62,11 +62,14 @@ export const ColorPicker = ({
     [] as string[]
   );
 
-  const onChange = (color: IColor) => {
-    onChangeColor(color);
-    const newColors = [color.hex, ...(recentlyUsedColors ?? [])];
-    setRecentlyUsedColors(Array.from(new Set(newColors)).slice(0, 9));
-  };
+  const onChange = React.useCallback(
+    (color: IColor) => {
+      onChangeColor(color);
+      const newColors = [color.hex, ...(recentlyUsedColors ?? [])];
+      setRecentlyUsedColors(Array.from(new Set(newColors)).slice(0, 9));
+    },
+    [onChangeColor, color]
+  );
   const [activeTab, setActiveTab] = React.useState("color");
   return (
     <ColorPickerWrapper>

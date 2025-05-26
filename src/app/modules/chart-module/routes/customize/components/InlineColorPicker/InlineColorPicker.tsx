@@ -57,10 +57,6 @@ export default function InlineColorPicker({
             `}
             id="inline-color-picker-popover"
           >
-            {/* <div
-            className={styles.cover}
-            onClick={() => setDisplayColorPicker(false)}
-          /> */}
             <div
               data-cy="sketch-picker"
               css={`
@@ -74,7 +70,6 @@ export default function InlineColorPicker({
                   box-shadow: 0px 0px 10px 0px rgba(152, 161, 170, 0.6) !important;
                   > div:nth-of-type(1) {
                     padding-bottom: 45% !important;
-                    /* border-radius: 4px; */
                   }
                   > .flexbox-fix:nth-of-type(4) {
                     div {
@@ -97,14 +92,6 @@ export default function InlineColorPicker({
                 onChange={onChange}
                 color={ColorService.convert("hex", color)}
               />
-              {/* <SketchPicker
-              // disabled={disabled}
-              disableAlpha
-              // width="286px"
-              color={color}
-              onChangeComplete={(color, e) => onChange(color, e)}
-              className="sketch-pickerz"
-            /> */}
             </div>
           </div>
         )}
