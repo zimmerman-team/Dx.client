@@ -758,7 +758,7 @@ export function ChartSubheaderToolbar(
         data-testid="copied-link-snackbar"
       />
       <ShareModal
-        datasetDetails={loadedChart}
+        itemName={loadedChart?.name}
         isShareModalOpen={isShareModalOpen}
         setIsShareModalOpen={setIsShareModalOpen}
         handleCopy={handleCopy}

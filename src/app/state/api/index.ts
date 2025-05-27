@@ -191,18 +191,17 @@ export const APIModel = <QueryModel, ResponseModel>(
   }),
   patch: thunk(async (actions, query: RequestValues<QueryModel>) => {
     actions.onRequest();
-    axios
-      .patch(`${url}/${query.patchId}`, query.values, {
+    try {
+      const resp = await axios.patch(`${url}/${query.patchId}`, query.values, {
         headers: {
           "Content-Type": APPLICATION_JSON,
           Authorization: `Bearer ${get(query, "token", undefined)}`,
         },
-      })
-      .then(
-        (resp: AxiosResponse) => actions.onSuccessCrudData(resp.data),
-
-        (error: any) => actions.onError(error.response)
-      );
+      });
+      actions.onSuccessCrudData(resp.data);
+    } catch (error: any) {
+      actions.onError(error.response);
+    }
   }),
   delete: thunk(async (actions, query: RequestValues<QueryModel>) => {
     actions.onRequest();

@@ -23,6 +23,7 @@ export interface ChartSubheaderToolbarProps {
   onSave: () => void;
   enableAutoSaveSwitch: boolean;
   savedChanges: boolean;
+  onSetIsPublic?: (isPublic: boolean) => void;
 }
 
 export interface StorySubheaderToolbarProps {
@@ -46,4 +47,5 @@ export interface StorySubheaderToolbarProps {
   setStopInitializeFramesWidth?: (value: boolean) => void;
   handlePersistStoryState?: () => void;
   isPreviewView: boolean;
+  onSetIsPublic?: (isPublic: boolean) => void;
 }

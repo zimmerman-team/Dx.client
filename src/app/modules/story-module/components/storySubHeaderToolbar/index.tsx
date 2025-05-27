@@ -2,19 +2,17 @@ import React from "react";
 import axios from "axios";
 import { useRecoilState, useSetRecoilState } from "recoil";
 import { useAuth0 } from "@auth0/auth0-react";
-import Button from "@material-ui/core/Button";
 import SaveIcon from "@material-ui/icons/Save";
 import EditIcon from "@material-ui/icons/Edit";
 import Tooltip from "@material-ui/core/Tooltip";
-import Popover from "@material-ui/core/Popover";
+
 import ShareIcon from "@material-ui/icons/Share";
-import { LinkIcon } from "app/assets/icons/Link";
+
 import Snackbar from "@material-ui/core/Snackbar";
 import DeleteIcon from "@material-ui/icons/Delete";
 import Container from "@material-ui/core/Container";
 import ArrowBackIosIcon from "@material-ui/icons/ArrowBackIos";
 import IconButton from "@material-ui/core/IconButton";
-import CopyToClipboard from "react-copy-to-clipboard";
 import FileCopyIcon from "@material-ui/icons/FileCopy";
 import AutorenewIcon from "@material-ui/icons/Autorenew";
 import CloudDoneIcon from "@material-ui/icons/CloudDone";
@@ -46,6 +44,7 @@ import { ExportStoryButton } from "./exportButton";
 import { PrimaryButton } from "app/components/Styled/button";
 import { ArrowBack } from "@material-ui/icons";
 import { MOBILE_BREAKPOINT, TABLET_STARTPOINT } from "app/theme";
+import ShareComponent from "app/components/ShareComponent";
 
 export const useStyles = makeStyles(() =>
   createStyles({
@@ -77,7 +76,7 @@ export function StorySubheaderToolbar(
   const [showDeleteDialog, setShowDeleteDialog] = React.useState(false);
   const [enableButton, setEnableButton] = React.useState<boolean>(false);
   const [inputSpanVisibiltiy, setInputSpanVisibility] = React.useState(true);
-  const [openSnackbar, setOpenSnackbar] = React.useState(false);
+
   const [duplicatedStoryId, setDuplicatedStoryId] = React.useState<
     string | null
   >(null);
@@ -93,8 +92,7 @@ export function StorySubheaderToolbar(
     horizontal: "center",
     message: "Your story has been successfully duplicated!",
   });
-  const [isShareModalOpen, setIsShareModalOpen] =
-    React.useState<boolean>(false);
+
   const [savedChanges, setSavedChanges] = React.useState<boolean>(false);
 
   const loadStories = useStoreActions(
@@ -102,6 +100,10 @@ export function StorySubheaderToolbar(
   );
   const loadedStory = useStoreState(
     (state) => (state.stories.StoryGet.crudData ?? emptyStory) as StoryModel
+  );
+
+  const loadedStoryTempData = useStoreState(
+    (state) => (state.stories.StoryGet.tempData ?? emptyStory) as StoryModel
   );
   const shareURL = `${window.location.origin}/story/${loadedStory.id}`;
 
@@ -163,26 +165,6 @@ export function StorySubheaderToolbar(
     }
   };
 
-  const handleSharePopup = (event: React.MouseEvent<HTMLButtonElement>) => {
-    if (isMobile) {
-      setIsShareModalOpen(true);
-    } else {
-      setAnchorEl(event.currentTarget);
-    }
-  };
-
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
-
-  const handleCopy = (text: string, result: boolean) => {
-    setOpenSnackbar(true);
-  };
-
-  const handleCloseSnackbar = () => {
-    setOpenSnackbar(false);
-  };
-
   const onSave = () => {
     props.onStorySave("edit");
   };
@@ -199,9 +181,6 @@ export function StorySubheaderToolbar(
       editChartClear();
     };
   }, []);
-
-  const open = Boolean(anchorEl);
-  const id = open ? "simple-popover" : undefined;
 
   const handleModalDisplay = () => {
     setShowDeleteDialog(true);
@@ -544,43 +523,13 @@ export function StorySubheaderToolbar(
                         </IconButton>
                       </Tooltip>
 
-                      <Tooltip title="Share">
-                        <IconButton
-                          onClick={handleSharePopup}
-                          data-testid="share-button"
-                        >
-                          <ShareIcon htmlColor="#262c34" />
-                        </IconButton>
-                      </Tooltip>
-                      <Popover
-                        id={id}
-                        open={open}
-                        anchorEl={anchorEl}
-                        onClose={handleClose}
-                        anchorOrigin={{
-                          vertical: "bottom",
-                          horizontal: "right",
-                        }}
-                        transformOrigin={{
-                          vertical: "top",
-                          horizontal: "right",
-                        }}
-                        css={`
-                          .MuiPaper-root {
-                            border-radius: 10px;
-                            background: #495057;
-                          }
-                        `}
-                      >
-                        <div css={styles.sharePopup}>
-                          <CopyToClipboard
-                            text={window.location.href}
-                            onCopy={handleCopy}
-                          >
-                            <Button startIcon={<LinkIcon />}>Copy link</Button>
-                          </CopyToClipboard>
-                        </div>
-                      </Popover>
+                      <ShareComponent
+                        shareURL={shareURL}
+                        itemName={loadedStory?.name}
+                        isPublic={loadedStoryTempData?.public}
+                        setIsPublic={props.onSetIsPublic}
+                      />
+
                       {canStoryEditDelete && (
                         <Tooltip title="Edit">
                           <IconButton
@@ -610,7 +559,7 @@ export function StorySubheaderToolbar(
                     >
                       <div>
                         <IconButton
-                          aria-describedby={id}
+                          aria-describedby={"more-button"}
                           onClick={() =>
                             setDisplayMobileMenu(!displayMobileMenu)
                           }
@@ -675,14 +624,12 @@ export function StorySubheaderToolbar(
                               <FileCopyIcon htmlColor="#262c34" />
                             </IconButton>
                           </Tooltip>
-                          <Tooltip title="Share">
-                            <IconButton
-                              onClick={handleSharePopup}
-                              data-testid="share-button"
-                            >
-                              <ShareIcon htmlColor="#262c34" />
-                            </IconButton>
-                          </Tooltip>
+                          <ShareComponent
+                            shareURL={shareURL}
+                            itemName={loadedStory?.name}
+                            isPublic={loadedStoryTempData?.public}
+                            setIsPublic={props.onSetIsPublic}
+                          />
                         </div>
                       </div>
                     </ClickAwayListener>
@@ -742,23 +689,6 @@ export function StorySubheaderToolbar(
           />
         )}
       </>
-      <Snackbar
-        anchorOrigin={{
-          vertical: "bottom",
-          horizontal: "left",
-        }}
-        open={openSnackbar}
-        autoHideDuration={5000}
-        onClose={handleCloseSnackbar}
-        message="Link copied to clipboard"
-      />
-      <ShareModal
-        datasetDetails={loadedStory}
-        isShareModalOpen={isShareModalOpen}
-        setIsShareModalOpen={setIsShareModalOpen}
-        handleCopy={handleCopy}
-        url={shareURL}
-      />
       <DeleteStoryDialog
         modalDisplay={showDeleteDialog}
         enableButton={enableButton}

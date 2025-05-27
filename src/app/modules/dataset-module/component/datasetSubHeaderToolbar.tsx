@@ -38,6 +38,8 @@ import {
   MOBILE_BREAKPOINT,
   TABLET_STARTPOINT,
 } from "app/theme";
+import ShareComponent from "app/components/ShareComponent";
+import { APPLICATION_JSON } from "app/state/api";
 
 export default function DatasetSubHeaderToolbar(
   props: Readonly<{ name: string }>
@@ -77,9 +79,17 @@ export default function DatasetSubHeaderToolbar(
   const loadDataset = useStoreActions(
     (actions) => actions.dataThemes.DatasetGet.fetch
   );
+  const editDataset = useStoreActions(
+    (actions) => actions.dataThemes.DatasetGet.patch
+  );
   const datasetDetails = useStoreState(
     (state) =>
       (state.dataThemes.DatasetGet.crudData ?? {}) as DatasetListItemAPIModel
+  );
+
+  const datasetTempData = useStoreState(
+    (state) =>
+      (state.dataThemes.DatasetGet.tempData ?? {}) as DatasetListItemAPIModel
   );
   const shareURL = `${window.location.origin}/dataset/${datasetDetails.id}`;
   const loadDatasets = useStoreActions(
@@ -108,6 +118,24 @@ export default function DatasetSubHeaderToolbar(
     setAssetIdToShare({
       assetURL: `/dataset/${page}/edit`,
       title: props.name,
+    });
+  };
+
+  const onSetIsPublic = async (isPublic: boolean) => {
+    await axios.patch(
+      `${process.env.REACT_APP_API}/datasets/${page}`,
+      { public: isPublic },
+      {
+        headers: {
+          "Content-Type": APPLICATION_JSON,
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    await loadDataset({
+      token,
+      getId: page as string,
+      silent: true,
     });
   };
 
@@ -250,13 +278,6 @@ export default function DatasetSubHeaderToolbar(
           }
         />
       )}
-      <ShareModal
-        datasetDetails={datasetDetails}
-        isShareModalOpen={isShareModalOpen}
-        setIsShareModalOpen={setIsShareModalOpen}
-        handleCopy={handleCopy}
-        url={shareURL}
-      />
 
       <Container maxWidth="lg">
         <div css={styles.innercontainer}>
@@ -312,40 +333,12 @@ export default function DatasetSubHeaderToolbar(
                       </IconButton>
                     </Tooltip>
                   )}
-                  <Tooltip title="Share">
-                    <IconButton onClick={handleSharePopup}>
-                      <ShareIcon htmlColor="#262c34" />
-                    </IconButton>
-                  </Tooltip>
-                  <Popover
-                    id={popoverId}
-                    open={open}
-                    anchorEl={anchorEl}
-                    onClose={handleCloseSharePopup}
-                    anchorOrigin={{
-                      vertical: "bottom",
-                      horizontal: "right",
-                    }}
-                    transformOrigin={{
-                      vertical: "top",
-                      horizontal: "right",
-                    }}
-                    css={`
-                      .MuiPaper-root {
-                        border-radius: 10px;
-                        background: #495057;
-                      }
-                    `}
-                  >
-                    <div css={styles.sharePopup}>
-                      <CopyToClipboard
-                        text={window.location.href}
-                        onCopy={handleCopy}
-                      >
-                        <Button startIcon={<LinkIcon />}>Copy link</Button>
-                      </CopyToClipboard>
-                    </div>
-                  </Popover>
+                  <ShareComponent
+                    shareURL={shareURL}
+                    itemName={datasetTempData?.name}
+                    isPublic={datasetTempData?.public}
+                    setIsPublic={onSetIsPublic}
+                  />
                   {canDatasetEditDelete && (
                     <Tooltip title="Edit">
                       <IconButton component={Link} to={`/dataset/${page}/edit`}>
@@ -425,11 +418,12 @@ export default function DatasetSubHeaderToolbar(
                         </IconButton>
                       </Tooltip>
                     )}
-                    <Tooltip title="Share">
-                      <IconButton onClick={handleSharePopup}>
-                        <ShareIcon htmlColor="#262c34" />
-                      </IconButton>
-                    </Tooltip>
+                    <ShareComponent
+                      shareURL={shareURL}
+                      itemName={datasetTempData?.name}
+                      isPublic={datasetTempData?.public}
+                      setIsPublic={onSetIsPublic}
+                    />
                   </div>
                 </React.Fragment>
               )}
