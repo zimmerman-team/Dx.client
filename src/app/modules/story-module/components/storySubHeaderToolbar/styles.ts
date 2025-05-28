@@ -168,7 +168,6 @@ export const styles = {
     color: #70777e;
     font-size: 18px;
     background: ${active ? "#f2f2f2" : "transparent"};
-    width: 40px;
     height: 35px;
     border-radius: 8px;
     display: flex;

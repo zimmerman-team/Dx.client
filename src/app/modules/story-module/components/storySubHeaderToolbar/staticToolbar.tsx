@@ -1,12 +1,4 @@
 import { AnchorPlugin } from "@draft-js-plugins/anchor";
-import {
-  BoldButton,
-  ItalicButton,
-  UnderlineButton,
-  BlockquoteButton,
-  UnorderedListButton,
-  OrderedListButton,
-} from "@draft-js-plugins/buttons";
 import { EditorPlugin } from "@draft-js-plugins/editor";
 import { EmojiPlugin } from "@draft-js-plugins/emoji";
 import { StaticToolBarPlugin } from "@draft-js-plugins/static-toolbar";
@@ -15,17 +7,27 @@ import { UndoRedoButtonProps } from "@draft-js-plugins/undo";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import BgColorModal from "app/modules/common/RichEditor/BGColorModal";
 import ColorModal from "app/modules/common/RichEditor/ColorModal";
-import FontSizeController from "app/modules/common/RichEditor/FontSizeController";
+import FontSizeController from "app/modules/common/RichEditor/fontSizeHandler";
 import {
-  StrikeThroughButton,
   HiglightPicker,
   BGHiglightPicker,
-  HeaderOneButton,
-  HeaderTwoButton,
+  CenterAlignment,
+  RightAlignment,
+  LeftAlignment,
+  BoldButton,
+  ItalicButton,
+  UnderlineButton,
+  UnorderedListButton,
+  OrderedListButton,
+  BlockquoteButton,
+  IncreaseIndentButton,
+  DecreaseIndentButton,
 } from "app/modules/common/RichEditor/buttons";
 import { styles as commonstyles } from "app/modules/story-module/components/storySubHeaderToolbar/styles";
 import { ReactComponent as MoreIcon } from "app/modules/story-module/asset/more-icon.svg";
 import React from "react";
+import { FontStyleHandler } from "app/modules/common/RichEditor/fontStyleHandler";
+import { FontFamilyHandler } from "app/modules/common/RichEditor/fontStyleHandler/fontFamilyHandler";
 
 type UndoRedoType = {
   UndoButton: React.ComponentType<UndoRedoButtonProps>;
@@ -71,11 +73,19 @@ export default function StaticToolbar(props: { plugins: ToolbarPluginsType }) {
     ?.UndoButton;
   const RedoButton = (props.plugins[2] as EditorPlugin & UndoRedoType)
     ?.RedoButton;
-  const textAlignmentPlugin = props.plugins[3] as TextAlignmentPlugin;
-  const emojiPlugin = props.plugins[4] as EmojiPlugin;
 
   const linkInputComponent = document.querySelector(
     "input[placeholder='Enter a URL and press enter']"
+  );
+
+  const divider = (
+    <div
+      css={`
+        width: 1px;
+        height: 28px;
+        border: 1px solid #b4b4b4;
+      `}
+    />
   );
 
   return (
@@ -96,49 +106,31 @@ export default function StaticToolbar(props: { plugins: ToolbarPluginsType }) {
               );
               const restIcons = (
                 <>
-                  <div
-                    onMouseDown={(e) => {
-                      e.preventDefault();
-                    }}
-                    css={`
-                      margin-bottom: -4px;
-                    `}
-                  >
-                    <LinkButton {...externalProps} />
-                  </div>
                   <div onMouseDown={(e) => e.preventDefault()}>
                     <UndoButton {...externalProps} />
                   </div>
                   <div onMouseDown={(e) => e.preventDefault()}>
                     <RedoButton {...externalProps} />
                   </div>
-                  <div onMouseDown={(e) => e.preventDefault()}>
-                    <ColorModal
-                      {...externalProps}
-                      anchorEl={anchorEl}
-                      handleClose={handleClose}
-                      id={colorId}
-                      open={colorOpen}
-                    />
-                  </div>
+                  {divider}
+                  <FontStyleHandler {...externalProps} />
 
-                  <div onMouseDown={(e) => e.preventDefault()}>
-                    <BgColorModal
-                      {...externalProps}
-                      anchorEl={anchorEl}
-                      handleClose={handleClose}
-                      id={bgId}
-                      open={bgOpen}
-                    />
+                  {divider}
+                  <FontFamilyHandler {...externalProps} />
+                  {divider}
+                  <div>
+                    <FontSizeController {...externalProps} />
                   </div>
+                  {divider}
                 </>
               );
               return (
                 <React.Fragment>
+                  {isDesktop && restIcons}
+
                   <BoldButton {...externalProps} />
                   <ItalicButton {...externalProps} />
                   <UnderlineButton {...externalProps} />
-                  <StrikeThroughButton {...externalProps} />
                   <div
                     onMouseDown={(e) => e.preventDefault()}
                     onClick={(e) => handleClick(e, "color")}
@@ -159,43 +151,49 @@ export default function StaticToolbar(props: { plugins: ToolbarPluginsType }) {
                     {BGHiglightPicker}
                   </div>
 
-                  <div onMouseDown={(e) => e.preventDefault()}>
-                    <emojiPlugin.EmojiSelect {...externalProps} />
-                  </div>
-                  <emojiPlugin.EmojiSuggestions {...externalProps} />
-                  <div
-                    css={`
-                      width: 1px;
-                      height: 28px;
-                      background: #b4b4b4;
-                    `}
-                  />
-                  <div>
-                    <FontSizeController {...externalProps} />
+                  {/* <div onMouseDown={(e) => e.preventDefault()}>
+                    <ColorModal
+                      {...externalProps}
+                      anchorEl={anchorEl}
+                      handleClose={handleClose}
+                      id={colorId}
+                      open={colorOpen}
+                    />
                   </div>
 
-                  <HeaderOneButton {...externalProps} />
-                  <HeaderTwoButton {...externalProps} />
-                  <BlockquoteButton {...externalProps} />
-                  <div
-                    css={`
-                      width: 1px;
-                      height: 28px;
-                      background: #b4b4b4;
-                    `}
-                  />
-                  <textAlignmentPlugin.TextAlignment {...externalProps} />
+                  <div onMouseDown={(e) => e.preventDefault()}>
+                    <BgColorModal
+                      {...externalProps}
+                      anchorEl={anchorEl}
+                      handleClose={handleClose}
+                      id={bgId}
+                      open={bgOpen}
+                    />
+                  </div> */}
+
+                  {divider}
+
+                  {/* <HeaderOneButton {...externalProps} />
+                  <HeaderTwoButton {...externalProps} /> */}
+                  <LeftAlignment {...externalProps} />
+                  <CenterAlignment {...externalProps} />
+                  <RightAlignment {...externalProps} />
                   <UnorderedListButton {...externalProps} />
                   <OrderedListButton {...externalProps} />
+                  <DecreaseIndentButton {...externalProps} />
+                  <IncreaseIndentButton {...externalProps} />
+                  <BlockquoteButton {...externalProps} />
+                  {divider}
                   <div
+                    onMouseDown={(e) => {
+                      e.preventDefault();
+                    }}
                     css={`
-                      width: 1px;
-                      height: 28px;
-                      background: #b4b4b4;
+                      margin-bottom: -4px;
                     `}
-                  />
-                  {isDesktop && restIcons}
-
+                  >
+                    <LinkButton {...externalProps} />
+                  </div>
                   <div
                     css={`
                       position: relative;
@@ -227,6 +225,16 @@ export default function StaticToolbar(props: { plugins: ToolbarPluginsType }) {
                     >
                       <MoreIcon />
                     </button>
+                    <div
+                      onMouseDown={(e) => {
+                        e.preventDefault();
+                      }}
+                      css={`
+                        margin-bottom: -4px;
+                      `}
+                    >
+                      <LinkButton {...externalProps} />
+                    </div>
                     <div
                       css={`
                         width: max-content;
