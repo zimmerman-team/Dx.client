@@ -1,11 +1,6 @@
 import React from "react";
-import { CompositeDecorator, ContentBlock, ContentState } from "draft-js";
-
-type Decorator = {
-  contentState: ContentState;
-  entityKey: string;
-  children: string;
-};
+import { ContentBlock, ContentState } from "draft-js";
+import { Decorator } from "./types";
 
 export function linkStrategy(
   block: ContentBlock,
@@ -32,6 +27,7 @@ export const LinkDecorator = ({
     <a
       css={`
         color: #6061e5;
+        text-decoration: underline;
       `}
       href={url}
       target="_blank"
@@ -41,3 +37,26 @@ export const LinkDecorator = ({
     </a>
   );
 };
+
+export function colorStrategy(
+  block: ContentBlock,
+  callback: (start: number, end: number) => void,
+  contentState: ContentState
+) {
+  block.findEntityRanges((character) => {
+    const entityKey = character.getEntity();
+    return (
+      entityKey !== null &&
+      contentState.getEntity(entityKey).getType() === "COLOR"
+    );
+  }, callback);
+}
+
+export function colorDecorator({
+  contentState,
+  entityKey,
+  children,
+}: Decorator) {
+  const { color } = contentState.getEntity(entityKey).getData();
+  return <span style={{ color: color }}>{children}</span>;
+}

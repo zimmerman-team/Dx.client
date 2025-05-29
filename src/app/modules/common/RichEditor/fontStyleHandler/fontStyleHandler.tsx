@@ -53,6 +53,13 @@ export function FontStyleHandler(props: Props) {
                   cursor: pointer;
   `;
 
+  const promptText = (active: boolean, label: string) => {
+    if (label === "Normal") {
+      return "Apply Normal style";
+    }
+    return active ? `Remove ${label} style` : `Apply ${label} style`;
+  };
+
   const getCurrentBlockType = () => {
     const selection = props.getEditorState().getSelection();
     const currentContent = props.getEditorState().getCurrentContent();
@@ -252,7 +259,7 @@ export function FontStyleHandler(props: Props) {
                     border-bottom: 1px solid #cfd4da;
                   `}
                 >
-                  Apply {showDetail.label} style
+                  {promptText(style.label === currentStyle.label, style.label)}
                 </div>
                 <div>Update {showDetail.label} to match </div>
               </div>

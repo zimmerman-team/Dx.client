@@ -503,9 +503,9 @@ export function StoryRightPanelCreateView(props: Readonly<Props>) {
             flex-direction: column;
           `}
         >
-          {elementItemDetails.map((item) => (
+          {elementItemDetails.map((item, index) => (
             <ElementItem
-              key={item.elementType}
+              key={`${item.elementType}-${index}`}
               {...item}
               disabled={
                 item.elementType === StoryElementsType.HEADER
@@ -538,7 +538,7 @@ export function StoryRightPanelCreateView(props: Readonly<Props>) {
         >
           {mediaItemDetails.map((item, index) => (
             <ElementItem
-              key={item.elementType}
+              key={`${item.elementType}-${index}`}
               {...item}
               disabled={false}
               upgradeRequired={

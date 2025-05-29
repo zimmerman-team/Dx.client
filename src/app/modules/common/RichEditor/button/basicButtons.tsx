@@ -1,46 +1,9 @@
+import React from "react";
 import {
   createBlockStyleButton,
   createInlineStyleButton,
   createTextAlignmentButton,
 } from "@draft-js-plugins/buttons";
-import React from "react";
-
-//decrease indent button
-export const DecreaseIndentButton = createBlockStyleButton({
-  blockType: "decrease-indent",
-  children: (
-    <svg
-      width="28"
-      height="28"
-      viewBox="0 0 28 28"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-    >
-      <path
-        d="M6.50879 11.4998V16.4998L9.00879 13.9998L6.50879 11.4998ZM6.50879 19.8332H21.5088V18.1665H6.50879V19.8332ZM6.50879 9.83317H21.5088V8.1665H6.50879V9.83317ZM11.5088 13.1665H21.5088V11.4998H11.5088V13.1665ZM11.5088 16.4998H21.5088V14.8332H11.5088V16.4998Z"
-        fill="#212529"
-      />
-    </svg>
-  ),
-});
-//increase indent button
-export const IncreaseIndentButton = createBlockStyleButton({
-  blockType: "increase-indent",
-  children: (
-    <svg
-      width="28"
-      height="28"
-      viewBox="0 0 28 28"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-    >
-      <path
-        d="M6.50879 13.9998L9.00879 16.4998V11.4998L6.50879 13.9998ZM6.50879 19.8332H21.5088V18.1665H6.50879V19.8332ZM6.50879 9.83317H21.5088V8.1665H6.50879V9.83317ZM11.5088 13.1665H21.5088V11.4998H11.5088V13.1665ZM11.5088 16.4998H21.5088V14.8332H11.5088V16.4998Z"
-        fill="#212529"
-      />
-    </svg>
-  ),
-});
 
 export const StrikeThroughButton = createInlineStyleButton({
   style: "STRIKETHROUGH",

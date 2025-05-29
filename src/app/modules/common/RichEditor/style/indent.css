@@ -1,0 +1,30 @@
+/* More specific CSS that should override other styles */
+.DraftEditor-root div[data-block="true"] {
+  position: relative;
+}
+
+/* Force indentation with !important if needed */
+.DraftEditor-root .public-DraftStyleDefault-depth1 {
+  margin-left: 24px !important;
+}
+
+.DraftEditor-root .public-DraftStyleDefault-depth2 {
+  margin-left: 48px !important;
+}
+
+.DraftEditor-root .public-DraftStyleDefault-depth3 {
+  margin-left: 72px !important;
+}
+
+.DraftEditor-root .public-DraftStyleDefault-depth4 {
+  margin-left: 96px !important;
+}
+
+.DraftEditor-root .public-DraftStyleDefault-depth5 {
+  margin-left: 120px !important;
+}
+
+.DraftEditor-root .public-DraftStyleDefault-depth6 {
+  margin-left: 144px !important;
+}
+

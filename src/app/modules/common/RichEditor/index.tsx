@@ -15,10 +15,11 @@ import { UndoIcon } from "app/assets/icons/Undo";
 
 /* stylesheets */
 import "@draft-js-plugins/anchor/lib/plugin.css";
-import editorStyles from "./editorStyles.module.css";
-import buttonStyles from "./buttonStyles.module.css";
-import toolbarStyles from "./toolbarStyles.module.css";
-import alignmentStyles from "./alignmentStyles.module.css";
+import "./style/indent.css";
+import editorStyles from "./style/editorStyles.module.css";
+import buttonStyles from "./style/buttonStyles.module.css";
+import toolbarStyles from "./style/toolbarStyles.module.css";
+import alignmentStyles from "./style/alignmentStyles.module.css";
 import "@draft-js-plugins/inline-toolbar/lib/plugin.css";
 import "@draft-js-plugins/static-toolbar/lib/plugin.css";
 import "@draft-js-plugins/emoji/lib/plugin.css";
@@ -84,6 +85,7 @@ export const RichEditor = (props: {
       },
     },
   });
+
   const linkPlugin = createLinkPlugin({
     linkTarget: "_blank",
     placeholder: "Enter a URL and press enter",
@@ -156,15 +158,6 @@ export const RichEditor = (props: {
 
         font-family: "GothamNarrow-Book", "Helvetica Neue", sans-serif;
         line-height: normal;
-        font-weight: 12px;
-        h1,
-        h2 {
-          font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
-          * {
-            font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
-          }
-        }
-
         blockquote {
           padding-left: 11px;
           margin-inline-start: 0px;

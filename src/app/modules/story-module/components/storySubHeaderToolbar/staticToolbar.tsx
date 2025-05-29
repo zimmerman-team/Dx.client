@@ -20,14 +20,16 @@ import {
   UnorderedListButton,
   OrderedListButton,
   BlockquoteButton,
-  IncreaseIndentButton,
-  DecreaseIndentButton,
-} from "app/modules/common/RichEditor/buttons";
+} from "app/modules/common/RichEditor/button/basicButtons";
 import { styles as commonstyles } from "app/modules/story-module/components/storySubHeaderToolbar/styles";
 import { ReactComponent as MoreIcon } from "app/modules/story-module/asset/more-icon.svg";
 import React from "react";
-import { FontStyleHandler } from "app/modules/common/RichEditor/fontStyleHandler";
+import { FontStyleHandler } from "app/modules/common/RichEditor/fontStyleHandler/fontStyleHandler";
 import { FontFamilyHandler } from "app/modules/common/RichEditor/fontStyleHandler/fontFamilyHandler";
+import {
+  DecreaseIndentButton,
+  IncreaseIndentButton,
+} from "app/modules/common/RichEditor/button/indentButtons";
 
 type UndoRedoType = {
   UndoButton: React.ComponentType<UndoRedoButtonProps>;
@@ -151,7 +153,7 @@ export default function StaticToolbar(props: { plugins: ToolbarPluginsType }) {
                     {BGHiglightPicker}
                   </div>
 
-                  {/* <div onMouseDown={(e) => e.preventDefault()}>
+                  <div onMouseDown={(e) => e.preventDefault()}>
                     <ColorModal
                       {...externalProps}
                       anchorEl={anchorEl}
@@ -169,7 +171,7 @@ export default function StaticToolbar(props: { plugins: ToolbarPluginsType }) {
                       id={bgId}
                       open={bgOpen}
                     />
-                  </div> */}
+                  </div>
 
                   {divider}
 

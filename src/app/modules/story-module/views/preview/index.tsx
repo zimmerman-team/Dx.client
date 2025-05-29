@@ -19,7 +19,7 @@ import StoryUsePanel from "app/modules/story-module/components/use-story-panel";
 import { PageLoader } from "app/modules/common/page-loader";
 import { ReactComponent as LogoIcon } from "app/modules/home-module/components/Footer/asset/logo.svg";
 import { Typography } from "@material-ui/core";
-import { Decorators } from "app/modules/common/RichEditor/decorators";
+import { decorators } from "app/modules/common/RichEditor/decorators";
 
 export function StoryPreviewView(
   props: Readonly<{
@@ -161,11 +161,11 @@ export function StoryPreviewView(
           showHeader: storyData.showHeader,
           heading: EditorState.createWithContent(
             convertFromRaw(storyData.heading ?? emptyStory.heading),
-            Decorators()
+            decorators()
           ),
           description: EditorState.createWithContent(
             convertFromRaw(storyData.description ?? emptyStory.description),
-            Decorators()
+            decorators()
           ),
           backgroundColor: storyData.backgroundColor,
           titleColor: storyData.titleColor,
@@ -231,7 +231,7 @@ export function StoryPreviewView(
                     ? EditorState.createWithContent(
                         convertFromRaw(item as any),
                         // linkDecorator
-                        Decorators()
+                        decorators()
                       )
                     : item;
                 })}

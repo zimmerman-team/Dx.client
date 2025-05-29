@@ -35,8 +35,8 @@ import {
 } from "app/modules/story-module/views/edit/compareStates";
 import PlaceHolder from "app/modules/story-module/components/placeholder";
 import useAutosave from "app/hooks/useAutoSave";
-import { MOBILE_BREAKPOINT, TABLET_STARTPOINT } from "app/theme";
-import { Decorators } from "app/modules/common/RichEditor/decorators";
+import { TABLET_STARTPOINT } from "app/theme";
+import { decorators } from "app/modules/common/RichEditor/decorators";
 
 function StoryEditView(props: Readonly<StoryEditViewProps>) {
   useTitle("Dataxplorer - Edit Story");
@@ -167,7 +167,7 @@ function StoryEditView(props: Readonly<StoryEditViewProps>) {
         return contentTypes[index] === "text"
           ? EditorState.createWithContent(
               convertFromRaw(item as any),
-              Decorators()
+              decorators()
             )
           : item;
       });
@@ -203,16 +203,16 @@ function StoryEditView(props: Readonly<StoryEditViewProps>) {
         ? EditorState.moveFocusToEnd(
             EditorState.createWithContent(
               convertFromRaw(story?.heading),
-              Decorators()
+              decorators()
             )
           )
-        : EditorState.moveFocusToEnd(EditorState.createEmpty(Decorators())),
+        : EditorState.moveFocusToEnd(EditorState.createEmpty(decorators())),
       description: story?.description
         ? EditorState.createWithContent(
             convertFromRaw(story?.description),
-            Decorators()
+            decorators()
           )
-        : EditorState.createEmpty(Decorators()),
+        : EditorState.createEmpty(decorators()),
       backgroundColor: story.backgroundColor,
       titleColor: story.titleColor,
       descriptionColor: story.descriptionColor,

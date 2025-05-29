@@ -1,5 +1,5 @@
 import { ContentBlock, ContentState } from "draft-js";
-import { Decorator } from ".";
+import { Decorator } from "./types";
 
 export function colorStrategy(
   block: ContentBlock,
