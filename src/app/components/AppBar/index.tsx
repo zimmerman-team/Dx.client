@@ -12,6 +12,7 @@ import { headercss, logocss, navLinkcss } from "app/components/AppBar/style";
 import { isChartAIAgentActive } from "app/state/recoil/atoms";
 import { useRecoilState } from "recoil";
 import MenuIcon from "@material-ui/icons/Menu";
+import { MOBILE_BREAKPOINT } from "app/theme";
 
 const NavList = (props: {
   navLocation: string;
@@ -188,6 +189,9 @@ function MobileHeader(props: { navLocation: string }) {
                   border-radius: 10px;
                   padding: 12px 24px;
                   line-height: 11px;
+                  @media (max-width: ${MOBILE_BREAKPOINT}) {
+                    width: 61px;
+                  }
                 `}
               >
                 Sign in

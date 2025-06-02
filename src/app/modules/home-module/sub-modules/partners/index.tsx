@@ -77,10 +77,12 @@ const StyledTabs = withStyles({
 
 const AutoPlaySwipeableViews = autoPlay(SwipeableViews);
 
-const Pagination = (props: {
+export const Pagination = (props: {
   index: number;
   onChangeIndex: (index: number) => void;
   dots: number;
+  bottom: string;
+  color: string;
 }) => (
   <div
     css={`
@@ -89,10 +91,10 @@ const Pagination = (props: {
       align-items: center;
       width: 100%;
       gap: 8px;
-      @media (max-width: 1129px) {
-        top: unset;
-        bottom: 3%;
-      }
+      top: unset;
+      left: 0%;
+      bottom: ${props.bottom};
+      position: absolute;
     `}
   >
     {new Array(props.dots).fill(0).map((_, i) => (
@@ -102,7 +104,7 @@ const Pagination = (props: {
           width: 8px;
           height: 8px;
           border-radius: 50%;
-          background: ${props.index === i ? "#231D2C" : "#fff"};
+          background: ${props.index === i ? props.color : "#fff"};
           cursor: pointer;
 
           /* Tooltip */
@@ -430,6 +432,8 @@ export default function PartnersModule() {
                     dots={4}
                     index={displayTab}
                     onChangeIndex={(index) => handleChange(null, index)}
+                    bottom="25px"
+                    color="#231D2C"
                   />
                 </div>
               </div>
