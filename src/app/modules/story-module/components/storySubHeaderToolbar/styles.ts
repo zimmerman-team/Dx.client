@@ -161,7 +161,7 @@ export const styles = {
       left: 25px;
     }
   `,
-  highlightPicker: (active: boolean) => css`
+  highlightPicker: (active: boolean, color: string) => css`
     vertical-align: bottom;
     border: none;
     outline: none;
@@ -174,8 +174,9 @@ export const styles = {
     align-items: center;
     justify-content: center;
     cursor: pointer;
+    background-color: ${color};
     &:hover {
-      background: #f2f2f2;
+      opacity: 0.6;
     }
     @media (max-width: 1050px) {
       width: 24px;

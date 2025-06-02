@@ -47,6 +47,7 @@ interface IColorPickerProps {
   readonly disabled?: boolean;
   readonly onChange: (color: IColor) => void;
   readonly onChangeComplete?: (color: IColor) => void;
+  readonly onResetColor: () => void; // Added onreset prop for reset functionality
 }
 
 export const ColorPicker = ({
@@ -55,6 +56,7 @@ export const ColorPicker = ({
   disabled = false,
   onChange: onChangeColor,
   onChangeComplete,
+  onResetColor = () => {}, // Added onreset prop for reset functionality
 }: IColorPickerProps) => {
   const [colorType, setColorType] = React.useState("hex");
   const [recentlyUsedColors, setRecentlyUsedColors] = useLocalStorage(
@@ -239,6 +241,9 @@ export const ColorPicker = ({
               display: flex;
               justify-content: space-between;
               align-items: center;
+              svg {
+                cursor: pointer;
+              }
             `}
           >
             <span
@@ -252,7 +257,7 @@ export const ColorPicker = ({
             >
               Reset
             </span>
-            <ResetIcon />
+            <ResetIcon onClick={onResetColor} />
           </div>
         </div>
       </div>

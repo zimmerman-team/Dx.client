@@ -64,6 +64,10 @@ export default function StaticToolbar(props: { plugins: ToolbarPluginsType }) {
   };
   const bgOpen = activeColorModal === "bg" && Boolean(anchorEl);
   const colorOpen = activeColorModal === "color" && Boolean(anchorEl);
+  const defaultColor = "#231d2c";
+
+  const [color, setColor] = React.useState(defaultColor);
+  const [bgColor, setBgColor] = React.useState(defaultColor);
 
   const bgId = bgOpen ? "bg-popover" : undefined;
   const colorId = colorOpen ? "color-popover" : undefined;
@@ -138,7 +142,7 @@ export default function StaticToolbar(props: { plugins: ToolbarPluginsType }) {
                     onClick={(e) => handleClick(e, "color")}
                     id={colorId}
                     tabIndex={0} // Add tabIndex attribute to make the div focusable
-                    css={commonstyles.highlightPicker(!!textColour)}
+                    css={commonstyles.highlightPicker(!!textColour, color)}
                   >
                     {HiglightPicker}
                   </div>
@@ -148,7 +152,7 @@ export default function StaticToolbar(props: { plugins: ToolbarPluginsType }) {
                     onClick={(e) => handleClick(e, "bg")}
                     id={bgId}
                     tabIndex={0} // Add tabIndex attribute to make the div focusable
-                    css={commonstyles.highlightPicker(!!textBgColour)}
+                    css={commonstyles.highlightPicker(!!textBgColour, bgColor)}
                   >
                     {BGHiglightPicker}
                   </div>
@@ -160,16 +164,24 @@ export default function StaticToolbar(props: { plugins: ToolbarPluginsType }) {
                       handleClose={handleClose}
                       id={colorId}
                       open={colorOpen}
+                      hex={color}
+                      setHex={setColor}
+                      defaultColor={defaultColor}
+                      prefix="COLOR-"
                     />
                   </div>
 
                   <div onMouseDown={(e) => e.preventDefault()}>
-                    <BgColorModal
+                    <ColorModal
                       {...externalProps}
                       anchorEl={anchorEl}
                       handleClose={handleClose}
                       id={bgId}
                       open={bgOpen}
+                      hex={bgColor}
+                      setHex={setBgColor}
+                      defaultColor={"none"}
+                      prefix="BG-COLOR-"
                     />
                   </div>
 

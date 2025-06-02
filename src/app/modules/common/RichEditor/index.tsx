@@ -25,6 +25,7 @@ import "@draft-js-plugins/static-toolbar/lib/plugin.css";
 import "@draft-js-plugins/emoji/lib/plugin.css";
 import fontSizeStyleMap from "app/modules/common/RichEditor/fontSizeHandler/styleMap";
 import { fontFamilyStyleMap } from "./fontStyleHandler/data";
+import { colorStyleFn, bgColorStyleFn } from "./ColorModal";
 
 export const RichEditor = (props: {
   editMode: boolean;
@@ -182,9 +183,15 @@ export const RichEditor = (props: {
     >
       <Editor
         plugins={plugins}
+        customStyleFn={(style) => {
+          return {
+            ...colorStyleFn(style),
+            ...bgColorStyleFn(style),
+          };
+        }}
         customStyleMap={{
           ...bgPicker.bgColorStyleMap,
-          ...picker.colorStyleMap,
+          // ...picker.colorStyleMap,
           ...fontSizeStyleMap,
           ...fontFamilyStyleMap,
           BOLD: {

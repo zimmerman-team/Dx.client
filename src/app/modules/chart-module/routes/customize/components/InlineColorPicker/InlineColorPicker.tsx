@@ -15,8 +15,10 @@ export default function InlineColorPicker({
   color: maybeColor,
   onChange,
 }: Props) {
+  const defaultColor = "#231d2c";
+
   const [displayColorPicker, setDisplayColorPicker] = useState(false);
-  const color = maybeColor ?? "#000000"; // Same as <input type='color' />
+  const color = maybeColor ?? defaultColor; // Same as <input type='color' />
 
   const pickerRef = React.useRef<HTMLDivElement | null>(null);
 
@@ -91,6 +93,9 @@ export default function InlineColorPicker({
               <ColorPicker
                 onChange={onChange}
                 color={ColorService.convert("hex", color)}
+                onResetColor={() =>
+                  onChange(ColorService.convert("hex", defaultColor))
+                }
               />
             </div>
           </div>

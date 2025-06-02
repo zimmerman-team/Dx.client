@@ -1,6 +1,5 @@
-import React, { Component, useRef } from "react";
-import { EditorState, Modifier, RichUtils } from "draft-js";
-import Picker from "app/modules/common/RichEditor/ColorModal/Picker";
+import React, { useRef } from "react";
+import { EditorState, RichUtils } from "draft-js";
 import { Popper } from "@material-ui/core";
 import { useOnClickOutside } from "usehooks-ts";
 import {
@@ -8,36 +7,50 @@ import {
   IColor,
 } from "app/components/ColorPicker/services/color";
 import { ColorPicker } from "app/components/ColorPicker";
-import { addColorDecorator } from "app/modules/common/RichEditor/decorators";
 
 interface Props {
   getEditorState: () => EditorState;
   setEditorState: (value: EditorState) => void;
   theme: any;
-  id: "color-popover" | undefined;
+  id: "color-popover" | "bg-popover" | undefined;
   open: boolean;
   anchorEl: HTMLDivElement | null;
   handleClose: () => void;
+  hex: string;
+  setHex: (color: string) => void;
+  defaultColor: string; // Optional prop for default color
+  prefix: string;
 }
 
-export default function ColorModal(props: Props) {
-  const [hex, setHex] = React.useState("#000000");
+export const colorStyleFn = (style: any) => {
+  const styleNames = style.toArray();
+  for (const styleName of styleNames) {
+    if (styleName && styleName.startsWith("COLOR-")) {
+      return { color: styleName.substring("COLOR-".length) };
+    }
+  }
+  return {}; // Default, no custom style
+};
 
+export const bgColorStyleFn = (style: any) => {
+  const styleNames = style.toArray();
+  for (const styleName of styleNames) {
+    if (styleName && styleName.startsWith("BG-COLOR-")) {
+      return { background: styleName.substring("BG-COLOR-".length) };
+    }
+  }
+  return {}; // Default, no custom style
+};
+
+export default function ColorModal(props: Props) {
   const applyColorEntity = React.useCallback(
     (color: IColor) => {
-      // Prevent unnecessary updates if color hasn't changed
-      if (color.hex === hex) {
+      if (color.hex === props.hex) {
         return;
       }
-
-      setHex(color.hex);
+      props.setHex(color.hex);
       const editorState = props.getEditorState();
-
-      // Ensure decorator is added FIRST
-      const editorStateWithDecorator = addColorDecorator(editorState);
-
-      const contentState = editorStateWithDecorator.getCurrentContent();
-      const selection = editorStateWithDecorator.getSelection();
+      const selection = editorState.getSelection();
 
       // Check if there's actually text selected
       if (selection.isCollapsed()) {
@@ -45,67 +58,60 @@ export default function ColorModal(props: Props) {
         return;
       }
 
-      console.log("Applying color entity:", color.hex);
+      //Remove all existing color styles
+      let newEditorState = editorState;
+      const currentStyles = editorState.getCurrentInlineStyle();
 
-      // Create entity with the actual color value stored as data
-      const contentStateWithEntity = contentState.createEntity(
-        "COLOR",
-        "MUTABLE",
-        { color: color.hex }
+      currentStyles.forEach((style) => {
+        if (style && style.startsWith(props.prefix)) {
+          newEditorState = RichUtils.toggleInlineStyle(newEditorState, style);
+        }
+      });
+
+      //Apply the new color style
+      const colorStyleName = `${props.prefix}${color.hex}`;
+      newEditorState = RichUtils.toggleInlineStyle(
+        newEditorState,
+        colorStyleName
       );
 
-      const entityKey = contentStateWithEntity.getLastCreatedEntityKey();
-
-      // Use Modifier.applyEntity instead of RichUtils.toggleLink
-      const contentStateWithAppliedEntity = Modifier.applyEntity(
-        contentStateWithEntity,
-        selection,
-        entityKey
-      );
-
-      // Create final editor state
-      const finalEditorState = EditorState.push(
-        editorStateWithDecorator,
-        contentStateWithAppliedEntity,
-        "apply-entity"
-      );
-
-      // Force selection update to ensure decorator renders
-      const finalStateWithSelection = EditorState.forceSelection(
-        finalEditorState,
-        selection
-      );
-
-      props.setEditorState(finalStateWithSelection);
+      props.setEditorState(newEditorState);
     },
-    [hex, props.getEditorState, props.setEditorState]
+    [props.hex, props.getEditorState, props.setEditorState]
   );
 
   const getCurrentSelectionColor = (): string => {
     const editorState = props.getEditorState();
     const selection = editorState.getSelection();
-    const contentState = editorState.getCurrentContent();
+
+    let stylesToCheck;
 
     if (selection.isCollapsed()) {
-      return "#000000";
+      // For cursor position, get the current inline style
+      stylesToCheck = editorState.getCurrentInlineStyle();
+    } else {
+      // For text selection, get styles at the start of selection
+      const contentState = editorState.getCurrentContent();
+      const anchorKey = selection.getAnchorKey();
+      const currentContentBlock = contentState.getBlockForKey(anchorKey);
+      const startOffset = selection.getStartOffset();
+
+      stylesToCheck = currentContentBlock.getInlineStyleAt(startOffset);
     }
 
-    const startKey = selection.getStartKey();
-    const startOffset = selection.getStartOffset();
-    const block = contentState.getBlockForKey(startKey);
-    const entityKey = block.getEntityAt(startOffset);
-
-    if (entityKey) {
-      const entity = contentState.getEntity(entityKey);
-      if (entity.getType() === "COLOR") {
-        return entity.getData().color;
+    // Find the color style
+    for (const style of stylesToCheck.toArray()) {
+      if (style.startsWith(props.prefix)) {
+        return style.substring(props.prefix.length);
       }
     }
 
-    return "#000000";
+    return props.defaultColor; // Default fallback
   };
 
-  console.log("Current selection color:", getCurrentSelectionColor());
+  React.useEffect(() => {
+    props.setHex(getCurrentSelectionColor());
+  }, [getCurrentSelectionColor]);
 
   const ref = useRef(null);
   useOnClickOutside(ref, () => props.handleClose());
@@ -116,11 +122,16 @@ export default function ColorModal(props: Props) {
       open={props.open}
       anchorEl={props.anchorEl}
       placement="bottom"
+      style={{ zIndex: 101 }}
       ref={ref}
     >
       <ColorPicker
         onChange={applyColorEntity}
-        color={ColorService.convert("hex", hex)}
+        color={ColorService.convert("hex", props.hex)}
+        onResetColor={() => {
+          props.setHex(props.defaultColor);
+          applyColorEntity(ColorService.convert("hex", props.defaultColor));
+        }}
       />
     </Popper>
   );
