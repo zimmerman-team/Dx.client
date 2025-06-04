@@ -54,7 +54,6 @@ export default function ColorModal(props: Props) {
 
       // Check if there's actually text selected
       if (selection.isCollapsed()) {
-        console.log("No text selected");
         return;
       }
 
@@ -90,6 +89,7 @@ export default function ColorModal(props: Props) {
       // For cursor position, get the current inline style
       stylesToCheck = editorState.getCurrentInlineStyle();
     } else {
+      console.log();
       // For text selection, get styles at the start of selection
       const contentState = editorState.getCurrentContent();
       const anchorKey = selection.getAnchorKey();
@@ -129,9 +129,11 @@ export default function ColorModal(props: Props) {
         onChange={applyColorEntity}
         color={ColorService.convert("hex", props.hex)}
         onResetColor={() => {
+          if (props.getEditorState().getSelection().isCollapsed()) return;
           props.setHex(props.defaultColor);
           applyColorEntity(ColorService.convert("hex", props.defaultColor));
         }}
+        disabled={props.getEditorState().getSelection().isCollapsed()}
       />
     </Popper>
   );

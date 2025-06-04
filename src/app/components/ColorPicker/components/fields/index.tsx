@@ -87,12 +87,14 @@ interface IColorInputProps {
   color: IColor;
   colorType: string;
   onChange: (color: IColor) => void;
+  disabled?: boolean;
 }
 
 export const ColorInput = ({
   color,
   colorType,
   onChange,
+  disabled,
 }: IColorInputProps) => {
   const [fields, setFields] = useState({
     hex: {
@@ -206,6 +208,7 @@ export const ColorInput = ({
                     background: transparent;
                     outline: none;
                   `}
+                  disabled={disabled}
                   onFocus={onInputFocus("rgb")}
                   maxLength={3}
                   onChange={(event) => handleChange(event, key)}
@@ -237,6 +240,7 @@ export const ColorInput = ({
             height: 100%;
             text-transform: uppercase;
           `}
+          disabled={disabled}
           maxLength={7}
           minLength={1}
           onChange={handleChange}
@@ -251,9 +255,14 @@ export const ColorInput = ({
 interface OpacityInputProps {
   color: IColor;
   onChange: (color: IColor) => void;
+  disabled?: boolean;
 }
 
-export const OpacityInput = ({ color, onChange }: OpacityInputProps) => {
+export const OpacityInput = ({
+  color,
+  onChange,
+  disabled,
+}: OpacityInputProps) => {
   const opacityPercent = Math.round(color.rgb.a * 100);
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     let value = event.target.value;
@@ -300,6 +309,7 @@ export const OpacityInput = ({ color, onChange }: OpacityInputProps) => {
           outline: none;
           height: 100%;
         `}
+        disabled={disabled}
         onChange={handleChange}
         maxLength={4}
         minLength={1}

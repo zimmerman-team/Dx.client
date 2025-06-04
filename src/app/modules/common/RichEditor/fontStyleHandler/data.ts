@@ -64,16 +64,6 @@ export const fontStyles = [
     fontFamily: DEFAULT_FONT_FAMILY,
     blockType: "header-five",
   },
-  {
-    key: "options",
-    label: "Options",
-    style: "options",
-    height: "40px",
-    fontSize: "12px",
-    fontFamily: DEFAULT_FONT_FAMILY,
-    selected: false,
-    blockType: "unstyled",
-  },
 ];
 export const fontFamilies = [
   {
@@ -148,5 +138,3 @@ export const fontFamilyStyleMap = fontFamilies.reduce(
   },
   {}
 );
-
-console.log("Font family style map:", fontFamilyStyleMap);

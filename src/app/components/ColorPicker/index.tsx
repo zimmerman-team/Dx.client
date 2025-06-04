@@ -53,7 +53,7 @@ interface IColorPickerProps {
 export const ColorPicker = ({
   height = 105,
   color,
-  disabled = false,
+  disabled,
   onChange: onChangeColor,
   onChangeComplete,
   onResetColor = () => {}, // Added onreset prop for reset functionality
@@ -68,7 +68,7 @@ export const ColorPicker = ({
     (color: IColor) => {
       onChangeColor(color);
       const newColors = [color.hex, ...(recentlyUsedColors ?? [])];
-      setRecentlyUsedColors(Array.from(new Set(newColors)).slice(0, 9));
+      setRecentlyUsedColors(Array.from(new Set(newColors)).slice(0, 5));
     },
     [onChangeColor, color]
   );
@@ -134,8 +134,10 @@ export const ColorPicker = ({
                         border: ${c === color.hex
                           ? "2px solid #0026FF"
                           : "none"};
+                        cursor: ${disabled ? "auto" : "pointer"}!important;
                       `}
                       onClick={() => {
+                        if (disabled) return;
                         onChange(ColorService.convert("hex", c));
                       }}
                     />
@@ -187,8 +189,13 @@ export const ColorPicker = ({
                     onChange={onChange}
                     color={color}
                     colorType={colorType}
+                    disabled={disabled}
                   />
-                  <OpacityInput onChange={onChange} color={color} />
+                  <OpacityInput
+                    onChange={onChange}
+                    color={color}
+                    disabled={disabled}
+                  />
                 </div>
 
                 <div>
@@ -217,8 +224,10 @@ export const ColorPicker = ({
                         className="rcp-recently-used-color"
                         css={`
                           background-color: ${c};
+                          cursor: ${disabled ? "auto" : "pointer"}!important;
                         `}
                         onClick={() => {
+                          if (disabled) return;
                           onChange(ColorService.convert("hex", c));
                         }}
                       />
@@ -253,6 +262,7 @@ export const ColorPicker = ({
                 font-family: "GothamNarrow-Book", sans-serif;
                 font-weight: 325;
                 line-height: normal;
+                cursor; ${disabled ? "auto" : "pointer"};
               `}
             >
               Reset

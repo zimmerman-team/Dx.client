@@ -234,7 +234,6 @@ export function FontStyleHandler(props: Props) {
                   border-radius: 10px;
                   box-shadow: 0px 2px 6px 0px rgba(0, 0, 0, 0.3);
                   padding: 0px 16px;
-                  height: 80px;
                   background: #f1f3f5;
                   position: absolute;
                   left: 90%;
@@ -261,7 +260,6 @@ export function FontStyleHandler(props: Props) {
                 >
                   {promptText(style.label === currentStyle.label, style.label)}
                 </div>
-                <div>Update {showDetail.label} to match </div>
               </div>
             </div>
           ))}

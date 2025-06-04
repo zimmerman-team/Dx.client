@@ -5,7 +5,6 @@ import { StaticToolBarPlugin } from "@draft-js-plugins/static-toolbar";
 import { TextAlignmentPlugin } from "@draft-js-plugins/text-alignment";
 import { UndoRedoButtonProps } from "@draft-js-plugins/undo";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
-import BgColorModal from "app/modules/common/RichEditor/BGColorModal";
 import ColorModal from "app/modules/common/RichEditor/ColorModal";
 import FontSizeController from "app/modules/common/RichEditor/fontSizeHandler";
 import {
@@ -45,7 +44,7 @@ export type ToolbarPluginsType = (
 )[];
 
 export default function StaticToolbar(props: { plugins: ToolbarPluginsType }) {
-  const isDesktop = useMediaQuery("(min-width: 1118px)");
+  const isDesktop = useMediaQuery("(min-width: 1219px)");
   //control modals for color and background color pickers
   const [anchorEl, setAnchorEl] = React.useState<HTMLDivElement | null>(null);
   const [activeColorModal, setActiveColorModal] = React.useState<
@@ -64,10 +63,11 @@ export default function StaticToolbar(props: { plugins: ToolbarPluginsType }) {
   };
   const bgOpen = activeColorModal === "bg" && Boolean(anchorEl);
   const colorOpen = activeColorModal === "color" && Boolean(anchorEl);
-  const defaultColor = "#231d2c";
+  const defaultColor = "#ffffff";
+  const defaultBgColor = "#ffffff"; // Default background color
 
   const [color, setColor] = React.useState(defaultColor);
-  const [bgColor, setBgColor] = React.useState(defaultColor);
+  const [bgColor, setBgColor] = React.useState(defaultBgColor);
 
   const bgId = bgOpen ? "bg-popover" : undefined;
   const colorId = colorOpen ? "color-popover" : undefined;
@@ -98,186 +98,170 @@ export default function StaticToolbar(props: { plugins: ToolbarPluginsType }) {
     <div>
       {props.plugins.length > 0 && (
         <Toolbar>
-          {
-            // may be use React.Fragment instead of div to improve perfomance after React 16
-            (externalProps) => {
-              const currentStyle = externalProps
-                .getEditorState()
-                .getCurrentInlineStyle();
-              const textColour = currentStyle.findLast((style: any) =>
-                style.includes("color-")
-              );
-              const textBgColour = currentStyle.findLast((style: any) =>
-                style.includes("bg-")
-              );
-              const restIcons = (
-                <>
-                  <div onMouseDown={(e) => e.preventDefault()}>
-                    <UndoButton {...externalProps} />
-                  </div>
-                  <div onMouseDown={(e) => e.preventDefault()}>
-                    <RedoButton {...externalProps} />
-                  </div>
-                  {divider}
-                  <FontStyleHandler {...externalProps} />
+          {(externalProps) => {
+            const restIcons = (
+              <div
+                css={`
+                  display: flex;
+                  align-items: center;
+                  gap: 16px;
+                `}
+              >
+                <LeftAlignment {...externalProps} />
+                <CenterAlignment {...externalProps} />
+                <RightAlignment {...externalProps} />
+                <UnorderedListButton {...externalProps} />
+                <OrderedListButton {...externalProps} />
+                <DecreaseIndentButton {...externalProps} />
+                <IncreaseIndentButton {...externalProps} />
+                <BlockquoteButton {...externalProps} />
+                {divider}
+                <div
+                  onMouseDown={(e) => {
+                    e.preventDefault();
+                  }}
+                >
+                  <LinkButton {...externalProps} />
+                </div>
+              </div>
+            );
+            return (
+              <React.Fragment>
+                <div onMouseDown={(e) => e.preventDefault()}>
+                  <UndoButton {...externalProps} />
+                </div>
+                <div onMouseDown={(e) => e.preventDefault()}>
+                  <RedoButton {...externalProps} />
+                </div>
+                {divider}
+                <FontStyleHandler {...externalProps} />
 
-                  {divider}
-                  <FontFamilyHandler {...externalProps} />
-                  {divider}
-                  <div>
-                    <FontSizeController {...externalProps} />
-                  </div>
-                  {divider}
-                </>
-              );
-              return (
-                <React.Fragment>
-                  {isDesktop && restIcons}
+                {divider}
+                <FontFamilyHandler {...externalProps} />
+                {divider}
+                <div>
+                  <FontSizeController {...externalProps} />
+                </div>
+                {divider}
+                <BoldButton {...externalProps} />
+                <ItalicButton {...externalProps} />
+                <UnderlineButton {...externalProps} />
+                <div
+                  onMouseDown={(e) => e.preventDefault()}
+                  onClick={(e) => handleClick(e, "color")}
+                  id={colorId}
+                  tabIndex={0} // Add tabIndex attribute to make the div focusable
+                  css={`
+                    ${commonstyles.highlightPicker} ${commonstyles.colorPicker(
+                      color
+                    )}
+                  `}
+                >
+                  {HiglightPicker}
+                </div>
 
-                  <BoldButton {...externalProps} />
-                  <ItalicButton {...externalProps} />
-                  <UnderlineButton {...externalProps} />
-                  <div
-                    onMouseDown={(e) => e.preventDefault()}
-                    onClick={(e) => handleClick(e, "color")}
-                    id={colorId}
-                    tabIndex={0} // Add tabIndex attribute to make the div focusable
-                    css={commonstyles.highlightPicker(!!textColour, color)}
-                  >
-                    {HiglightPicker}
-                  </div>
+                <div
+                  onMouseDown={(e) => e.preventDefault()}
+                  onClick={(e) => handleClick(e, "bg")}
+                  id={bgId}
+                  tabIndex={0} // Add tabIndex attribute to make the div focusable
+                  css={`
+                    ${commonstyles.highlightPicker} ${commonstyles.bgHighlightPicker(
+                      bgColor
+                    )}
+                  `}
+                >
+                  {BGHiglightPicker}
+                </div>
 
-                  <div
-                    onMouseDown={(e) => e.preventDefault()}
-                    onClick={(e) => handleClick(e, "bg")}
-                    id={bgId}
-                    tabIndex={0} // Add tabIndex attribute to make the div focusable
-                    css={commonstyles.highlightPicker(!!textBgColour, bgColor)}
-                  >
-                    {BGHiglightPicker}
-                  </div>
+                <ColorModal
+                  {...externalProps}
+                  anchorEl={anchorEl}
+                  handleClose={handleClose}
+                  id={colorId}
+                  open={colorOpen}
+                  hex={color}
+                  setHex={setColor}
+                  defaultColor={defaultColor}
+                  prefix="COLOR-"
+                />
 
-                  <div onMouseDown={(e) => e.preventDefault()}>
-                    <ColorModal
-                      {...externalProps}
-                      anchorEl={anchorEl}
-                      handleClose={handleClose}
-                      id={colorId}
-                      open={colorOpen}
-                      hex={color}
-                      setHex={setColor}
-                      defaultColor={defaultColor}
-                      prefix="COLOR-"
-                    />
-                  </div>
+                <ColorModal
+                  {...externalProps}
+                  anchorEl={anchorEl}
+                  handleClose={handleClose}
+                  id={bgId}
+                  open={bgOpen}
+                  hex={bgColor}
+                  setHex={setBgColor}
+                  defaultColor={defaultBgColor}
+                  prefix="BG-COLOR-"
+                />
 
-                  <div onMouseDown={(e) => e.preventDefault()}>
-                    <ColorModal
-                      {...externalProps}
-                      anchorEl={anchorEl}
-                      handleClose={handleClose}
-                      id={bgId}
-                      open={bgOpen}
-                      hex={bgColor}
-                      setHex={setBgColor}
-                      defaultColor={"none"}
-                      prefix="BG-COLOR-"
-                    />
-                  </div>
+                {divider}
 
-                  {divider}
+                {isDesktop && restIcons}
 
-                  {/* <HeaderOneButton {...externalProps} />
-                  <HeaderTwoButton {...externalProps} /> */}
-                  <LeftAlignment {...externalProps} />
-                  <CenterAlignment {...externalProps} />
-                  <RightAlignment {...externalProps} />
-                  <UnorderedListButton {...externalProps} />
-                  <OrderedListButton {...externalProps} />
-                  <DecreaseIndentButton {...externalProps} />
-                  <IncreaseIndentButton {...externalProps} />
-                  <BlockquoteButton {...externalProps} />
-                  {divider}
-                  <div
-                    onMouseDown={(e) => {
-                      e.preventDefault();
-                    }}
+                <div
+                  css={`
+                    position: relative;
+                    display: none;
+                    @media (max-width: 1218px) {
+                      display: block;
+                    }
+                  `}
+                >
+                  <button
+                    onClick={() => setDisplayRestIcons(!displayRestIcons)}
                     css={`
-                      margin-bottom: -4px;
-                    `}
-                  >
-                    <LinkButton {...externalProps} />
-                  </div>
-                  <div
-                    css={`
-                      position: relative;
-                      display: none;
-                      @media (max-width: 1117px) {
-                        display: block;
+                      width: 28px !important;
+                      height: 35px;
+                      display: flex;
+                      align-items: center;
+                      justify-content: center;
+                      border: none;
+                      outline: none;
+                      background: none;
+                      cursor: pointer;
+                      ${displayRestIcons &&
+                      "background:#F2F2F2; border-radius: 8px;"}
+                      :hover {
+                        background: #f2f2f2;
+                        border-radius: 8px;
                       }
                     `}
                   >
-                    <button
-                      onClick={() => setDisplayRestIcons(!displayRestIcons)}
-                      css={`
-                        width: 40px;
-                        height: 35px;
-                        display: flex;
-                        align-items: center;
-                        justify-content: center;
-                        border: none;
-                        outline: none;
-                        background: none;
-                        cursor: pointer;
-                        ${displayRestIcons &&
-                        "background:#F2F2F2; border-radius: 8px;"}
-                        :hover {
-                          background: #f2f2f2;
-                          border-radius: 8px;
-                        }
-                      `}
-                    >
-                      <MoreIcon />
-                    </button>
-                    <div
-                      onMouseDown={(e) => {
-                        e.preventDefault();
-                      }}
-                      css={`
-                        margin-bottom: -4px;
-                      `}
-                    >
-                      <LinkButton {...externalProps} />
-                    </div>
-                    <div
-                      css={`
-                        width: max-content;
-                        height: 44px;
-                        display: ${displayRestIcons ? "flex" : "none"};
-                        align-items: center;
-                        justify-content: space-around;
-                        border-radius: 8px;
-                        background: #fff;
-                        position: absolute;
-                        bottom: -48px;
-                        right: 0;
-                        padding: 10px 10px;
+                    <MoreIcon />
+                  </button>
 
-                        box-shadow: 0px 9px 27px 0px rgba(0, 0, 0, 0.07),
-                          0px 3.76px 11.28px 0px rgba(0, 0, 0, 0.05),
-                          0px 2.01px 6.031px 0px rgba(0, 0, 0, 0.04),
-                          0px 1.127px 3.381px 0px rgba(0, 0, 0, 0.04),
-                          0px 0.599px 1.796px 0px rgba(0, 0, 0, 0.03),
-                          0px 0.249px 0.747px 0px rgba(0, 0, 0, 0.02);
-                      `}
-                    >
-                      {displayRestIcons && restIcons}
-                    </div>
+                  <div
+                    css={`
+                      width: max-content;
+                      height: 44px;
+                      display: ${displayRestIcons ? "flex" : "none"};
+                      align-items: center;
+                      justify-content: space-around;
+                      border-radius: 8px;
+                      background: #fff;
+                      position: absolute;
+                      bottom: -48px;
+                      right: 0;
+                      padding: 10px 10px;
+
+                      box-shadow: 0px 9px 27px 0px rgba(0, 0, 0, 0.07),
+                        0px 3.76px 11.28px 0px rgba(0, 0, 0, 0.05),
+                        0px 2.01px 6.031px 0px rgba(0, 0, 0, 0.04),
+                        0px 1.127px 3.381px 0px rgba(0, 0, 0, 0.04),
+                        0px 0.599px 1.796px 0px rgba(0, 0, 0, 0.03),
+                        0px 0.249px 0.747px 0px rgba(0, 0, 0, 0.02);
+                    `}
+                  >
+                    {displayRestIcons && restIcons}
                   </div>
-                </React.Fragment>
-              );
-            }
-          }
+                </div>
+              </React.Fragment>
+            );
+          }}
         </Toolbar>
       )}
     </div>

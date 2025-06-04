@@ -1471,6 +1471,16 @@ function ChartItem(
 function EditHeaderPanelView(props: Props) {
   const [_, setCurrentView] = useRecoilState(storyRightPanelViewAtom);
   const [displayColorsList, setDisplayColorsList] = React.useState(true);
+
+  const titleDefaultColor = React.useMemo(() => {
+    return props.headerDetails.titleColor || "#ffffff";
+  }, []);
+  const descriptionDefaultColor = React.useMemo(() => {
+    return props.headerDetails.descriptionColor || "#ffffff";
+  }, []);
+  const backgroundDefaultColor = React.useMemo(() => {
+    return props.headerDetails.backgroundColor || "#252c34";
+  }, []);
   return (
     <div
       data-cy="edit-header-panel"
@@ -1574,33 +1584,46 @@ function EditHeaderPanelView(props: Props) {
               }
             `}
           >
-            <InlineColorPicker
-              color={props.headerDetails.backgroundColor}
+            <ChartOptionColor
+              isEnabled
+              value={props.headerDetails.backgroundColor}
+              default={props.headerDetails.backgroundColor}
+              defaultColor={backgroundDefaultColor}
               onChange={(value: IColor) => {
                 props.setHeaderDetails({
                   ...props.headerDetails,
                   backgroundColor: value.hex,
                 });
               }}
-              // label="Background color"
+              label="Background color"
             />
-            <InlineColorPicker
-              color={props.headerDetails.titleColor}
+
+            <ChartOptionColor
+              isEnabled
+              value={props.headerDetails.titleColor}
+              default={props.headerDetails.titleColor}
+              defaultColor={titleDefaultColor}
               onChange={(value: IColor) => {
                 props.setHeaderDetails({
                   ...props.headerDetails,
                   titleColor: value.hex,
                 });
               }}
+              label="Title color"
             />
-            <InlineColorPicker
-              color={props.headerDetails.descriptionColor}
+
+            <ChartOptionColor
+              isEnabled
+              value={props.headerDetails.descriptionColor}
+              default={props.headerDetails.descriptionColor}
+              defaultColor={descriptionDefaultColor}
               onChange={(value: IColor) => {
                 props.setHeaderDetails({
                   ...props.headerDetails,
                   descriptionColor: value.hex,
                 });
               }}
+              label="Description color"
             />
           </div>
         )}

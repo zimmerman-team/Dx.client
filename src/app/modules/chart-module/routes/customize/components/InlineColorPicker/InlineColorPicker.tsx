@@ -10,13 +10,15 @@ import { ClickAwayListener } from "@material-ui/core";
 interface Props {
   color?: string;
   onChange: (color: IColor) => void;
+  defaultColor?: string;
 }
+const def_color = "#231d2c";
+
 export default function InlineColorPicker({
   color: maybeColor,
   onChange,
+  defaultColor = def_color,
 }: Props) {
-  const defaultColor = "#231d2c";
-
   const [displayColorPicker, setDisplayColorPicker] = useState(false);
   const color = maybeColor ?? defaultColor; // Same as <input type='color' />
 
