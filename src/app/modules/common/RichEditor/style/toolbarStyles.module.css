@@ -16,11 +16,10 @@
     0px 0.249px 0.747px 0px rgba(0, 0, 0, 0.02);
 }
 
-
 @media (max-width: 1218px) {
   .toolbar {
-   justify-content: space-evenly;
-   gap: unset
+    justify-content: space-evenly;
+    gap: unset;
   }
 }
 
