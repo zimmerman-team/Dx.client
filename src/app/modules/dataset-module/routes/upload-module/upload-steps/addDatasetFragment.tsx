@@ -71,7 +71,7 @@ export default function AddDatasetFragment(props: Props) {
     {
       name: "Local upload",
       type: "Table Dataset",
-      formats: ["CSV", "XSLX", "JSON", "ODS", "SQLite"],
+      formats: ["CSV", "XSLX", "JSON"],
       icon: <LocalIcon />,
       onClick: () => {},
       upgradeRequired: false,
