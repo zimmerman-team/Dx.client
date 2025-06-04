@@ -12,7 +12,6 @@ import { RichEditor } from "app/modules/common/RichEditor";
 import { ReactComponent as EditIcon } from "app/modules/story-module/asset/editIcon.svg";
 import { ReactComponent as DeleteIcon } from "app/modules/story-module/asset/deleteIcon.svg";
 import { headerBlockcss } from "app/modules/story-module/components/headerBlock/style";
-import { ReactComponent as HeaderHandlesvg } from "app/modules/story-module/asset/header-handle.svg";
 import { Tooltip } from "@material-ui/core";
 import useDebounce from "react-use/lib/useDebounce";
 import { ToolbarPluginsType } from "app/modules/story-module/components/storySubHeaderToolbar/staticToolbar";

@@ -35,6 +35,7 @@ import useMediaQuery from "@material-ui/core/useMediaQuery";
 import NotAvailableOnMobile from "app/modules/common/not-available";
 import { MOBILE_BREAKPOINT } from "app/theme";
 import { decorators } from "app/modules/common/RichEditor/decorators";
+import { createHeadingEditorState } from "app/utils/draftjs/createEditorStateWithBlockType";
 
 export default function StoryModule() {
   const { user, isAuthenticated } = useAuth0();
@@ -151,7 +152,7 @@ export default function StoryModule() {
   const [headerDetails, setHeaderDetails] = React.useState({
     title: "",
     description: EditorState.createEmpty(decorators()),
-    heading: EditorState.createEmpty(decorators()),
+    heading: createHeadingEditorState(),
     showHeader: true,
     backgroundColor: "#252c34",
     titleColor: "#ffffff",
@@ -291,7 +292,7 @@ export default function StoryModule() {
     updateFramesArray(initialFramesArray);
     setHeaderDetails({
       title: "",
-      heading: EditorState.createEmpty(decorators()),
+      heading: createHeadingEditorState(),
       description: EditorState.createEmpty(decorators()),
       showHeader: true,
       backgroundColor: "#252c34",

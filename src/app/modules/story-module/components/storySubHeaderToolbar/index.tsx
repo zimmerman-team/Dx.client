@@ -389,6 +389,7 @@ export function StorySubheaderToolbar(
                           font-size: 12px;
                           font-weight: 325;
                           margin: 0px;
+                          white-space: nowrap;
                         `}
                       >
                         saving changes{" "}
@@ -418,6 +419,7 @@ export function StorySubheaderToolbar(
                           font-weight: 325;
                           margin: 0px;
                           margin-top: 2px;
+                          white-space: nowrap;
                         `}
                       >
                         All changes saved{" "}

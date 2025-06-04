@@ -22,7 +22,7 @@ export const fontStyles = [
     fontFamily: DEFAULT_BOLD_FONT_FAMILY,
     fontSize: "40px",
     selected: false,
-    blockType: "header-one",
+    blockType: "title",
   },
   {
     key: "subtitle",
@@ -32,7 +32,7 @@ export const fontStyles = [
     fontSize: "24px",
     selected: false,
     fontFamily: DEFAULT_BOLD_FONT_FAMILY,
-    blockType: "header-two",
+    blockType: "header-five",
   },
   {
     key: "heading1",
@@ -42,7 +42,7 @@ export const fontStyles = [
     height: "46px",
     selected: false,
     fontFamily: DEFAULT_BOLD_FONT_FAMILY,
-    blockType: "header-three",
+    blockType: "header-one",
   },
   {
     key: "heading2",
@@ -52,7 +52,7 @@ export const fontStyles = [
     height: "40px",
     selected: false,
     fontFamily: DEFAULT_BOLD_FONT_FAMILY,
-    blockType: "header-four",
+    blockType: "header-two",
   },
   {
     key: "heading3",
@@ -62,7 +62,7 @@ export const fontStyles = [
     height: "40px",
     selected: false,
     fontFamily: DEFAULT_FONT_FAMILY,
-    blockType: "header-five",
+    blockType: "header-three",
   },
 ];
 export const fontFamilies = [
@@ -138,3 +138,16 @@ export const fontFamilyStyleMap = fontFamilies.reduce(
   },
   {}
 );
+
+export const blockStyleFn = (block: any) => {
+  const blockType = block.getType();
+
+  // Find the font style that matches this block type
+  const fontStyle = fontStyles.find((style) => style.blockType === blockType);
+
+  if (fontStyle) {
+    return `font-style-${fontStyle.key}`;
+  }
+
+  return "";
+};
