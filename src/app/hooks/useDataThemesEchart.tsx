@@ -1793,11 +1793,12 @@ export function useDataThemesEchart() {
     chartId: string = ""
   ) {
     if (chartId) {
+      const chartKey = `key_${chartId}`;
       setChartsRendered((prev: any) => ({
         ...prev,
-        [chartId]: {
-          ...prev?.[chartId],
-          renderCount: (prev?.[chartId]?.renderCount ?? 0) + 1,
+        [chartKey]: {
+          ...prev?.[chartKey],
+          renderCount: (prev?.[chartKey]?.renderCount ?? 0) + 1,
         },
       }));
     }
@@ -1846,11 +1847,12 @@ export function useDataThemesEchart() {
       // @ts-expect-error jbh
       chart.one("finished", () => {
         if (chartId) {
+          const chartKey = `key_${chartId}`;
           setChartsRendered((prev: any) => ({
             ...prev,
-            [chartId]: {
-              ...prev?.[chartId],
-              finishedCount: (prev?.[chartId]?.finishedCount ?? 0) + 1,
+            [chartKey]: {
+              ...prev?.[chartKey],
+              finishedCount: (prev?.[chartKey]?.finishedCount ?? 0) + 1,
             },
           }));
         }

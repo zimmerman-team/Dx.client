@@ -60,10 +60,11 @@ export default function DownloadedView(props: {
       } else {
         if (
           loadedChartsInStory.every((chartId) => {
+            const chartKey = `key_${chartId}`;
             if (chartId === "deleted") return true;
             return (
-              chartRenders[chartId]?.finishedCount ===
-              chartRenders[chartId]?.renderCount
+              chartRenders[chartKey]?.finishedCount ===
+              chartRenders[chartKey]?.renderCount
             );
           })
         ) {
