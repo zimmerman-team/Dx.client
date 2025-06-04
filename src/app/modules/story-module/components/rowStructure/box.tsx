@@ -408,7 +408,7 @@ const Box = (props: BoxProps) => {
 
   const resolvedHeight =
     viewOnlyMode && smScreen && displayMode === "text"
-      ? `${editorHeight ?? 0 + 600}px`
+      ? `${editorHeight ?? props.initialHeight}px`
       : props.tempHeight > 0
       ? `${props.tempHeight}px`
       : `${props.initialHeight}px`;
