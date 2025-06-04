@@ -405,6 +405,13 @@ const Box = (props: BoxProps) => {
     border = "1px dashed #231d2c";
   }
 
+  const resolvedHeight =
+    viewOnlyMode && smScreen && displayMode === "text"
+      ? `${editorHeight ?? 0 + 600}px`
+      : props.tempHeight > 0
+      ? `${props.tempHeight}px`
+      : `${props.initialHeight}px`;
+
   // Common resizable props
   const getResizableProps = () => ({
     grid: [5, 5] as [number, number],
@@ -413,10 +420,7 @@ const Box = (props: BoxProps) => {
     onResizeStop,
     size: {
       width: smScreen ? "100%" : width,
-      height:
-        props.tempHeight > 0
-          ? `${props.tempHeight}px`
-          : `${props.initialHeight}px`,
+      height: resolvedHeight,
     },
     maxWidth: !viewOnlyMode
       ? `${

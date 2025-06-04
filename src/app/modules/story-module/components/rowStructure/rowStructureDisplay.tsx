@@ -63,6 +63,7 @@ export default function RowstructureDisplay(
   props: Readonly<RowStructureDisplayProps>
 ) {
   const isTablet = useMediaQuery("(max-width: 1110px)");
+  const smScreen = useMediaQuery("(max-width: 767px)");
   const RIGHT_PANEL_WIDTH = isTablet ? "36.83%" : "400px"; //percentage value of 274px which is the width at 744px as per design
   const ref = useRef(null);
   useOnClickOutside(ref, () => setHandleDisplay(false));
@@ -284,7 +285,9 @@ export default function RowstructureDisplay(
           onResizeStop={onResizeStop}
           size={{
             width: "100%",
-            height: get(props.rowContentHeights, `[${0}]`, boxHeight),
+            height: smScreen
+              ? "100%"
+              : get(props.rowContentHeights, `[${0}]`, boxHeight),
           }}
           minWidth={MIN_BOX_WIDTH}
           minHeight={MIN_BOX_HEIGHT}
