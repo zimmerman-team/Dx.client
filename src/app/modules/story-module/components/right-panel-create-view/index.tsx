@@ -63,6 +63,8 @@ import { IHeaderDetails } from "app/modules/story-module/components/right-panel/
 import { useCheckUserPlan } from "app/hooks/useCheckUserPlan";
 import { PrimaryButton, TertiaryButton } from "app/components/Styled/button";
 import { TABLET_STARTPOINT } from "app/theme";
+import InlineColorPicker from "app/modules/chart-module/routes/customize/components/InlineColorPicker";
+import { IColor } from "app/components/ColorPicker/services/color";
 
 interface Props {
   showHeaderItem: boolean;
@@ -501,9 +503,9 @@ export function StoryRightPanelCreateView(props: Readonly<Props>) {
             flex-direction: column;
           `}
         >
-          {elementItemDetails.map((item) => (
+          {elementItemDetails.map((item, index) => (
             <ElementItem
-              key={item.elementType}
+              key={`${item.elementType}-${index}`}
               {...item}
               disabled={
                 item.elementType === StoryElementsType.HEADER
@@ -536,7 +538,7 @@ export function StoryRightPanelCreateView(props: Readonly<Props>) {
         >
           {mediaItemDetails.map((item, index) => (
             <ElementItem
-              key={item.elementType}
+              key={`${item.elementType}-${index}`}
               {...item}
               disabled={false}
               upgradeRequired={
@@ -1466,6 +1468,16 @@ function ChartItem(
 function EditHeaderPanelView(props: Props) {
   const [_, setCurrentView] = useRecoilState(storyRightPanelViewAtom);
   const [displayColorsList, setDisplayColorsList] = React.useState(true);
+
+  const titleDefaultColor = React.useMemo(() => {
+    return props.headerDetails.titleColor || "#ffffff";
+  }, []);
+  const descriptionDefaultColor = React.useMemo(() => {
+    return props.headerDetails.descriptionColor || "#ffffff";
+  }, []);
+  const backgroundDefaultColor = React.useMemo(() => {
+    return props.headerDetails.backgroundColor || "#252c34";
+  }, []);
   return (
     <div
       data-cy="edit-header-panel"
@@ -1571,39 +1583,41 @@ function EditHeaderPanelView(props: Props) {
           >
             <ChartOptionColor
               isEnabled
-              error={false}
               value={props.headerDetails.backgroundColor}
               default={props.headerDetails.backgroundColor}
-              onChange={(value: string) => {
+              defaultColor={backgroundDefaultColor}
+              onChange={(value: IColor) => {
                 props.setHeaderDetails({
                   ...props.headerDetails,
-                  backgroundColor: value,
+                  backgroundColor: value.hex,
                 });
               }}
               label="Background color"
             />
+
             <ChartOptionColor
               isEnabled
-              error={false}
               value={props.headerDetails.titleColor}
               default={props.headerDetails.titleColor}
-              onChange={(value: string) => {
+              defaultColor={titleDefaultColor}
+              onChange={(value: IColor) => {
                 props.setHeaderDetails({
                   ...props.headerDetails,
-                  titleColor: value,
+                  titleColor: value.hex,
                 });
               }}
               label="Title color"
             />
+
             <ChartOptionColor
               isEnabled
-              error={false}
               value={props.headerDetails.descriptionColor}
               default={props.headerDetails.descriptionColor}
-              onChange={(value: string) => {
+              defaultColor={descriptionDefaultColor}
+              onChange={(value: IColor) => {
                 props.setHeaderDetails({
                   ...props.headerDetails,
-                  descriptionColor: value,
+                  descriptionColor: value.hex,
                 });
               }}
               label="Description color"

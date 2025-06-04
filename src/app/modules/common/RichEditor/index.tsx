@@ -1,36 +1,29 @@
 import React, { ReactElement, useMemo, useRef } from "react";
-import picker from "app/modules/common/RichEditor/ColorModal/Picker";
-import bgPicker from "app/modules/common/RichEditor/BGColorModal/Picker";
 import { ToolbarPluginsType } from "app/modules/story-module/components/storySubHeaderToolbar/staticToolbar";
 
 /*plugins */
-import {
-  DraftHandleValue,
-  EditorState,
-  RichUtils,
-  SelectionState,
-} from "draft-js";
+import { DraftHandleValue, EditorState, RichUtils } from "draft-js";
 import Editor from "@draft-js-plugins/editor";
 import createLinkPlugin from "@draft-js-plugins/anchor";
-import createEmojiPlugin from "@draft-js-plugins/emoji";
 import createToolbarPlugin from "@draft-js-plugins/static-toolbar";
 import createUndoPlugin from "@draft-js-plugins/undo";
 import createTextAlignmentPlugin from "@draft-js-plugins/text-alignment";
 import { RedoIcon } from "app/assets/icons/Redo";
 import { UndoIcon } from "app/assets/icons/Undo";
-import { EmojiButton } from "app/modules/common/RichEditor/buttons";
 
 /* stylesheets */
 import "@draft-js-plugins/anchor/lib/plugin.css";
-import editorStyles from "./editorStyles.module.css";
-import buttonStyles from "./buttonStyles.module.css";
-import toolbarStyles from "./toolbarStyles.module.css";
-import alignmentStyles from "./alignmentStyles.module.css";
+import "./style/indent.css";
+import editorStyles from "./style/editorStyles.module.css";
+import buttonStyles from "./style/buttonStyles.module.css";
+import toolbarStyles from "./style/toolbarStyles.module.css";
+import alignmentStyles from "./style/alignmentStyles.module.css";
 import "@draft-js-plugins/inline-toolbar/lib/plugin.css";
 import "@draft-js-plugins/static-toolbar/lib/plugin.css";
 import "@draft-js-plugins/emoji/lib/plugin.css";
-import fontSizeStyleMap from "app/modules/common/RichEditor/FontSizeController/styleMap";
-import { styles } from "app/modules/story-module/components/storySubHeaderToolbar/styles";
+import fontSizeStyleMap from "app/modules/common/RichEditor/fontSizeHandler/styleMap";
+import { fontFamilyStyleMap } from "./fontStyleHandler/data";
+import { colorStyleFn, bgColorStyleFn } from "./ColorModal";
 
 export const RichEditor = (props: {
   editMode: boolean;
@@ -81,11 +74,6 @@ export const RichEditor = (props: {
     return "not-handled";
   };
 
-  const emojiPlugin = createEmojiPlugin({
-    selectButtonContent: (
-      <div css={styles.highlightPicker(false)}>{EmojiButton}</div>
-    ),
-  });
   const textAlignmentPlugin = createTextAlignmentPlugin({
     theme: {
       alignmentStyles: {
@@ -96,9 +84,55 @@ export const RichEditor = (props: {
       },
     },
   });
+
   const linkPlugin = createLinkPlugin({
     linkTarget: "_blank",
     placeholder: "Enter a URL and press enter",
+
+    LinkButton: (props: any) => {
+      return (
+        <button
+          className={buttonStyles.linkButton}
+          onClick={
+            props.hasLinkSelected
+              ? props.onRemoveLinkAtSelection
+              : props.onAddLinkClick
+          }
+          onMouseDown={(e) => {
+            e.preventDefault(); // Prevent focus loss
+          }}
+        >
+          <svg
+            width="28"
+            height="28"
+            viewBox="0 0 28 28"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <g clip-path="url(#clip0_25233_101228)">
+              <path
+                d="M22.2901 8.22503C21.9417 7.87543 21.5277 7.59804 21.0719 7.40877C20.6161 7.2195 20.1274 7.12207 19.6338 7.12207C19.1403 7.12207 18.6516 7.2195 18.1958 7.40877C17.7399 7.59804 17.326 7.87543 16.9776 8.22503L17.8651 9.11253C18.0978 8.87984 18.374 8.69526 18.678 8.56934C18.982 8.44341 19.3079 8.37859 19.637 8.37859C19.966 8.37859 20.2919 8.44341 20.5959 8.56934C20.8999 8.69526 21.1761 8.87984 21.4088 9.11253C21.6415 9.34521 21.8261 9.62145 21.952 9.92547C22.078 10.2295 22.1428 10.5553 22.1428 10.8844C22.1428 11.2135 22.078 11.5393 21.952 11.8433C21.8261 12.1474 21.6415 12.4236 21.4088 12.6563L16.4088 17.6563C15.9397 18.1262 15.3032 18.3905 14.6392 18.3911C13.9752 18.3917 13.3381 18.1285 12.8682 17.6594C12.3983 17.1903 12.1339 16.5537 12.1334 15.8897C12.1328 15.2257 12.396 14.5887 12.8651 14.1188L13.7463 13.2313L12.8651 12.3438L11.9776 13.2313C11.628 13.5797 11.3506 13.9936 11.1613 14.4495C10.9721 14.9053 10.8746 15.394 10.8746 15.8875C10.8746 16.3811 10.9721 16.8698 11.1613 17.3256C11.3506 17.7814 11.628 18.1954 11.9776 18.5438C12.6848 19.2419 13.6401 19.6308 14.6338 19.625C15.1293 19.6271 15.6202 19.5309 16.0783 19.3421C16.5364 19.1533 16.9525 18.8756 17.3026 18.525L22.3026 13.525C23.0032 12.8202 23.3954 11.8662 23.393 10.8724C23.3907 9.87869 22.994 8.9265 22.2901 8.22503Z"
+                fill="#212529"
+              />
+              <path
+                d="M6.62758 19.5125C6.3942 19.2802 6.20901 19.0041 6.08265 18.7C5.95628 18.396 5.89123 18.0699 5.89123 17.7407C5.89123 17.4114 5.95628 17.0853 6.08265 16.7813C6.20901 16.4772 6.3942 16.2011 6.62758 15.9688L11.6276 10.9688C11.8599 10.7354 12.136 10.5502 12.4401 10.4238C12.7441 10.2975 13.0702 10.2324 13.3995 10.2324C13.7287 10.2324 14.0548 10.2975 14.3589 10.4238C14.6629 10.5502 14.939 10.7354 15.1713 10.9688C15.4032 11.2029 15.5858 11.4812 15.7082 11.7872C15.8306 12.0931 15.8903 12.4206 15.8838 12.75C15.8857 13.0805 15.8221 13.4081 15.6966 13.7139C15.5711 14.0196 15.3862 14.2974 15.1526 14.5313L13.8276 15.875L14.7151 16.7625L16.0401 15.4375C16.7454 14.7322 17.1416 13.7756 17.1416 12.7782C17.1416 11.7807 16.7454 10.8241 16.0401 10.1188C15.3348 9.41347 14.3782 9.01723 13.3807 9.01723C12.3832 9.01723 11.4266 9.41347 10.7213 10.1188L5.72133 15.1188C5.37079 15.4673 5.09261 15.8816 4.90278 16.338C4.71296 16.7944 4.61523 17.2839 4.61523 17.7782C4.61523 18.2725 4.71296 18.7619 4.90278 19.2183C5.09261 19.6747 5.37079 20.089 5.72133 20.4375C6.43309 21.1303 7.39064 21.5124 8.38383 21.5C9.38577 21.501 10.3474 21.1055 11.0588 20.4L10.1713 19.5125C9.93903 19.7459 9.66292 19.9311 9.35885 20.0575C9.05478 20.1838 8.72874 20.2489 8.39946 20.2489C8.07017 20.2489 7.74413 20.1838 7.44006 20.0575C7.13599 19.9311 6.85988 19.7459 6.62758 19.5125Z"
+                fill="#212529"
+              />
+            </g>
+            <defs>
+              <clipPath id="clip0_25233_101228">
+                <rect
+                  width="20"
+                  height="20"
+                  fill="white"
+                  transform="translate(4.00879 4)"
+                />
+              </clipPath>
+            </defs>
+          </svg>
+        </button>
+      );
+    },
   });
 
   const undoPlugin = createUndoPlugin({
@@ -115,13 +149,7 @@ export const RichEditor = (props: {
       theme: { buttonStyles, toolbarStyles },
     });
 
-    return [
-      toolbarPlugin,
-      linkPlugin,
-      undoPlugin,
-      textAlignmentPlugin,
-      emojiPlugin,
-    ];
+    return [toolbarPlugin, linkPlugin, undoPlugin, textAlignmentPlugin];
   }, []);
 
   React.useEffect(() => {
@@ -140,15 +168,6 @@ export const RichEditor = (props: {
 
         font-family: "GothamNarrow-Book", "Helvetica Neue", sans-serif;
         line-height: normal;
-        font-weight: 12px;
-        h1,
-        h2 {
-          font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
-          * {
-            font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
-          }
-        }
-
         blockquote {
           padding-left: 11px;
           margin-inline-start: 0px;
@@ -173,12 +192,16 @@ export const RichEditor = (props: {
     >
       <Editor
         plugins={plugins}
+        customStyleFn={(style) => {
+          return {
+            ...colorStyleFn(style),
+            ...bgColorStyleFn(style),
+          };
+        }}
         customStyleMap={{
-          ...bgPicker.bgColorStyleMap,
-          ...picker.colorStyleMap,
           ...fontSizeStyleMap,
+          ...fontFamilyStyleMap,
           BOLD: {
-            fontFamily: "GothamNarrow-Bold",
             fontWeight: "bold",
             lineHeight: "normal",
           },
@@ -198,7 +221,6 @@ export const RichEditor = (props: {
         onFocus={() => {
           props.onFocus?.();
           props.setPlugins?.(plugins);
-          props.setPlaceholderState("");
         }}
         placeholder={props.placeholderState}
         ref={(element) => {
