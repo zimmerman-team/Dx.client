@@ -23,7 +23,10 @@ import { usehandleRowFrameItemResize } from "app/hooks/useHandleRowFrameItemResi
 import { TABLET_STARTPOINT } from "app/theme";
 import { NumberSize, Resizable } from "re-resizable";
 import { Direction } from "re-resizable/lib/resizer";
-import { MIN_BOX_HEIGHT, MIN_BOX_WIDTH } from "app/modules/story-module/data";
+import {
+  MIN_BOX_HEIGHT,
+  MIN_BOX_WIDTH,
+} from "app/modules/story-module/components/rowStructure/data";
 
 interface RowStructureDisplayProps {
   gap: string;
@@ -75,6 +78,7 @@ export default function RowstructureDisplay(
     [key: string]: number;
   }>({});
   const [tempHeight, setTempHeight] = useState(0);
+  const [minHeight, setMinHeight] = useState(MIN_BOX_HEIGHT);
   const viewOnlyMode =
     location.pathname === `/story/${page}` ||
     location.pathname === `/story/${page}/downloaded-view`;
@@ -182,6 +186,20 @@ export default function RowstructureDisplay(
     setTempHeight(0);
   };
 
+  const onResizeStart = (
+    _e: React.MouseEvent<HTMLElement> | React.TouchEvent<HTMLElement>,
+    _dir: Direction,
+    _elementRef: HTMLElement
+  ) => {
+    const textEditorHeights = props.framesArray[props.rowIndex]
+      .textEditorHeights as number[];
+    //get the biggest value from the array
+    const maxHeight = Math.max(...textEditorHeights);
+    if (maxHeight && maxHeight > MIN_BOX_HEIGHT) {
+      setMinHeight(maxHeight);
+    }
+  };
+
   return (
     <div
       ref={ref}
@@ -282,12 +300,13 @@ export default function RowstructureDisplay(
           grid={[5, 5]}
           onResize={onResize}
           onResizeStop={onResizeStop}
+          onResizeStart={onResizeStart}
           size={{
             width: "100%",
             height: get(props.rowContentHeights, `[${0}]`, boxHeight),
           }}
           minWidth={MIN_BOX_WIDTH}
-          minHeight={MIN_BOX_HEIGHT}
+          minHeight={minHeight}
           enable={{
             bottom: !viewOnlyMode,
           }}
