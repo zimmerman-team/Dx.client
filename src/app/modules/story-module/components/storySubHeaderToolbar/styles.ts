@@ -190,6 +190,7 @@ export const styles = {
       }
     }
   `,
+  // eslint-disable-next-line sonarjs/no-identical-functions
   colorPicker: (color: string) => css`
     background-color: ${color};
     svg {
