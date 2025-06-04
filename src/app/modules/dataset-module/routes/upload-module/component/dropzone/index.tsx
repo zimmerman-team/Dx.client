@@ -88,7 +88,7 @@ export const DropZone = (props: DropzoneProps) => {
                   line-height: 16px;
                 `}
               >
-                Supports: XML, XLSX, CSV, JSON, ODS
+                Supports: XLSX, CSV, JSON
               </p>
               <p
                 css={`
@@ -102,7 +102,7 @@ export const DropZone = (props: DropzoneProps) => {
                   margin-top: 8px;
                 `}
               >
-                Drag and drop your CSV file here
+                Drag and drop your CSV, JSON, XLSX file here
               </p>
             </>
           )}
