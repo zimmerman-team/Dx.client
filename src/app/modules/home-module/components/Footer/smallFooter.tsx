@@ -2,6 +2,10 @@ import React from "react";
 import moment from "moment";
 import { ReactComponent as CopyIcon } from "app/modules/home-module/components/Footer/asset/copy.svg";
 import { Container } from "@material-ui/core";
+import {
+  PRIVACY_POLICY_LINK,
+  TERMS_AND_CONDITION_LINK,
+} from "app/modules/chart-module/util/constants/links";
 
 function SmallFooter() {
   return (
@@ -41,7 +45,7 @@ function SmallFooter() {
           </p>
           <p>
             <a
-              href="https://drive.google.com/file/d/1andhlQEoaEq5qDxMbtnApXiZborsg-bG/view"
+              href={PRIVACY_POLICY_LINK}
               className="privacy-link"
               target="_blank"
               rel="noreferrer"
@@ -51,7 +55,7 @@ function SmallFooter() {
           </p>
           <p>
             <a
-              href="https://drive.google.com/file/d/1wgY5HYdE5-redIOF85E5fZZJT_YueOWP/view?usp=sharing"
+              href={TERMS_AND_CONDITION_LINK}
               className="privacy-link"
               target="_blank"
               rel="noreferrer"
