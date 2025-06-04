@@ -358,30 +358,6 @@ export function StorySubheaderToolbar(
                     : {}
                 }
               />
-              <div
-                css={`
-                  display: flex;
-                  flex-shrink: 0;
-                  gap: 12px;
-                  @media (min-width: ${TABLET_STARTPOINT}) {
-                    @media (max-width: 1200px) {
-                      display: none;
-                    }
-                  }
-                `}
-              >
-                {view === "edit" && (
-                  <button
-                    css={styles.viewStoryBtn}
-                    onClick={handleViewStory}
-                    data-cy="view-story-button"
-                    aria-label="view story button"
-                  >
-                    <PlayIcon />
-                    View Story
-                  </button>
-                )}
-              </div>
             </div>
           </div>
           {view !== "initial" && (
@@ -482,12 +458,6 @@ export function StorySubheaderToolbar(
                           padding: 0px;
                           :disabled {
                             opacity: 0.5;
-                          }
-                          display: none;
-                          @media (min-width: ${TABLET_STARTPOINT}) {
-                            @media (max-width: 1200px) {
-                              display: block;
-                            }
                           }
                         `}
                         data-cy="view-story-button-tablet"

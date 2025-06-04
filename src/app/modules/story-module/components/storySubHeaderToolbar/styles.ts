@@ -1,4 +1,5 @@
 import { MOBILE_BREAKPOINT, TABLET_STARTPOINT } from "app/theme";
+import { getContrastColor } from "app/utils/getContrastColor";
 import { css } from "styled-components/macro";
 
 export const styles = {
@@ -161,25 +162,41 @@ export const styles = {
       left: 25px;
     }
   `,
-  highlightPicker: (active: boolean) => css`
+  highlightPicker: css`
     vertical-align: bottom;
     border: none;
     outline: none;
     color: #70777e;
     font-size: 18px;
-    background: ${active ? "#f2f2f2" : "transparent"};
-    width: 40px;
     height: 35px;
     border-radius: 8px;
     display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
+
     &:hover {
-      background: #f2f2f2;
+      opacity: 0.6;
     }
     @media (max-width: 1050px) {
       width: 24px;
+    }
+  `,
+  bgHighlightPicker: (color: string) => css`
+    background-color: ${color};
+    svg {
+      path {
+        fill: ${getContrastColor(color)};
+      }
+    }
+  `,
+  // eslint-disable-next-line sonarjs/no-identical-functions
+  colorPicker: (color: string) => css`
+    background-color: ${color};
+    svg {
+      path {
+        fill: ${getContrastColor(color)};
+      }
     }
   `,
 };

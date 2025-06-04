@@ -14,12 +14,12 @@ import HeaderBlock from "app/modules/story-module/components/headerBlock";
 import { NotAuthorizedMessageModule } from "app/modules/common/not-authorized-message";
 import { StoryElementsType } from "app/modules/story-module/components/right-panel-create-view";
 import { storyContentContainerWidth } from "app/state/recoil/atoms";
-import { linkDecorator } from "app/modules/common/RichEditor/decorators";
 import { useTitle } from "react-use";
 import StoryUsePanel from "app/modules/story-module/components/use-story-panel";
 import { PageLoader } from "app/modules/common/page-loader";
 import { ReactComponent as LogoIcon } from "app/modules/home-module/components/Footer/asset/logo.svg";
 import { Typography } from "@material-ui/core";
+import { decorators } from "app/modules/common/RichEditor/decorators";
 
 export function StoryPreviewView(
   props: Readonly<{
@@ -160,10 +160,12 @@ export function StoryPreviewView(
           title: storyData.title,
           showHeader: storyData.showHeader,
           heading: EditorState.createWithContent(
-            convertFromRaw(storyData.heading ?? emptyStory.heading)
+            convertFromRaw(storyData.heading ?? emptyStory.heading),
+            decorators()
           ),
           description: EditorState.createWithContent(
-            convertFromRaw(storyData.description ?? emptyStory.description)
+            convertFromRaw(storyData.description ?? emptyStory.description),
+            decorators()
           ),
           backgroundColor: storyData.backgroundColor,
           titleColor: storyData.titleColor,
@@ -228,7 +230,8 @@ export function StoryPreviewView(
                   return contentTypes[index] === "text"
                     ? EditorState.createWithContent(
                         convertFromRaw(item as any),
-                        linkDecorator
+                        // linkDecorator
+                        decorators()
                       )
                     : item;
                 })}

@@ -26,7 +26,8 @@ import { useDrop } from "react-dnd";
 import { useStoreActions } from "app/state/store/hooks";
 import { ReactComponent as EditIcon } from "app/modules/story-module/asset/editIcon.svg";
 import { ReactComponent as DeleteIcon } from "app/modules/story-module/asset/deleteIcon.svg";
-import { MIN_BOX_WIDTH } from "app/modules/story-module/components/rowStructure/data";
+import { decorators } from "app/modules/common/RichEditor/decorators";
+import { MIN_BOX_WIDTH } from "./data";
 
 // Types
 interface BoxProps {
@@ -100,7 +101,7 @@ const Box = (props: BoxProps) => {
   const [displayMode, setDisplayMode] = useState<ContentType>(null);
   const [maxWidth, setMaxWidth] = useState(props.initialWidth);
   const [textContent, setTextContent] = useState<EditorState>(
-    EditorState.createEmpty()
+    EditorState.createEmpty(decorators())
   );
   const [displayBoxIcons, setDisplayBoxIcons] = useState(false);
   const [videoContent, setVideoContent] = useState<{
@@ -197,7 +198,7 @@ const Box = (props: BoxProps) => {
   const resetContent = () => {
     setDisplayMode(null);
     setChartId(null);
-    setTextContent(EditorState.createEmpty());
+    setTextContent(EditorState.createEmpty(decorators()));
     handleRowFrameItemRemoval(props.rowId, props.itemIndex);
   };
 
@@ -266,7 +267,7 @@ const Box = (props: BoxProps) => {
   // Drag and drop configuration
   const [{ isOver }, drop] = useDrop(() => ({
     accept:
-      props.rowType === "oneByFive"
+      props.rowType === "oneByFive" || props.rowType === "oneByFour"
         ? elementTypes
         : elementTypes.filter((type) => type !== StoryElementsType.BIG_NUMBER),
     collect: (monitor) => ({

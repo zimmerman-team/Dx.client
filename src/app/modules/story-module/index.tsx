@@ -34,6 +34,7 @@ import DownloadedView from "./views/downloaded-view";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import NotAvailableOnMobile from "app/modules/common/not-available";
 import { MOBILE_BREAKPOINT } from "app/theme";
+import { decorators } from "app/modules/common/RichEditor/decorators";
 
 export default function StoryModule() {
   const { user, isAuthenticated } = useAuth0();
@@ -149,8 +150,8 @@ export default function StoryModule() {
 
   const [headerDetails, setHeaderDetails] = React.useState({
     title: "",
-    description: EditorState.createEmpty(),
-    heading: EditorState.createEmpty(),
+    description: EditorState.createEmpty(decorators()),
+    heading: EditorState.createEmpty(decorators()),
     showHeader: true,
     backgroundColor: "#252c34",
     titleColor: "#ffffff",
@@ -290,8 +291,8 @@ export default function StoryModule() {
     updateFramesArray(initialFramesArray);
     setHeaderDetails({
       title: "",
-      heading: EditorState.createEmpty(),
-      description: EditorState.createEmpty(),
+      heading: EditorState.createEmpty(decorators()),
+      description: EditorState.createEmpty(decorators()),
       showHeader: true,
       backgroundColor: "#252c34",
       titleColor: "#ffffff",
@@ -317,12 +318,12 @@ export default function StoryModule() {
         heading: convertToRaw(
           headerDetails.showHeader
             ? headerDetails.heading.getCurrentContent()
-            : EditorState.createEmpty().getCurrentContent()
+            : EditorState.createEmpty(decorators()).getCurrentContent()
         ),
         description: convertToRaw(
           headerDetails.showHeader
             ? headerDetails.description.getCurrentContent()
-            : EditorState.createEmpty().getCurrentContent()
+            : EditorState.createEmpty(decorators()).getCurrentContent()
         ),
         rows: framesArray.map((frame) => ({
           structure: frame.structure,
