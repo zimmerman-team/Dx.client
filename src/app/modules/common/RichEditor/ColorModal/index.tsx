@@ -32,6 +32,29 @@ export const colorStyleFn = (style: any) => {
   return {}; // Default, no custom style
 };
 
+export const gothamBoldFn = (style: any) => {
+  const styleNames = style.toArray();
+  let isGotham = true;
+  let isBold = false;
+  for (const styleName of styleNames) {
+    if (
+      styleName &&
+      styleName.startsWith("FONT_FAMILY_") &&
+      !styleName.startsWith("FONT_FAMILY_GOTHAM")
+    ) {
+      isGotham = false; // If any other font family is present, it's not Gotham
+    } else if (styleName && styleName.startsWith("BOLD")) {
+      isBold = true;
+    }
+  }
+  if (isGotham && isBold) {
+    return {
+      fontFamily: '"GothamNarrow-Bold", "Helvetica Neue", sans-serif',
+    };
+  }
+  return {}; // Default, no custom style
+};
+
 export const bgColorStyleFn = (style: any) => {
   const styleNames = style.toArray();
   for (const styleName of styleNames) {

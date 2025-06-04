@@ -29,7 +29,7 @@ import {
 import fontSizeStyleMap from "app/modules/common/RichEditor/fontSizeHandler/styleMap";
 import { blockStyleFn, fontFamilyStyleMap } from "./fontStyleHandler/data";
 import "./fontStyleHandler/style.css";
-import { colorStyleFn, bgColorStyleFn } from "./ColorModal";
+import { colorStyleFn, bgColorStyleFn, gothamBoldFn } from "./ColorModal";
 
 export const RichEditor = (props: {
   editMode: boolean;
@@ -167,6 +167,38 @@ export const RichEditor = (props: {
     }
   }, []);
 
+  const currentFontSize = React.useMemo(() => {
+    const DEFAULT_FONT_SIZE = 14;
+    const HEADER_ONE_SIZE = 24;
+    const HEADER_TWO_SIZE = 21;
+    const TITLE_FONT_SIZE = 28; // Assuming a title font size for consistency
+    const editorState = props.textContent;
+    if (!editorState) return DEFAULT_FONT_SIZE;
+    const currentStyle = editorState.getCurrentInlineStyle();
+
+    // Find any font-size style
+    const fontSizeStyle = currentStyle.findLast((style: any) =>
+      style.includes("font-size")
+    );
+
+    if (fontSizeStyle) {
+      const size = parseInt(fontSizeStyle.split("-")[2], 10);
+      return isNaN(size) ? DEFAULT_FONT_SIZE : size;
+    }
+
+    // If no inline font style, check block type
+    const selection = editorState.getSelection();
+    const currentContent = editorState.getCurrentContent();
+    const blockType = currentContent
+      .getBlockForKey(selection.getStartKey())
+      .getType();
+
+    if (blockType === "header-one") return HEADER_ONE_SIZE;
+    if (blockType === "header-two") return HEADER_TWO_SIZE;
+    if (blockType === "title") return TITLE_FONT_SIZE;
+    return DEFAULT_FONT_SIZE;
+  }, [props]);
+
   return (
     <div
       className={editorStyles.editor}
@@ -192,6 +224,7 @@ export const RichEditor = (props: {
           position: absolute;
           color: #adb5bd;
           font-family: "GothamNarrow-Book", "Helvetica Neue", sans-serif;
+          font-size: ${currentFontSize ?? 14}px;
         }
       `}
       data-cy={`${props.testId}-container`}
@@ -203,6 +236,7 @@ export const RichEditor = (props: {
           return {
             ...colorStyleFn(style),
             ...bgColorStyleFn(style),
+            ...gothamBoldFn(style),
           };
         }}
         blockStyleFn={blockStyleFn}
