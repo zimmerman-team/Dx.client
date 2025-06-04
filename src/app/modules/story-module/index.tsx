@@ -34,6 +34,7 @@ import DownloadedView from "./views/downloaded-view";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import NotAvailableOnMobile from "app/modules/common/not-available";
 import { MOBILE_BREAKPOINT } from "app/theme";
+import { decorators } from "app/modules/common/RichEditor/decorators";
 
 export default function StoryModule() {
   const { user, isAuthenticated } = useAuth0();
@@ -149,8 +150,8 @@ export default function StoryModule() {
 
   const [headerDetails, setHeaderDetails] = React.useState({
     title: "",
-    description: EditorState.createEmpty(),
-    heading: EditorState.createEmpty(),
+    description: EditorState.createEmpty(decorators()),
+    heading: EditorState.createEmpty(decorators()),
     showHeader: true,
     backgroundColor: "#252c34",
     titleColor: "#ffffff",
@@ -191,6 +192,7 @@ export default function StoryModule() {
         content: [],
         contentWidths: [],
         contentHeights: [],
+        textEditorHeights: [],
         contentTypes: [],
         structure: null,
       },
@@ -200,7 +202,6 @@ export default function StoryModule() {
   const advancedStoryInitialState = () => {
     const rowOne = v4();
     const rowTwo = v4();
-
     const rowFive = v4();
     return [
       {
@@ -215,6 +216,7 @@ export default function StoryModule() {
         content: [null, null, null, null, null],
         contentWidths: [20, 20, 20, 20, 20],
         contentHeights: [121, 121, 121, 121, 121],
+        textEditorHeights: [null, null, null, null, null],
         contentTypes: [null, null, null, null, null],
         structure: "oneByFive",
       },
@@ -229,6 +231,7 @@ export default function StoryModule() {
         },
         content: [null],
         contentWidths: [100],
+        textEditorHeights: [null],
         contentHeights: [400],
         contentTypes: [null],
         structure: "oneByOne",
@@ -246,6 +249,7 @@ export default function StoryModule() {
         content: [null, null, null],
         contentWidths: [33, 33, 33],
         contentHeights: [460, 460, 460],
+        textEditorHeights: [null, null, null],
         contentTypes: [null, null, null],
         structure: "oneByThree",
       },
@@ -287,8 +291,8 @@ export default function StoryModule() {
     updateFramesArray(initialFramesArray);
     setHeaderDetails({
       title: "",
-      heading: EditorState.createEmpty(),
-      description: EditorState.createEmpty(),
+      heading: EditorState.createEmpty(decorators()),
+      description: EditorState.createEmpty(decorators()),
       showHeader: true,
       backgroundColor: "#252c34",
       titleColor: "#ffffff",
@@ -314,12 +318,12 @@ export default function StoryModule() {
         heading: convertToRaw(
           headerDetails.showHeader
             ? headerDetails.heading.getCurrentContent()
-            : EditorState.createEmpty().getCurrentContent()
+            : EditorState.createEmpty(decorators()).getCurrentContent()
         ),
         description: convertToRaw(
           headerDetails.showHeader
             ? headerDetails.description.getCurrentContent()
-            : EditorState.createEmpty().getCurrentContent()
+            : EditorState.createEmpty(decorators()).getCurrentContent()
         ),
         rows: framesArray.map((frame) => ({
           structure: frame.structure,

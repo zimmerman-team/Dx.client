@@ -2,9 +2,12 @@ import { EditorState, RichUtils } from "draft-js";
 import React, { useEffect, useCallback } from "react";
 import styled from "styled-components";
 import debounce from "lodash/debounce";
+import { useRecoilValue } from "recoil";
+import { textEditorElementIdAtom } from "app/state/recoil/atoms";
 
 // Define constants for better readability and maintainability
 const DEFAULT_FONT_SIZE = 14;
+const DEFAULT_HEADER_TITLE_SIZE = 24;
 const MIN_FONT_SIZE = 1;
 const MAX_FONT_SIZE = 999;
 const HEADER_ONE_SIZE = 28;
@@ -16,21 +19,28 @@ interface Props {
 }
 
 const FontSizeContainer = styled.div`
-  width: 57px;
-  height: 24px;
+  width: 105px;
+  height: 28px;
+  padding: 0 7px;
   display: flex;
   align-items: center;
-  justify-content: space-evenly;
-  border-radius: 8px;
-  background: #f4f4f4;
+  justify-content: space-between;
+  border-radius: 4px;
+  border: 1px solid #cfd4da;
+  background: #fff;
+  box-shadow: 0px 1px 2px 0px rgba(26, 26, 26, 0.08);
 `;
 
-const SizeButton = styled.span`
+const SizeButton = styled.button`
   font-size: 14px;
-  color: #70777e;
-  font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
+  /* color: #70777e; */
+  font-family: ${fontFamily};
   cursor: pointer;
+  border: none;
+  background: transparent;
+  outline: none;
   user-select: none;
+  width: auto !important;
 `;
 
 const SizeInput = styled.input`
@@ -40,13 +50,14 @@ const SizeInput = styled.input`
   background: transparent;
   border: none;
   font-size: 14px;
-  font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
-  color: #70777e;
+  font-family: ${fontFamily};
+  color: #231d2c;
   outline: none;
 `;
 
 export default function FontSizeController(props: Props) {
   const [fontSize, setFontSize] = React.useState(DEFAULT_FONT_SIZE);
+  const elementId = useRecoilValue(textEditorElementIdAtom);
 
   // Helper to extract current font size from editor state
   const getCurrentFontSize = useCallback(() => {
@@ -75,8 +86,10 @@ export default function FontSizeController(props: Props) {
       if (blockType === "header-one") return HEADER_ONE_SIZE;
       if (blockType === "header-two") return HEADER_TWO_SIZE;
     }
-    return DEFAULT_FONT_SIZE;
-  }, [props]);
+    return elementId === "headerTitle"
+      ? DEFAULT_HEADER_TITLE_SIZE
+      : DEFAULT_FONT_SIZE;
+  }, [props, elementId]);
 
   useEffect(() => {
     // Only update local state when editor state changes
@@ -120,16 +133,13 @@ export default function FontSizeController(props: Props) {
   useEffect(() => {
     const editorState = props.getEditorState();
 
-    // Create a function to update font size from editor state
     const syncFontSize = () => {
       const newSize = getCurrentFontSize();
       setFontSize(newSize);
     };
 
-    // Initial sync
     syncFontSize();
 
-    // Setup listeners for selection and content changes
     const currentSelection = editorState.getSelection();
     let prevSelection = currentSelection;
 
@@ -137,7 +147,6 @@ export default function FontSizeController(props: Props) {
       const newEditorState = props.getEditorState();
       const newSelection = newEditorState.getSelection();
 
-      // Check if selection changed
       if (
         newSelection.getStartKey() !== prevSelection.getStartKey() ||
         newSelection.getStartOffset() !== prevSelection.getStartOffset() ||
@@ -201,7 +210,18 @@ export default function FontSizeController(props: Props) {
         aria-label="Decrease font size"
         tabIndex={0}
       >
-        -
+        <svg
+          width="14"
+          height="2"
+          viewBox="0 0 14 2"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M7.95862 0.262207H13.1209C13.5281 0.262207 13.8583 0.592381 13.8583 0.999671C13.8583 1.40696 13.5281 1.73713 13.1209 1.73713H7.95862H6.48369H1.32145C0.914158 1.73713 0.583984 1.40696 0.583984 0.99967C0.583984 0.592381 0.914158 0.262207 1.32145 0.262207H6.48369H7.95862Z"
+            fill="#231D2C"
+          />
+        </svg>
       </SizeButton>
       <SizeInput
         type="text"
@@ -219,7 +239,20 @@ export default function FontSizeController(props: Props) {
         aria-label="Increase font size"
         tabIndex={0}
       >
-        +
+        <svg
+          width="14"
+          height="14"
+          viewBox="0 0 14 14"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            fill-rule="evenodd"
+            clip-rule="evenodd"
+            d="M7.07955 0.362793C7.48684 0.362793 7.81701 0.692966 7.81701 1.10026V6.2625H12.9793C13.3865 6.2625 13.7167 6.59267 13.7167 6.99996C13.7167 7.40725 13.3865 7.73742 12.9793 7.73742H7.81701V12.8997C7.81701 13.307 7.48684 13.6371 7.07955 13.6371C6.67226 13.6371 6.34209 13.307 6.34209 12.8997V7.73742H1.17985C0.772556 7.73742 0.442383 7.40725 0.442383 6.99996C0.442383 6.59267 0.772556 6.2625 1.17985 6.2625L6.34209 6.2625V1.10026C6.34209 0.692966 6.67226 0.362793 7.07955 0.362793Z"
+            fill="#231D2C"
+          />
+        </svg>
       </SizeButton>
     </FontSizeContainer>
   );

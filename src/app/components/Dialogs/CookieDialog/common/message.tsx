@@ -2,6 +2,10 @@ import Box from "@material-ui/core/Box";
 import styled from "styled-components/macro";
 import Typography from "@material-ui/core/Typography";
 import { PrimaryButton } from "app/components/Styled/button";
+import {
+  COOKIE_POLICY_LINK,
+  DATA_POLICY_LINK,
+} from "app/modules/chart-module/util/constants/links";
 
 const MessageContainer = styled((props) => <Box {...props} />)`
   align-items: center;
@@ -37,19 +41,11 @@ export const Message = (props: MessageProps) => {
         `}
       >
         The website makes use of{" "}
-        <a
-          href={`https://drive.google.com/file/d/1andhlQEoaEq5qDxMbtnApXiZborsg-bG/view?usp=drive_link`}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
+        <a href={COOKIE_POLICY_LINK} target="_blank" rel="noopener noreferrer">
           cookies
         </a>
         . Review{" "}
-        <a
-          href={`https://drive.google.com/file/d/1andhlQEoaEq5qDxMbtnApXiZborsg-bG/view?usp=drive_link`}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
+        <a href={DATA_POLICY_LINK} target="_blank" rel="noopener noreferrer">
           data privacy
         </a>{" "}
         for more details.
