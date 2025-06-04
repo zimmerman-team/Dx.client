@@ -8,7 +8,6 @@
 .undoRedoButton:hover {
   outline: 0; /* reset for :focus */
   background: #f2f2f2;
-
 }
 .linkButton {
   border: none;
@@ -23,10 +22,9 @@
 
 .undoRedoButton:disabled svg > path {
   fill: #ccc;
- 
+
   background-color: transparent;
 }
-
 
 .buttonWrapper {
   display: inline-block;
@@ -43,7 +41,6 @@
   border-radius: 8px;
   cursor: pointer;
 }
-
 
 /* @media (min-width: 801px) {
   @media (max-width: 853px) {
