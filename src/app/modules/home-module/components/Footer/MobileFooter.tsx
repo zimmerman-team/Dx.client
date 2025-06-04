@@ -3,6 +3,10 @@ import { Link } from "react-router-dom";
 import { ReactComponent as LogoIcon } from "app/modules/home-module/components/Footer/asset/logo.svg";
 import { ReactComponent as CopyIcon } from "app/modules/home-module/components/Footer/asset/copy.svg";
 import moment from "moment";
+import {
+  PRIVACY_POLICY_LINK,
+  TERMS_AND_CONDITION_LINK,
+} from "app/modules/chart-module/util/constants/links";
 
 export default function MobileFooter() {
   return (
@@ -56,7 +60,7 @@ export default function MobileFooter() {
       >
         <p>
           <a
-            href="https://drive.google.com/file/d/1andhlQEoaEq5qDxMbtnApXiZborsg-bG/view"
+            href={PRIVACY_POLICY_LINK}
             className="privacy-link"
             target="_blank"
             rel="noreferrer"
@@ -64,7 +68,7 @@ export default function MobileFooter() {
             Privacy
           </a>{" "}
           <a
-            href="https://drive.google.com/file/d/1wgY5HYdE5-redIOF85E5fZZJT_YueOWP/view?usp=sharing"
+            href={TERMS_AND_CONDITION_LINK}
             className="privacy-link"
             target="_blank"
             rel="noreferrer"

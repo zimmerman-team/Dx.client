@@ -36,6 +36,7 @@ export const PrimaryButton = styled.button<Props>`
   padding: ${(props) => sizes[props.size].padding};
   font-size: 14px;
   text-transform: capitalize;
+  white-space: nowrap;
   cursor: pointer;
 
   @media (max-width: 744px) {

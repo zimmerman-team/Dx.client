@@ -15,6 +15,7 @@ import MenuIcon from "@material-ui/icons/Menu";
 import InlineLogo from "app/modules/home-module/assets/inline-logo";
 import { KeyboardArrowDown, KeyboardArrowUp } from "@material-ui/icons";
 import { ClickAwayListener } from "@material-ui/core";
+import { MOBILE_BREAKPOINT } from "app/theme";
 
 const DropDownNav = ({
   item,
@@ -375,6 +376,9 @@ function MobileHeader(props: { navLocation: string }) {
                   border-radius: 10px;
                   padding: 12px 24px;
                   line-height: 11px;
+                  @media (max-width: ${MOBILE_BREAKPOINT}) {
+                    width: 61px;
+                  }
                 `}
               >
                 Sign in

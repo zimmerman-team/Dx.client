@@ -135,7 +135,8 @@ export const mappingStyles = {
     display: flex;
     justify-content: space-between;
     min-height: 31px;
-    position: relative;
+    position: ${params.elevate ? "relative" : "unset"};
+    z-index: ${params.elevate ? params.elevationIndex : 0};
     padding-left: 16px;
     align-items: center;
     border-radius: 25px;

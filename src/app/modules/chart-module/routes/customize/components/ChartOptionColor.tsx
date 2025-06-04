@@ -2,7 +2,19 @@ import React from "react";
 import { Col } from "react-bootstrap";
 import InilineColorPicker from "app/modules/chart-module/routes/customize/components/InlineColorPicker/";
 import ChartOptionSelect from "app/modules/chart-module/routes/customize/components/ChartOptionSelect";
+import { IColor } from "app/components/ColorPicker/services/color";
 
+interface Props {
+  value: string;
+  error?: string;
+  onChange: (color: IColor) => void;
+  default?: string;
+  label: string;
+  isEnabled?: boolean;
+  options?: any;
+  className?: string;
+  defaultColor?: string;
+}
 const ChartOptionColor = ({
   value,
   error,
@@ -10,8 +22,9 @@ const ChartOptionColor = ({
   default: defaultValue,
   label,
   isEnabled,
+  defaultColor,
   ...props
-}) => {
+}: Props) => {
   if (props.options) {
     return (
       <ChartOptionSelect
@@ -35,9 +48,9 @@ const ChartOptionColor = ({
       </Col>
       <Col xs={6}>
         <InilineColorPicker
-          disabled={!isEnabled}
           color={value}
           onChange={onChange}
+          defaultColor={defaultColor}
         />
       </Col>
       {error && (

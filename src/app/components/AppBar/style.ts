@@ -36,7 +36,6 @@ export const headercss = css`
 
 export const logocss = css`
   display: flex;
-  margin-right: 64px;
   justify-content: center;
   gap: 6px;
   text-decoration: none;
