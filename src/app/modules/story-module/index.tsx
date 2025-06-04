@@ -193,6 +193,7 @@ export default function StoryModule() {
         content: [],
         contentWidths: [],
         contentHeights: [],
+        textEditorHeights: [],
         contentTypes: [],
         structure: null,
       },
@@ -202,7 +203,6 @@ export default function StoryModule() {
   const advancedStoryInitialState = () => {
     const rowOne = v4();
     const rowTwo = v4();
-
     const rowFive = v4();
     return [
       {
@@ -217,6 +217,7 @@ export default function StoryModule() {
         content: [null, null, null, null, null],
         contentWidths: [20, 20, 20, 20, 20],
         contentHeights: [121, 121, 121, 121, 121],
+        textEditorHeights: [null, null, null, null, null],
         contentTypes: [null, null, null, null, null],
         structure: "oneByFive",
       },
@@ -231,6 +232,7 @@ export default function StoryModule() {
         },
         content: [null],
         contentWidths: [100],
+        textEditorHeights: [null],
         contentHeights: [400],
         contentTypes: [null],
         structure: "oneByOne",
@@ -248,6 +250,7 @@ export default function StoryModule() {
         content: [null, null, null],
         contentWidths: [33, 33, 33],
         contentHeights: [460, 460, 460],
+        textEditorHeights: [null, null, null],
         contentTypes: [null, null, null],
         structure: "oneByThree",
       },

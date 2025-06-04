@@ -453,6 +453,7 @@ export default function HeaderBlock(props: Props) {
             <RichEditor
               invertColors
               editMode={!props.previewMode}
+              elementId="headerTitle"
               setTextContent={(text) => setTextContent(text, "heading")}
               handlePastedText={(text, html, editorState) =>
                 handlePastedText(text, html, editorState, "heading")

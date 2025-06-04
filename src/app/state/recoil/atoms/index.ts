@@ -15,6 +15,10 @@ export interface IRowFrameStructure {
   index: number;
 }
 
+export type textEditorElementIdAtomType =
+  | "headerTitle"
+  | "headerSubtitle"
+  | "boxText";
 const { persistAtom } = recoilPersist();
 
 export const emptyRowsAtom = atom({
@@ -62,6 +66,13 @@ export const shareAssetDetailsAtom = atom<{
     title: "",
   },
 });
+
+export const textEditorElementIdAtom = atom<textEditorElementIdAtomType | null>(
+  {
+    key: "textEditorElementIdAtom",
+    default: null,
+  }
+);
 
 export const homeDisplayAtom = atom<"all" | "data" | "charts" | "stories">({
   key: "homeDisplayAtom",

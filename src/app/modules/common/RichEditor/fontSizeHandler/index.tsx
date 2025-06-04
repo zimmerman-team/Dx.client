@@ -1,5 +1,5 @@
-import { EditorState, RichUtils } from "draft-js";
 import React, { useEffect, useCallback } from "react";
+import { EditorState, RichUtils } from "draft-js";
 import styled from "styled-components";
 import debounce from "lodash/debounce";
 
@@ -127,16 +127,13 @@ export default function FontSizeController(props: Props) {
   useEffect(() => {
     const editorState = props.getEditorState();
 
-    // Create a function to update font size from editor state
     const syncFontSize = () => {
       const newSize = getCurrentFontSize();
       setFontSize(newSize);
     };
 
-    // Initial sync
     syncFontSize();
 
-    // Setup listeners for selection and content changes
     const currentSelection = editorState.getSelection();
     let prevSelection = currentSelection;
 
@@ -144,7 +141,6 @@ export default function FontSizeController(props: Props) {
       const newEditorState = props.getEditorState();
       const newSelection = newEditorState.getSelection();
 
-      // Check if selection changed
       if (
         newSelection.getStartKey() !== prevSelection.getStartKey() ||
         newSelection.getStartOffset() !== prevSelection.getStartOffset() ||
