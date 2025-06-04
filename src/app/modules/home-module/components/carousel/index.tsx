@@ -62,9 +62,9 @@ export default function Card() {
               flex-direction: column;
               justify-content: center;
               h2 {
-                font-size: 32px;
+                font-size: 48px;
                 svg {
-                  height: 23px;
+                  height: 32px;
                   width: fit-content;
                 }
               }
@@ -81,6 +81,15 @@ export default function Card() {
           }
           @media (max-width: ${MOBILE_BREAKPOINT}) {
             padding: 40px 0;
+            > div:nth-of-type(1) {
+              h2 {
+                font-size: 32px;
+                svg {
+                  height: 23px;
+                  width: fit-content;
+                }
+              }
+            }
           }
         `}
       >
