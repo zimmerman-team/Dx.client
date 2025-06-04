@@ -22,7 +22,8 @@ import "@draft-js-plugins/inline-toolbar/lib/plugin.css";
 import "@draft-js-plugins/static-toolbar/lib/plugin.css";
 import "@draft-js-plugins/emoji/lib/plugin.css";
 import fontSizeStyleMap from "app/modules/common/RichEditor/fontSizeHandler/styleMap";
-import { fontFamilyStyleMap } from "./fontStyleHandler/data";
+import { blockStyleFn, fontFamilyStyleMap } from "./fontStyleHandler/data";
+import "./fontStyleHandler/style.css";
 import { colorStyleFn, bgColorStyleFn } from "./ColorModal";
 
 export const RichEditor = (props: {
@@ -183,7 +184,6 @@ export const RichEditor = (props: {
         .public-DraftEditorPlaceholder-inner {
           position: absolute;
           color: #adb5bd;
-          font-size: 14px;
           font-family: "GothamNarrow-Book", "Helvetica Neue", sans-serif;
         }
       `}
@@ -198,6 +198,7 @@ export const RichEditor = (props: {
             ...bgColorStyleFn(style),
           };
         }}
+        blockStyleFn={blockStyleFn}
         customStyleMap={{
           ...fontSizeStyleMap,
           ...fontFamilyStyleMap,

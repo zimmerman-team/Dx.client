@@ -7,8 +7,9 @@ import debounce from "lodash/debounce";
 const DEFAULT_FONT_SIZE = 14;
 const MIN_FONT_SIZE = 1;
 const MAX_FONT_SIZE = 999;
-const HEADER_ONE_SIZE = 28;
+const HEADER_ONE_SIZE = 24;
 const HEADER_TWO_SIZE = 21;
+const TITLE_FONT_SIZE = 28; // Assuming a title font size for consistency
 const fontFamily = '"GothamNarrow-Bold", "Helvetica Neue", sans-serif';
 interface Props {
   getEditorState: () => EditorState;
@@ -73,15 +74,14 @@ export default function FontSizeController(props: Props) {
 
     // If no inline font style, check block type
     const selection = editorState.getSelection();
-    if (selection.isCollapsed()) {
-      const currentContent = editorState.getCurrentContent();
-      const blockType = currentContent
-        .getBlockForKey(selection.getStartKey())
-        .getType();
+    const currentContent = editorState.getCurrentContent();
+    const blockType = currentContent
+      .getBlockForKey(selection.getStartKey())
+      .getType();
 
-      if (blockType === "header-one") return HEADER_ONE_SIZE;
-      if (blockType === "header-two") return HEADER_TWO_SIZE;
-    }
+    if (blockType === "header-one") return HEADER_ONE_SIZE;
+    if (blockType === "header-two") return HEADER_TWO_SIZE;
+    if (blockType === "title") return TITLE_FONT_SIZE;
     return DEFAULT_FONT_SIZE;
   }, [props]);
 
