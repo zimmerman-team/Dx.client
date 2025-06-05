@@ -9,6 +9,7 @@ import Ellipsis from "app/modules/onboarding-module/asset/ellipses.svg";
 import { useTitle } from "react-use";
 import HomeFooter from "app/modules/home-module/components/Footer";
 import InlineLogo from "app/modules/home-module/assets/inline-logo";
+import { DESKTOP_BREAKPOINT, MOBILE_BREAKPOINT } from "app/theme";
 
 export default function Onboarding() {
   useTitle("Dataxplorer - Onboarding");
@@ -16,7 +17,7 @@ export default function Onboarding() {
   const history = useHistory();
   const location = useLocation();
   const { isAuthenticated } = useAuth0();
-  const tablet = useMediaQuery("(max-width: 1140px)");
+  const tablet = useMediaQuery(`(max-width: ${DESKTOP_BREAKPOINT})`);
 
   if (isAuthenticated) {
     history.replace("/");
@@ -25,24 +26,29 @@ export default function Onboarding() {
     <div
       css={`
         height: calc(100vh - 50px);
-        @media (max-width: 1140px) {
+        @media (max-width: 880px) {
+          // aligning with navbar height
           height: calc(100vh - 66px);
         }
       `}
     >
-      <Grid
-        container
+      <div
         css={`
           padding-left: 40px;
           position: relative;
           margin-top: 50px;
           min-height: calc(100vh - 50px - 305px);
-          @media (max-width: 1140px) {
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+          @media (max-width: ${DESKTOP_BREAKPOINT}) {
+            grid-template-columns: 1fr;
             padding-left: unset;
-            margin-top: 66px;
-            min-height: calc(100vh - 66px - 32px);
+            margin-top: 50px;
+            min-height: calc(100vh - 50px - 32px);
           }
-          @media (max-width: 600px) {
+          @media (max-width: 880px) {
+            // aligning with navbar height
+            padding-left: unset;
             margin-top: 66px;
             min-height: calc(100vh - 66px - 32px);
           }
@@ -52,26 +58,25 @@ export default function Onboarding() {
           }
         `}
       >
-        <Grid
-          xs={12}
-          sm={12}
-          md={12}
-          lg={true}
+        <div
           css={`
-            @media (max-width: 1024px) {
-              padding-bottom: 7rem;
-            }
             padding-top: 104px;
             background: #ffffff;
+            @media (max-width: ${DESKTOP_BREAKPOINT}) {
+              background: url(${Ellipsis}), #f2f7fd;
+              background-size: cover;
+              background-position: center;
+              background-repeat: no-repeat, no-repeat;
+            }
           `}
         >
           <div
             css={`
               margin: auto;
-              @media (max-width: 1140px) {
+              @media (max-width: ${DESKTOP_BREAKPOINT}) {
                 width: 395px;
               }
-              @media (max-width: 428px) {
+              @media (max-width: ${MOBILE_BREAKPOINT}) {
                 width: 94%;
               }
             `}
@@ -114,16 +119,11 @@ export default function Onboarding() {
               </Route>
             </Switch>
           </div>
-        </Grid>
+        </div>
         {!tablet && (
-          <Grid
-            xs={false}
-            sm={false}
-            md={6}
-            lg={"auto"}
+          <div
             css={`
               right: 0;
-              width: 50%;
               background: url(${Ellipsis}), #f2f7fd;
               background-size: cover;
               background-position: center;
@@ -169,9 +169,9 @@ export default function Onboarding() {
                 margin-bottom: 104px;
               `}
             />
-          </Grid>
+          </div>
         )}
-      </Grid>
+      </div>
       <HomeFooter mini={tablet} />
     </div>
   );
