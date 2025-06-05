@@ -36,15 +36,19 @@ export default function Onboarding() {
           padding-left: 40px;
           position: relative;
           margin-top: 50px;
-          height: calc(100vh - 50px - 64px);
+          min-height: calc(100vh - 50px - 305px);
           @media (max-width: 1140px) {
             padding-left: unset;
             margin-top: 66px;
-            height: calc(100vh - 66px - 64px);
+            min-height: calc(100vh - 66px - 32px);
           }
           @media (max-width: 600px) {
             margin-top: 66px;
-            height: calc(100vh - 66px - 124px);
+            min-height: calc(100vh - 66px - 32px);
+          }
+          @media (max-width: 488px) {
+            margin-top: 66px;
+            min-height: calc(100vh - 66px - 59px);
           }
         `}
       >
@@ -58,6 +62,7 @@ export default function Onboarding() {
               padding-bottom: 7rem;
             }
             padding-top: 104px;
+            background: #ffffff;
           `}
         >
           <div
@@ -161,12 +166,13 @@ export default function Onboarding() {
               css={`
                 width: 512px;
                 margin-top: 50px;
+                margin-bottom: 104px;
               `}
             />
           </Grid>
         )}
       </Grid>
-      <HomeFooter />
+      <HomeFooter mini={tablet} />
     </div>
   );
 }
