@@ -34,9 +34,6 @@ export default function AuthCard(props: { isSignIn?: boolean }) {
           opacity: ${checked ? "1" : "0.5"};
           pointer-events: ${checked ? "auto" : "none"};
         }
-        @media (max-width: 1140px) {
-          padding-top: 22px;
-        }
       `}
     >
       <button

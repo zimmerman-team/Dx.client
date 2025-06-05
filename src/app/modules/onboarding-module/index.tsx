@@ -73,14 +73,37 @@ export default function Onboarding() {
           <div
             css={`
               margin: auto;
-              @media (max-width: ${DESKTOP_BREAKPOINT}) {
-                width: 395px;
-              }
-              @media (max-width: ${MOBILE_BREAKPOINT}) {
-                width: 94%;
-              }
+              display: flex;
+              flex-direction: column;
+              align-items: center;
             `}
           >
+            <h1
+              css={`
+                display: none;
+                @media (max-width: ${DESKTOP_BREAKPOINT}) {
+                  font-size: 40px;
+                  line-height: normal;
+                  font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
+                  color: #231d2c;
+                  display: flex;
+                  align-items: center;
+                  gap: 8px;
+                  margin: 0;
+                }
+                @media (max-width: ${MOBILE_BREAKPOINT}) {
+                  font-size: 36px;
+                  flex-direction: column;
+                  svg {
+                    width: 229px;
+                    height: 24.496px;
+                  }
+                }
+              `}
+            >
+              Welcome to <InlineLogo width={"239.968px"} height={"25.669px"} />
+            </h1>
+
             <h2
               css={`
                 color: #231d2c;
@@ -92,6 +115,12 @@ export default function Onboarding() {
                 margin: 0;
                 text-align: center;
                 line-height: normal;
+                @media (max-width: ${DESKTOP_BREAKPOINT}) {
+                  margin-top: 8px;
+                }
+                @media (max-width: ${MOBILE_BREAKPOINT}) {
+                  font-size: 36px;
+                }
               `}
             >
               Sign in to get started
