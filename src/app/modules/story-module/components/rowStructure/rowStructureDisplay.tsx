@@ -304,7 +304,7 @@ export default function RowstructureDisplay(
           onResizeStart={onResizeStart}
           size={{
             width: "100%",
-            height: smScreen
+            height: viewOnlyMode
               ? "100%"
               : get(props.rowContentHeights, `[${0}]`, boxHeight),
           }}

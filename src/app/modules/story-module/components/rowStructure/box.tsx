@@ -406,12 +406,15 @@ const Box = (props: BoxProps) => {
     border = "1px dashed #231d2c";
   }
 
+  const controlledHeight =
+    props.tempHeight > 0 ? props.tempHeight : props.initialHeight;
+
   const resolvedHeight =
-    viewOnlyMode && smScreen && displayMode === "text"
-      ? `${editorHeight ?? props.initialHeight}px`
-      : props.tempHeight > 0
-      ? `${props.tempHeight}px`
-      : `${props.initialHeight}px`;
+    viewOnlyMode && displayMode === "text" && editorHeight
+      ? editorHeight > controlledHeight
+        ? editorHeight
+        : controlledHeight
+      : controlledHeight;
 
   // Common resizable props
   const getResizableProps = () => ({
@@ -421,7 +424,7 @@ const Box = (props: BoxProps) => {
     onResizeStop,
     size: {
       width: smScreen ? "100%" : width,
-      height: resolvedHeight,
+      height: `${resolvedHeight}px`,
     },
     maxWidth: !viewOnlyMode
       ? `${
