@@ -287,6 +287,8 @@ export default function DatasetsGrid(props: Readonly<Props>) {
                 owner={data.owner}
                 inChartBuilder={props.inChartBuilder as boolean}
                 ownerName={data.ownerName ?? ""}
+                source={data.source}
+                sourceURL={data.sourceUrl}
               />
 
               {!props.inChartBuilder && <Box height={{ xs: 0, lg: 8 }} />}

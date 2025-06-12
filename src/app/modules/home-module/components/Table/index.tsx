@@ -9,7 +9,7 @@ import TableCell from "@material-ui/core/TableCell";
 import TableContainer from "@material-ui/core/TableContainer";
 import { isValidDate } from "app/utils/isValidDate";
 import MoreHorizIcon from "@material-ui/icons/MoreHoriz";
-import MenuItems from "app/modules/home-module/components/AssetCollection/Datasets/menuItems";
+import MenuItems from "app/modules/home-module/components/AssetCollection/All/menuItems";
 import { IconButton } from "@material-ui/core";
 import { assetType } from "app/modules/home-module/components/AssetCollection/All/assetsGrid";
 
@@ -193,26 +193,25 @@ export function HomepageTable(
                 >
                   <MoreHorizIcon htmlColor="#231D2C" />
                 </IconButton>
-                {tableData.find(
-                  (d: any) => d.isModalOpen && d.id === data.id
-                ) && (
-                  <MenuItems
-                    type={data.type}
-                    handleClose={() => handleCloseModal(data.id)}
-                    handleDelete={() => {
-                      props.setActiveAssetType?.(data.type);
-                      props.handleDelete?.(data.id as string);
-                    }}
-                    handleDuplicate={() =>
-                      props.handleDuplicate?.(data.id as string, data.type)
-                    }
-                    id={data.id}
-                    owner={data.owner}
-                    path={getEditDetailPath(data)}
-                    top="30px"
-                    right="50px"
-                  />
-                )}
+                <MenuItems
+                  type={data.type}
+                  handleClose={() => handleCloseModal(data.id)}
+                  handleDelete={() => {
+                    props.setActiveAssetType?.(data.type);
+                    props.handleDelete?.(data.id as string);
+                  }}
+                  handleDuplicate={() =>
+                    props.handleDuplicate?.(data.id as string, data.type)
+                  }
+                  id={data.id}
+                  owner={data.owner}
+                  path={getEditDetailPath(data)}
+                  top="30px"
+                  right="50px"
+                  display={tableData.find(
+                    (d: any) => d.isModalOpen && d.id === data.id
+                  )}
+                />
               </TableCell>
             </TableRow>
           ))}

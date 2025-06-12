@@ -362,6 +362,8 @@ export default function AssetsGrid(props: Props) {
                       owner={d.owner}
                       inChartBuilder={props.inChartBuilder as boolean}
                       ownerName={d.ownerName ?? ""}
+                      source={d.source}
+                      sourceURL={d.sourceUrl}
                     />
                   ),
                   story: (

@@ -7,7 +7,6 @@ import { useAuth0 } from "@auth0/auth0-react";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 import { useChartsRawData } from "app/hooks/useChartsRawData";
 import { stepcss } from "app/modules/dataset-module/routes/upload-module/style";
-import { PageTopSpacer } from "app/modules/common/page-top-spacer";
 import MetaData from "app/modules/dataset-module/routes/upload-module/upload-steps/metaData";
 import Processing from "app/modules/dataset-module/routes/upload-module/upload-steps/processing";
 import FinishedFragment from "app/modules/dataset-module/routes/upload-module/upload-steps/finishedFragment";
@@ -21,12 +20,10 @@ import Stepper from "app/modules/dataset-module/routes/upload-module/component/s
 import { Box } from "@material-ui/core";
 import { useTitle } from "react-use";
 import { DatasetListItemAPIModel } from "app/modules/dataset-module/data";
-import BreadCrumbs from "app/modules/home-module/components/Breadcrumbs";
 import { useLocation } from "react-router-dom";
-import SmallFooter from "app/modules/home-module/components/Footer/smallFooter";
 import { useRecoilState } from "recoil";
 import { dataUploadTabAtom, planDialogAtom } from "app/state/recoil/atoms";
-import BasicSwitch from "app/components/Switch/BasicSwitch";
+import { BasicSwitch } from "app/components/Switch/BasicSwitch";
 import Search from "@material-ui/icons/Search";
 import DesktopWindowsIcon from "@material-ui/icons/DesktopWindows";
 import { APPLICATION_JSON } from "app/state/api";
@@ -138,8 +135,8 @@ function DatasetUploadSteps(props: Props) {
       setActiveStep(newActiveStep);
     }
   };
-  const handleTabSwitch = (tab: "search" | "file") => {
-    setActiveTab(tab);
+  const handleTabSwitch = (tab: string) => {
+    setActiveTab(tab as "search" | "file");
   };
   React.useEffect(() => {
     if (activeStep === 0) {
@@ -362,8 +359,12 @@ function DatasetUploadSteps(props: Props) {
             >
               <BasicSwitch
                 activeTab={activeTab}
-                handleSwitch={handleTabSwitch}
-                setActiveTab={setActiveTab}
+                onTabChange={handleTabSwitch}
+                style={{
+                  radius: 30,
+                  paddingX: 16,
+                  backgroundActive: "#6061e5",
+                }}
                 tabs={[
                   {
                     label: "External search",
