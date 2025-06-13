@@ -6,6 +6,7 @@ import { ReactComponent as Logo } from "app/modules/home-module/assets/logo.svg"
 import { ReactComponent as RightArrow } from "app/modules/home-module/assets/right-arr.svg";
 import { DESKTOP_BREAKPOINT, MOBILE_BREAKPOINT } from "app/theme";
 import { useHistory } from "react-router-dom";
+import TryUsBlock from "app/modules/home-module/components/TryUsBlock";
 
 export default function NonAuthUserLibrary() {
   const history = useHistory();
@@ -98,6 +99,11 @@ export default function NonAuthUserLibrary() {
             </div>
           </div>
           <AssetsList />
+          <TryUsBlock
+            title="Give Dataxplorer a try, on us"
+            subtitle="Dataxplorer turns data into impact in minutes"
+            signInWith
+          />
         </Container>
       </div>
     </React.Fragment>

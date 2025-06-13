@@ -1,7 +1,7 @@
 import React from "react";
 export interface Tab {
   value: string;
-  label: string;
+  label: string | React.ReactNode;
   icon?: React.ReactNode;
   testId?: string;
 }

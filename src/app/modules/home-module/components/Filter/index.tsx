@@ -5,7 +5,7 @@ import {
   searchInputCss,
   sortByItemCss,
 } from "app/modules/home-module/style";
-import { IconButton, Popover, Tooltip } from "@material-ui/core";
+import { Popover, Tooltip } from "@material-ui/core";
 import { ReactComponent as SortIcon } from "app/modules/home-module/assets/sort-fill.svg";
 import { ReactComponent as GridIcon } from "app/modules/home-module/assets/grid-fill.svg";
 import { ReactComponent as FilterIcon } from "app/modules/home-module/assets/filter-fill.svg";
@@ -13,6 +13,34 @@ import { ReactComponent as CloseIcon } from "app/modules/home-module/assets/clos
 import { ReactComponent as SearchIcon } from "app/modules/home-module/assets/search-fill.svg";
 import { ReactComponent as TableIcon } from "app/modules/home-module/assets/table-icon.svg";
 import { ReactComponent as MenuIcon } from "app/modules/home-module/assets/menu.svg";
+import AddAssetDropdown from "app/modules/home-module/components/AddAssetDropdown";
+import { MultiSwitch } from "app/modules/home-module/components/TabSwitch";
+
+const CustomGridIcon = ({ isActive }: { isActive?: boolean }) => (
+  <Tooltip title="List View" placement="bottom">
+    <GridIcon
+      css={`
+        path {
+          fill: ${isActive ? "#fff" : "#231d2c"};
+        }
+      `}
+    />
+  </Tooltip>
+);
+
+const CustomTableIcon = ({ isActive }: { isActive?: boolean }) => (
+  <Tooltip title="Table View" placement="bottom">
+    <TableIcon
+      css={`
+        g {
+          path {
+            fill: ${isActive ? "#fff" : "#231d2c"};
+          }
+        }
+      `}
+    />
+  </Tooltip>
+);
 
 export default function Filter(
   props: Readonly<{
@@ -64,6 +92,9 @@ export default function Filter(
   const handleIconsDisplay = () => {
     setDisplayIcons(!displayIcons);
   };
+  const handleTabSwitch = (tab: string) => {
+    props.setAssetsView(tab as "grid" | "table");
+  };
 
   return (
     <div
@@ -101,29 +132,25 @@ export default function Filter(
               autoComplete="search"
             />
 
-            <IconButton
+            <button
               onClick={() => {
                 props.setSearchValue?.("");
                 props.terminateSearch && props.terminateSearch();
                 props.setOpenSearch?.(false);
               }}
               aria-label="close-search"
-              css={`
-                &:hover {
-                  background: transparent;
-                }
-              `}
+              css={iconButtonCss(openFilterPopover)}
             >
               <CloseIcon
                 css={`
                   margin-top: 1px;
                 `}
               />
-            </IconButton>
+            </button>
           </div>{" "}
           {props.hasSearch && (
             <Tooltip title="Search" placement="bottom">
-              <IconButton
+              <button
                 data-cy={props.searchIconCypressId}
                 onClick={() => {
                   props.setOpenSearch?.(true);
@@ -133,15 +160,48 @@ export default function Filter(
                 aria-label="search-button"
               >
                 <SearchIcon />
-              </IconButton>
+              </button>
             </Tooltip>
           )}
         </div>
+        <div
+          css={`
+            height: 40px;
+            width: 100px;
+            svg {
+            }
+          `}
+        >
+          <MultiSwitch
+            activeTab={props.assetsView}
+            onTabChange={handleTabSwitch}
+            style={{
+              radius: 10,
+              paddingX: 4,
+              backgroundActive: "#6061E5",
+            }}
+            tabs={[
+              {
+                value: "grid",
+                label: CustomGridIcon({
+                  isActive: props.assetsView === "grid",
+                }),
+              },
+              {
+                value: "table",
+                label: CustomTableIcon({
+                  isActive: props.assetsView === "table",
+                }),
+              },
+            ]}
+          />
+        </div>
+
         {props.filterValue && (
           <>
             {" "}
             <Tooltip title="Filter" placement="bottom">
-              <IconButton
+              <button
                 onClick={(event: React.MouseEvent<HTMLButtonElement>) => {
                   setFilterPopoverAnchorEl(
                     filterPopoverAnchorEl ? null : event.currentTarget
@@ -151,7 +211,7 @@ export default function Filter(
                 aria-label="filter-button"
               >
                 <FilterIcon />
-              </IconButton>
+              </button>
             </Tooltip>
             <Popover
               open={openFilterPopover}
@@ -202,7 +262,7 @@ export default function Filter(
         )}
 
         <Tooltip title="Sort By" placement="bottom">
-          <IconButton
+          <button
             onClick={(event: React.MouseEvent<HTMLButtonElement>) => {
               setSortPopoverAnchorEl(
                 sortPopoverAnchorEl ? null : event.currentTarget
@@ -212,7 +272,7 @@ export default function Filter(
             aria-label="sort-button"
           >
             <SortIcon />
-          </IconButton>
+          </button>
         </Tooltip>
         <Popover
           open={openSortPopover}
@@ -259,38 +319,21 @@ export default function Filter(
             </div>
           ))}
         </Popover>
-        <Tooltip title="Card/List View" placement="bottom">
-          <IconButton
-            data-cy="home-table-view-button"
-            onClick={() => {
-              props.setAssetsView(
-                props.assetsView === "table" ? "grid" : "table"
-              );
-            }}
-            css={`
-              padding: 3px;
-              &:hover {
-                background: transparent;
-                padding: none;
-
-                svg > circle,
-                rect {
-                  fill: #231d2c;
-                }
-                svg > path,
-                svg > g > path,
-                svg > g > rect {
-                  fill: #fff;
-                }
-              }
-            `}
-            aria-label={`${
-              props.assetsView === "table" ? "grid" : "table"
-            }-view-button`}
-          >
-            {props.assetsView === "table" ? <TableIcon /> : <GridIcon />}
-          </IconButton>
-        </Tooltip>
+        <AddAssetDropdown />
+        <div
+          css={`
+            display: flex;
+            width: 40px;
+            height: 40px;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            border-radius: 10px;
+            background: #f1f3f5;
+          `}
+        >
+          <MenuIcon />
+        </div>
       </div>
     </div>
   );

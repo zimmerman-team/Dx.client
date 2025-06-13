@@ -101,12 +101,13 @@ export const searchInputCss = (
   openSearch: boolean,
   width: string = "385px"
 ) => css`
-  background: #dadaf8;
+  background: #f1f3f5;
   display: flex;
   align-items: center;
   width: ${openSearch ? width ?? "385px" : "0px"};
-  height: 32px;
-  border-radius: 20px;
+  height: 40px;
+  border-radius: 10px;
+  border-bottom: 1px solid #8d8d8d;
   opacity: ${openSearch ? 1 : 0};
   transition: opacity 0.5s ease-in-out 0s;
   overflow: hidden;
@@ -118,7 +119,7 @@ export const searchInputCss = (
     font-size: 14px;
     background: inherit;
     border-style: none;
-    border-radius: 20px;
+    border-radius: 10px;
 
     padding: 6px 16px !important;
   }
@@ -133,32 +134,10 @@ export const searchInputCss = (
 `;
 
 export const iconButtonCss = (active?: boolean) => css`
-  padding: 3px;
-  ${active
-    ? ` svg > circle, rect {
-      fill:  #231d2c;
-    }
-    svg > path,
-    svg > g > path,
-    svg > g > rect {
-      fill: #fff;
-    }`
-    : ""}
-
-  &:hover {
-    background: transparent;
-    padding: none;
-
-    svg > circle,
-    rect {
-      fill: #231d2c;
-    }
-    svg > path,
-    svg > g > path,
-    svg > g > rect {
-      fill: #fff;
-    }
-  }
+  border: none;
+  background: transparent;
+  outline: none;
+  cursor: pointer;
 `;
 
 export const sortByItemCss = (active: boolean) => css`
