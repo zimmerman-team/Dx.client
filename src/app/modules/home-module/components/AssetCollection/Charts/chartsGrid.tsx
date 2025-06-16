@@ -283,11 +283,17 @@ export default function ChartsGrid(props: Props) {
         <HomepageTable
           handleDelete={handleModal}
           handleDuplicate={handleDuplicate}
+          cellWidths={[50, 450, 142, 142, 142, 142, 200, 50]}
           tableData={{
             columns: [
-              { key: "name", label: "Name" },
+              { key: "name", label: "File Name" },
+
+              { key: "type", label: "File Type" },
               { key: "vizType", label: "Chart Type" },
+
               { key: "updatedDate", label: "Last modified" },
+              { key: "createdDate", label: "Date Created" },
+              { key: "ownerName", label: "Creator" },
             ],
             data: loadedCharts.map((data) => ({
               ...data,

@@ -303,15 +303,27 @@ export default function DatasetsGrid(props: Readonly<Props>) {
           inChartBuilder={props.inChartBuilder}
           handleDelete={handleModal}
           handleDuplicate={handleDuplicate}
+          cellWidths={[50, 300, 350, 142, 142, 142, 138, 50]}
           tableData={{
             columns: [
-              { key: "name", label: "Name" },
-              { key: "description", label: "Description" },
+              { key: "name", label: "File Name" },
+              {
+                key: "description",
+                label: "Description",
+              },
+              { key: "type", label: "File Type" },
               { key: "updatedDate", label: "Last modified" },
+              { key: "createdDate", label: "Date Created" },
+              { key: "ownerName", label: "Creator" },
             ],
             data: loadedDatasets.map((data) => ({
               ...data,
               type: "dataset",
+              ownerName: data.ownerName
+                ? `${data.ownerName.split(" ")[0][0]}. ${
+                    data.ownerName.split(" ")[1]
+                  }`
+                : "",
             })),
           }}
         />

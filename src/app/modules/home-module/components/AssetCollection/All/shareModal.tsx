@@ -60,6 +60,9 @@ export default function ShareModal(props: {
 
   return (
     <div
+      onClick={(e) => {
+        e.stopPropagation();
+      }}
       css={`
         background: #f1f3f5;
         border-radius: 10px;

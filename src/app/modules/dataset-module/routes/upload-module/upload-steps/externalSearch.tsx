@@ -322,11 +322,10 @@ export default function ExternalSearch(props: {
               onItemClick={props.handleDownload}
               tableData={{
                 columns: [
-                  { key: "name", label: "Title" },
+                  { key: "name", label: "Dataset Title" },
+                  { key: "source", label: "Source" },
                   { key: "description", label: "Description" },
                   { key: "datePublished", label: "Date" },
-                  { key: "source", label: "Source" },
-                  { key: "download", label: "", icon: <ChevronRight /> },
                 ],
                 data: datasets,
               }}

@@ -20,6 +20,8 @@ export default function MenuItems(props: {
   type: "chart" | "dataset" | "story";
   top?: string;
   right?: string;
+  left?: string;
+  alignLeft?: boolean;
   display?: boolean;
 }) {
   const { user, isAuthenticated } = useAuth0();
@@ -35,7 +37,9 @@ export default function MenuItems(props: {
     {
       label: "Duplicate",
       icon: <DuplicateIcon />,
-      action: () => props.handleDuplicate(props.id),
+      action: (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+        props.handleDuplicate(props.id);
+      },
       disabled: !isAuthenticated,
     },
     {
@@ -53,15 +57,16 @@ export default function MenuItems(props: {
     {
       label: "Delete",
       icon: <DeleteIcon />,
-      action: () => props.handleDelete(props.id),
+      action: (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+        props.handleDelete(props.id);
+      },
       disabled: !canEditDelete,
     },
     {
       label: "Share",
       icon: <ShareIcon />,
-      action: () => {
+      action: (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
         setDisplayShareModal(true);
-        // props.handleClose();
       },
       disabled: !isAuthenticated,
     },
@@ -115,11 +120,18 @@ export default function MenuItems(props: {
         `}
       />
       <div
+        onClick={(e) => {
+          e.stopPropagation();
+        }}
         css={`
           top: ${props.top ?? "38px"};
           right: ${props.right ?? "-39%"};
-          ${displayShareModal ? "left: 92%; right: auto;" : ""}
-          transform: translateX(${alignLeft ? "-90%" : "0%"});
+          ${displayShareModal
+            ? `left:${props.left || "92%"}; right: auto;`
+            : ""}
+          transform: translateX(${props.alignLeft || alignLeft
+            ? "-90%"
+            : "0%"});
           transition: transform 0.2s ease-in-out;
           height: ${props.display ? "auto" : "0"};
           opacity: ${props.display ? "1" : "0"};

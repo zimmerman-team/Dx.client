@@ -75,10 +75,6 @@ export default function AssetsGrid(props: Props) {
     (state) => get(state, "assets.AssetsCount.data.count", 0) as number
   );
 
-  // const loadAssets = useStoreActions(
-  //   (actions) => actions.assets.AssetGetList.fetch
-  // );
-
   const loading = useStoreState((state) => state.assets.AssetGetList.loading);
 
   const assetsLoadSuccess = useStoreState(
@@ -281,6 +277,7 @@ export default function AssetsGrid(props: Props) {
           handleDelete={handleModal}
           handleDuplicate={handleDuplicate}
           setActiveAssetType={setActiveAssetType}
+          cellWidths={[50, 300, 350, 142, 142, 142, 138, 150]}
           tableData={{
             columns: getColumns(),
             data: loadedAssets.map((data) => {
@@ -290,8 +287,16 @@ export default function AssetsGrid(props: Props) {
                   name: data.name,
                   description: data.title,
                   updatedDate: data.updatedDate,
-                  type: data.assetType,
-                  owner: data.owner,
+                  createdDate: data.createdDate,
+                  type:
+                    data.assetType.charAt(0).toUpperCase() +
+                    data.assetType.slice(1),
+
+                  ownerName: data.ownerName
+                    ? `${data.ownerName.split(" ")[0][0]}. ${
+                        data.ownerName.split(" ")[1]
+                      }`
+                    : "",
                   vizType: echartTypes(false).find((e) => e.id === data.vizType)
                     ?.label,
                 };
@@ -301,19 +306,38 @@ export default function AssetsGrid(props: Props) {
                   name: data.name,
                   description: data.description,
                   updatedDate: data.updatedDate,
-                  type: data.assetType,
-                  owner: data.owner,
+                  createdDate: data.createdDate,
+                  type:
+                    data.assetType.charAt(0).toUpperCase() +
+                    data.assetType.slice(1),
+                  ownerName: data.ownerName
+                    ? `${data.ownerName.split(" ")[0][0]}. ${
+                        data.ownerName.split(" ")[1]
+                      }`
+                    : "",
                 };
               }
               return {
                 id: data.id,
                 name: data.name,
-                heading: data.heading
+                description: data.heading
                   ? EditorState.createWithContent(convertFromRaw(data.heading))
-                  : EditorState.createEmpty(),
+                      .getCurrentContent()
+                      .getPlainText()
+                  : EditorState.createEmpty()
+                      .getCurrentContent()
+                      .getPlainText(),
                 updatedDate: data.updatedDate,
-                type: data.assetType,
-                owner: data.owner,
+                createdDate: data.createdDate,
+                type:
+                  data.assetType.charAt(0).toUpperCase() +
+                  data.assetType.slice(1),
+
+                ownerName: data.ownerName
+                  ? `${data.ownerName.split(" ")[0][0]}. ${
+                      data.ownerName.split(" ")[1]
+                    }`
+                  : "",
               };
             }),
           }}

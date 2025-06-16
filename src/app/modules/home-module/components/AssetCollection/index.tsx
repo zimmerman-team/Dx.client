@@ -28,7 +28,7 @@ import {
   TABLET_STARTPOINT,
 } from "app/theme";
 import { MultiSwitch } from "app/modules/home-module/components/TabSwitch";
-import { useStoreState } from "app/state/store/hooks";
+import { useStoreActions, useStoreState } from "app/state/store/hooks";
 import get from "lodash/get";
 
 const ctaCards = [
@@ -61,6 +61,13 @@ const ctaCards = [
   },
 ];
 
+const getWhereString = (searchStr: string, userOnly: boolean) => {
+  const value =
+    searchStr?.length > 0
+      ? `where={"name":{"like":"${searchStr}.*","options":"i"}}`
+      : "";
+  return `${userOnly ? "userOnly=true&" : ""}${value}`;
+};
 function AssetsCollection() {
   const history = useHistory();
   const [categories, setCategories] = React.useState<string[]>([]);
@@ -70,6 +77,22 @@ function AssetsCollection() {
   const [sortValue, setSortValue] = useRecoilState(allAssetsSortBy);
   const [filterValue, setFilterValue] = useRecoilState(allAssetsFilterBy);
   const [display, setDisplay] = useRecoilState(homeDisplayAtom);
+  const token = useStoreState((state) => state.AuthToken.value);
+
+  const userOnlyFilter = filterValue === "myAssets";
+
+  const loadChartsCount = useStoreActions(
+    (actions) => actions.charts.ChartsCount.fetch
+  );
+  const loadDatasetCount = useStoreActions(
+    (actions) => actions.dataThemes.DatasetCount.fetch
+  );
+  const loadStoriesCount = useStoreActions(
+    (actions) => actions.stories.StoriesCount.fetch
+  );
+  const loadAssetsCount = useStoreActions(
+    (actions) => actions.assets.AssetsCount.fetch
+  );
   const datasetCount = useStoreState(
     (state) => get(state, "dataThemes.DatasetCount.data.count", 0) as number
   );
@@ -82,6 +105,28 @@ function AssetsCollection() {
   const assetsCount = useStoreState(
     (state) => get(state, "assets.AssetsCount.data.count", 0) as number
   );
+
+  React.useEffect(() => {
+    if (token) {
+      loadAssetsCount({
+        token,
+        filterString: getWhereString(searchValue as string, userOnlyFilter),
+      });
+
+      loadDatasetCount({
+        token,
+        filterString: getWhereString(searchValue as string, userOnlyFilter),
+      });
+      loadChartsCount({
+        token,
+        filterString: getWhereString(searchValue as string, userOnlyFilter),
+      });
+      loadStoriesCount({
+        token,
+        filterString: getWhereString(searchValue as string, userOnlyFilter),
+      });
+    }
+  }, [loadChartsCount, loadDatasetCount, loadStoriesCount, token]);
 
   const displayGrid = (searchStr: string, sortByStr: string) => {
     switch (display) {
