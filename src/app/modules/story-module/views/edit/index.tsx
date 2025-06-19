@@ -37,6 +37,7 @@ import PlaceHolder from "app/modules/story-module/components/placeholder";
 import useAutosave from "app/hooks/useAutoSave";
 import { TABLET_STARTPOINT } from "app/theme";
 import { decorators } from "app/modules/common/RichEditor/decorators";
+import { useMediaQuery } from "@material-ui/core";
 
 function StoryEditView(props: Readonly<StoryEditViewProps>) {
   useTitle("Dataxplorer - Edit Story");
@@ -45,6 +46,8 @@ function StoryEditView(props: Readonly<StoryEditViewProps>) {
   const token = useStoreState((state) => state.AuthToken.value);
   const { isAuthenticated, user } = useAuth0();
   const { ref, width } = useResizeObserver<HTMLDivElement>();
+  const isTablet = useMediaQuery("(max-width: 1110px)");
+  const RIGHT_PANEL_WIDTH = isTablet ? "36.83% - 16px" : "400px"; //percentage value of 274px which is the width at 744px as per design
   const [tourCookie, setTourCookie] = useCookie("tourGuide", "true");
   const [openTour, setOpenTour] = React.useState(
     tourCookie && !props.isSaveEnabled
@@ -190,7 +193,11 @@ function StoryEditView(props: Readonly<StoryEditViewProps>) {
         content,
         contentWidths: [...rowFrame.contentWidths?.widths],
         contentHeights: [...rowFrame.contentHeights?.heights],
-        textEditorHeights: [...rowFrame.contentHeights?.heights],
+        textEditorHeights: [
+          ...rowFrame.contentHeights?.heights.map((height, i) =>
+            contentTypes[i] === "text" ? height : 0
+          ),
+        ],
         contentTypes,
       };
     });
@@ -345,13 +352,19 @@ function StoryEditView(props: Readonly<StoryEditViewProps>) {
           id="content-container"
           css={`
             transition: width 225ms cubic-bezier(0, 0, 0.2, 1) 0ms;
-            width: ${props.rightPanelOpen
-              ? "calc(100vw - ((100vw - 1280px) / 2) - 400px - 50px)"
-              : "100%"};
+            width: ${
+              props.rightPanelOpen
+                ? "calc(100vw - ((100vw - 1280px) / 2) - 400px - 50px)"
+                : "100%"
+            };
             position: relative;
             @media (min-width: ${TABLET_STARTPOINT}) and (max-width: 1260px) {
-              width: 100%;
-            }
+             width: ${
+               props.rightPanelOpen
+                 ? `calc(100% - ${RIGHT_PANEL_WIDTH})`
+                 : "100%"
+             }
+
           `}
         >
           <Box height={50} />

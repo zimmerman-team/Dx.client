@@ -20,7 +20,7 @@ import { rowStructureHeights } from "./data";
 import { calculateWidths } from ".";
 import Box from "./box";
 import { usehandleRowFrameItemResize } from "app/hooks/useHandleRowFrameItemResize";
-import { TABLET_STARTPOINT } from "app/theme";
+import { MOBILE_BREAKPOINT } from "app/theme";
 import { NumberSize, Resizable } from "re-resizable";
 import { Direction } from "re-resizable/lib/resizer";
 import {
@@ -66,8 +66,6 @@ export default function RowstructureDisplay(
   props: Readonly<RowStructureDisplayProps>
 ) {
   const isTablet = useMediaQuery("(max-width: 1110px)");
-  const smScreen = useMediaQuery("(max-width: 767px)");
-  const RIGHT_PANEL_WIDTH = isTablet ? "36.83%" : "400px"; //percentage value of 274px which is the width at 744px as per design
   const ref = useRef(null);
   useOnClickOutside(ref, () => setHandleDisplay(false));
   const location = useLocation();
@@ -323,20 +321,18 @@ export default function RowstructureDisplay(
               overflow-y: hidden;
               gap: ${props.gap};
               border: ${border};
-              @media (min-width: ${TABLET_STARTPOINT}) and (max-width: 1260px) {
-                width: ${props.rightPanelOpen
-                  ? `calc(100% - ${RIGHT_PANEL_WIDTH})`
-                  : "100%"};
                 :hover {
                   overflow-x: ${props.rightPanelOpen ? "scroll" : "hidden"};
                 }
               }
-              @media (max-width: 767px) {
+              @media (max-width: ${MOBILE_BREAKPOINT}) {
                 display: grid;
-                grid-template-columns: ${props.forceSelectedType ===
-                  "oneByFive" || props.forceSelectedType === "oneByFour"
-                  ? " auto auto"
-                  : "auto"};
+                grid-template-columns: ${
+                  props.forceSelectedType === "oneByFive" ||
+                  props.forceSelectedType === "oneByFour"
+                    ? " auto auto"
+                    : "auto"
+                };
               }
             `}
             data-cy={`row-frame-${props.rowIndex}`}

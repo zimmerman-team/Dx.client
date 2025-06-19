@@ -28,6 +28,7 @@ import { ReactComponent as EditIcon } from "app/modules/story-module/asset/editI
 import { ReactComponent as DeleteIcon } from "app/modules/story-module/asset/deleteIcon.svg";
 import { decorators } from "app/modules/common/RichEditor/decorators";
 import { MIN_BOX_WIDTH } from "./data";
+import { MOBILE_BREAKPOINT } from "app/theme";
 
 // Types
 interface BoxProps {
@@ -71,7 +72,7 @@ const Box = (props: BoxProps) => {
   const location = useLocation();
   const history = useHistory();
   const { page, view } = useParams<{ page: string; view: string }>();
-  const smScreen = useMediaQuery("(max-width: 767px)");
+  const smScreen = useMediaQuery(`(max-width: ${MOBILE_BREAKPOINT})`);
 
   // Store actions
   const setDataset = useStoreActions(
@@ -192,6 +193,7 @@ const Box = (props: BoxProps) => {
 
       draft[frameId].content[itemIndex] = null;
       draft[frameId].contentTypes[itemIndex] = null;
+      draft[frameId].textEditorHeights[itemIndex] = 0;
     });
   };
 
