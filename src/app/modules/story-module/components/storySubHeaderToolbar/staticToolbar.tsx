@@ -29,6 +29,7 @@ import {
   DecreaseIndentButton,
   IncreaseIndentButton,
 } from "app/modules/common/RichEditor/button/indentButtons";
+import Tooltip from "@material-ui/core/Tooltip";
 
 type UndoRedoType = {
   UndoButton: React.ComponentType<UndoRedoButtonProps>;
@@ -127,12 +128,16 @@ export default function StaticToolbar(props: { plugins: ToolbarPluginsType }) {
             );
             return (
               <React.Fragment>
-                <div onMouseDown={(e) => e.preventDefault()}>
-                  <UndoButton {...externalProps} />
-                </div>
-                <div onMouseDown={(e) => e.preventDefault()}>
-                  <RedoButton {...externalProps} />
-                </div>
+                <Tooltip title="Undo" placement="bottom">
+                  <div onMouseDown={(e) => e.preventDefault()}>
+                    <UndoButton {...externalProps} />
+                  </div>
+                </Tooltip>
+                <Tooltip title="Redo" placement="bottom">
+                  <div onMouseDown={(e) => e.preventDefault()}>
+                    <RedoButton {...externalProps} />
+                  </div>
+                </Tooltip>
                 {divider}
                 <FontStyleHandler {...externalProps} />
 
@@ -144,36 +149,39 @@ export default function StaticToolbar(props: { plugins: ToolbarPluginsType }) {
                 </div>
                 {divider}
                 <BoldButton {...externalProps} />
+
                 <ItalicButton {...externalProps} />
                 <UnderlineButton {...externalProps} />
-                <div
-                  onMouseDown={(e) => e.preventDefault()}
-                  onClick={(e) => handleClick(e, "color")}
-                  id={colorId}
-                  tabIndex={0} // Add tabIndex attribute to make the div focusable
-                  css={`
-                    ${commonstyles.highlightPicker} ${commonstyles.colorPicker(
-                      color
-                    )}
-                  `}
-                >
-                  {HiglightPicker}
-                </div>
-
-                <div
-                  onMouseDown={(e) => e.preventDefault()}
-                  onClick={(e) => handleClick(e, "bg")}
-                  id={bgId}
-                  tabIndex={0} // Add tabIndex attribute to make the div focusable
-                  css={`
-                    ${commonstyles.highlightPicker} ${commonstyles.bgHighlightPicker(
-                      bgColor
-                    )}
-                  `}
-                >
-                  {BGHiglightPicker}
-                </div>
-
+                <Tooltip title="Text color" placement="bottom">
+                  <div
+                    onMouseDown={(e) => e.preventDefault()}
+                    onClick={(e) => handleClick(e, "color")}
+                    id={colorId}
+                    tabIndex={0} // Add tabIndex attribute to make the div focusable
+                    css={`
+                      ${commonstyles.highlightPicker} ${commonstyles.colorPicker(
+                        color
+                      )}
+                    `}
+                  >
+                    {HiglightPicker}
+                  </div>
+                </Tooltip>
+                <Tooltip title="Highlight color" placement="bottom">
+                  <div
+                    onMouseDown={(e) => e.preventDefault()}
+                    onClick={(e) => handleClick(e, "bg")}
+                    id={bgId}
+                    tabIndex={0} // Add tabIndex attribute to make the div focusable
+                    css={`
+                      ${commonstyles.highlightPicker} ${commonstyles.bgHighlightPicker(
+                        bgColor
+                      )}
+                    `}
+                  >
+                    {BGHiglightPicker}
+                  </div>
+                </Tooltip>
                 <ColorModal
                   {...externalProps}
                   anchorEl={anchorEl}
