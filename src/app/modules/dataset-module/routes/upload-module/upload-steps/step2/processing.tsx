@@ -3,7 +3,7 @@ import { ReactComponent as ErrorICon } from "app/modules/dataset-module/routes/u
 import { PrimaryButton } from "app/components/Styled/button";
 import { formatRemainingTime } from "app/hooks/useOnUploadProgress";
 
-interface ProcessingMetaDataProps {
+export interface ProcessingMetaDataProps {
   setProcessingError: React.Dispatch<React.SetStateAction<string | null>>;
   processingError: string | null;
   fileName: string;
@@ -12,6 +12,8 @@ interface ProcessingMetaDataProps {
   estimatedUploadTime: number;
   processingMessage: string;
   tryAgain: () => void;
+  setActiveStep: React.Dispatch<React.SetStateAction<number>>;
+  processed: boolean;
 }
 
 export default function Processing(props: ProcessingMetaDataProps) {
@@ -82,29 +84,13 @@ export default function Processing(props: ProcessingMetaDataProps) {
             display: flex;
             justify-content: center;
             align-items: center;
-            height: calc(100vh - 140px - 64px);
             flex-direction: column;
-            @media (max-width: 881px) {
-              height: calc(100vh - 156px - 64px);
-            }
+            width: 100%;
           `}
         >
-          <p
-            css={`
-              font-size: 18px;
-              color: #231d2c;
-              text-align: center;
-              margin: 0;
-              margin-bottom: 40px;
-            `}
-            dangerouslySetInnerHTML={{
-              __html: props.processingMessage || "Data is being processed...",
-            }}
-          />
-
           <div
             css={`
-              width: 400px;
+              width: 100%;
             `}
           >
             <p
@@ -112,6 +98,8 @@ export default function Processing(props: ProcessingMetaDataProps) {
                 color: #000;
                 font-family: "GothamNarrow-Book", "Helvetica Neue", sans-serif;
                 font-size: 14px;
+                margin-top: 20px;
+                margin-bottom: 15px;
               `}
             >
               {props.fileName}
@@ -121,7 +109,6 @@ export default function Processing(props: ProcessingMetaDataProps) {
               css={`
                 display: flex;
                 flex-wrap: wrap;
-                width: 400px;
                 justify-content: space-between;
                 align-items: center;
                 p {

@@ -7,15 +7,12 @@ import { useAuth0 } from "@auth0/auth0-react";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 import { useChartsRawData } from "app/hooks/useChartsRawData";
 import { stepcss } from "app/modules/dataset-module/routes/upload-module/style";
-import MetaData from "app/modules/dataset-module/routes/upload-module/upload-steps/metaData";
-import Processing from "app/modules/dataset-module/routes/upload-module/upload-steps/processing";
-import FinishedFragment from "app/modules/dataset-module/routes/upload-module/upload-steps/finishedFragment";
-import AddDatasetFragment from "app/modules/dataset-module/routes/upload-module/upload-steps/addDatasetFragment";
+import MetaData from "app/modules/dataset-module/routes/upload-module/upload-steps/step3/metaData";
+import FinishedFragment from "app/modules/dataset-module/routes/upload-module/upload-steps/step2/TablePreview";
+import AddDatasetFragment from "app/modules/dataset-module/routes/upload-module/upload-steps/step1/addDatasetFragment";
 import ObjectId from "app/utils/ObjectId";
 import { useUploadProgress } from "app/hooks/useOnUploadProgress";
-import ExternalSearch, {
-  IExternalDataset,
-} from "app/modules/dataset-module/routes/upload-module/upload-steps/externalSearch";
+import { IExternalDataset } from "app/modules/dataset-module/routes/upload-module/upload-steps/step1/externalSearch";
 import Stepper from "app/modules/dataset-module/routes/upload-module/component/stepper";
 import { Box } from "@material-ui/core";
 import { useTitle } from "react-use";
@@ -23,24 +20,37 @@ import { DatasetListItemAPIModel } from "app/modules/dataset-module/data";
 import { useLocation } from "react-router-dom";
 import { useRecoilState } from "recoil";
 import { dataUploadTabAtom, planDialogAtom } from "app/state/recoil/atoms";
-import { BasicSwitch } from "app/components/Switch/BasicSwitch";
-import Search from "@material-ui/icons/Search";
-import DesktopWindowsIcon from "@material-ui/icons/DesktopWindows";
 import { APPLICATION_JSON } from "app/state/api";
 import HomeFooter from "app/modules/home-module/components/Footer";
+import UploadYourData from "./step1";
+import useBackgroundColor from "app/hooks/useBackgroundColor";
+import PrepareForUse from "./step2";
 
 interface Props {
   datasetId: string;
   setDatasetId: React.Dispatch<React.SetStateAction<string>>;
 }
+const steps = [
+  {
+    title: "Search or Upload Data",
+    description: "Upload your file or search federated sources",
+  },
+  {
+    title: "Prepare for Use",
+    description: "Process and preview your dataset before charting",
+  },
+  {
+    title: "Metadata",
+    description: "Add metadata to your dataset",
+  },
+];
 
 function DatasetUploadSteps(props: Props) {
   useTitle("Dataxplorer - Upload Dataset");
-
+  useBackgroundColor("#fff", []);
   const { user } = useAuth0();
   const location = useLocation();
   const token = useStoreState((state) => state.AuthToken.value);
-  const steps = ["Connect", "Processing Data", "Description", "Finished"];
   const [_, setPlanDialog] = useRecoilState(planDialogAtom);
   const [formDetails, setFormDetails] = React.useState({
     name: "",
@@ -216,8 +226,9 @@ function DatasetUploadSteps(props: Props) {
       .then((response) => {
         //go to next step - metadata
         if (!response.data.error) {
-          setActiveStep(2);
+          // setActiveStep(2);
           setProcessed(true);
+          loadSampleDataset(id);
           return;
         }
         if (response.data?.errorType !== "planError") {
@@ -276,6 +287,8 @@ function DatasetUploadSteps(props: Props) {
           setProcessingError(response.data.error);
           console.debug(dataUploadError, response.data.error);
         } else {
+          loadSampleDataset(id);
+
           setFormDetails({
             category: "",
             description: externalDataset.description.substring(0, 150),
@@ -285,7 +298,7 @@ function DatasetUploadSteps(props: Props) {
             sourceUrl: externalDataset.url,
           });
           //go to next step - metadata
-          setActiveStep(2);
+          // setActiveStep(2);
           setProcessed(true);
         }
       })
@@ -316,108 +329,55 @@ function DatasetUploadSteps(props: Props) {
       case 0:
         return (
           <>
-            <div
-              css={`
-                h1 {
-                  font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
-                  font-size: 24px;
-                  font-weight: 400;
-                  color: #231d2c;
-                  margin: 0px;
-                }
-                p {
-                  color: #231d2c;
-                  font-family: "GothamNarrow-Book", "Helvetica Neue", sans-serif;
-                  font-size: 14px;
-                  font-weight: 325;
-                  line-height: 20px;
-                  letter-spacing: 0.5px;
-                  margin: 0px;
-                  padding: 0px;
-                }
-              `}
-            >
-              <h1>
-                {" "}
-                {activeTab === "search"
-                  ? "Search External Data Sources"
-                  : "Connect Your Data"}
-              </h1>
-              <p>
-                {activeTab === "search"
-                  ? "External search allows you to search and import data from WHO, World Bank, The Global Fund, Kaggle and the Humanitarian Data Exchange"
-                  : "Connect your data by uploading a file or connect to your cloud storage."}
-              </p>
-            </div>
-            <Box height={24} />
-
-            <div
-              css={`
-                width: 322px;
-                height: 56px;
-              `}
-            >
-              <BasicSwitch
-                activeTab={activeTab}
-                onTabChange={handleTabSwitch}
-                style={{
-                  radius: 30,
-                  paddingX: 16,
-                  backgroundActive: "#6061e5",
-                }}
-                tabs={[
-                  {
-                    label: "External search",
-                    value: "search",
-                    testId: "external-search-tab",
-                    icon: <Search />,
-                  },
-                  {
-                    label: "Connect Data",
-                    value: "file",
-                    testId: "file-upload-tab",
-                    icon: <DesktopWindowsIcon />,
-                  },
-                ]}
-              />
-            </div>
-            <Box height={24} />
-            {activeTab === "search" ? (
-              <ExternalSearch
-                setFormDetails={setFormDetails}
-                setActiveStep={setActiveStep}
-                setProcessingError={setProcessingError}
-                handleDownload={handleDownloadExternalDataset}
-                searchValue={searchValue}
-                setSearchValue={setSearchValue}
-                openSearch={openSearch}
-                setOpenSearch={setOpenSearch}
-                sources={sources}
-                setSources={setSources}
-              />
-            ) : (
-              <AddDatasetFragment
-                onFileSubmit={onFileSubmit}
-                disabled={false}
-                processingError={processingError}
-                setActiveOption={setActiveOption}
-                activeOption={activeOption}
-                setActiveStep={setActiveStep}
-              />
-            )}
+            <UploadYourData
+              addDatasetFragmentProps={{
+                activeOption,
+                setActiveOption,
+                onFileSubmit,
+                disabled: false,
+                processingError,
+                setActiveStep,
+              }}
+              externalSearchProps={{
+                setFormDetails,
+                handleDownload: handleDownloadExternalDataset,
+                setProcessingError,
+                setActiveStep,
+                searchValue,
+                setSearchValue,
+                openSearch,
+                setOpenSearch,
+                sources,
+                setSources,
+              }}
+            />
           </>
         );
       case 1:
         return (
-          <Processing
-            setProcessingError={setProcessingError}
-            processingError={processingError}
-            fileName={(selectedFile && selectedFile.name) as string}
-            loaded={loadedProgress}
-            percentageLoaded={percentageLoadedProgress}
-            estimatedUploadTime={remainingTime}
-            processingMessage={processingMessage}
-            tryAgain={tryAgain}
+          <PrepareForUse
+            processing={{
+              setProcessingError,
+              processingError,
+              fileName: (selectedFile && selectedFile.name) as string,
+              loaded: loadedProgress,
+              percentageLoaded: percentageLoadedProgress,
+              estimatedUploadTime: remainingTime,
+              processingMessage,
+              tryAgain,
+              setActiveStep,
+              processed,
+            }}
+            tablePreview={{
+              data: sampleData,
+              stats: dataStats,
+              datasetId: props.datasetId,
+              dataTotalCount,
+              dataTypes,
+              datasetDetails,
+              canDatasetEditDelete: true, //if user has just uploaded the dataset, then they
+              //own it and can edit it.
+            }}
           />
         );
       case 2:
@@ -476,6 +436,13 @@ function DatasetUploadSteps(props: Props) {
           display: flex;
           flex-direction: column;
           justify-content: space-between;
+          h1 {
+            color: #231d2c;
+            font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
+            font-size: 40px;
+            font-style: normal;
+            margin: 0;
+          }
           @media (max-width: 881px) {
             min-height: calc(100vh - 66px);
             margin-top: 66px;
@@ -483,6 +450,18 @@ function DatasetUploadSteps(props: Props) {
         `}
       >
         <Container maxWidth="lg">
+          <div
+            css={`
+              height: 60px;
+            `}
+          />
+          <h1>Conect a Dataset</h1>
+          <div
+            css={`
+              height: 30px;
+            `}
+          />
+
           <div css={stepcss}>
             {steps.map((tab, index) => (
               <Stepper
@@ -491,11 +470,15 @@ function DatasetUploadSteps(props: Props) {
                 index={index}
                 tab={tab}
                 tabs={steps}
-                key={tab}
-                disabled={index > 0 && !processed && activeStep !== index}
+                key={tab.title}
               />
             ))}
           </div>
+          <div
+            css={`
+              height: 50px;
+            `}
+          />
 
           <>
             <div>{currentStep()}</div>

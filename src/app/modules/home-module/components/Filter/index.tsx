@@ -15,6 +15,7 @@ import { ReactComponent as TableIcon } from "app/modules/home-module/assets/tabl
 import { ReactComponent as MenuIcon } from "app/modules/home-module/assets/menu.svg";
 import AddAssetDropdown from "app/modules/home-module/components/AddAssetDropdown";
 import { MultiSwitch } from "app/modules/home-module/components/TabSwitch";
+import { useOnClickOutside } from "usehooks-ts";
 
 const CustomGridIcon = ({ isActive }: { isActive?: boolean }) => (
   <Tooltip title="List View" placement="bottom">
@@ -45,7 +46,7 @@ const CustomTableIcon = ({ isActive }: { isActive?: boolean }) => (
 export default function Filter(
   props: Readonly<{
     searchValue?: string;
-    setSearchValue?: (value: React.SetStateAction<string | undefined>) => void;
+    setSearchValue?: (value: string | undefined) => void;
     setSortValue: (value: "updatedDate" | "createdDate" | "name") => void;
     sortValue: string;
     setFilterValue?: (value: "allAssets" | "myAssets") => void;
@@ -58,6 +59,7 @@ export default function Filter(
     setOpenSearch?: React.Dispatch<React.SetStateAction<boolean>>;
     searchIconCypressId: string;
     hasSearch: boolean;
+    onKeyPress?: (e: React.KeyboardEvent<HTMLInputElement>) => void;
   }>
 ) {
   const inputRef = React.useRef<HTMLInputElement>(null);
@@ -66,6 +68,11 @@ export default function Filter(
     React.useState<HTMLButtonElement | null>(null);
   const [filterPopoverAnchorEl, setFilterPopoverAnchorEl] =
     React.useState<HTMLButtonElement | null>(null);
+  useOnClickOutside(inputRef, () => {
+    props.setSearchValue?.("");
+    props.terminateSearch && props.terminateSearch();
+    props.setOpenSearch?.(false);
+  });
   const handleCloseSortPopover = () => {
     setSortPopoverAnchorEl(null);
   };
@@ -103,6 +110,7 @@ export default function Filter(
         justify-content: flex-start;
         flex-direction: row-reverse;
         gap: 8px;
+        width: 100%;
       `}
     >
       <div
@@ -110,6 +118,7 @@ export default function Filter(
           ${rowFlexCss}
           justify-content: flex-end;
           gap: 8px;
+          width: 100%;
         `}
       >
         <div
@@ -117,38 +126,25 @@ export default function Filter(
             display: flex;
             align-items: center;
             gap: 8px;
+            width: 100%;
           `}
         >
-          <div css={searchInputCss(!!props.openSearch, props.searchInputWidth)}>
+          <div css={searchInputCss(!!props.openSearch)}>
+            <SearchIcon />
             <input
               type="text"
               ref={inputRef}
               value={props.searchValue}
-              placeholder="eg. Kenya"
+              placeholder="Search"
               onChange={handleSearch}
+              onKeyPress={props.onKeyPress}
               data-cy="filter-search-input"
               aria-label="search"
               name="search"
               autoComplete="search"
             />
-
-            <button
-              onClick={() => {
-                props.setSearchValue?.("");
-                props.terminateSearch && props.terminateSearch();
-                props.setOpenSearch?.(false);
-              }}
-              aria-label="close-search"
-              css={iconButtonCss(openFilterPopover)}
-            >
-              <CloseIcon
-                css={`
-                  margin-top: 1px;
-                `}
-              />
-            </button>
           </div>{" "}
-          {props.hasSearch && (
+          {props.hasSearch && !props.openSearch && (
             <Tooltip title="Search" placement="bottom">
               <button
                 data-cy={props.searchIconCypressId}
@@ -156,7 +152,9 @@ export default function Filter(
                   props.setOpenSearch?.(true);
                   inputRef.current?.focus();
                 }}
-                css={iconButtonCss(props.openSearch)}
+                css={`
+                  ${iconButtonCss(props.openSearch)}
+                `}
                 aria-label="search-button"
               >
                 <SearchIcon />
@@ -323,6 +321,7 @@ export default function Filter(
         <div
           css={`
             display: flex;
+            flex-shrink: 0;
             width: 40px;
             height: 40px;
             flex-direction: column;

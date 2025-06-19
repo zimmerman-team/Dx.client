@@ -97,31 +97,29 @@ export const rowFlexCss = css`
   align-items: center;
 `;
 
-export const searchInputCss = (
-  openSearch: boolean,
-  width: string = "385px"
-) => css`
+export const searchInputCss = (openSearch: boolean) => css`
   background: #f1f3f5;
   display: flex;
   align-items: center;
-  width: ${openSearch ? width ?? "385px" : "0px"};
-  height: 40px;
+  flex: 1;
+  height: ${openSearch ? "40px" : "0px"};
+  width: ${openSearch ? "auto" : "0px"};
   border-radius: 10px;
   border-bottom: 1px solid #8d8d8d;
   opacity: ${openSearch ? 1 : 0};
-  transition: opacity 0.5s ease-in-out 0s;
+  transition: opacity 0.2s ease-in-out 0s;
   overflow: hidden;
   input {
     outline: none;
     height: 100%;
-    width: 92%;
+    width: 100%;
     color: #231d2c;
     font-size: 14px;
     background: inherit;
     border-style: none;
     border-radius: 10px;
 
-    padding: 6px 16px !important;
+    padding: 6px 0px !important;
   }
   @media (min-width: 768px) {
     @media (max-width: 900px) {
@@ -138,6 +136,7 @@ export const iconButtonCss = (active?: boolean) => css`
   background: transparent;
   outline: none;
   cursor: pointer;
+  padding: 0;
 `;
 
 export const sortByItemCss = (active: boolean) => css`

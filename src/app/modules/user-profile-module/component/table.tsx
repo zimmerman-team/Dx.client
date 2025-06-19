@@ -13,7 +13,7 @@ import TableContainer from "@material-ui/core/TableContainer";
 import { PrintIcon } from "app/modules/user-profile-module/component/icons";
 import { ReactComponent as InfoIcon } from "app/modules/user-profile-module/asset/info-icon.svg";
 import { InfoSnackbar } from "app/modules/story-module/components/storySubHeaderToolbar/infosnackbar";
-import { ISnackbarState } from "app/modules/dataset-module/routes/upload-module/upload-steps/previewFragment";
+import { ISnackbarState } from "app/modules/dataset-module/routes/upload-module/style";
 
 const dataCols = [
   { key: "date", label: "Date" },

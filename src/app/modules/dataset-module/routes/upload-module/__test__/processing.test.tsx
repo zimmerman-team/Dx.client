@@ -1,5 +1,5 @@
 import { render, screen } from "@testing-library/react";
-import Processing from "app/modules/dataset-module/routes/upload-module/upload-steps/processing";
+import Processing from "app/modules/dataset-module/routes/upload-module/upload-steps/step2/processing";
 
 const defaultProcessingError =
   "Data could not be processed, please try again or contact your administrator";
@@ -20,6 +20,8 @@ test("data should be processing", async () => {
       setProcessingError={mockSetProcessingError}
       tryAgain={mockTryAgain}
       processingMessage=""
+      setActiveStep={() => {}}
+      processed={false}
     />
   );
 
@@ -45,6 +47,8 @@ test("when estimated times <=0, it should display 'finishing up...'", async () =
       setProcessingError={mockSetProcessingError}
       tryAgain={mockTryAgain}
       processingMessage=""
+      setActiveStep={() => {}}
+      processed={false}
     />
   );
   const estimatedTime = screen.getByTestId(estimatedTimeId);
@@ -65,6 +69,8 @@ test('when estimated times > 60, it should display "minutes and seconds (estimat
       setProcessingError={mockSetProcessingError}
       tryAgain={mockTryAgain}
       processingMessage=""
+      setActiveStep={() => {}}
+      processed={false}
     />
   );
   const estimatedTime = screen.getByTestId(estimatedTimeId);
@@ -85,6 +91,8 @@ test("renders processing message when processingError is true", async () => {
       setProcessingError={mockSetProcessingError}
       tryAgain={mockTryAgain}
       processingMessage=""
+      setActiveStep={() => {}}
+      processed={false}
     />
   );
   const ErrorText = screen.getByTestId("error-message");

@@ -35,7 +35,6 @@ import { ChartAPIModel, emptyChartAPI } from "app/modules/chart-module/data";
 import { StorySubheaderToolbarProps } from "app/modules/chart-module/components/chartSubheaderToolbar/data";
 import { ReactComponent as PlayIcon } from "app/modules/story-module/asset/play-icon.svg";
 import { styles } from "app/modules/story-module/components/storySubHeaderToolbar/styles";
-import { ISnackbarState } from "app/modules/dataset-module/routes/upload-module/upload-steps/previewFragment";
 import StaticToolbar from "app/modules/story-module/components/storySubHeaderToolbar/staticToolbar";
 import AutoSaveSwitch from "app/modules/story-module/components/storySubHeaderToolbar/autoSaveSwitch";
 import AutoResizeInput from "app/modules/story-module/components/storySubHeaderToolbar/autoResizeInput";
@@ -46,6 +45,7 @@ import { ExportStoryButton } from "./exportButton";
 import { PrimaryButton } from "app/components/Styled/button";
 import { ArrowBack } from "@material-ui/icons";
 import { MOBILE_BREAKPOINT, TABLET_STARTPOINT } from "app/theme";
+import { ISnackbarState } from "app/modules/dataset-module/routes/upload-module/style";
 
 export const useStyles = makeStyles(() =>
   createStyles({

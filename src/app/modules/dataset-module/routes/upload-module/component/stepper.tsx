@@ -1,14 +1,15 @@
 import React from "react";
-import CompleteCheckIcon from "app/modules/dataset-module/routes/upload-module/assets/complete-check";
+import { ReactComponent as InProgressIcon } from "app/modules/dataset-module/routes/upload-module/assets/upload-options-icons/in-progress-icon.svg";
+import { ReactComponent as IdleIcon } from "app/modules/dataset-module/routes/upload-module/assets/upload-options-icons/idle-icon.svg";
+import { ReactComponent as CompletedIcon } from "app/modules/dataset-module/routes/upload-module/assets/upload-options-icons/completed-icon.svg";
 
 export default function Stepper(
   props: Readonly<{
-    tabs: string[];
+    tabs: { title: string; description: string }[];
     activeStep: number;
     setActiveStep: React.Dispatch<React.SetStateAction<number>>;
     index: number;
-    tab: string;
-    disabled?: boolean;
+    tab: { title: string; description: string };
   }>
 ) {
   return (
@@ -16,84 +17,42 @@ export default function Stepper(
       css={`
         gap: 8px;
         display: flex;
-        align-items: center;
+        flex: 1;
+        height: 100%;
+        align-items: start;
+        padding-right: 16px;
+        padding-top: 10px;
+        border-top: ${props.activeStep >= props.index
+          ? "1px solid #6061E5"
+          : "1px solid #DFE3E5"};
+        p:first-of-type {
+          color: #231d2c;
+          font-family: "GothamNarrow-Book", "Helvetica Neue", sans-serif;
+          margin: 0;
+          line-height: normal;
+        }
+        p:last-of-type {
+          color: #525252;
+          font-family: "GothamNarrow-Book", "Helvetica Neue", sans-serif;
+          font-size: 14px;
+          margin: 0;
+          margin-top: 2px;
+          line-height: normal;
+        }
       `}
     >
-      {props.index !== 0 && (
-        <div
-          css={`
-            width: 80px;
-            border-top: 2px solid
-              ${props.index <= props.activeStep ? "#6061e5" : "#868E96"};
-          `}
-        />
-      )}
-      <div
-        css={`
-          position: relative;
-        `}
-        onClick={() => {
-          if (props.disabled) return;
-          if (props.activeStep > 0) {
-            props.setActiveStep(props.index);
-          }
-        }}
-      >
-        {props.index < props.activeStep || props.activeStep === 3 ? (
-          <div
-            css={`
-              width: 32px;
-              height: 32px;
-            `}
-          >
-            <CompleteCheckIcon />
-          </div>
+      <span>
+        {props.activeStep === props.index ? (
+          <InProgressIcon />
+        ) : props.activeStep > props.index ? (
+          <CompletedIcon />
         ) : (
-          <button
-            type="button"
-            css={`
-              outline: none;
-              border: none;
-              height: 32px;
-              width: 32px;
-              display: flex;
-              cursor: pointer;
-              align-items: center;
-              border-radius: 50%;
-              justify-content: center;
-              font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
-              font-weight: 400;
-              font-size: 14px;
-              border: 2px solid
-                ${props.index <= props.activeStep ? "#6061E5" : "#868E96"};
-              background: white;
-              color: ${props.index <= props.activeStep ? "#6061E5" : "#868E96"};
-              :disabled {
-                cursor: not-allowed;
-              }
-            `}
-            disabled={props.disabled}
-          >
-            0{props.index + 1}
-          </button>
+          <IdleIcon />
         )}
-        <p
-          css={`
-            position: absolute;
-            margin: 0;
-            left: -48px;
-            width: 128px;
-            text-align: center;
-            font-size: 14px;
-            font-family: ${props.index <= props.activeStep
-                ? "GothamNarrow-Bold"
-                : "GothamNarrow-Book"},
-              "Helvetica Neue", sans-serif;
-            color: ${props.index <= props.activeStep ? "#6061E5" : "#868E96"};
-          `}
-        >
-          {props.tab}
-        </p>
+      </span>
+      <div>
+        <p>{props.tab.title}</p>
+        <p>{props.tab.description}</p>
       </div>
     </div>
   );

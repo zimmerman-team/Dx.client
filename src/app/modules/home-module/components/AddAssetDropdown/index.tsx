@@ -68,6 +68,7 @@ export default function AddAssetDropdown() {
         css={`
           width: 145px;
           display: flex;
+          flex-shrink: 0;
           align-items: center;
           justify-content: space-between;
           border-radius: 12px;

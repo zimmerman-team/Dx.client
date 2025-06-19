@@ -7,7 +7,7 @@ import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
 import TableContainer from "@material-ui/core/TableContainer";
 import { isValidDate } from "app/utils/isValidDate";
-import { IExternalDataset } from "app/modules/dataset-module/routes/upload-module/upload-steps/externalSearch";
+import { IExternalDataset } from "app/modules/dataset-module/routes/upload-module/upload-steps/step1/externalSearch";
 
 interface IData {
   id: string;

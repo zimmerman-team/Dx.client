@@ -18,7 +18,7 @@ import {
 } from "app/state/recoil/atoms";
 import { featuredAssetsCss } from "app/modules/home-module/style";
 import DatasetCategoryList from "app/modules/home-module/components/AssetCollection/Datasets/datasetCategoryList";
-import { datasetCategories } from "app/modules/dataset-module/routes/upload-module/upload-steps/metaData";
+import { datasetCategories } from "app/modules/dataset-module/routes/upload-module/upload-steps/step3/metaData";
 import AssetsGrid from "app/modules/home-module/components/AssetCollection/All/assetsGrid";
 import Filter from "app/modules/home-module/components/Filter";
 import {
@@ -286,85 +286,81 @@ function AssetsCollection() {
       <Box height={32} />
 
       <Box css={featuredAssetsCss}>
-        <Grid
-          container
-          alignContent="space-between"
-          alignItems="center"
+        <div
           css={`
             width: 100%;
+            display: flex;
+            gap: 10px;
+            align-items: center;
             @media (max-width: 599px) {
               flex-flow: wrap-reverse;
             }
           `}
         >
-          <Grid item lg={6} md={6} sm={6} xs={12}>
-            <div
-              css={`
-                width: 531px;
-                height: 41px;
-              `}
-            >
-              <MultiSwitch
-                activeTab={display}
-                onTabChange={handleTabSwitch}
-                style={{
-                  radius: 10,
-                  paddingX: 4,
-                  backgroundActive: "#6061E5",
-                }}
-                tabs={[
-                  {
-                    value: "all",
-                    label: `All (${assetsCount})`,
-                    testId: "home-all-tab",
-                  },
-                  {
-                    value: "data",
-                    label: `Data (${datasetCount})`,
-                    testId: "home-data-tab",
-                  },
-                  {
-                    value: "charts",
-                    label: `Charts (${chartsCount})`,
-                    testId: "home-charts-tab",
-                  },
-                  {
-                    value: "stories",
-                    label: `Stories (${storiesCount})`,
-                    testId: "home-stories-tab",
-                  },
-                ]}
-              />
-            </div>
-          </Grid>
+          <div
+            css={`
+              width: 531px;
+              height: 41px;
+            `}
+          >
+            <MultiSwitch
+              activeTab={display}
+              onTabChange={handleTabSwitch}
+              style={{
+                radius: 10,
+                paddingX: 4,
+                backgroundActive: "#6061E5",
+              }}
+              tabs={[
+                {
+                  value: "all",
+                  label: `All (${assetsCount})`,
+                  testId: "home-all-tab",
+                },
+                {
+                  value: "data",
+                  label: `Data (${datasetCount})`,
+                  testId: "home-data-tab",
+                },
+                {
+                  value: "charts",
+                  label: `Charts (${chartsCount})`,
+                  testId: "home-charts-tab",
+                },
+                {
+                  value: "stories",
+                  label: `Stories (${storiesCount})`,
+                  testId: "home-stories-tab",
+                },
+              ]}
+            />
+          </div>
 
-          <Grid item lg={6} md={6} sm={6} xs={12}>
-            <div
-              css={`
-                display: none;
-
-                @media (min-width: ${DESKTOP_STARTPOINT}) {
-                  display: block;
-                }
-              `}
-            >
-              <Filter
-                searchValue={searchValue as string}
-                setSearchValue={setSearchValue}
-                setSortValue={setSortValue}
-                setAssetsView={setAssetsView}
-                sortValue={sortValue}
-                assetsView={assetsView}
-                openSearch={openSearch}
-                setOpenSearch={setOpenSearch}
-                searchIconCypressId="home-search-button"
-                filterValue={filterValue}
-                setFilterValue={setFilterValue}
-                hasSearch
-              />
-            </div>
-          </Grid>
-        </Grid>
+          <div
+            css={`
+              display: none;
+              flex-basis: 56%;
+              @media (min-width: ${DESKTOP_STARTPOINT}) {
+                display: block;
+              }
+            `}
+          >
+            <Filter
+              searchValue={searchValue as string}
+              setSearchValue={setSearchValue}
+              setSortValue={setSortValue}
+              setAssetsView={setAssetsView}
+              sortValue={sortValue}
+              assetsView={assetsView}
+              openSearch={openSearch}
+              setOpenSearch={setOpenSearch}
+              searchIconCypressId="home-search-button"
+              filterValue={filterValue}
+              setFilterValue={setFilterValue}
+              hasSearch
+            />
+          </div>
+        </div>
 
         <div
           css={`

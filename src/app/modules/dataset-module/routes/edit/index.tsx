@@ -1,5 +1,5 @@
 import { Container } from "@material-ui/core";
-import MetaData from "app/modules/dataset-module/routes/upload-module/upload-steps/metaData";
+import MetaData from "app/modules/dataset-module/routes/upload-module/upload-steps/step3/metaData";
 import { APPLICATION_JSON } from "app/state/api";
 import { allAssetsSortBy } from "app/state/recoil/atoms";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
