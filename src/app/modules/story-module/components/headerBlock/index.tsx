@@ -348,9 +348,6 @@ export default function HeaderBlock(props: Props) {
             gap: 4px;
             z-index: 99;
             position: absolute;
-            @media (max-width: 881px) {
-              top: 16.5px;
-            }
           `}
         >
           <div
