@@ -219,6 +219,11 @@ export default function ExternalSearch(props: {
             searchIconCypressId="open-search-button"
             hasSearch={false}
             openSearch
+            onKeyPress={(e) => {
+              if (e.key === "Enter") {
+                onSearch();
+              }
+            }}
             terminateSearch={terminateSearch}
           />
         </Grid>

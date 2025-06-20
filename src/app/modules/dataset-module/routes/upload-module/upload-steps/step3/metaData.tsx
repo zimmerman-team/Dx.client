@@ -1,9 +1,7 @@
 import React from "react";
-import Box from "@material-ui/core/Box";
 import findIndex from "lodash/findIndex";
 import Grid from "@material-ui/core/Grid";
 import MenuItem from "@material-ui/core/MenuItem";
-import InputLabel from "@material-ui/core/InputLabel";
 import FormControl from "@material-ui/core/FormControl";
 import {
   CssInputLabel,
@@ -12,12 +10,31 @@ import {
   metaDatacss,
 } from "app/modules/dataset-module/routes/upload-module/style";
 import { useLocation } from "react-router-dom";
-import { isValidUrl } from "app/utils/emailValidation";
-import { PrimaryButton } from "app/components/Styled/button";
 
-interface Props {
+interface IErrorState {
+  name: {
+    state: boolean;
+    message: string;
+  };
+  description: {
+    state: boolean;
+    message: string;
+  };
+  category: {
+    state: boolean;
+    message: string;
+  };
+  source: {
+    state: boolean;
+    message: string;
+  };
+  sourceUrl: {
+    state: boolean;
+    message: string;
+  };
+}
+export interface MetadataProps {
   onSubmit: (data: IFormDetails) => void;
-  handleBack: () => void;
   formDetails: {
     name: string;
     description: string;
@@ -36,6 +53,9 @@ interface Props {
       sourceUrl: string;
     }>
   >;
+  errorState: IErrorState;
+  setErrorState: React.Dispatch<React.SetStateAction<IErrorState>>;
+  handleSubmit: (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
 }
 
 interface IFormDetails {
@@ -63,7 +83,7 @@ const SelectCategoryField = (props: {
   error: boolean;
   onChange: any;
 }) => (
-  <FormControl variant="outlined" fullWidth>
+  <FormControl variant="filled" fullWidth>
     <CssInputLabel id="select-label">Data category*</CssInputLabel>
     <CssSelectField
       fullWidth
@@ -107,18 +127,16 @@ const SelectCategoryField = (props: {
   </FormControl>
 );
 
-export default function MetaData(props: Readonly<Props>) {
-  const location = useLocation();
-  const view = location.pathname?.split("/")[3];
-
+export default function MetaData(props: Readonly<MetadataProps>) {
   const characterCount = props.formDetails.description?.length;
-
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (
+    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
     const { public: isPublic, ...rest } = props.formDetails;
     //reset error state to release focus on input field before typing new value
-    if (Object.values(errorState).some((value) => value.state === true)) {
+    if (Object.values(props.errorState).some((value) => value.state === true)) {
       for (const key in rest) {
-        setErrorState((prev) => ({
+        props.setErrorState((prev) => ({
           ...prev,
           [key]: { state: false, message: "" },
         }));
@@ -131,50 +149,8 @@ export default function MetaData(props: Readonly<Props>) {
     });
   };
 
-  const [errorState, setErrorState] = React.useState({
-    name: { state: false, message: "" },
-    description: { state: false, message: "" },
-    category: { state: false, message: "" },
-    source: { state: false, message: "" },
-    sourceUrl: { state: false, message: "" },
-  });
-
-  const handleSubmit = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-    e.preventDefault();
-    const { public: isPublic, sourceUrl, ...rest } = props.formDetails;
-    //form validation before submitting
-    for (const key in rest) {
-      if (rest[key as keyof typeof rest] === "" && key !== "sourceUrl") {
-        setErrorState((prev) => ({
-          ...prev,
-          [key]: { state: true, message: "" },
-        }));
-        return;
-      } else {
-        setErrorState((prev) => ({
-          ...prev,
-          [key]: { state: false, message: "" },
-        }));
-      }
-    }
-    if (!isValidUrl(sourceUrl)) {
-      setErrorState((prev) => ({
-        ...prev,
-        sourceUrl: { state: true, message: "Please input a valid URL" },
-      }));
-      return;
-    }
-
-    if (Object.values(rest).every((value) => value !== "")) {
-      props.onSubmit(props.formDetails);
-    } else {
-      console.log("form errors", rest);
-    }
-  };
-
   return (
     <div css={metaDatacss}>
-      <h1>Please describe your data</h1>
       <div
         css={`
           width: 100%;
@@ -182,10 +158,54 @@ export default function MetaData(props: Readonly<Props>) {
       >
         <Grid container spacing={6}>
           <Grid lg={12} xs={12} md={12} item>
-            <CssTextField
+            <div>
+              <div
+                css={`
+                  display: flex;
+                  align-items: center;
+                  justify-content: space-between;
+                  width: 100%;
+                  margin-bottom: 9px;
+                  p {
+                    color: #231d2c;
+                    font-family: "GothamNarrow-Book", "Helvetica Neue",
+                      sans-serif;
+                    line-height: normal;
+                    margin: 0;
+                  }
+                `}
+              >
+                <p>The Title of the Dataset*</p>
+                <p
+                  css={`
+                    font-size: 14px;
+                  `}
+                >
+                  0/25
+                </p>
+              </div>
+              <input
+                type="text"
+                onChange={handleChange}
+                name="name"
+                value={props.formDetails.name}
+                maxLength={50}
+                // ref={}
+                css={`
+                  border-radius: 10px;
+                  border: none;
+                  border-bottom: 1px solid #98a1aa;
+                  background: #f1f3f5;
+                  outline: none;
+                  padding: 14px 16px;
+                  width: 100%;
+                `}
+              />
+            </div>
+            {/* <CssTextField
               id="outlined-basic"
               label="Data title*"
-              variant="outlined"
+              variant="standard"
               helperText="Title must be between 6 and 50 characters in length."
               onChange={handleChange}
               name="name"
@@ -193,21 +213,71 @@ export default function MetaData(props: Readonly<Props>) {
               fullWidth
               data-cy="dataset-metadata-title"
               inputRef={(input) =>
-                input && errorState.name.state && input.focus()
+                input && props.errorState.name.state && input.focus()
               }
-            />
+            /> */}
           </Grid>
-          <Box height={50} />
+          <div
+            css={`
+              height: 20px;
+            `}
+          />
           <Grid lg={12} xs={12} md={12} item>
             <div
               css={`
                 position: relative;
+                width: 100%;
               `}
             >
-              <CssTextField
+              <div
+                css={`
+                  display: flex;
+                  align-items: center;
+                  justify-content: space-between;
+                  width: 100%;
+                  margin-bottom: 9px;
+                  p {
+                    color: #231d2c;
+                    font-family: "GothamNarrow-Book", "Helvetica Neue",
+                      sans-serif;
+                    line-height: normal;
+                    margin: 0;
+                  }
+                `}
+              >
+                <p>Data Description*</p>
+                <p
+                  css={`
+                    font-size: 14px;
+                  `}
+                >
+                  {characterCount}/150
+                </p>
+              </div>
+              <div>
+                <textarea
+                  onChange={handleChange}
+                  name="description"
+                  maxLength={150}
+                  value={props.formDetails.description}
+                  data-cy="dataset-metadata-description"
+                  css={`
+                    border-radius: 10px;
+                    border: none;
+                    border-bottom: 1px solid #98a1aa;
+                    background: #f1f3f5;
+                    outline: none;
+                    padding: 16px;
+                    width: 100%;
+                    height: 141px;
+                  `}
+                />
+              </div>
+
+              {/* <CssTextField
                 id="outlined-basic"
                 label="Brief description of your dataset*  "
-                variant="outlined"
+                variant="filled"
                 fullWidth
                 data-cy="dataset-metadata-description"
                 multiline
@@ -220,7 +290,7 @@ export default function MetaData(props: Readonly<Props>) {
                 name="description"
                 value={props.formDetails.description}
                 inputRef={(input) =>
-                  input && errorState.description.state && input.focus()
+                  input && props.errorState.description.state && input.focus()
                 }
               />
               <p
@@ -234,23 +304,27 @@ export default function MetaData(props: Readonly<Props>) {
                 `}
               >
                 {characterCount}/150
-              </p>
+              </p> */}
             </div>
           </Grid>
-          <Box height={50} />
+          <div
+            css={`
+              height: 20px;
+            `}
+          />
           <Grid lg={5} xs={12} md={5} item>
             <SelectCategoryField
               onChange={handleChange}
               setFormDetails={props.setFormDetails}
               formDetails={props.formDetails}
-              error={errorState.category.state}
+              error={props.errorState.category.state}
             />
           </Grid>
           <Grid lg={7} xs={12} md={7} item>
             <CssTextField
               id="outlined-basic"
               label="Source of the data*"
-              variant="outlined"
+              variant="filled"
               onChange={handleChange}
               name="source"
               fullWidth
@@ -259,7 +333,7 @@ export default function MetaData(props: Readonly<Props>) {
                 "data-testid": "Source-of-the-data",
               }}
               inputRef={(input) =>
-                input && errorState.source.state && input.focus()
+                input && props.errorState.source.state && input.focus()
               }
               value={props.formDetails.source}
             />
@@ -268,54 +342,22 @@ export default function MetaData(props: Readonly<Props>) {
             <CssTextField
               id="outlined-basic"
               label="Link to data source"
-              variant="outlined"
+              variant="filled"
               onChange={handleChange}
               name="sourceUrl"
-              helperText={errorState.sourceUrl.message}
+              helperText={props.errorState.sourceUrl.message}
               fullWidth
               data-cy="dataset-metadata-link"
               inputProps={{
                 "data-testid": "Link-to-data-source",
               }}
               inputRef={(input) =>
-                input && errorState.sourceUrl.state && input.focus()
+                input && props.errorState.sourceUrl.state && input.focus()
               }
               value={props.formDetails.sourceUrl}
             />
           </Grid>
         </Grid>
-
-        <div
-          css={`
-            display: flex;
-            justify-content: flex-end;
-            margin: 40px 0;
-            gap: 1rem;
-            @media (min-width: 768px) {
-              @media (max-width: 13004px) {
-                padding-bottom: 10px;
-              }
-            }
-          `}
-        >
-          <PrimaryButton
-            size="big"
-            bg="light"
-            type="button"
-            onClick={props.handleBack}
-          >
-            {view === "edit" ? "Cancel" : "previous"}
-          </PrimaryButton>
-          <PrimaryButton
-            size="big"
-            bg="dark"
-            type="button"
-            onClick={handleSubmit}
-            data-cy="dataset-metadata-submit"
-          >
-            {view === "edit" ? "Save" : "Next"}
-          </PrimaryButton>
-        </div>
       </div>
     </div>
   );

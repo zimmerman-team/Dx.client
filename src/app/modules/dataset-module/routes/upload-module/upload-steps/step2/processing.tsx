@@ -7,6 +7,7 @@ export interface ProcessingMetaDataProps {
   setProcessingError: React.Dispatch<React.SetStateAction<string | null>>;
   processingError: string | null;
   fileName: string;
+  fileType: string;
   loaded: string;
   percentageLoaded: number;
   estimatedUploadTime: number;

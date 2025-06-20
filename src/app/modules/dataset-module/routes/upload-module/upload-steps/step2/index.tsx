@@ -2,9 +2,8 @@ import React from "react";
 import { PrimaryButton } from "app/components/Styled/button";
 import Processing, { ProcessingMetaDataProps } from "./processing";
 import TableSkeleton from "./tableSkeleton";
-import FinishedFragment, {
-  FinishedFragmentProps,
-} from "app/modules/dataset-module/routes/upload-module/upload-steps/step2/TablePreview";
+import { FinishedFragmentProps } from "app/modules/dataset-module/routes/upload-module/upload-steps/step2/TablePreview";
+import TablePreview from "app/modules/dataset-module/routes/upload-module/upload-steps/step2/TablePreview";
 
 export default function PrepareForUse(props: {
   processing: ProcessingMetaDataProps;
@@ -42,7 +41,9 @@ export default function PrepareForUse(props: {
           {props.processing.processed ? (
             <>
               <h2>Selected data has been processed!</h2>
-              <p>{props.processing.fileName}</p>
+              <p>
+                {`${props.processing.fileName}.${props.processing.fileType}`}
+              </p>
             </>
           ) : (
             <>
@@ -78,7 +79,7 @@ export default function PrepareForUse(props: {
             <PrimaryButton
               size="small"
               bg="light"
-              onClick={() => props.processing.setActiveStep(0)}
+              onClick={() => props.processing.setActiveStep(2)}
             >
               Describe and Save
               <svg
@@ -107,7 +108,7 @@ export default function PrepareForUse(props: {
                   height: 50px;
                 `}
               />{" "}
-              <FinishedFragment {...props.tablePreview} />
+              <TablePreview {...props.tablePreview} />
             </>
           ) : (
             <>

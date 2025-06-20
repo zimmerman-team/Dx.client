@@ -7,11 +7,11 @@ import { ReactComponent as Logo } from "app/modules/home-module/assets/logo.svg"
 
 import { useHistory, useLocation } from "react-router-dom";
 import { useAuth0 } from "@auth0/auth0-react";
-import { useStoreActions } from "app/state/store/hooks";
 import { isChartAIAgentActive } from "app/state/recoil/atoms";
 import { useRecoilState } from "recoil";
 import MenuItems from "app/modules/home-module/components/AssetCollection/All/menuItems";
 import SourceLink from "./sourceLink";
+import { Tooltip } from "react-tooltip";
 
 interface Props {
   path: string;
@@ -41,11 +41,33 @@ export default function GridItem(props: Readonly<Props>) {
     e.stopPropagation();
     setMenuOptionsDisplay(!menuOptionsDisplay);
   };
+  const [highlightedId, setHighlightedId] = React.useState<string | null>(null);
+  const queryParams = new URLSearchParams(location.search);
+  const searchParams = queryParams.get("newlyCreatedId");
 
   let destinationPath = `/dataset/${props.id}`;
   if (location.pathname === "/") {
     destinationPath += "?fromHome=true";
   }
+
+  React.useEffect(() => {
+    if (searchParams) {
+      setHighlightedId(searchParams);
+
+      // Auto-clear after 5 seconds
+      const timeout = setTimeout(() => {
+        setHighlightedId(null);
+        const queryParams = new URLSearchParams(location.search);
+        queryParams.delete("newlyCreatedId");
+        history.replace({
+          pathname: location.pathname,
+          search: queryParams.toString(),
+        });
+      }, 10000);
+
+      return () => clearTimeout(timeout);
+    }
+  }, []);
 
   return (
     <div
@@ -53,7 +75,30 @@ export default function GridItem(props: Readonly<Props>) {
         position: relative;
       `}
       data-cy="dataset-grid-item"
+      className="asset-indicator"
     >
+      <Tooltip
+        anchorSelect=".asset-indicator"
+        place="right"
+        hidden={highlightedId !== props.id}
+        defaultIsOpen
+        style={{
+          background: "#231D2C",
+          borderRadius: "10px",
+          padding: "16px",
+          whiteSpace: "nowrap",
+          color: "#fff",
+          fontSize: "14px",
+          fontFamily: "GothamNarrow-Book, 'Helvetica Neue', sans-serif",
+          width: "156px",
+          height: "52px",
+          lineHeight: "16px",
+          textAlign: "center",
+          zIndex: 1,
+        }}
+      >
+        Your Dataset is here!
+      </Tooltip>
       <div
         onClick={(e) => {
           history.push(destinationPath);
@@ -72,6 +117,7 @@ export default function GridItem(props: Readonly<Props>) {
           padding: 10px;
           box-shadow: 0px 1px 14px 0px rgba(0, 0, 0, 0.12);
           border-radius: 10px;
+          ${highlightedId === props.id ? "border: 1.5px solid #6061E5;" : ""}
 
           &:hover {
             box-shadow: 0px 7px 22px 0px rgba(0, 0, 0, 0.1);
@@ -84,23 +130,23 @@ export default function GridItem(props: Readonly<Props>) {
             display: flex;
             align-items: center;
             height: 20px;
-            margin-bottom: 5px;
             p {
               border-radius: 5px;
-              background: #ededff;
+              background: ${highlightedId === props.id ? "#6061E5" : "#ededff"};
               box-shadow: 0px 0px 10px 0px rgba(152, 161, 170, 0.05);
               display: flex;
               padding: 0px 6px;
               justify-content: center;
               align-items: center;
               gap: 10px;
-              color: #231d2c;
+              color: ${highlightedId === props.id ? "#fff" : "#231d2c"};
               font-family: "GothamNarrow-Book", "Helvetica Neue", sans-serif;
               font-size: 12px;
               width: fit-content;
               margin: 0;
               height: 20px;
               text-transform: capitalize;
+              margin-bottom: 5px;
             }
           `}
         >

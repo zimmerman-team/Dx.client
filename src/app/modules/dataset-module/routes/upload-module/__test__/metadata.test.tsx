@@ -19,6 +19,15 @@ interface MockProps {
   setFormDetails: jest.Mock<any, any>;
   onSubmit: jest.Mock<any, any>;
   handleBack: jest.Mock<any, any>;
+  errorState: {
+    name: { state: boolean; message: string };
+    description: { state: boolean; message: string };
+    category: { state: boolean; message: string };
+    source: { state: boolean; message: string };
+    sourceUrl: { state: boolean; message: string };
+  };
+  setErrorState: jest.Mock<any, any>;
+  handleSubmit: (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
 }
 const formResponse = {
   formDetails: mockFormDetails,
@@ -31,6 +40,16 @@ const defaultProps = (props: Partial<MockProps> = {}): MockProps => {
     }),
     onSubmit: jest.fn(),
     handleBack: jest.fn(),
+    errorState: {
+      name: { state: false, message: "" },
+      description: { state: false, message: "" },
+      category: { state: false, message: "" },
+      source: { state: false, message: "" },
+      sourceUrl: { state: false, message: "" },
+      ...props.errorState,
+    },
+    setErrorState: jest.fn(),
+    handleSubmit: jest.fn(),
     ...props,
   };
 };

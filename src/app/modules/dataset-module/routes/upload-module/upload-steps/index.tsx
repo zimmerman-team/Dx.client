@@ -25,6 +25,7 @@ import HomeFooter from "app/modules/home-module/components/Footer";
 import UploadYourData from "./step1";
 import useBackgroundColor from "app/hooks/useBackgroundColor";
 import PrepareForUse from "./step2";
+import DescribeAndSave from "./step3";
 
 interface Props {
   datasetId: string;
@@ -40,8 +41,8 @@ const steps = [
     description: "Process and preview your dataset before charting",
   },
   {
-    title: "Metadata",
-    description: "Add metadata to your dataset",
+    title: "Describe & Save",
+    description: "Name, categorize, and add details to your dataset",
   },
 ];
 
@@ -172,7 +173,7 @@ function DatasetUploadSteps(props: Props) {
       .then((response) => {
         //load dataset and datasets on upload success
         //we do this to load data to populate the table
-        loadSampleDataset(response.data.data.id);
+        // loadSampleDataset(response.data.data.id);
         //we do this to update the dataset list with the new dataset
         loadDatasets({ token, storeInCrudData: true });
         if (response?.data.error && response?.data.errorType === "planError") {
@@ -192,7 +193,6 @@ function DatasetUploadSteps(props: Props) {
           });
         }
         //set active step to finished
-        setActiveStep(3);
       })
       .catch((error) => {
         console.debug("Dataset creation error", error);
@@ -268,6 +268,11 @@ function DatasetUploadSteps(props: Props) {
     //set active step to processing
     setActiveStep(1);
     resetProgress();
+    setSelectedFile({
+      name: externalDataset.name,
+      type: "",
+      size: 0,
+    } as File);
     axios
       .post(
         `${process.env.REACT_APP_API}/external-sources/download`,
@@ -324,35 +329,36 @@ function DatasetUploadSteps(props: Props) {
     disableActiveOption();
   }, [activeTab]);
 
+  const renderUploadYourData = () => {
+    return (
+      <UploadYourData
+        addDatasetFragmentProps={{
+          activeOption,
+          setActiveOption,
+          onFileSubmit,
+          disabled: false,
+          processingError,
+          setActiveStep,
+        }}
+        externalSearchProps={{
+          setFormDetails,
+          handleDownload: handleDownloadExternalDataset,
+          setProcessingError,
+          setActiveStep,
+          searchValue,
+          setSearchValue,
+          openSearch,
+          setOpenSearch,
+          sources,
+          setSources,
+        }}
+      />
+    );
+  };
   const currentStep = () => {
     switch (activeStep) {
       case 0:
-        return (
-          <>
-            <UploadYourData
-              addDatasetFragmentProps={{
-                activeOption,
-                setActiveOption,
-                onFileSubmit,
-                disabled: false,
-                processingError,
-                setActiveStep,
-              }}
-              externalSearchProps={{
-                setFormDetails,
-                handleDownload: handleDownloadExternalDataset,
-                setProcessingError,
-                setActiveStep,
-                searchValue,
-                setSearchValue,
-                openSearch,
-                setOpenSearch,
-                sources,
-                setSources,
-              }}
-            />
-          </>
-        );
+        return renderUploadYourData();
       case 1:
         return (
           <PrepareForUse
@@ -360,6 +366,7 @@ function DatasetUploadSteps(props: Props) {
               setProcessingError,
               processingError,
               fileName: (selectedFile && selectedFile.name) as string,
+              fileType: (selectedFile && selectedFile.type) || "",
               loaded: loadedProgress,
               percentageLoaded: percentageLoadedProgress,
               estimatedUploadTime: remainingTime,
@@ -388,42 +395,32 @@ function DatasetUploadSteps(props: Props) {
                 height: 40px;
               `}
             />
-            <MetaData
-              onSubmit={onSubmitMetadata}
-              handleBack={handleBack}
-              formDetails={formDetails}
-              setFormDetails={setFormDetails}
-            />
-          </>
-        );
-
-      case 3:
-        return (
-          <>
-            <Box height={32} />
-            <FinishedFragment
-              data={sampleData}
-              stats={dataStats}
-              datasetId={props.datasetId}
-              dataTotalCount={dataTotalCount}
-              dataTypes={dataTypes}
-              datasetDetails={datasetDetails}
-              canDatasetEditDelete={true} //if user has just uploaded the dataset, then they own it and can edit it.
+            <DescribeAndSave
+              metadata={{
+                formDetails,
+                setFormDetails,
+                onSubmit: onSubmitMetadata,
+              }}
+              fileName={
+                (selectedFile && selectedFile.name) || "External Dataset"
+              }
+              setActiveStep={setActiveStep}
+              tablePreview={{
+                data: sampleData,
+                stats: dataStats,
+                datasetId: props.datasetId,
+                dataTotalCount,
+                dataTypes,
+                datasetDetails,
+                canDatasetEditDelete: true, //if user has just uploaded the dataset, then they
+                //own it and can edit it.
+              }}
             />
           </>
         );
 
       default:
-        return (
-          <AddDatasetFragment
-            onFileSubmit={onFileSubmit}
-            disabled={false}
-            processingError={processingError}
-            setActiveOption={setActiveOption}
-            activeOption={activeOption}
-            setActiveStep={setActiveStep}
-          />
-        );
+        return renderUploadYourData(); //fallback to first step if no step matches
     }
   };
 

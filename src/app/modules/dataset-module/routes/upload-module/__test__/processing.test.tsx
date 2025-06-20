@@ -22,6 +22,7 @@ test("data should be processing", async () => {
       processingMessage=""
       setActiveStep={() => {}}
       processed={false}
+      fileType="csv"
     />
   );
 
@@ -49,6 +50,7 @@ test("when estimated times <=0, it should display 'finishing up...'", async () =
       processingMessage=""
       setActiveStep={() => {}}
       processed={false}
+      fileType="csv"
     />
   );
   const estimatedTime = screen.getByTestId(estimatedTimeId);
@@ -71,6 +73,7 @@ test('when estimated times > 60, it should display "minutes and seconds (estimat
       processingMessage=""
       setActiveStep={() => {}}
       processed={false}
+      fileType="csv"
     />
   );
   const estimatedTime = screen.getByTestId(estimatedTimeId);
@@ -93,6 +96,7 @@ test("renders processing message when processingError is true", async () => {
       processingMessage=""
       setActiveStep={() => {}}
       processed={false}
+      fileType="csv"
     />
   );
   const ErrorText = screen.getByTestId("error-message");
