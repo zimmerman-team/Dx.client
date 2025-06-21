@@ -5,7 +5,7 @@ import { Container } from "@material-ui/core";
 import {
   PRIVACY_POLICY_LINK,
   TERMS_AND_CONDITION_LINK,
-} from "app/modules/chart-module/util/constants/links";
+} from "app/modules/chart-module/util/constants";
 
 function SmallFooter() {
   return (

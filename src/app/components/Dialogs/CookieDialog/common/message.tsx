@@ -5,7 +5,7 @@ import { PrimaryButton } from "app/components/Styled/button";
 import {
   COOKIE_POLICY_LINK,
   DATA_POLICY_LINK,
-} from "app/modules/chart-module/util/constants/links";
+} from "app/modules/chart-module/util/constants";
 
 const MessageContainer = styled((props) => <Box {...props} />)`
   align-items: center;
