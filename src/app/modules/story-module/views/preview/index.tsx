@@ -172,7 +172,7 @@ export function StoryPreviewView(
           descriptionColor: storyData.descriptionColor,
           dateColor: storyData.dateColor,
         }}
-        setPlugins={() => {}}
+        setPluginsState={() => {}}
         setHeaderDetails={() => {}}
         handleRightPanelOpen={() => {}}
       />
@@ -220,7 +220,7 @@ export function StoryPreviewView(
                 type="rowFrame"
                 rowIndex={index}
                 framesArray={[]}
-                setPlugins={() => {}}
+                setPluginsState={() => {}}
                 updateFramesArray={() => {}}
                 key={`rowframe${index}`}
                 endStoryTour={() => {}}

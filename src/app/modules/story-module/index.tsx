@@ -36,6 +36,7 @@ import NotAvailableOnMobile from "app/modules/common/not-available";
 import { MOBILE_BREAKPOINT } from "app/theme";
 import { decorators } from "app/modules/common/RichEditor/decorators";
 import { createHeadingEditorState } from "app/utils/draftjs/createEditorStateWithBlockType";
+import { useEditorPlugins } from "app/hooks/useEditorPlugins";
 
 export default function StoryModule() {
   const { user, isAuthenticated } = useAuth0();
@@ -52,7 +53,7 @@ export default function StoryModule() {
   }>({ isAutoSaveEnabled: false });
 
   const setPlanDialog = useSetRecoilState(planDialogAtom);
-  const [plugins, setPlugins] = React.useState<ToolbarPluginsType>([]);
+  const [plugins, setPluginsState] = React.useState<ToolbarPluginsType>([]);
   const token = useStoreState((state) => state.AuthToken.value);
   const [_rightPanelView, setRightPanelView] = useRecoilState(
     storyRightPanelViewAtom
@@ -117,6 +118,8 @@ export default function StoryModule() {
     (state) => state.stories.StoryCreate.crudData as any
   );
 
+  const { plugins: localPlugins } = useEditorPlugins();
+
   React.useEffect(() => {
     if (storyCreateData?.error && storyCreateData?.errorType === "planError") {
       setPlanDialog({
@@ -131,6 +134,10 @@ export default function StoryModule() {
   const storyPlanWarning = useStoreState(
     (state) => state.stories.StoryCreate.planWarning
   );
+
+  React.useEffect(() => {
+    setPluginsState(localPlugins);
+  }, []);
 
   React.useEffect(() => {
     if (isSmallScreen && view === "edit") {
@@ -475,7 +482,7 @@ export default function StoryModule() {
               view={view}
               hasStoryNameFocused={hasStoryNameFocused}
               setHasStoryNameFocused={setHasStoryNameFocused}
-              setPlugins={setPlugins}
+              setPluginsState={setPluginsState}
               setAutoSave={setAutoSave}
               isSaveEnabled={isSaveEnabled}
               onSave={onSave}

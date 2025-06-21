@@ -37,7 +37,7 @@ interface BoxProps {
   rowIndex: number;
   itemIndex: number;
   rowType: string;
-  setPlugins?: React.Dispatch<React.SetStateAction<ToolbarPluginsType>>;
+  setPluginsState: React.Dispatch<React.SetStateAction<ToolbarPluginsType>>;
   updateFramesArray: Updater<IFramesArray[]>;
   rowItemsCount: number;
   previewItem?: string | any;
@@ -536,7 +536,7 @@ const Box = (props: BoxProps) => {
                 editMode={!viewOnlyMode}
                 textContent={textContent}
                 setTextContent={setTextContent}
-                setPlugins={props.setPlugins}
+                setPluginsState={props.setPluginsState}
                 placeholder={placeholder}
                 setPlaceholderState={setTextPlaceholderState}
                 placeholderState={textPlaceholderState}

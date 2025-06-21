@@ -55,7 +55,7 @@ interface RowStructureDisplayProps {
     width: number,
     height: number
   ) => void;
-  setPlugins: React.Dispatch<React.SetStateAction<ToolbarPluginsType>>;
+  setPluginsState: React.Dispatch<React.SetStateAction<ToolbarPluginsType>>;
   onSave: (type: "create" | "edit") => Promise<void>;
   forceSelectedType: string | undefined;
   setTempRowState: React.Dispatch<React.SetStateAction<IFramesArray>>;
@@ -364,7 +364,7 @@ export default function RowstructureDisplay(
                 updateFramesArray={props.updateFramesArray}
                 previewItem={get(props.previewItems, `[${index}]`, undefined)}
                 rowItemsCount={props.rowStructureDetailItems.length}
-                setPlugins={props.setPlugins}
+                setPluginsState={props.setPluginsState}
                 onSave={props.onSave}
                 rowContentWidths={props.rowContentWidths}
                 temporaryWidths={temporaryWidths}

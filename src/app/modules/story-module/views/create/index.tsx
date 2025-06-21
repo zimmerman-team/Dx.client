@@ -111,7 +111,7 @@ function StoryCreateView(props: Readonly<StoryCreateViewProps>) {
         setStoryName={props.setStoryName}
         storyName={props.storyName}
         hasStoryNameFocused={props.hasStoryNameFocused}
-        setPlugins={props.setPlugins}
+        setPluginsState={props.setPluginsState}
         handleRightPanelOpen={props.handleRightPanelOpen}
       />
       <Container maxWidth="lg">
@@ -162,7 +162,7 @@ function StoryCreateView(props: Readonly<StoryCreateViewProps>) {
                       frame.frame.previewItems as (string | object)[]
                     }
                     onSave={props.onSave}
-                    setPlugins={props.setPlugins}
+                    setPluginsState={props.setPluginsState}
                     endStoryTour={() => {}}
                     rightPanelOpen={props.rightPanelOpen}
                   />

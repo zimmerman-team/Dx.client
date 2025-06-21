@@ -94,7 +94,6 @@ export default function StaticToolbar(props: { plugins: ToolbarPluginsType }) {
       `}
     />
   );
-
   return (
     <div>
       {props.plugins.length > 0 && (
@@ -145,7 +144,7 @@ export default function StaticToolbar(props: { plugins: ToolbarPluginsType }) {
                 <FontFamilyHandler {...externalProps} />
                 {divider}
                 <div>
-                  <FontSizeController {...externalProps} />
+                  <FontSizeController {...externalProps} />{" "}
                 </div>
                 {divider}
                 <BoldButton {...externalProps} />
@@ -182,29 +181,32 @@ export default function StaticToolbar(props: { plugins: ToolbarPluginsType }) {
                     {BGHiglightPicker}
                   </div>
                 </Tooltip>
-                <ColorModal
-                  {...externalProps}
-                  anchorEl={anchorEl}
-                  handleClose={handleClose}
-                  id={colorId}
-                  open={colorOpen}
-                  hex={color}
-                  setHex={setColor}
-                  defaultColor={defaultColor}
-                  prefix="COLOR-"
-                />
-
-                <ColorModal
-                  {...externalProps}
-                  anchorEl={anchorEl}
-                  handleClose={handleClose}
-                  id={bgId}
-                  open={bgOpen}
-                  hex={bgColor}
-                  setHex={setBgColor}
-                  defaultColor={defaultBgColor}
-                  prefix="BG-COLOR-"
-                />
+                {externalProps.getEditorState !== undefined && (
+                  <ColorModal
+                    {...externalProps}
+                    anchorEl={anchorEl}
+                    handleClose={handleClose}
+                    id={colorId}
+                    open={colorOpen}
+                    hex={color}
+                    setHex={setColor}
+                    defaultColor={defaultColor}
+                    prefix="COLOR-"
+                  />
+                )}
+                {externalProps.getEditorState !== undefined && (
+                  <ColorModal
+                    {...externalProps}
+                    anchorEl={anchorEl}
+                    handleClose={handleClose}
+                    id={bgId}
+                    open={bgOpen}
+                    hex={bgColor}
+                    setHex={setBgColor}
+                    defaultColor={defaultBgColor}
+                    prefix="BG-COLOR-"
+                  />
+                )}
 
                 {divider}
 

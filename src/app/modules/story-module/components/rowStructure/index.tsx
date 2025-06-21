@@ -155,7 +155,7 @@ interface RowFrameProps {
   previewItems?: (string | object)[];
   rowContentHeights: number[];
   rowContentWidths: number[];
-  setPlugins: React.Dispatch<React.SetStateAction<ToolbarPluginsType>>;
+  setPluginsState: React.Dispatch<React.SetStateAction<ToolbarPluginsType>>;
   endStoryTour: () => void;
   onSave: (type: "create" | "edit") => Promise<void>;
   rightPanelOpen: boolean;
@@ -434,7 +434,7 @@ export default function RowFrame(props: RowFrameProps) {
         rowStructureDetailItems={rowStructureDetailItems[0]}
         previewItems={props.previewItems}
         onRowBoxItemResize={onRowBoxItemResize}
-        setPlugins={props.setPlugins}
+        setPluginsState={props.setPluginsState}
         onSave={props.onSave}
         forceSelectedType={props.forceSelectedType}
         setTempRowState={setTempRowState}
@@ -459,7 +459,7 @@ export default function RowFrame(props: RowFrameProps) {
         rowStructureDetailItems={rowStructureDetailItems[1]}
         previewItems={props.previewItems}
         onRowBoxItemResize={onRowBoxItemResize}
-        setPlugins={props.setPlugins}
+        setPluginsState={props.setPluginsState}
         onSave={props.onSave}
         forceSelectedType={props.forceSelectedType}
         setTempRowState={setTempRowState}
@@ -484,7 +484,7 @@ export default function RowFrame(props: RowFrameProps) {
         rowStructureDetailItems={rowStructureDetailItems[2]}
         previewItems={props.previewItems}
         onRowBoxItemResize={onRowBoxItemResize}
-        setPlugins={props.setPlugins}
+        setPluginsState={props.setPluginsState}
         onSave={props.onSave}
         forceSelectedType={props.forceSelectedType}
         setTempRowState={setTempRowState}
@@ -508,7 +508,7 @@ export default function RowFrame(props: RowFrameProps) {
         rowContentHeights={props.rowContentHeights}
         rowContentWidths={props.rowContentWidths}
         deleteFrame={deleteFrame}
-        setPlugins={props.setPlugins}
+        setPluginsState={props.setPluginsState}
         onSave={props.onSave}
         previewItems={props.previewItems}
         forceSelectedType={props.forceSelectedType}
@@ -534,7 +534,7 @@ export default function RowFrame(props: RowFrameProps) {
         rowStructureDetailItems={rowStructureDetailItems[4]}
         previewItems={props.previewItems}
         onRowBoxItemResize={onRowBoxItemResize}
-        setPlugins={props.setPlugins}
+        setPluginsState={props.setPluginsState}
         onSave={props.onSave}
         forceSelectedType={props.forceSelectedType}
         setTempRowState={setTempRowState}
