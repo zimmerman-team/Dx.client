@@ -61,6 +61,9 @@ export function FontStyleHandler(props: Props) {
   };
 
   const getCurrentBlockType = () => {
+    if (!props.getEditorState) {
+      return "unstyled"; // Default block type if editor state is not available
+    }
     const selection = props.getEditorState().getSelection();
     const currentContent = props.getEditorState().getCurrentContent();
     const currentBlock = currentContent.getBlockForKey(selection.getStartKey());
@@ -74,6 +77,10 @@ export function FontStyleHandler(props: Props) {
 
   // Handle block type change
   const handleStyleChange = (style: FontStyleType) => {
+    if (!props.getEditorState || !props.setEditorState) {
+      console.error("Editor state functions are not provided.");
+      return;
+    }
     const newState = RichUtils.toggleBlockType(
       props.getEditorState(),
       style.blockType
@@ -159,6 +166,10 @@ export function FontStyleHandler(props: Props) {
           {fontStylesState.map((style, index) => (
             <div
               key={style.key}
+              onClick={(e) => {
+                e.stopPropagation();
+                handleStyleChange(style);
+              }}
               onMouseEnter={() => handleShowDetail(style, true)}
               onMouseLeave={() => handleShowDetail(style, false)}
               css={`

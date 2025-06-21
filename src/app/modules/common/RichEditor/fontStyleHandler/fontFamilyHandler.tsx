@@ -12,11 +12,18 @@ interface Props {
   getEditorState: () => EditorState;
   setEditorState: (editorState: EditorState) => void;
 }
+
+const EDITOR_STATE_UNDEFINED_MESSAGE =
+  "getEditorState function is not provided.";
 export function FontFamilyHandler(props: Props) {
   const [displayModal, setDisplayModal] = React.useState(false);
   const [fontStylesState, setFontStylesState] = React.useState(fontFamilies);
-  const selection = props.getEditorState().getSelection();
-  const currentContent = props.getEditorState().getCurrentContent();
+  const selection = props.getEditorState
+    ? props.getEditorState().getSelection()
+    : null;
+  const currentContent = props.getEditorState
+    ? props.getEditorState().getCurrentContent()
+    : null;
   const ref = useRef(null);
   useOnClickOutside(ref, () => {
     if (displayModal) {
@@ -40,6 +47,10 @@ export function FontFamilyHandler(props: Props) {
   }
 
   const getCurrentFontFamily = () => {
+    if (!selection || !currentContent) {
+      console.error(EDITOR_STATE_UNDEFINED_MESSAGE);
+      return "default";
+    }
     const startKey = selection.getStartKey();
     const startOffset = selection.getStartOffset();
     const currentBlock = currentContent.getBlockForKey(startKey);
@@ -62,6 +73,15 @@ export function FontFamilyHandler(props: Props) {
     ) || fontFamilies[fontFamilies.length - 1];
 
   const handleFontFamilyChange = (style: FontFamilyType) => {
+    if (
+      !props.getEditorState ||
+      !props.setEditorState ||
+      !selection ||
+      !currentContent
+    ) {
+      console.error(EDITOR_STATE_UNDEFINED_MESSAGE);
+      return;
+    }
     const editorState = props.getEditorState();
     const newfontFamilyStyle =
       "FONT_FAMILY_" + style.label.toUpperCase().replace(/\s/g, "_");

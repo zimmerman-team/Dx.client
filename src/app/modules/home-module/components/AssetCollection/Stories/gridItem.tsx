@@ -80,7 +80,7 @@ export default function GridItem(props: Readonly<Props>) {
             `}
           >
             <p
-              title={props.heading.getCurrentContent().getPlainText()}
+              title={props.name}
               css={`
                 font-size: 14px;
                 line-height: 22px;
@@ -93,24 +93,7 @@ export default function GridItem(props: Readonly<Props>) {
                 margin-bottom: 0;
               `}
             >
-              <b>{props.heading.getCurrentContent().getPlainText()}</b>
-            </p>
-            <p
-              title={props.name}
-              css={`
-                font-size: 10px;
-                line-height: 14px;
-                font-family: "Gotham Narrow ", "Helvetica Neue", sans-serif;
-                margin-top: 1px;
-                overflow: hidden;
-                display: -webkit-box;
-                -webkit-line-clamp: 3;
-                text-overflow: ellipsis;
-                -webkit-box-orient: vertical;
-                color: #495057;
-              `}
-            >
-              {props.name}
+              <b>{props.name}</b>
             </p>
           </div>
           <IconButton
