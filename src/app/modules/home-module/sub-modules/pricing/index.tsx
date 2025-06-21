@@ -37,7 +37,7 @@ const PLANS = [
     monthlyPrice: "Free forever",
     text: "For individuals or teams just getting started in Dataxplorer",
     current: false,
-    recommended: true,
+    recommended: false,
     buttonText: "Activate",
     discount: "",
     key: "free",
@@ -206,9 +206,7 @@ export default function PricingModule() {
           ? plan.name === "Free Plan"
           : false,
         available: plan.name === "Free Plan" ? true : pricingActive,
-        recommended: pricingActive
-          ? plan.name === "Pro"
-          : plan.name === "Free Plan",
+        recommended: pricingActive ? plan.name === "Pro" : false,
       };
     });
   }, [currentPlan, pricingActive]);
