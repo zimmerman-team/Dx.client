@@ -38,6 +38,7 @@ import { checkLists } from "app/modules/chart-module/routes/customize/data";
 import { transform } from "echarts-stat";
 import { useSetRecoilState } from "recoil";
 import { chartsRenderedAtom } from "app/state/recoil/atoms";
+import { debounce } from "lodash";
 
 echarts.use([
   BarChart,
@@ -61,8 +62,24 @@ echarts.use([
   VisualMapComponent,
 ]);
 
-export function useDataThemesEchart() {
+interface UseDataThemesEchartProps {
+  readOnly?: boolean;
+  setVisualOptions?: (value: any) => void;
+  visualOptions?: any;
+}
+
+export function useDataThemesEchart({
+  visualOptions: mainVisualOptions,
+  setVisualOptions,
+  readOnly,
+}: UseDataThemesEchartProps) {
   const setChartsRendered = useSetRecoilState(chartsRenderedAtom);
+
+  const debouncedSetVisualOptions = debounce((value: any) => {
+    if (setVisualOptions) {
+      setVisualOptions(value);
+    }
+  }, 500);
 
   function onResize(chart: echarts.EChartsType, id: string, height?: number) {
     const container = document.getElementById(id);
@@ -100,6 +117,8 @@ export function useDataThemesEchart() {
       label,
       dataZoom,
       logarithmicYAxis,
+      dataZoomStart,
+      dataZoomEnd,
     } = visualOptions;
 
     const sortedData = sortBy(data, (d) => d.bars);
@@ -149,12 +168,11 @@ export function useDataThemesEchart() {
         ? [
             {
               type: "inside",
-              start: 0,
-              end: 100,
+              start: dataZoomStart ?? 0,
+              end: dataZoomEnd ?? 100,
             },
             {
-              start: 0,
-              end: 100,
+              show: true,
             },
           ]
         : null,
@@ -207,6 +225,8 @@ export function useDataThemesEchart() {
       label,
       labelFontSize,
       dataZoom,
+      dataZoomStart,
+      dataZoomEnd,
       palette,
     } = visualOptions;
 
@@ -232,12 +252,11 @@ export function useDataThemesEchart() {
         ? [
             {
               type: "inside",
-              start: 0,
-              end: 20,
+              start: dataZoomStart ?? 0,
+              end: dataZoomEnd ?? 20,
             },
             {
-              start: 0,
-              end: 20,
+              show: true,
             },
           ]
         : null,
@@ -294,6 +313,8 @@ export function useDataThemesEchart() {
       label,
       labelFontSize,
       dataZoom,
+      dataZoomStart,
+      dataZoomEnd,
       palette,
     } = visualOptions;
 
@@ -325,12 +346,11 @@ export function useDataThemesEchart() {
         ? [
             {
               type: "inside",
-              start: 0,
-              end: 20,
+              start: dataZoomStart ?? 0,
+              end: dataZoomEnd ?? 20,
             },
             {
-              start: 0,
-              end: 20,
+              show: true,
             },
           ]
         : null,
@@ -572,6 +592,8 @@ export function useDataThemesEchart() {
       // chart options
       showLegend,
       dataZoom,
+      dataZoomStart,
+      dataZoomEnd,
       lineType,
       lineWidth,
       // Tooltip
@@ -610,12 +632,11 @@ export function useDataThemesEchart() {
         ? [
             {
               type: "inside",
-              start: 0,
-              end: 20,
+              start: dataZoomStart ?? 0,
+              end: dataZoomEnd ?? 20,
             },
             {
-              start: 0,
-              end: 20,
+              show: true,
             },
           ]
         : null,
@@ -664,6 +685,8 @@ export function useDataThemesEchart() {
       palette,
       // chart options
       dataZoom,
+      dataZoomStart,
+      dataZoomEnd,
     } = visualOptions;
 
     const convertedData = sortBy(data, (d) => d.x).map((d: any) => [
@@ -707,12 +730,11 @@ export function useDataThemesEchart() {
         ? [
             {
               type: "inside",
-              start: 0,
-              end: 20,
+              start: dataZoomStart ?? 0,
+              end: dataZoomEnd ?? 20,
             },
             {
-              start: 0,
-              end: 20,
+              show: true,
             },
           ]
         : null,
@@ -741,6 +763,8 @@ export function useDataThemesEchart() {
       // chart options
       showLegend,
       dataZoom,
+      dataZoomStart,
+      dataZoomEnd,
       label,
       // Tooltip
       showTooltip,
@@ -787,12 +811,11 @@ export function useDataThemesEchart() {
         ? [
             {
               type: "inside",
-              start: 0,
-              end: 20,
+              start: dataZoomStart ?? 0,
+              end: dataZoomEnd ?? 20,
             },
             {
-              start: 0,
-              end: 20,
+              show: true,
             },
           ]
         : null,
@@ -848,6 +871,8 @@ export function useDataThemesEchart() {
       palette,
       // chart
       dataZoom,
+      dataZoomStart,
+      dataZoomEnd,
     } = visualOptions;
     const groups = Object.keys(data);
 
@@ -899,12 +924,11 @@ export function useDataThemesEchart() {
         ? [
             {
               type: "inside",
-              start: 0,
-              end: 100,
+              start: dataZoomStart ?? 0,
+              end: dataZoomEnd ?? 100,
             },
             {
-              start: 0,
-              end: 100,
+              show: true,
             },
           ]
         : null,
@@ -968,6 +992,8 @@ export function useDataThemesEchart() {
       palette,
       // chart
       dataZoom,
+      dataZoomStart,
+      dataZoomEnd,
       trendline,
     } = visualOptions;
 
@@ -1001,12 +1027,11 @@ export function useDataThemesEchart() {
         ? [
             {
               type: "inside",
-              start: 0,
-              end: 100,
+              start: dataZoomStart ?? 0,
+              end: dataZoomEnd ?? 100,
             },
             {
-              start: 0,
-              end: 100,
+              show: true,
             },
           ]
         : null,
@@ -1762,6 +1787,24 @@ export function useDataThemesEchart() {
     renderBigNumber(node, formatedData);
   }
 
+  const handleDataZoom = (event: any) => {
+    if (!readOnly) {
+      if (event.batch) {
+        debouncedSetVisualOptions({
+          ...mainVisualOptions,
+          dataZoomStart: event.batch[0].start,
+          dataZoomEnd: event.batch[0].end,
+        });
+      } else {
+        debouncedSetVisualOptions({
+          ...mainVisualOptions,
+          dataZoomStart: event.start,
+          dataZoomEnd: event.end,
+        });
+      }
+    }
+  };
+
   function render(
     data: any,
     node: HTMLElement,
@@ -1844,7 +1887,7 @@ export function useDataThemesEchart() {
         echartsCirclepacking: () =>
           echartsCirclepacking(data, visualOptions, null),
       };
-      // @ts-expect-error jbh
+      // @ts-expect-error one is deprecated in echarts 5
       chart.one("finished", () => {
         if (chartId) {
           const chartKey = `key_${chartId}`;
@@ -1875,6 +1918,8 @@ export function useDataThemesEchart() {
           }
         });
       }
+
+      chart.on("datazoom", handleDataZoom);
     }
   }
 
