@@ -577,9 +577,13 @@ export function useDataThemesEchart() {
       // Tooltip
       showTooltip,
       isMonetaryValue,
+      palette,
     } = visualOptions;
 
     return {
+      color:
+        checkLists.find((item) => item.label === palette)?.value ??
+        checkLists[0].value,
       grid: {
         top: marginTop,
         left: marginLeft,
@@ -628,8 +632,8 @@ export function useDataThemesEchart() {
       series: filter(get(data, "lines", []), (l: any) => l !== null).map(
         (d: any) => ({
           type: "line",
-          name: "year",
-          data: d[1].map((l: any) => l.y),
+          name: d?.[0] ?? 0,
+          data: d[1].map((l: any) => [String(l.x), l.y]),
           z: -1,
           zlevel: -1,
           lineStyle: {
