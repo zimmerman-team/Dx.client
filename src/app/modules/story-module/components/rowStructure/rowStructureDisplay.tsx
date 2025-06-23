@@ -35,13 +35,12 @@ interface RowStructureDisplayProps {
   rowIndex: number;
   rowId: string;
   selectedType: string;
+  setSelectedType: React.Dispatch<React.SetStateAction<string>>;
   framesArray: IFramesArray[];
-  selectedTypeHistory: string[];
   rowContentWidths: number[];
   rowContentHeights: number[];
   updateFramesArray: Updater<IFramesArray[]>;
   deleteFrame: (id: string) => void;
-  setSelectedTypeHistory: React.Dispatch<React.SetStateAction<string[]>>;
   rowStructureDetailItems: {
     rowId: string;
     width: number;
@@ -192,10 +191,18 @@ export default function RowstructureDisplay(
     _dir: Direction,
     _elementRef: HTMLElement
   ) => {
-    const textEditorHeights = props.framesArray[props.rowIndex]
-      .textEditorHeights as number[];
+    const textBoxHeights: number[] = [];
+    props.framesArray[props.rowIndex].contentTypes.forEach((c, index) => {
+      if (c === "text") {
+        const box = document.getElementById(`box-${props.rowIndex}-${index}`);
+        const boxHeight = box?.offsetHeight || MIN_BOX_HEIGHT;
+        textBoxHeights.push(boxHeight);
+      }
+    });
+
     //get the biggest value from the array
-    const maxHeight = Math.max(...textEditorHeights);
+    const maxHeight = Math.max(...textBoxHeights);
+    //if the text editor heights are not empty, get the
     if (maxHeight && maxHeight > MIN_BOX_HEIGHT) {
       setMinHeight(maxHeight);
     }
@@ -275,12 +282,8 @@ export default function RowstructureDisplay(
                 </IconButton>
                 <IconButton
                   onClick={() => {
-                    props.setSelectedTypeHistory([
-                      ...props.selectedTypeHistory,
-                      props.selectedType,
-                      "",
-                    ]);
-                    props.setTempRowState(props.framesArray[props.rowIndex]);
+                    props.setTempRowState(props.framesArray[props.rowIndex]); // Set the current row state to tempRowState
+                    props.setSelectedType("");
                   }}
                   data-cy="edit-row-structure-button"
                 >

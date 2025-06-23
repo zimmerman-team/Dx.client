@@ -14,7 +14,6 @@ export interface IFramesArray {
   frame: IRowFrame;
   contentWidths: number[];
   contentHeights: number[];
-  textEditorHeights: (number | null)[];
   content: (object | string | null)[];
   contentTypes: ("text" | "divider" | "chart" | "video" | "image" | null)[];
   structure:

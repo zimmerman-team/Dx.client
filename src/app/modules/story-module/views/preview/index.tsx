@@ -153,7 +153,7 @@ export function StoryPreviewView(
         background: white;
       `}
     >
-      <HeaderBlock
+      {/* <HeaderBlock
         isToolboxOpen={false}
         previewMode={true}
         headerDetails={{
@@ -175,7 +175,7 @@ export function StoryPreviewView(
         setPluginsState={() => {}}
         setHeaderDetails={() => {}}
         handleRightPanelOpen={() => {}}
-      />
+      /> */}
       <Container id="content-container" maxWidth="lg" ref={ref}>
         <Box height={45} />
 

@@ -60,7 +60,6 @@ export default function FontSizeController(props: Props) {
   // Helper to extract current font size from editor state
   const getCurrentFontSize = useCallback(() => {
     if (!props.getEditorState) {
-      console.error(EDITOR_STATE_UNDEFINED_MESSAGE);
       return DEFAULT_FONT_SIZE;
     }
     const editorState = props.getEditorState();
@@ -93,7 +92,6 @@ export default function FontSizeController(props: Props) {
 
   useEffect(() => {
     if (!props.getEditorState) {
-      console.error(EDITOR_STATE_UNDEFINED_MESSAGE);
       return;
     }
     // Only update local state when editor state changes
@@ -104,7 +102,6 @@ export default function FontSizeController(props: Props) {
   const updateEditorStateWithFontSize = useCallback(
     (newFontSize: number) => {
       if (!props.getEditorState || !props.setEditorState) {
-        console.error("Editor state functions are not provided.");
         return;
       }
       const editorState = props.getEditorState();
@@ -140,7 +137,6 @@ export default function FontSizeController(props: Props) {
   // Sync font size with editor state on selection or content changes
   useEffect(() => {
     if (!props.getEditorState) {
-      console.error(EDITOR_STATE_UNDEFINED_MESSAGE);
       return;
     }
     const editorState = props.getEditorState();

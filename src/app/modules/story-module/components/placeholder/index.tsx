@@ -59,7 +59,6 @@ const PlaceHolder = (props: PlaceholderProps) => {
               item.type === StoryElementsType.ROWFRAME ? [] : ["divider"],
             contentWidths: [],
             contentHeights: [],
-            textEditorHeights: [],
             contentTypes:
               item.type === StoryElementsType.ROWFRAME ? [] : ["divider"],
             structure: null,

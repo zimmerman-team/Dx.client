@@ -48,7 +48,6 @@ export function FontFamilyHandler(props: Props) {
 
   const getCurrentFontFamily = () => {
     if (!selection || !currentContent) {
-      console.error(EDITOR_STATE_UNDEFINED_MESSAGE);
       return "default";
     }
     const startKey = selection.getStartKey();
@@ -79,7 +78,6 @@ export function FontFamilyHandler(props: Props) {
       !selection ||
       !currentContent
     ) {
-      console.error(EDITOR_STATE_UNDEFINED_MESSAGE);
       return;
     }
     const editorState = props.getEditorState();

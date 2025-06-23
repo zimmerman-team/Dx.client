@@ -51,7 +51,6 @@ function StoryCreateView(props: Readonly<StoryCreateViewProps>) {
           content: [null, null, null, null, null],
           contentWidths: [20, 20, 20, 20, 20],
           contentHeights: [121, 121, 121, 121, 121],
-          textEditorHeights: [null, null, null, null, null],
           contentTypes: [null, null, null, null, null],
           structure: "oneByFive",
         },
@@ -66,7 +65,6 @@ function StoryCreateView(props: Readonly<StoryCreateViewProps>) {
           content: [null],
           contentWidths: [100],
           contentHeights: [400],
-          textEditorHeights: [null],
           contentTypes: [null],
           structure: "oneByOne",
         },
@@ -82,7 +80,6 @@ function StoryCreateView(props: Readonly<StoryCreateViewProps>) {
           content: [null, null, null],
           contentWidths: [33, 33, 33],
           contentHeights: [460, 460, 460],
-          textEditorHeights: [null, null, null],
           contentTypes: [null, null, null],
           structure: "oneByThree",
         },
@@ -103,7 +100,7 @@ function StoryCreateView(props: Readonly<StoryCreateViewProps>) {
           height: 55px;
         `}
       />
-      <HeaderBlock
+      {/* <HeaderBlock
         isToolboxOpen={props.rightPanelOpen}
         previewMode={false}
         headerDetails={{ ...props.headerDetails }}
@@ -113,7 +110,7 @@ function StoryCreateView(props: Readonly<StoryCreateViewProps>) {
         hasStoryNameFocused={props.hasStoryNameFocused}
         setPluginsState={props.setPluginsState}
         handleRightPanelOpen={props.handleRightPanelOpen}
-      />
+      /> */}
       <Container maxWidth="lg">
         <div
           ref={ref}

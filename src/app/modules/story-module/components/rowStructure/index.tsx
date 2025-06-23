@@ -33,8 +33,9 @@ import { usehandleRowFrameItemResize } from "app/hooks/useHandleRowFrameItemResi
 import { Updater } from "use-immer";
 import { useMediaQuery } from "@material-ui/core";
 import { rowStructureHeights } from "./data";
+import { isEmpty } from "lodash";
 
-const _rowStructureDetailItems = [
+const rowStructureDetailItems = [
   [{ rowType: "oneByOne", rowId: "oneByOne-1", width: "100%", factor: 1 }],
   [
     {
@@ -198,18 +199,15 @@ export default function RowFrame(props: RowFrameProps) {
   );
   const containerWidth = useRecoilValue(storyContentContainerWidth);
 
-  const [selectedTypeHistory, setSelectedTypeHistory] = React.useState<
-    string[]
-  >([""]);
-
-  const [rowStructureDetailItems, setRowStructureDetailItems] = React.useState<
-    {
-      rowId: string;
-      width: number;
-      rowType: string;
-      factor: number;
-    }[][]
-  >([]);
+  const [rowStructureDetailItemsState, setRowStructureDetailItemsState] =
+    React.useState<
+      {
+        rowId: string;
+        width: number;
+        rowType: string;
+        factor: number;
+      }[][]
+    >([]);
 
   const contentContainerId = "content-container";
 
@@ -217,16 +215,15 @@ export default function RowFrame(props: RowFrameProps) {
     const contentContainer = document.getElementById(contentContainerId);
     if (contentContainer) {
       const contentContainerWidth = contentContainer.offsetWidth;
-      const newItems = _rowStructureDetailItems.map((item) => {
+      const newItems = rowStructureDetailItems.map((item) => {
         return item.map((subitem) => ({
           ...subitem,
           width: contentContainerWidth * subitem.factor,
         }));
       });
-      setRowStructureDetailItems(newItems);
+      setRowStructureDetailItemsState(newItems);
     }
   };
-
   const onlyView = React.useMemo(() => {
     return (
       !history.location.pathname.includes("/edit") &&
@@ -311,7 +308,7 @@ export default function RowFrame(props: RowFrameProps) {
     }
     props.updateFramesArray((draft) => {
       //the first time you select a row structure, framesArray is set to default values
-      if (selectedTypeHistory.length === 1) {
+      if (isEmpty(tempRowState)) {
         draft[rowIndex] = {
           ...draft[rowIndex],
           content,
@@ -354,7 +351,9 @@ export default function RowFrame(props: RowFrameProps) {
           contentTypes: draftContentTypes,
           content: draftContent,
           contentWidths,
-          contentHeights,
+          contentHeights: Array(content.length).fill(
+            tempRowState.contentHeights[0]
+          ),
           structure,
           frame: {
             ...draft[rowIndex].frame,
@@ -363,11 +362,8 @@ export default function RowFrame(props: RowFrameProps) {
         };
       }
     });
+    setTempRowState({} as IFramesArray); // Reset tempRowState after updating framesArray
   };
-
-  React.useEffect(() => {
-    setSelectedType(selectedTypeHistory[selectedTypeHistory.length - 1]);
-  }, [selectedTypeHistory]);
 
   React.useEffect(() => {
     const contentContainer = document.getElementById(contentContainerId);
@@ -406,7 +402,7 @@ export default function RowFrame(props: RowFrameProps) {
   }, [props.forceSelectedType]);
 
   const contentContainer = document.getElementById(contentContainerId);
-  if (!contentContainer || rowStructureDetailItems.length === 0)
+  if (!contentContainer || rowStructureDetailItemsState.length === 0)
     return <div>loading</div>;
 
   const desktopHeight =
@@ -429,9 +425,8 @@ export default function RowFrame(props: RowFrameProps) {
         rowContentHeights={props.rowContentHeights}
         rowContentWidths={props.rowContentWidths}
         deleteFrame={deleteFrame}
-        selectedTypeHistory={selectedTypeHistory}
-        setSelectedTypeHistory={setSelectedTypeHistory}
-        rowStructureDetailItems={rowStructureDetailItems[0]}
+        setSelectedType={setSelectedType}
+        rowStructureDetailItems={rowStructureDetailItemsState[0]}
         previewItems={props.previewItems}
         onRowBoxItemResize={onRowBoxItemResize}
         setPluginsState={props.setPluginsState}
@@ -454,9 +449,8 @@ export default function RowFrame(props: RowFrameProps) {
         rowContentHeights={props.rowContentHeights}
         rowContentWidths={props.rowContentWidths}
         deleteFrame={deleteFrame}
-        selectedTypeHistory={selectedTypeHistory}
-        setSelectedTypeHistory={setSelectedTypeHistory}
-        rowStructureDetailItems={rowStructureDetailItems[1]}
+        setSelectedType={setSelectedType}
+        rowStructureDetailItems={rowStructureDetailItemsState[1]}
         previewItems={props.previewItems}
         onRowBoxItemResize={onRowBoxItemResize}
         setPluginsState={props.setPluginsState}
@@ -479,9 +473,8 @@ export default function RowFrame(props: RowFrameProps) {
         rowContentHeights={props.rowContentHeights}
         rowContentWidths={props.rowContentWidths}
         deleteFrame={deleteFrame}
-        selectedTypeHistory={selectedTypeHistory}
-        setSelectedTypeHistory={setSelectedTypeHistory}
-        rowStructureDetailItems={rowStructureDetailItems[2]}
+        setSelectedType={setSelectedType}
+        rowStructureDetailItems={rowStructureDetailItemsState[2]}
         previewItems={props.previewItems}
         onRowBoxItemResize={onRowBoxItemResize}
         setPluginsState={props.setPluginsState}
@@ -497,9 +490,8 @@ export default function RowFrame(props: RowFrameProps) {
         height={desktopHeight}
         tabletHeight={tabletHeight}
         selectedType={selectedType}
-        selectedTypeHistory={selectedTypeHistory}
-        setSelectedTypeHistory={setSelectedTypeHistory}
-        rowStructureDetailItems={rowStructureDetailItems[3]}
+        setSelectedType={setSelectedType}
+        rowStructureDetailItems={rowStructureDetailItemsState[3]}
         onRowBoxItemResize={onRowBoxItemResize}
         rowId={props.rowId}
         rowIndex={props.rowIndex}
@@ -529,9 +521,8 @@ export default function RowFrame(props: RowFrameProps) {
         rowContentHeights={props.rowContentHeights}
         rowContentWidths={props.rowContentWidths}
         deleteFrame={deleteFrame}
-        selectedTypeHistory={selectedTypeHistory}
-        setSelectedTypeHistory={setSelectedTypeHistory}
-        rowStructureDetailItems={rowStructureDetailItems[4]}
+        setSelectedType={setSelectedType}
+        rowStructureDetailItems={rowStructureDetailItemsState[4]}
         previewItems={props.previewItems}
         onRowBoxItemResize={onRowBoxItemResize}
         setPluginsState={props.setPluginsState}

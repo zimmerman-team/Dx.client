@@ -78,7 +78,6 @@ export function FontStyleHandler(props: Props) {
   // Handle block type change
   const handleStyleChange = (style: FontStyleType) => {
     if (!props.getEditorState || !props.setEditorState) {
-      console.error("Editor state functions are not provided.");
       return;
     }
     const newState = RichUtils.toggleBlockType(

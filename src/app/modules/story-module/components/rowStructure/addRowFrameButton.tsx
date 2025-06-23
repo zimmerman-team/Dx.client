@@ -31,7 +31,6 @@ export default function AddRowFrameButton(props: Props) {
         content: [],
         contentWidths: [],
         contentHeights: [],
-        textEditorHeights: [],
         contentTypes: [],
         structure: null,
       };
