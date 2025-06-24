@@ -1,10 +1,10 @@
-import { RichUtils, EditorState, EntityInstance } from 'draft-js';
+import { RichUtils, EditorState, EntityInstance } from "draft-js";
 
-export default {
+const editorUtils = () => ({
   createLinkAtSelection(editorState: EditorState, url: string): EditorState {
     const contentState = editorState
       .getCurrentContent()
-      .createEntity('LINK', 'MUTABLE', { url });
+      .createEntity("LINK", "MUTABLE", { url });
     const entityKey = contentState.getLastCreatedEntityKey();
     const withLink = RichUtils.toggleLink(
       editorState,
@@ -39,4 +39,6 @@ export default {
     const entity = this.getCurrentEntity(editorState);
     return Boolean(entity && entity.getType() === entityType);
   },
-};
+});
+
+export default editorUtils;

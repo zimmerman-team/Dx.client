@@ -1,6 +1,6 @@
-import { ContentBlock, ContentState } from 'draft-js';
+import { ContentBlock, ContentState } from "draft-js";
 
-export const matchesEntityType = (type: string): boolean => type === 'LINK';
+export const matchesEntityType = (type: string): boolean => type === "LINK";
 
 export default function strategy(
   contentBlock: ContentBlock,

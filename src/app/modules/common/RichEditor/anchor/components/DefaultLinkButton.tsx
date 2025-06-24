@@ -1,6 +1,6 @@
-import React, { ReactElement, MouseEvent } from 'react';
-import clsx from 'clsx';
-import { LinkButtonTheme } from './LinkButton';
+import React, { ReactElement, MouseEvent } from "react";
+import clsx from "clsx";
+import { LinkButtonTheme } from "./LinkButton";
 
 export interface DefaultLinkButtonProps {
   hasLinkSelected: boolean;

@@ -1,6 +1,6 @@
 import { useMemo } from "react";
 
-import createLinkPlugin from "@draft-js-plugins/anchor";
+import createLinkPlugin from "app/modules/common/RichEditor/anchor";
 import createToolbarPlugin from "@draft-js-plugins/static-toolbar";
 import createUndoPlugin from "@draft-js-plugins/undo";
 import createTextAlignmentPlugin from "@draft-js-plugins/text-alignment";
@@ -33,7 +33,6 @@ export const useEditorPlugins = () => {
       createLinkPlugin({
         linkTarget: "_blank",
         placeholder: "Enter a URL and press enter",
-
         LinkButton,
       }),
     [buttonStyles, Tooltip]

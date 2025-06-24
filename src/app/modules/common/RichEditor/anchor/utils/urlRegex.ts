@@ -1,8 +1,8 @@
-import tlds from 'tlds';
+import tlds from "tlds";
 
 const v4 =
-  '(?:25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])(?:\\.(?:25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])){3}';
-const v6seg = '[0-9a-fA-F]{1,4}';
+  "(?:25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])(?:\\.(?:25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9][0-9]|[0-9])){3}";
+const v6seg = "[0-9a-fA-F]{1,4}";
 const v6 = `
 (
 (?:${v6seg}:){7}(?:${v6seg}|:)|                                // 1:2:3:4:5:6:7::  1:2:3:4:5:6:7:8
@@ -15,8 +15,8 @@ const v6 = `
 (?::((?::${v6seg}){0,5}:${v4}|(?::${v6seg}){1,7}|:))           // ::2:3:4:5:6:7:8  ::2:3:4:5:6:7:8  ::8             ::1.2.3.4
 )(%[0-9a-zA-Z]{1,})?                                           // %eth0            %1
 `
-  .replace(/\s*\/\/.*$/gm, '')
-  .replace(/\n/g, '')
+  .replace(/\s*\/\/.*$/gm, "")
+  .replace(/\n/g, "")
   .trim();
 
 interface Options {
@@ -26,31 +26,31 @@ interface Options {
 const ipRegex = (opts?: Options): RegExp =>
   opts && opts.exact
     ? new RegExp(`(?:^${v4}$)|(?:^${v6}$)`)
-    : new RegExp(`(?:${v4})|(?:${v6})`, 'g');
+    : new RegExp(`(?:${v4})|(?:${v6})`, "g");
 
 ipRegex.v4 = (opts?: Options): RegExp =>
-  opts && opts.exact ? new RegExp(`^${v4}$`) : new RegExp(v4, 'g');
+  opts && opts.exact ? new RegExp(`^${v4}$`) : new RegExp(v4, "g");
 ipRegex.v6 = (opts?: Options): RegExp =>
-  opts && opts.exact ? new RegExp(`^${v6}$`) : new RegExp(v6, 'g');
+  opts && opts.exact ? new RegExp(`^${v6}$`) : new RegExp(v6, "g");
 
 export default function urlRegex(_opts?: Options): RegExp {
   const opts = Object.assign({ strict: true }, _opts);
-  const protocol = `(?:(?:[a-z]+:)?//)${opts.strict ? '' : '?'}`;
-  const auth = '(?:\\S+(?::\\S*)?@)?';
+  const protocol = `(?:(?:[a-z]+:)?//)${opts.strict ? "" : "?"}`;
+  const auth = "(?:\\S+(?::\\S*)?@)?";
   const ip = ipRegex.v4().source;
-  const host = '(?:(?:[a-z\\u00a1-\\uffff0-9]-*)*[a-z\\u00a1-\\uffff0-9]+)';
+  const host = "(?:(?:[a-z\\u00a1-\\uffff0-9]-*)*[a-z\\u00a1-\\uffff0-9]+)";
   const domain =
-    '(?:\\.(?:[a-z\\u00a1-\\uffff0-9]-*)*[a-z\\u00a1-\\uffff0-9]+)*';
+    "(?:\\.(?:[a-z\\u00a1-\\uffff0-9]-*)*[a-z\\u00a1-\\uffff0-9]+)*";
   const tld = `(?:\\.${
     opts.strict
-      ? '(?:[a-z\\u00a1-\\uffff]{2,})'
-      : `(?:${tlds.sort((a, b) => b.length - a.length).join('|')})`
+      ? "(?:[a-z\\u00a1-\\uffff]{2,})"
+      : `(?:${tlds.sort((a, b) => b.length - a.length).join("|")})`
   })\\.?`;
-  const port = '(?::\\d{2,5})?';
+  const port = "(?::\\d{2,5})?";
   const path = '(?:[/?#][^\\s"]*)?';
   const regex = `(?:${protocol}|www\\.)${auth}(?:localhost|${ip}|${host}${domain}${tld})${port}${path}`;
 
   return opts.exact
-    ? new RegExp(`(?:^${regex}$)`, 'i')
-    : new RegExp(regex, 'ig');
+    ? new RegExp(`(?:^${regex}$)`, "i")
+    : new RegExp(regex, "ig");
 }

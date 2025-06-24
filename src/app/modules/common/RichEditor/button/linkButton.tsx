@@ -1,5 +1,7 @@
+import { DefaultLinkButtonProps } from "@draft-js-plugins/anchor";
 import { Tooltip } from "@material-ui/core";
 import buttonStyles from "app/modules/common/RichEditor/style/buttonStyles.module.css";
+import { PropsWithChildren } from "react";
 
 const LinkIcon = (
   <svg
@@ -31,15 +33,13 @@ const LinkIcon = (
     </defs>
   </svg>
 );
-export const LinkButton = (props: any) => (
+export const LinkButton = (
+  props: PropsWithChildren<DefaultLinkButtonProps>
+) => (
   <Tooltip title="Link">
     <button
       className={buttonStyles.linkButton}
-      onClick={
-        props.hasLinkSelected
-          ? props.onRemoveLinkAtSelection
-          : props.onAddLinkClick
-      }
+      onClick={props.onAddLinkClick}
       onMouseDown={(e) => e.preventDefault()}
     >
       {LinkIcon}
