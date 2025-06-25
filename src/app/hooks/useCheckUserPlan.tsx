@@ -1,4 +1,5 @@
 import { useAuth0 } from "@auth0/auth0-react";
+import { APPLICATION_JSON } from "app/state/api";
 import { fetchPlanLoadingAtom, planDialogAtom } from "app/state/recoil/atoms";
 import { useStoreState } from "app/state/store/hooks";
 import axios from "axios";
@@ -33,8 +34,8 @@ export function useCheckUserPlan() {
         aiAgent: boolean;
         customCharting: boolean;
       };
-      reports: {
-        noOfReports: number;
+      stories: {
+        noOfStories: number;
         basicTemplates: boolean;
         advancedTemplates: boolean;
         mediaSupport: boolean;
@@ -45,7 +46,7 @@ export function useCheckUserPlan() {
     assetsCount: {
       datasets: number;
       charts: number;
-      reports: number;
+      stories: number;
     };
   } | null>(null);
 
@@ -55,7 +56,7 @@ export function useCheckUserPlan() {
     axios
       .get(`${process.env.REACT_APP_API}/users/plan-data`, {
         headers: {
-          "Content-Type": "application/json",
+          "Content-Type": APPLICATION_JSON,
           Authorization: `Bearer ${token}`,
         },
       })
@@ -71,7 +72,7 @@ export function useCheckUserPlan() {
   }, [token]);
 
   const handleClick = (
-    asset: "report" | "chart" | "dataset",
+    asset: "story" | "chart" | "dataset",
     handleCreate: () => void
   ) => {
     if (!isAuthenticated) {
@@ -103,15 +104,15 @@ export function useCheckUserPlan() {
             onTryAgain: () => {},
           });
         }
-      } else if (asset === "report") {
+      } else if (asset === "story") {
         if (
-          userPlan.planData.reports.noOfReports > userPlan.assetsCount.reports
+          userPlan.planData.stories.noOfStories > userPlan.assetsCount.stories
         ) {
           handleCreate();
         } else {
           setPlanDialog({
             open: true,
-            message: `You have reached the <b>${userPlan.planData.reports.noOfReports}</b> reports limit for your ${userPlan.planData.name} Plan. Upgrade to increase.`,
+            message: `You have reached the <b>${userPlan.planData.stories.noOfStories}</b> stories limit for your ${userPlan.planData.name} Plan. Upgrade to increase.`,
             tryAgain: "",
             onTryAgain: () => {},
           });

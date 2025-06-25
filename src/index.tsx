@@ -4,7 +4,7 @@ import React from "react";
 import ReactDOM from "react-dom";
 import "./app/theme/rawgraphs.css";
 import "./app/theme/videoPlayer.css";
-import "./app/modules/common/RichEditor/extraButtonStyles.css";
+import "./app/modules/common/RichEditor/style/extraButtonStyles.css";
 
 import "./index.css";
 import { App } from "app";

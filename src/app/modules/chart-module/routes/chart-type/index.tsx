@@ -16,7 +16,7 @@ import {
 import AISwitch from "app/modules/chart-module/components/switch/AISwitch";
 import { useRecoilState, useResetRecoilState } from "recoil";
 import {
-  chartFromReportAtom,
+  chartFromStoryAtom,
   isChartAIAgentActive,
   isChartAutoMappedAtom,
 } from "app/state/recoil/atoms";
@@ -27,7 +27,7 @@ import { useCheckUserPlan } from "app/hooks/useCheckUserPlan";
 import { IChartType } from "app/state/api/action-reducers/sync/charts";
 
 function ChartBuilderChartType(props: Readonly<ChartBuilderChartTypeProps>) {
-  useTitle("DX Dataxplorer - Chart Type");
+  useTitle("Dataxplorer - Chart Type");
 
   const history = useHistory();
   const { page } = useParams<{ page: string }>();
@@ -61,11 +61,11 @@ function ChartBuilderChartType(props: Readonly<ChartBuilderChartTypeProps>) {
   // access query parameters
   const queryParams = new URLSearchParams(location.search);
   const loadDatasetParamValue = queryParams.get("loadataset");
-  const fromReportParamValue = queryParams.get("fromreport");
-  const reportPage = queryParams.get("page") as string;
+  const fromStoryParamValue = queryParams.get("fromstory");
+  const storyPage = queryParams.get("page") as string;
 
-  const [chartFromReport, setChartFromReport] =
-    useRecoilState(chartFromReportAtom);
+  const [chartFromStory, setChartFromStory] =
+    useRecoilState(chartFromStoryAtom);
 
   React.useEffect(() => {
     //if dataset is empty and not loading, redirect to data page
@@ -99,12 +99,12 @@ function ChartBuilderChartType(props: Readonly<ChartBuilderChartTypeProps>) {
   }, [userPlan]);
 
   React.useEffect(() => {
-    if (fromReportParamValue === "true") {
-      setChartFromReport((prev) => ({
-        ...chartFromReport,
+    if (fromStoryParamValue === "true") {
+      setChartFromStory((prev) => ({
+        ...chartFromStory,
         state: true,
         action: "create",
-        page: reportPage,
+        page: storyPage,
         chartId: "new",
       }));
     }
@@ -119,6 +119,9 @@ function ChartBuilderChartType(props: Readonly<ChartBuilderChartTypeProps>) {
         | null = [];
 
       const chartTypeSuggestionsArr: any = chartTypeSuggestions;
+      if (chartTypeSuggestionsArr?.error) {
+        return [];
+      }
       // check if the dimensions are valid for each chart type
       chartTypeSuggestionsArr?.forEach((cts: any) => {
         const chartDimensions = get(
@@ -259,6 +262,7 @@ function ChartBuilderChartType(props: Readonly<ChartBuilderChartTypeProps>) {
               css={`
                 font-size: 14px;
                 color: ${aIChartSuggestions(ct.id) ? "#fff" : "#262C34"};
+                text-transform: capitalize;
                 b {
                   margin: 0;
                 }

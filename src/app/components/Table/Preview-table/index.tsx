@@ -42,6 +42,8 @@ export default function PreviewTable(props: PreviewTableProps) {
   let dataStats: IdatasStats[] = [];
   let tableData: { [key: string]: number | string | null | boolean }[] = [];
 
+  const tableRef = React.useRef<HTMLDivElement>(null);
+
   if (props.columns.length > 0 && props.dataStats.length > 0) {
     if (props.columns.length < 5) {
       columns = [...props.columns, ...Array(5).fill("")];
@@ -97,7 +99,7 @@ export default function PreviewTable(props: PreviewTableProps) {
           }
         `}
       >
-        <Table css={previewTablecss}>
+        <Table innerRef={tableRef} css={previewTablecss}>
           <TableHead
             css={`
               top: 0;
@@ -203,6 +205,7 @@ export default function PreviewTable(props: PreviewTableProps) {
                         text-overflow: ellipsis;
                         min-width: ${cellIndex === 0 ? "30px" : "auto"};
                         text-align: ${cellIndex === 0 ? "center" : "left"};
+                        font-size: 12px;
                       `}
                     >
                       {data?.[val] ?? ""}
@@ -213,12 +216,13 @@ export default function PreviewTable(props: PreviewTableProps) {
             ))}
           </TableBody>
         </Table>
-        <tr
+        <div
           ref={props.observerTarget}
           css={`
             height: 1px;
+            width: ${tableRef?.current?.clientWidth}px;
           `}
-        ></tr>
+        ></div>
         <div>{props.loading ? <CircleLoader /> : null}</div>
       </TableContainer>
 

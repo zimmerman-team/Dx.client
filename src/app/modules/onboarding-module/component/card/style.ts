@@ -1,23 +1,22 @@
 import { css } from "styled-components/macro";
 
 export const socialloginbuttoncss = css`
-  gap: 15px;
-  width: 100%;
-  height: 56px;
+  gap: 20px;
+  width: 230px;
+  height: 41px;
   display: flex;
-  color: #2e4063;
-  padding: 6px 0;
+  color: #ffffff;
+  padding: 0px 16px;
   font-size: 14px;
   cursor: pointer;
-  font-family: "GothamNarrow-Book", "Helvetica Neue", sans-serif;
-  line-height: 20px;
-  border: 1px solid #231d2c;
+  font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
+  line-height: normal;
   border-radius: 10px;
   flex-direction: row;
   margin-bottom: 16px;
   align-items: center;
-  justify-content: center;
-  background: transparent;
+  background: #6061e5;
+  border: none;
 
   &:hover {
     background: #a1aebd;

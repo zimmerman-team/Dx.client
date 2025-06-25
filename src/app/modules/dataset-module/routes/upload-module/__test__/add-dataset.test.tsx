@@ -92,7 +92,7 @@ test("local file upload of dataset", async () => {
   const file = new File(["(⌐□_□)"], "chucknorris.csv", { type: "text/csv" });
 
   expect(
-    screen.getByText(/Drag and Drop Spreadsheets File here/i)
+    screen.getByText(/Drag and drop your CSV file here/i)
   ).toBeInTheDocument();
 
   const uploadInput = screen.getByTestId("local-upload") as HTMLInputElement;

@@ -1,17 +1,23 @@
 import React from "react";
-import get from "lodash/get";
 import { Link, useHistory } from "react-router-dom";
-import { ReactComponent as NotFoundIcon } from "app/modules/common/no-match-page/asset/404.svg";
 import { ReactComponent as BgImg } from "app/modules/common/no-match-page/asset/bg-ellipse.svg";
-
-import SmallFooter from "app/modules/home-module/components/Footer/smallFooter";
+import { PrimaryButton } from "app/components/Styled/button";
+import HomeFooter from "app/modules/home-module/components/Footer";
 
 // cc:refactor this component, inline css need to be moved to proper styled components
 
 export const NoMatchPage = () => {
   const history = useHistory();
+
   return (
-    <div>
+    <div
+      css={`
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+      `}
+    >
       <div
         css={`
           width: 100%;
@@ -33,13 +39,19 @@ export const NoMatchPage = () => {
           `}
         />
         <div>
-          <NotFoundIcon />
+          <h2
+            css={`
+              font-size: 64px;
+              font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
+              color: #231d2c;
+              margin: 0;
+              line-height: normal;
+            `}
+          >
+            404
+          </h2>
         </div>
-        <div
-          css={`
-            height: 65px;
-          `}
-        />
+
         <div
           css={`
             p {
@@ -51,13 +63,22 @@ export const NoMatchPage = () => {
               color: #6061e5;
               margin: 0;
               line-height: 41px;
+              @media (max-width: 500px) {
+                font-size: 24px;
+                line-height: normal;
+              }
             }
             p:nth-of-type(2) {
               font-size: 18px;
-              font-family: "GothamNarrow-Medium", "Helvetica Neue", sans-serif;
+              font-family: "GothamNarrow-Book", "Helvetica Neue", sans-serif;
               color: #231d2c;
+              margin: 0;
+              margin-top: 24px;
+              @media (max-width: 500px) {
+                font-size: 14px;
+              }
             }
-            margin-bottom: 50px;
+            margin-bottom: 24px;
           `}
         >
           <p>Oops! This page could not be found</p>
@@ -69,74 +90,41 @@ export const NoMatchPage = () => {
         <div
           css={`
             display: flex;
-            gap: 30px;
+            gap: 16px;
             justify-content: center;
+            @media (max-width: 500px) {
+              flex-direction: column;
+              align-items: center;
+              width: 100%;
+              button {
+                width: 182px;
+                height: 48px;
+              }
+            }
           `}
         >
           <Link
             to="/"
             css={`
               text-decoration: none;
-              display: flex;
-              justify-content: center;
-              align-items: center;
-              width: 198px;
-              height: 41px;
-              background: #262c34;
-              border-radius: 20px;
             `}
           >
-            <span
-              css={`
-                font-family: "GothamNarrow-Medium", "Helvetica Neue", sans-serif;
-                font-size: 14px;
-                font-style: normal;
-                font-stretch: normal;
-                line-height: 1.5;
-                letter-spacing: 0.15px;
-                color: white;
-                text-transform: uppercase;
-              `}
-            >
+            <PrimaryButton bg="dark" size="big">
               Back to Home Page
-            </span>
+            </PrimaryButton>
           </Link>
-          <button
+          <PrimaryButton
             onClick={() => {
               history.go(-1);
             }}
-            css={`
-              text-decoration: none;
-              border: none;
-              outline: none;
-              display: flex;
-              justify-content: center;
-              align-items: center;
-              width: 164px;
-              height: 41px;
-              background: #6061e5;
-              border-radius: 30px;
-              cursor: pointer;
-            `}
+            bg="light"
+            size="big"
           >
-            <span
-              css={`
-                font-family: "GothamNarrow-Medium", "Helvetica Neue", sans-serif;
-                font-size: 14px;
-                font-style: normal;
-                font-stretch: normal;
-                line-height: 1.5;
-                letter-spacing: 0.15px;
-                color: white;
-                text-transform: uppercase;
-              `}
-            >
-              Previous page
-            </span>
-          </button>
+            Previous page
+          </PrimaryButton>
         </div>
       </div>
-      <SmallFooter />
+      <HomeFooter mini />
     </div>
   );
 };

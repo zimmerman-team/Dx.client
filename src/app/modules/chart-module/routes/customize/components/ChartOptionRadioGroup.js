@@ -38,7 +38,7 @@ const ChartOptionCheckboxes = ({
               align-items: center;
               justify-content: space-between;
               color: #231d2c;
-              font-family: "Roboto", sans-serif;
+              font-family: "GothamNarrow-Book", "Helvetica Neue", sans-serif;
               font-weight: 500;
               padding-left: 10px;
               div:nth-child(2) {

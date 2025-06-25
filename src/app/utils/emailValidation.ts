@@ -1,4 +1,5 @@
 import * as yup from "yup";
+import validator from "validator";
 
 function emailValidation(email: string): boolean {
   const emailRegexp = new RegExp(
@@ -18,11 +19,12 @@ export const emailSchema = yup
   })
   .required();
 
-const urlPattern =
-  /^(https?:\/\/(?:www\.)?[a-zA-Z0-9\-._~:/?#[\]@!$&'()*+,;=%]+)?$/;
-// const urlPattern =
-//   /^(https?:\/\/)?((([a-zA-Z0-9$_.+!*'(),;?&=-]|%[0-9a-fA-F]{2})+\.)*([a-zA-Z0-9$_.+!*'(),;?&=-]|%[0-9a-fA-F]{2})+\.[a-zA-Z]{2,})(:\d+)?(\/([a-zA-Z0-9$_.+!*'(),;?&=-]|%[0-9a-fA-F]{2})*)*(\?([a-zA-Z0-9$_.+!*'(),;?&=-]|%[0-9a-fA-F]{2})*)?(#([a-zA-Z0-9$_.+!*'(),;?&=-]|%[0-9a-fA-F]{2})*)?$/;
-
 export function isValidUrl(url: string) {
-  return urlPattern.test(url);
+  return (
+    url.length === 0 ||
+    validator.isURL(url, {
+      protocols: ["https", "http"],
+      require_protocol: false,
+    })
+  );
 }

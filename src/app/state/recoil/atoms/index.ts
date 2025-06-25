@@ -15,14 +15,18 @@ export interface IRowFrameStructure {
   index: number;
 }
 
+export type textEditorElementIdAtomType =
+  | "headerTitle"
+  | "headerSubtitle"
+  | "boxText";
 const { persistAtom } = recoilPersist();
 
 export const emptyRowsAtom = atom({
   key: "emptyRowsAtom",
   default: false,
 });
-export const untitledReportAtom = atom({
-  key: "untitledReportAtom",
+export const untitledStoryAtom = atom({
+  key: "untitledStoryAtom",
   default: false,
 });
 
@@ -38,16 +42,48 @@ export const allAssetsSortBy = atom<"name" | "updatedDate" | "createdDate">({
   effects_UNSTABLE: [persistAtom],
 });
 
-export const homeDisplayAtom = atom<"all" | "data" | "charts" | "reports">({
-  key: "homeDisplayAtom",
-  default: "all",
+export const allAssetsFilterBy = atom<"allAssets" | "myAssets">({
+  key: "allAssetsFilterBy",
+  default: "allAssets",
   effects_UNSTABLE: [persistAtom],
 });
 
-export const reportRightPanelViewAtom = atom<
+export const externalDataSortByAtom = atom<
+  "name" | "updatedDate" | "createdDate"
+>({
+  key: "externalDataSortByAtom",
+  default: "updatedDate",
+  effects_UNSTABLE: [persistAtom],
+});
+
+export const shareAssetDetailsAtom = atom<{
+  assetURL: string;
+  title: string;
+}>({
+  key: "shareAssetDetailsAtom",
+  default: {
+    assetURL: "",
+    title: "",
+  },
+});
+
+export const textEditorElementIdAtom = atom<textEditorElementIdAtomType | null>(
+  {
+    key: "textEditorElementIdAtom",
+    default: null,
+  }
+);
+
+export const homeDisplayAtom = atom<"all" | "data" | "charts" | "stories">({
+  key: "homeDisplayAtom",
+  default: "stories",
+  effects_UNSTABLE: [persistAtom],
+});
+
+export const storyRightPanelViewAtom = atom<
   "elements" | "charts" | "media" | "editHeader"
 >({
-  key: "reportRightPanelViewAtom",
+  key: "storyRightPanelViewAtom",
   default: "charts",
 });
 
@@ -76,18 +112,18 @@ export const isChartAutoMappedAtom = atom<boolean>({
   default: false,
 });
 
-export const reportContentIsResizingAtom = atom<boolean>({
-  key: "reportContentIsResizing",
+export const storyContentIsResizingAtom = atom<boolean>({
+  key: "storyContentIsResizing",
   default: false,
 });
 
-export const reportContentContainerWidth = atom<number>({
-  key: "reportContentContainerWidth",
+export const storyContentContainerWidth = atom<number>({
+  key: "storyContentContainerWidth",
   default: 0,
 });
 
-export const reportCreationTourStepAtom = atom<number>({
-  key: "reportCreationTourStepAtom",
+export const storyCreationTourStepAtom = atom<number>({
+  key: "storyCreationTourStepAtom",
   default: 0,
 });
 
@@ -97,31 +133,34 @@ export const loadedDatasetsAtom = atom<DatasetListItemAPIModel[]>({
   effects_UNSTABLE: [persistAtom],
 });
 
-export const chartFromReportAtom = atom<{
+export const loadedChartsInStoryAtom = atom<string[]>({
+  key: "loadedChartsInStoryAtom",
+  default: [],
+});
+
+export const chartsRenderedAtom = atom<{
+  [key: string]: {
+    renderCount: number;
+    finishedCount: number;
+  };
+}>({
+  key: "chartsRenderedAtom",
+  default: {},
+});
+
+export const chartFromStoryAtom = atom<{
   state: boolean;
   view: string;
   page: string;
   action: "create" | "edit" | null;
   chartId: string | null;
 }>({
-  key: "chartFromReportAtom",
+  key: "chartFromStoryAtom",
   default: {
     state: false,
     view: "",
     page: "",
     action: null,
-    chartId: null,
-  },
-  effects_UNSTABLE: [persistAtom],
-});
-
-export const newChartAtom = atom<{
-  state: boolean;
-  chartId: string | null;
-}>({
-  key: "newChartAtom",
-  default: {
-    state: false,
     chartId: null,
   },
   effects_UNSTABLE: [persistAtom],

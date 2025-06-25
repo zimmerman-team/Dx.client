@@ -27,6 +27,7 @@ import {
 } from "app/modules/callback-module/payment";
 import { useRecoilValue } from "recoil";
 import { fetchPlanLoadingAtom } from "./state/recoil/atoms";
+import { APPLICATION_JSON } from "./state/api";
 
 const LandingModule = lazy(
   () => import("app/modules/home-module/sub-modules/landing")
@@ -53,7 +54,7 @@ const EmbedChartModule = lazy(
 );
 
 const ChartModule = lazy(() => import("app/modules/chart-module"));
-const ReportModule = lazy(() => import("app/modules/report-module"));
+const StoryModule = lazy(() => import("app/modules/story-module"));
 
 const AuthCallbackModule = lazy(() => import("app/modules/callback-module"));
 const OnboardingModule = lazy(() => import("app/modules/onboarding-module"));
@@ -184,7 +185,7 @@ const IntercomBootupComponent = () => {
         `${process.env.REACT_APP_API}/users/intercom-hash`,
         {
           headers: {
-            "Content-Type": "application/json",
+            "Content-Type": APPLICATION_JSON,
             Authorization: `Bearer ${newToken}`,
           },
         }
@@ -227,6 +228,18 @@ const IntercomBootupComponent = () => {
   return <></>;
 };
 
+const StripeReturn = () => {
+  const history = useHistory();
+  React.useEffect(() => {
+    // Get the saved return route, remove from LS and redirect
+    const returnRoute =
+      localStorage.getItem("upgradeReturnRoute") ?? "/user-management/billing";
+    localStorage.removeItem("upgradeReturnRoute");
+    history.replace(returnRoute);
+  }, []);
+  return <></>;
+};
+
 export function MainRoutes() {
   useScrollToTop();
   useRouteListener();
@@ -251,6 +264,9 @@ export function MainRoutes() {
           <Route exact path="/callback">
             <AuthCallbackModule />
           </Route>
+          <Route exact path="/stripe-return">
+            <StripeReturn />
+          </Route>
           <RouteWithAppBar exact path="/">
             <HomeModule />
           </RouteWithAppBar>
@@ -268,9 +284,9 @@ export function MainRoutes() {
               <DashboardModule />
             </AuthProtectedRoute>
           </RouteWithAppBar>
-          <RouteWithAppBar exact path="/report/:page/:view?">
+          <RouteWithAppBar exact path="/story/:page/:view?">
             <AuthProtectedRoute>
-              <ReportModule />
+              <StoryModule />
             </AuthProtectedRoute>
           </RouteWithAppBar>
           <RouteWithAppBar exact path="/dataset/:page/:view?">
@@ -313,6 +329,7 @@ export function MainRoutes() {
           <RouteWithAppBar exact path="/payment/canceled">
             <PaymentCanceledCallbackModule />
           </RouteWithAppBar>
+
           <RouteWithAppBar path="*">
             <NoMatchPage />
           </RouteWithAppBar>

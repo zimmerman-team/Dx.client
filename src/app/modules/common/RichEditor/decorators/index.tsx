@@ -1,50 +1,10 @@
-import { CompositeDecorator, ContentBlock, ContentState } from "draft-js";
-import React from "react";
+import { CompositeDecorator } from "draft-js";
+import { LinkDecorator, linkStrategy } from "./linkDecorator";
 
-type Decorator = {
-  contentState: ContentState;
-  entityKey: string;
-  children: string;
-};
-
-function strategy(
-  block: ContentBlock,
-  callback: (start: number, end: number) => void,
-  contentState: ContentState
-) {
-  block.findEntityRanges((character) => {
-    const entityKey = character.getEntity();
-    return (
-      entityKey !== null &&
-      contentState.getEntity(entityKey).getType() === "LINK"
-    );
-  }, callback);
-}
-
-const LinkDecorator = ({
-  contentState,
-  entityKey,
-  children,
-  ...props
-}: Decorator) => {
-  const { url } = contentState.getEntity(entityKey).getData();
-  return (
-    <a
-      css={`
-        color: #6061e5;
-      `}
-      href={url}
-      target="_blank"
-      rel="noopener noreferrer"
-    >
-      {children}
-    </a>
-  );
-};
-
-export const linkDecorator = new CompositeDecorator([
-  {
-    strategy: strategy,
-    component: LinkDecorator,
-  },
-]);
+export const decorators = () =>
+  new CompositeDecorator([
+    {
+      strategy: linkStrategy,
+      component: LinkDecorator,
+    },
+  ]);

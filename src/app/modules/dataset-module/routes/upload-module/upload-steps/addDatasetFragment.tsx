@@ -71,7 +71,7 @@ export default function AddDatasetFragment(props: Props) {
     {
       name: "Local upload",
       type: "Table Dataset",
-      formats: ["CSV", "XSLX", "JSON", "ODS", "SQLite"],
+      formats: ["CSV", "XSLX", "JSON"],
       icon: <LocalIcon />,
       onClick: () => {},
       upgradeRequired: false,
@@ -160,39 +160,6 @@ export default function AddDatasetFragment(props: Props) {
 
   return (
     <>
-      <div
-        css={`
-          h1 {
-            font-family: "Inter", sans-serif;
-            font-size: 24px;
-            font-weight: 700;
-            color: #231d2c;
-            margin: 0px;
-          }
-          p {
-            color: #231d2c;
-            font-family: "GothamNarrow-Book", "Helvetica Neue", sans-serif;
-            font-size: 14px;
-            font-weight: 325;
-            line-height: 20px;
-            letter-spacing: 0.5px;
-            margin: 0px;
-            padding: 0px;
-          }
-        `}
-      >
-        <h1>File Upload</h1>
-        <Box height={22} />
-        <p>
-          Upload your favourite data effortlessly in Dataxplorer, and with just
-          a few clicks, import datasets without the hassle of downloading,{" "}
-          <br />
-          enabling you to visualize and analyse diverse data like never before.
-        </p>
-      </div>
-
-      <Box height={48} />
-
       {props.activeOption === "Local upload" ? (
         <>
           <DropZone

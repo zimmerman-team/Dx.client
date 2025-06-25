@@ -2,13 +2,15 @@
 
 describe("Dashboard", () => {
   const apiUrl = Cypress.env("api_url");
+
   beforeEach(() => {
+    // restore login session
+    cy.restoreLocalStorageCache();
     cy.intercept("GET", `${apiUrl}/assets**`).as("fetchAssets");
     cy.intercept("GET", `${apiUrl}/datasets?filter=*`).as("fetchDatasets");
     cy.intercept("GET", `${apiUrl}/charts*`).as("fetchCharts");
-    cy.intercept(`${apiUrl}/reports?filter=*`).as("fetchReports");
+    cy.intercept(`${apiUrl}/stories?filter=*`).as("fetchStories");
 
-    cy.restoreLocalStorageCache();
     cy.visit("/");
 
     cy.get('[data-cy="cookie-btn"]').click();
@@ -18,7 +20,7 @@ describe("Dashboard", () => {
     cy.get('[data-cy="home-all-tab"]').scrollIntoView().click();
     cy.wait("@fetchAssets");
     cy.get('[data-cy="dataset-grid-item"]').should("be.visible");
-    cy.get('[data-cy="report-grid-item"]').should("be.visible");
+    cy.get('[data-cy="story-grid-item"]').should("be.visible");
     cy.get('[data-cy="dataset-grid-item"]').should("be.visible");
   });
 
@@ -69,14 +71,14 @@ describe("Dashboard", () => {
 
     cy.visit("/");
 
-    cy.get('[data-cy="home-reports-tab"]').scrollIntoView().click();
-    cy.wait("@fetchReports");
+    cy.get('[data-cy="home-stories-tab"]').scrollIntoView().click();
+    cy.wait("@fetchStories");
 
     cy.get('[data-cy="homepage-table"]').within(() => {
-      cy.get('[data-cy="table-row-report"]').first().click();
+      cy.get('[data-cy="table-row-story"]').first().click();
     });
 
-    cy.location("pathname").should("include", "/report/");
+    cy.location("pathname").should("include", "/story/");
 
     cy.visit("/");
   });

@@ -11,11 +11,7 @@ interface AuthProtectedRouteProps {
 export function AuthProtectedRoute(props: AuthProtectedRouteProps) {
   const { getAccessTokenSilently } = useAuth0();
   const location = useLocation();
-  const exemptedRoutes = [
-    "/report/:page",
-    "/chart/:page",
-    "/dataset/:page/detail",
-  ];
+  const exemptedRoutes = ["/story/:page", "/chart/:page", "/dataset/:page"];
   const [loading, setLoading] = React.useState(true);
   const history = useHistory();
   const destination = location.pathname;
@@ -39,7 +35,7 @@ export function AuthProtectedRoute(props: AuthProtectedRouteProps) {
           return;
         }
         history.replace(
-          `/onboarding/login?to=${destination}${location.search}`
+          `/onboarding/signin?to=${destination}${location.search}`
         );
       });
   }, []);

@@ -2,7 +2,7 @@ import React from "react";
 import BackupIcon from "app/modules/home-module/sub-modules/pricing/assets/backup";
 import AddChartIcon from "app/modules/home-module/sub-modules/pricing/assets/add-chart";
 import GoodIcon from "app/modules/home-module/sub-modules/pricing/assets/good-icon";
-import ReportIcon from "app/modules/home-module/sub-modules/pricing/assets/report";
+import StoryIcon from "app/modules/home-module/sub-modules/pricing/assets/story";
 import UserShieldIcon from "app/modules/home-module/sub-modules/pricing/assets/user-shied";
 import SupportIcon from "app/modules/home-module/sub-modules/pricing/assets/support";
 import InfoIcon from "app/modules/home-module/sub-modules/pricing/assets/info-icon";
@@ -14,7 +14,7 @@ const Features = () => {
       title: "Connect Data",
       subtitle:
         "Effortlessly integrate your data from multiple sources with our comprehensive data connection features.",
-      color: "#73D3CD",
+      color: "#DADAF8",
       icon: BackupIcon,
       options: [
         {
@@ -28,7 +28,7 @@ const Features = () => {
           ],
         },
         {
-          name: "Federated search",
+          name: "External search",
           info: "Access to datasources like Worldbank, Kaggle, WHO, HDX and more.",
           values: ["Max 12 results", "Unlimited", "Unlimited", "Unlimited"],
         },
@@ -110,15 +110,15 @@ const Features = () => {
       ],
     },
     {
-      title: "Create report",
+      title: "Create story",
       subtitle:
-        "Create comprehensive reports effortlessly with our versatile report creation tools.",
+        "Create comprehensive stories effortlessly with our versatile story creation tools.",
       color: "#E492BD",
-      icon: ReportIcon,
+      icon: StoryIcon,
       options: [
         {
-          name: "Number of reports",
-          info: "The amount of reports you can manage.",
+          name: "Number of stories",
+          info: "The amount of stories you can manage.",
           values: [5, 100, "1.000", "10.000"],
         },
         {
@@ -137,14 +137,14 @@ const Features = () => {
           values: ["", true, true, true],
         },
         {
-          name: "Report AI Chat",
+          name: "Story AI Chat",
           info: "Talk to your data",
           button: true,
           values: ["", true, true, true],
         },
         {
-          name: "Report AI Builder",
-          info: "Use AI Agent to draft your Report",
+          name: "Story AI Builder",
+          info: "Use AI Agent to draft your Story",
           button: true,
           values: ["", true, true, true],
         },
@@ -221,7 +221,6 @@ const Features = () => {
       key={option.name}
       css={`
         display: flex;
-
         justify-content: space-between;
         border-top: 1px solid rgba(223, 227, 229, 0.5);
         :last-of-type {
@@ -237,10 +236,10 @@ const Features = () => {
           margin: 0;
           padding: 0px 12px;
           line-height: normal;
-          font-family: "Inter", sans-serif;
-          font-size: 13px;
+          font-family: "GothamNarrow-Book", "Helvetica Neue", sans-serif;
+          font-size: 14px;
           font-style: normal;
-          font-weight: 500;
+          font-weight: 325;
           white-space: pre-line;
           button {
             border: none;
@@ -303,22 +302,24 @@ const Features = () => {
             css={`
               margin: 0;
               line-height: normal;
-              font-family: "Inter", sans-serif;
+              font-family: "GothamNarrow-Book", "Helvetica Neue", sans-serif;
               font-size: 14px;
               font-style: normal;
-              font-weight: 500;
+              font-weight: 325;
               color: #252c34;
-              /* text-align: center; */
               display: flex;
               justify-content: center;
               background: rgba(202, 202, 202, 0.1);
               width: 224px;
               padding: 9px 0;
               position: relative;
+              @media (max-width: 1300px) {
+                width: 179px;
+              }
             `}
           >
             {value === ">" || value === "<" ? (
-              <div
+              <span
                 css={`
                   position: absolute;
                   width: 24px;
@@ -373,7 +374,7 @@ const Features = () => {
                       line-height: normal;
                       font-family: "GothamNarrow-Bold", "Helvetica Neue",
                         sans-serif;
-                      font-size: 20px;
+                      font-size: 24px;
                     `}
                   >
                     {feature.title}
@@ -384,10 +385,11 @@ const Features = () => {
                     margin: 0;
                     padding: 0;
                     color: #787f88;
-                    font-family: Inter;
+                    font-family: "GothamNarrow-Book", "Helvetica Neue",
+                      sans-serif;
                     font-size: 12px;
                     font-style: normal;
-                    font-weight: 500;
+                    font-weight: 325;
                     white-space: pre-line;
                     line-height: normal;
                     margin-top: 8px;
@@ -412,6 +414,9 @@ const Features = () => {
                         background: rgba(202, 202, 202, 0.1);
                         width: 224px;
                         height: 100%;
+                        @media (max-width: 1300px) {
+                          width: 179px;
+                        }
                       `}
                     />
                   ))}
@@ -449,6 +454,9 @@ const Features = () => {
                       ? `border-bottom-right-radius: 20px;
                           border-bottom-left-radius: 20px;`
                       : ""}
+                    @media (max-width: 1300px) {
+                      width: 179px;
+                    }
                   `}
                 />
               ))}

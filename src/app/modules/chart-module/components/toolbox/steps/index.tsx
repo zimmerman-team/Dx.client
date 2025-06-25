@@ -18,7 +18,7 @@ import { isEmpty } from "lodash";
 import { ToolboxNavType } from "app/modules/chart-module/components/toolbox/data";
 
 import { ChartRenderedItem } from "app/modules/chart-module/data";
-import { chartFromReportAtom, newChartAtom } from "app/state/recoil/atoms";
+import { chartFromStoryAtom } from "app/state/recoil/atoms";
 import { useRecoilState } from "recoil";
 
 interface ChartToolBoxStepsProps {
@@ -57,9 +57,8 @@ export function ChartToolBoxSteps(props: ChartToolBoxStepsProps) {
   const appliedFilters = useStoreState(
     (state) => state.charts.appliedFilters.value
   );
-  const [newChart, setNewChart] = useRecoilState(newChartAtom);
-  const [chartFromReport, setChartFromReport] =
-    useRecoilState(chartFromReportAtom);
+  const [chartFromStory, setChartFromStory] =
+    useRecoilState(chartFromStoryAtom);
   let appliedFiltersCount = 0;
 
   Object.keys(appliedFilters || {}).forEach((key) => {
@@ -67,20 +66,14 @@ export function ChartToolBoxSteps(props: ChartToolBoxStepsProps) {
   });
 
   const handleSave = () => {
-    const { page: reportPage, view: reportView } = chartFromReport;
+    const { page: storyPage, view: storyView } = chartFromStory;
     if (!isEmpty(props.mappedData)) {
       props.save();
-      if (chartFromReport.state) {
-        setChartFromReport((prev) => ({ ...prev, chartId: page }));
-        history.push(`/report/${reportPage}/edit`);
+      if (chartFromStory.state) {
+        setChartFromStory((prev) => ({ ...prev, chartId: page }));
+        history.push(`/story/${storyPage}/edit`);
       } else {
-        if (newChart.state && newChart.chartId === page) {
-          props.setShowSnackbar("Chart saved successfully");
-          setNewChart({
-            state: false,
-            chartId: null,
-          });
-        }
+        props.setShowSnackbar("Your chart has been successfully saved!");
         history.push(`/chart/${page}`);
       }
     }
@@ -160,7 +153,7 @@ export function ChartToolBoxSteps(props: ChartToolBoxStepsProps) {
         css={`
           width: 400px;
           overflow-y: hidden;
-          height: calc(100vh - 229px);
+          height: calc(100vh - 231px);
           position: relative;
 
           &::-webkit-scrollbar {
@@ -189,20 +182,18 @@ export function ChartToolBoxSteps(props: ChartToolBoxStepsProps) {
           button {
             outline: none;
             border: none;
-            border-radius: 8px;
+            border-radius: 12px;
             width: 188px;
             height: 48px;
-            background: #dfe3e5;
             display: flex;
             align-items: center;
             justify-content: center;
             font-size: 14px;
             font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
             cursor: ${props.isClickable ? "pointer" : "not-allowed"};
-            /* pointer-events: ${props.isClickable ? "auto" : "none"}; */
             :nth-child(1) {
-              background: #dfe3e5;
-              color: #262c34;
+              background: ${currentPathIndex !== 0 ? "#adb5bd" : "#DFE3E5"};
+              color: #231d2c;
             }
             :nth-child(2) {
               background: #262c34;

@@ -70,25 +70,29 @@ export default function TourStart(props: {
               line-height: 41px;
               margin-bottom: 0px;
               margin-left: 0;
-              font-family: "Inter", sans-serif;
+              font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
             `}
           >
-            Welcome to the Dataxplorer report builder!
+            Welcome to the Dataxplorer story builder!
           </p>
           <p
             css={`
               margin-top: 19px;
               font-size: 14px;
               line-height: normal;
+              font-weight: 400;
+              font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
             `}
           >
-            <b>Are you ready to create your first report?</b>
+            <b>Are you ready to create your first story?</b>
           </p>
           <p
             css={`
               margin-top: 22px;
               font-size: 14px;
               line-height: normal;
+              font-weight: 325;
+              font-family: "GothamNarrow-Book", "Helvetica Neue", sans-serif;
             `}
           >
             Need some help? Follow this quick intro to get familiar with the
@@ -104,9 +108,9 @@ export default function TourStart(props: {
             margin-bottom: 2rem;
             padding-right: 1rem;
             button {
-              font-family: "Inter", sans-serif;
+              font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
               font-size: 14px;
-              font-weight: 500;
+              font-weight: 400;
             }
           `}
         >

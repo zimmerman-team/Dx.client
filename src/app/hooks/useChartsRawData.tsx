@@ -11,6 +11,7 @@ import {
   ChartRenderedItem,
 } from "app/modules/chart-module/data";
 import { isEqual } from "lodash";
+import { APPLICATION_JSON } from "app/state/api";
 
 const getValidMapping = (
   chartFromAPI: ChartRenderedItem | null,
@@ -157,7 +158,7 @@ export function useChartsRawData(props: {
         }/${id}`,
         {
           headers: {
-            "Content-Type": "application/json",
+            "Content-Type": APPLICATION_JSON,
             Authorization: `Bearer ${token}`,
           },
         }
@@ -235,7 +236,7 @@ export function useChartsRawData(props: {
         {
           signal: abortControllerRef.current.signal,
           headers: {
-            "Content-Type": "application/json",
+            "Content-Type": APPLICATION_JSON,
             Authorization: `Bearer ${token}`,
           },
         }
@@ -248,7 +249,9 @@ export function useChartsRawData(props: {
         }
         if (isEmpty(chart)) {
           setChartError(true);
-          setChartErrorMessage("This chart is no longer available.");
+          setChartErrorMessage(
+            "Something went wrong with loading your data!\n\nChoose another dimensions or select different chart type."
+          );
         } else if (response.data.error) {
           setChartErrorMessage(
             "Something went wrong with loading your data!\n\nChoose another dimensions or select different chart type."

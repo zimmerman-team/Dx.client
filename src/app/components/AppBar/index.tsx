@@ -6,211 +6,12 @@ import Toolbar from "@material-ui/core/Toolbar";
 import MUIAppBar from "@material-ui/core/AppBar";
 import Container from "@material-ui/core/Container";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
-import CloseIcon from "@material-ui/icons/CloseOutlined";
 import { NavLink, useLocation, useHistory, Link } from "react-router-dom";
-import { headercss, logocss, navLinkcss } from "app/components/AppBar/style";
+import { headercss, logocss } from "app/components/AppBar/style";
 import { isChartAIAgentActive } from "app/state/recoil/atoms";
 import { useRecoilState } from "recoil";
-import MenuIcon from "@material-ui/icons/Menu";
-
-const NavList = (props: {
-  navLocation: string;
-  setIsNavExpanded?: React.Dispatch<React.SetStateAction<boolean>>;
-}) => {
-  const list = [
-    { name: "Explore", path: "/", cy: "nav-explore", class: "" },
-    {
-      name: "Why Dataxplorer",
-      path: "/why-dataxplorer",
-      cy: "nav-why",
-      class: "why-dataxplorer",
-    },
-    {
-      name: "About",
-      path: "/about",
-      cy: "nav-about",
-      class: "about",
-    },
-    {
-      name: "Partners",
-      path: "/partners",
-      cy: "nav-partners",
-      class: "partners",
-    },
-    { name: "Pricing", path: "/pricing", cy: "nav-pricing", class: "pricing" },
-    { name: "Contact", path: "/contact", cy: "nav-contact", class: "contact" },
-  ];
-  const handleNavigation = () => {
-    props.setIsNavExpanded?.(false);
-    document.body.style.overflow = "auto";
-  };
-  return (
-    <>
-      {list.map((item) => (
-        <div
-          key={item.cy}
-          css={navLinkcss(item.class ?? item.path, props.navLocation)}
-          onClick={handleNavigation}
-        >
-          <NavLink to={item.path} data-cy={item.cy}>
-            <b>{item.name}</b>
-          </NavLink>
-        </div>
-      ))}
-    </>
-  );
-};
-
-function MobileHeader(props: { navLocation: string }) {
-  const history = useHistory();
-  const { user, isAuthenticated } = useAuth0();
-  const [isNavExpanded, setIsNavExpanded] = React.useState(false);
-  const handleNavExpand = () => {
-    if (!isNavExpanded) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "auto";
-    }
-    setIsNavExpanded(!isNavExpanded);
-  };
-  return (
-    <React.Fragment>
-      <div
-        css={`
-          height: ${isNavExpanded ? "100vh" : "66px"};
-          overflow: ${isNavExpanded ? "auto" : "hidden"};
-          padding: 0px 16px 16px 16px;
-          width: 100%;
-          background: ${isNavExpanded ? "#F2F7FD" : "#fff"};
-          transition: all cubic-bezier(0.4, 0, 0.2, 1) 0.3s;
-          position: fixed;
-          top: 0;
-          left: 0;
-          z-index: 101;
-        `}
-      >
-        <div
-          css={`
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            height: 66px;
-          `}
-        >
-          <div
-            css={`
-              display: flex;
-              gap: 8px;
-              align-items: center;
-              height: 100%;
-              /* width: 100%; */
-            `}
-          >
-            <button
-              onClick={handleNavExpand}
-              css={`
-                border: none;
-                outline: none;
-                background: transparent;
-                display: flex;
-                align-items: center;
-                padding: 0px;
-              `}
-            >
-              {isNavExpanded ? (
-                <CloseIcon htmlColor="#1C1B1F" />
-              ) : (
-                <MenuIcon htmlColor="#1C1B1F" />
-              )}
-            </button>
-            <NavLink to="/" css={logocss}>
-              <img src="/logo.svg" alt="logo" />
-            </NavLink>
-          </div>
-          <div
-            css={`
-              width: 100%;
-              display: flex;
-              justify-content: flex-end;
-            `}
-          >
-            {isAuthenticated ? (
-              <button
-                onClick={() => history.push("/user-management/profile")}
-                css={`
-                  min-width: 33px;
-                  height: 33px;
-                  display: flex;
-                  margin-left: 16px;
-                  border-radius: 50%;
-                  align-items: center;
-                  background: #b5b5db;
-                  justify-content: center;
-                  border: none;
-                  font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
-                  font-size: 14px;
-                `}
-              >
-                {user?.given_name?.slice(0, 1) ??
-                  user?.name?.split(" ")[0]?.slice(0, 1)}
-                {user?.family_name?.slice(0, 1) ??
-                  user?.name?.split(" ")[1]?.slice(0, 1)}
-              </button>
-            ) : (
-              <Link
-                to="/onboarding/login"
-                css={`
-                  border-radius: 24.48px;
-                  background: #dadaf8;
-                  display: flex;
-                  width: 100%;
-                  max-width: 110px;
-                  height: 34px;
-                  justify-content: center;
-                  align-items: center;
-                  gap: 8.16px;
-                  color: var(--Primary-Dark, #231d2c);
-                  font-family: "Inter", sans-serif;
-                  font-size: 11.424px;
-                  font-weight: 500;
-                  text-transform: uppercase;
-                  text-decoration: none;
-                  white-space: nowrap;
-                `}
-              >
-                Log in
-              </Link>
-            )}
-          </div>
-        </div>
-        <div
-          css={`
-            padding: 16px 32px;
-            border-bottom: 1px solid #e4e4e4;
-            border-top: 1px solid #e4e4e4;
-            display: flex;
-            flex-direction: column;
-            opacity: ${isNavExpanded ? 1 : 0};
-            background: #f2f7fd;
-            transition: all cubic-bezier(0.4, 0, 0.2, 1) 0.3s;
-            gap: 32px;
-            a {
-              color: #000000;
-              font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
-              font-size: 24px;
-              text-decoration: none;
-            }
-          `}
-        >
-          <NavList
-            navLocation={props.navLocation}
-            setIsNavExpanded={setIsNavExpanded}
-          />
-        </div>
-      </div>
-    </React.Fragment>
-  );
-}
+import { MobileHeader } from "./components/mobile-nav";
+import { NavList } from "./components/nav-list";
 
 export function AppBar() {
   const location = useLocation();
@@ -243,11 +44,13 @@ export function AppBar() {
         <MUIAppBar
           elevation={0}
           position="fixed"
+          id="app-bar-desktop"
           color={location.pathname !== "/" ? "secondary" : "transparent"}
           css={`
             display: flex;
             background-color: #f2f7fd;
           `}
+          data-cy="app-bar"
         >
           <Toolbar
             disableGutters
@@ -255,7 +58,7 @@ export function AppBar() {
             css={`
               gap: 32px;
               width: 100%;
-              height: 48px;
+              height: 50px;
               display: flex;
               flex-direction: row;
               align-items: center;
@@ -291,9 +94,24 @@ export function AppBar() {
                       display: flex;
                       align-items: center;
                     `}
+                    data-cy="header-logo"
                   >
                     <NavLink to="/" css={logocss}>
                       <img src="/logo.svg" alt="logo" />
+                      <div
+                        css={`
+                          font-family: "Inter", sans-serif;
+                          color: #e75656;
+                          font-size: 11.095px;
+                          font-weight: 500;
+                          line-height: 11.095px;
+                          padding: 2.466px 8.09px;
+                          border: 0.736px solid #e75656;
+                          border-radius: 15.41px;
+                        `}
+                      >
+                        beta
+                      </div>
                     </NavLink>
                   </Grid>
                   <Grid
@@ -302,7 +120,7 @@ export function AppBar() {
                     md={10}
                     sm={10}
                     css={`
-                      gap: 20px;
+                      gap: 44px;
                       display: flex;
                       align-items: center;
                       justify-content: flex-end;
@@ -351,63 +169,51 @@ const ActionMenu = () => {
             border: none;
             background: #dadaf8;
             color: #231d2c;
-            font-size: 11.424px;
+            font-size: 16px;
             line-height: normal;
             padding: 0px;
-            font-family: "Inter", sans-serif;
-
-            :nth-child(1) {
-              width: ${isAuthenticated ? "146px" : "110px"};
-              height: 34px;
-              border-radius: 24px;
-              &:hover {
-                opacity: 0.8;
-              }
-            }
-            /* :nth-child(2) {
-              width: 41px;
-              height: 34px;
-              border-radius: 0px 24px 24px 0px;
-              background: ${openActionPopover ? "#b5b5db" : "#dadaf8"};
-              &:hover {
-                background: #b5b5db;
-              } */
-            }
-            svg {
-              ${openActionPopover ? "transform: rotate(180deg)" : ""}
-            }
+            font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
+          }
+          svg {
+            ${openActionPopover ? "transform: rotate(180deg)" : ""}
           }
         `}
       >
-        <Link to={isAuthenticated ? "/dashboard" : "/onboarding/login"}>
-          <button data-cy="appbar-create-report/login">
-            {isAuthenticated ? "MY DASHBOARD" : "Log in"}
-          </button>
-        </Link>
-        {/* {isAuthenticated && (
-          <button
-            onClick={(event: React.MouseEvent<HTMLButtonElement>) => {
-              setActionPopoverAnchorEl(
-                actionPopoverAnchorEl ? null : event.currentTarget
-              );
-            }}
-            data-cy="create-report-dropdown"
+        {!isAuthenticated && (
+          <Link
+            to="/onboarding/signin"
+            data-cy="appbar-create-story/login"
+            css={`
+              background: #6061e5;
+              color: #ffffff !important;
+              font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
+              display: flex;
+              justify-content: center;
+              align-items: center;
+              border-radius: 10px;
+              padding: 10px 16px;
+              line-height: normal;
+            `}
           >
-            <KeyboardArrowDownIcon />
-          </button>
-        )} */}
+            Sign in
+          </Link>
+        )}
+
         {isAuthenticated && (
           <button
             onClick={() => history.push("/user-management/profile")}
+            data-cy="navbar-profile-btn"
             css={`
-              min-width: 33px;
-              height: 33px;
+              min-width: 35px;
+              height: 35px;
               display: flex;
-              margin-left: 16px;
               border-radius: 50%;
               align-items: center;
-              background: #b5b5db;
+              color: #ffffff !important;
+              background: #6061e5 !important;
+              font-family: "GothamNarrow-Medium", "Helvetica Neue", sans-serif;
               justify-content: center;
+              font-weight: 350;
             `}
           >
             {user?.given_name?.slice(0, 1) ??
@@ -468,9 +274,8 @@ const ActionMenu = () => {
                 display: flex;
                 gap: 8px;
                 align-items: center;
-                text-transform: uppercase;
                 font-weight: 500;
-                font-family: "Inter", sans-serif;
+                font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
               }
 
               &:hover,

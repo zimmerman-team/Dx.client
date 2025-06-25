@@ -28,6 +28,7 @@ import {
   multiUnCheckFilterOptions,
 } from "app/modules/chart-module/routes/filters/utils";
 import { isEmpty } from "lodash";
+import { PrimaryButton } from "app/components/Styled/button";
 
 interface ExpandedFilterGroupProps extends FilterGroupModel, FilterGroupProps {
   goBack: () => void;
@@ -74,26 +75,32 @@ export function ExpandedFilterGroup(props: ExpandedFilterGroupProps) {
       setOptionsToShow(props.options);
       return;
     }
-    const searchOptions = (options: FilterGroupOptionModel[]) => {
-      const results: FilterGroupOptionModel[] = [];
+    const results: FilterGroupOptionModel[] = [];
+    try {
+      const searchOptions = (options: FilterGroupOptionModel[]) => {
+        options.forEach((option) => {
+          if (
+            option.label.toString().toLowerCase().indexOf(value.toLowerCase()) >
+            -1
+          ) {
+            results.push(option);
+          } else if (option?.subOptions) {
+            const searchResponse = searchOptions(option.subOptions);
 
-      options.forEach((option) => {
-        if (option.label.toLowerCase().indexOf(value.toLowerCase()) > -1) {
-          results.push(option);
-        } else if (option?.subOptions) {
-          const searchResponse = searchOptions(option.subOptions);
-
-          if (searchResponse.length) {
-            results.push({
-              ...option,
-              subOptions: searchResponse,
-            });
+            if (searchResponse.length) {
+              results.push({
+                ...option,
+                subOptions: searchResponse,
+              });
+            }
           }
-        }
-      });
+        });
+        return results;
+      };
+      setOptionsToShow(searchOptions(props.options));
+    } catch (e) {
       return results;
-    };
-    setOptionsToShow(searchOptions(props.options));
+    }
   };
 
   function handleChangeAll(event: React.ChangeEvent<HTMLInputElement>) {
@@ -231,7 +238,12 @@ export function ExpandedFilterGroup(props: ExpandedFilterGroupProps) {
             `}
           >
             {splitStrBasedOnCapitalLetters(
-              `${props.name[0].toUpperCase()}${props.name.slice(1)}`
+              `${props.name[0].toUpperCase()}${props.name.slice(
+                1
+              )} (${props.options.reduce(
+                (prev, curr) => prev + (curr.count ?? 0),
+                0
+              )})`
             ).replace(/_/g, "")}
           </div>
         </div>
@@ -243,6 +255,7 @@ export function ExpandedFilterGroup(props: ExpandedFilterGroupProps) {
                 checked={allSelected}
                 onChange={handleChangeAll}
                 disabled={searchValue.length > 0}
+                data-cy="select-all-filters-checkbox"
               />
             }
             label="Select all"
@@ -349,27 +362,14 @@ export function ExpandedFilterGroup(props: ExpandedFilterGroupProps) {
           />
         ))}
       </div>
-
-      <button
-        type="button"
-        onClick={handleApply}
+      <div
         css={`
-          color: #fff;
-          font-size: 14px;
-          cursor: pointer;
-          margin-top: 15px;
-          font-weight: 500;
-          width: fit-content;
-          padding: 12px 27px;
-          border-style: none;
-          border-radius: 30px;
-          background: #231d2c;
-          box-shadow: 0px 0px 10px rgba(152, 161, 170, 0.05);
-          font-family: "Inter", sans-serif;
+          height: 15px;
         `}
-      >
+      />
+      <PrimaryButton size="big" bg="dark" type="button" onClick={handleApply}>
         Apply
-      </button>
+      </PrimaryButton>
     </React.Fragment>
   );
 }
@@ -398,7 +398,7 @@ function FilterOption(props: FilterOptionProps) {
       <div
         css={`
           width: 100%;
-          padding: 5px;
+          padding: 5px 24px;
           display: flex;
           position: relative;
           flex-direction: row;
@@ -427,6 +427,7 @@ function FilterOption(props: FilterOptionProps) {
               color="primary"
               checked={props.selected}
               data-testid="filter-option-checkbox"
+              data-cy="filter-option-checkbox"
               onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                 props.onOptionChange(
                   e.target.checked,
@@ -440,7 +441,7 @@ function FilterOption(props: FilterOptionProps) {
               }
             />
           }
-          label={props.label}
+          label={props.label + ` (${props?.count ?? ""})`}
         />
         {props.subOptions && (
           <React.Fragment>

@@ -509,4 +509,5 @@ export const chartPaths = {
   data: `/chart/:page/${chartViews.data}`,
   mapping: `/chart/:page/${chartViews.mapping}`,
   chartType: `/chart/:page/${chartViews.chartType}`,
+  notAvailable: `/chart/:page/not-available`,
 };

@@ -16,6 +16,12 @@ interface IProjectPalette extends Palette {
   icon: Icon;
 }
 
+export const MOBILE_BREAKPOINT = "743px";
+export const TABLET_STARTPOINT = "744px";
+
+export const DESKTOP_BREAKPOINT = "1439px";
+export const DESKTOP_STARTPOINT = "1440px";
+
 const TextStyle: FontStyle = {
   fontFamily: '"GothamNarrow-Book", "Helvetica", "Arial", sans-serif',
   fontSize: 14,
@@ -262,8 +268,9 @@ export default createTheme({
       tooltip: {
         fontSize: 12,
         color: "#fff",
-        backgroundColor: "#373d43",
+        backgroundColor: "#626262",
         fontFamily: '"GothamNarrow-Book", "Helvetica", "Arial", sans-serif',
+        borderRadius: "4px",
       },
     },
     MuiBottomNavigationAction: {
