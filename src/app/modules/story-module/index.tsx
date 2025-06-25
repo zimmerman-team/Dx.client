@@ -193,7 +193,6 @@ export default function StoryModule() {
       {
         id,
         frame: {
-          rowIndex: 0,
           rowId: id,
           type: "rowFrame",
         },
@@ -215,7 +214,6 @@ export default function StoryModule() {
         id: rowOne,
         frame: {
           rowId: rowOne,
-          rowIndex: 0,
           forceSelectedType: "oneByFive",
 
           type: "rowFrame",
@@ -230,7 +228,6 @@ export default function StoryModule() {
         id: rowTwo,
         frame: {
           rowId: rowTwo,
-          rowIndex: 1,
           forceSelectedType: "oneByOne",
 
           type: "rowFrame",
@@ -246,7 +243,6 @@ export default function StoryModule() {
         id: rowFive,
         frame: {
           rowId: rowFive,
-          rowIndex: 2,
           forceSelectedType: "oneByThree",
 
           type: "rowFrame",

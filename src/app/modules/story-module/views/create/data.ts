@@ -3,7 +3,6 @@ import { IHeaderDetails } from "app/modules/story-module/components/right-panel/
 import { Updater } from "use-immer";
 
 interface IRowFrame {
-  rowIndex: number;
   rowId: string;
   forceSelectedType?: string;
   type: "rowFrame" | "divider";

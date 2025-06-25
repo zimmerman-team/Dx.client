@@ -5,7 +5,6 @@ import Container from "@material-ui/core/Container";
 import useResizeObserver from "use-resize-observer";
 import { useRecoilState } from "recoil";
 import { GridColumns } from "app/modules/story-module/components/grid-columns";
-import HeaderBlock from "app/modules/story-module/components/headerBlock";
 import { ItemComponent } from "app/modules/story-module/components/order-container";
 import AddRowFrameButton from "app/modules/story-module/components/rowStructure/addRowFrameButton";
 import RowFrame from "app/modules/story-module/components/rowStructure";
@@ -44,7 +43,7 @@ function StoryCreateView(props: Readonly<StoryCreateViewProps>) {
           id: rowOne,
           frame: {
             rowId: rowOne,
-            rowIndex: 0,
+
             forceSelectedType: "oneByFive",
             type: "rowFrame",
           },
@@ -58,7 +57,6 @@ function StoryCreateView(props: Readonly<StoryCreateViewProps>) {
           id: rowTwo,
           frame: {
             rowId: rowTwo,
-            rowIndex: 1,
             forceSelectedType: "oneByOne",
             type: "rowFrame",
           },
@@ -73,7 +71,6 @@ function StoryCreateView(props: Readonly<StoryCreateViewProps>) {
           id: rowFive,
           frame: {
             rowId: rowFive,
-            rowIndex: 2,
             forceSelectedType: "oneByThree",
             type: "rowFrame",
           },
@@ -150,6 +147,7 @@ function StoryCreateView(props: Readonly<StoryCreateViewProps>) {
                 >
                   <RowFrame
                     {...frame.frame}
+                    rowIndex={index}
                     updateFramesArray={props.updateFramesArray}
                     framesArray={props.framesArray}
                     view={props.view}

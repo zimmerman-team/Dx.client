@@ -51,7 +51,6 @@ const PlaceHolder = (props: PlaceholderProps) => {
             id,
             frame: {
               rowId: id,
-              rowIndex: tempIndex,
 
               type: item.type,
             },

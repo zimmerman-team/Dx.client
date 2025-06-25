@@ -192,6 +192,7 @@ export default function RowstructureDisplay(
     _elementRef: HTMLElement
   ) => {
     const textBoxHeights: number[] = [];
+
     props.framesArray[props.rowIndex].contentTypes.forEach((c, index) => {
       if (c === "text") {
         const box = document.getElementById(`box-${props.rowIndex}-${index}`);

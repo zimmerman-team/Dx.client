@@ -386,6 +386,7 @@ function StoryEditView(props: Readonly<StoryEditViewProps>) {
                   >
                     <RowFrame
                       {...frame.frame}
+                      rowIndex={index}
                       framesArray={props.framesArray}
                       updateFramesArray={props.updateFramesArray}
                       view={props.view}
