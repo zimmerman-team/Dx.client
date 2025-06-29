@@ -25,7 +25,6 @@ export default function AddRowFrameButton(props: Props) {
         id,
         frame: {
           rowId: id,
-          rowIndex: draft.length,
           type: "rowFrame" as "rowFrame",
         },
         content: [],

@@ -69,7 +69,6 @@ export function FontStyleHandler(props: Props) {
     const currentBlock = currentContent.getBlockForKey(selection.getStartKey());
     return currentBlock.getType();
   };
-
   const currentBlockType = getCurrentBlockType();
   const currentStyle =
     fontStylesState.find((style) => style.blockType === currentBlockType) ||
@@ -230,11 +229,11 @@ export function FontStyleHandler(props: Props) {
                     </svg>
                   </button>
                 )}
-                <button>
+                {/* <button>
                   <ChevronRightIcon />
-                </button>
+                </button> */}
               </div>
-              <div
+              {/* <div
                 css={`
                   display: ${style.selected ? "flex" : "none"};
                   width: 250px;
@@ -270,7 +269,7 @@ export function FontStyleHandler(props: Props) {
                 >
                   {promptText(style.label === currentStyle.label, style.label)}
                 </div>
-              </div>
+              </div> */}
             </div>
           ))}
         </div>

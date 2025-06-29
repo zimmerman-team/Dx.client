@@ -7,6 +7,7 @@ import {
   convertToRaw,
 } from "draft-js";
 
+const NOT_HANDLED = "not-handled";
 export const onCopy = (editorState: EditorState) => {
   const selection = editorState.getSelection();
   const content = editorState.getCurrentContent();
@@ -52,7 +53,7 @@ export const handlePaste = (
   setEditorState: (state: EditorState) => void
 ): DraftHandleValue => {
   const rawData = localStorage.getItem("draftClipboard");
-  if (!rawData) return "not-handled";
+  if (!rawData) return NOT_HANDLED;
 
   try {
     const parsed = JSON.parse(rawData);
@@ -65,7 +66,7 @@ export const handlePaste = (
       console.log(
         "📋 Clipboard differs from localStorage. Letting Draft handle it."
       );
-      return "not-handled";
+      return NOT_HANDLED;
     }
     const fragmentContent = convertFromRaw(parsed.content);
 
@@ -92,6 +93,6 @@ export const handlePaste = (
     return "handled";
   } catch (err) {
     console.error("Paste error:", err);
-    return "not-handled";
+    return NOT_HANDLED;
   }
 };

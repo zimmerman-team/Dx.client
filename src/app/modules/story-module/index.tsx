@@ -180,13 +180,6 @@ export default function StoryModule() {
     };
   }, [hasStoryNameBlurred]);
 
-  const deleteFrame = (id: string) => {
-    updateFramesArray((draft) => {
-      const frameId = draft.findIndex((frame) => frame.id === id);
-      draft.splice(frameId, 1);
-    });
-  };
-
   const basicStoryInitialState = () => {
     const id = v4();
     return [
