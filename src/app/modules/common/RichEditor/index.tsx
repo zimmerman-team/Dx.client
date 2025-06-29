@@ -21,6 +21,7 @@ import "@draft-js-plugins/emoji/lib/plugin.css";
 import "./style/indent.css";
 import editorStyles from "./style/editorStyles.module.css";
 import "./fontStyleHandler/style.css";
+import { handlePaste, onCopy } from "app/utils/draftjs/copyPaste";
 
 export const RichEditor = (props: {
   editMode: boolean;
@@ -117,6 +118,7 @@ export const RichEditor = (props: {
 
   return (
     <div
+      onCopy={() => onCopy(props.textContent)}
       className={editorStyles.editor}
       onClick={focus}
       css={`
@@ -168,8 +170,9 @@ export const RichEditor = (props: {
         readOnly={!props.editMode}
         editorState={props.textContent}
         onChange={props.setTextContent}
-        handlePastedText={props.handlePastedText}
-        handleBeforeInput={props.handleBeforeInput}
+        handlePastedText={(text, html, state) =>
+          handlePaste(text, html, state, props.setTextContent)
+        }
         handleKeyCommand={handleKeyCommand}
         onBlur={() => {
           props.onBlur?.();
