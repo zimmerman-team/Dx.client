@@ -12,7 +12,6 @@ import { RichEditor } from "app/modules/common/RichEditor";
 import { ReactComponent as EditIcon } from "app/modules/story-module/asset/editIcon.svg";
 import { ReactComponent as DeleteIcon } from "app/modules/story-module/asset/deleteIcon.svg";
 import { headerBlockcss } from "app/modules/story-module/components/headerBlock/style";
-import { ReactComponent as HeaderHandlesvg } from "app/modules/story-module/asset/header-handle.svg";
 import { Tooltip } from "@material-ui/core";
 import useDebounce from "react-use/lib/useDebounce";
 import { ToolbarPluginsType } from "app/modules/story-module/components/storySubHeaderToolbar/staticToolbar";
@@ -349,9 +348,6 @@ export default function HeaderBlock(props: Props) {
             gap: 4px;
             z-index: 99;
             position: absolute;
-            @media (max-width: 881px) {
-              top: 16.5px;
-            }
           `}
         >
           <div
@@ -454,6 +450,7 @@ export default function HeaderBlock(props: Props) {
             <RichEditor
               invertColors
               editMode={!props.previewMode}
+              elementId="headerTitle"
               setTextContent={(text) => setTextContent(text, "heading")}
               handlePastedText={(text, html, editorState) =>
                 handlePastedText(text, html, editorState, "heading")

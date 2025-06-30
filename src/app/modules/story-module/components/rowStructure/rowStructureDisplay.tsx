@@ -20,10 +20,13 @@ import { rowStructureHeights } from "./data";
 import { calculateWidths } from ".";
 import Box from "./box";
 import { usehandleRowFrameItemResize } from "app/hooks/useHandleRowFrameItemResize";
-import { TABLET_STARTPOINT } from "app/theme";
+import { MOBILE_BREAKPOINT } from "app/theme";
 import { NumberSize, Resizable } from "re-resizable";
 import { Direction } from "re-resizable/lib/resizer";
-import { MIN_BOX_HEIGHT, MIN_BOX_WIDTH } from "app/modules/story-module/data";
+import {
+  MIN_BOX_HEIGHT,
+  MIN_BOX_WIDTH,
+} from "app/modules/story-module/components/rowStructure/data";
 
 interface RowStructureDisplayProps {
   gap: string;
@@ -63,7 +66,6 @@ export default function RowstructureDisplay(
   props: Readonly<RowStructureDisplayProps>
 ) {
   const isTablet = useMediaQuery("(max-width: 1110px)");
-  const RIGHT_PANEL_WIDTH = isTablet ? "36.83%" : "400px"; //percentage value of 274px which is the width at 744px as per design
   const ref = useRef(null);
   useOnClickOutside(ref, () => setHandleDisplay(false));
   const location = useLocation();
@@ -75,6 +77,7 @@ export default function RowstructureDisplay(
     [key: string]: number;
   }>({});
   const [tempHeight, setTempHeight] = useState(0);
+  const [minHeight, setMinHeight] = useState(MIN_BOX_HEIGHT);
   const viewOnlyMode =
     location.pathname === `/story/${page}` ||
     location.pathname === `/story/${page}/downloaded-view`;
@@ -182,6 +185,20 @@ export default function RowstructureDisplay(
     setTempHeight(0);
   };
 
+  const onResizeStart = (
+    _e: React.MouseEvent<HTMLElement> | React.TouchEvent<HTMLElement>,
+    _dir: Direction,
+    _elementRef: HTMLElement
+  ) => {
+    const textEditorHeights = props.framesArray[props.rowIndex]
+      .textEditorHeights as number[];
+    //get the biggest value from the array
+    const maxHeight = Math.max(...textEditorHeights);
+    if (maxHeight && maxHeight > MIN_BOX_HEIGHT) {
+      setMinHeight(maxHeight);
+    }
+  };
+
   return (
     <div
       ref={ref}
@@ -282,12 +299,15 @@ export default function RowstructureDisplay(
           grid={[5, 5]}
           onResize={onResize}
           onResizeStop={onResizeStop}
+          onResizeStart={onResizeStart}
           size={{
             width: "100%",
-            height: get(props.rowContentHeights, `[${0}]`, boxHeight),
+            height: viewOnlyMode
+              ? "100%"
+              : get(props.rowContentHeights, `[${0}]`, boxHeight),
           }}
           minWidth={MIN_BOX_WIDTH}
-          minHeight={MIN_BOX_HEIGHT}
+          minHeight={minHeight}
           enable={{
             bottom: !viewOnlyMode,
           }}
@@ -301,20 +321,18 @@ export default function RowstructureDisplay(
               overflow-y: hidden;
               gap: ${props.gap};
               border: ${border};
-              @media (min-width: ${TABLET_STARTPOINT}) and (max-width: 1260px) {
-                width: ${props.rightPanelOpen
-                  ? `calc(100% - ${RIGHT_PANEL_WIDTH})`
-                  : "100%"};
                 :hover {
                   overflow-x: ${props.rightPanelOpen ? "scroll" : "hidden"};
                 }
               }
-              @media (max-width: 767px) {
+              @media (max-width: ${MOBILE_BREAKPOINT}) {
                 display: grid;
-                grid-template-columns: ${props.forceSelectedType ===
-                  "oneByFive" || props.forceSelectedType === "oneByFour"
-                  ? " auto auto"
-                  : "auto"};
+                grid-template-columns: ${
+                  props.forceSelectedType === "oneByFive" ||
+                  props.forceSelectedType === "oneByFour"
+                    ? " auto auto"
+                    : "auto"
+                };
               }
             `}
             data-cy={`row-frame-${props.rowIndex}`}

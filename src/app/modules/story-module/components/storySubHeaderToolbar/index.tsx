@@ -302,11 +302,6 @@ export function StorySubheaderToolbar(
                     width: 100%;
                   }
                 }
-                /* @media (min-width: 801px) {
-                  @media (max-width: 1199px) {
-                    width: 49%;
-                  }
-                } */
               `}
             >
               <AutoResizeInput
@@ -342,30 +337,6 @@ export function StorySubheaderToolbar(
                     : {}
                 }
               />
-              <div
-                css={`
-                  display: flex;
-                  flex-shrink: 0;
-                  gap: 12px;
-                  @media (min-width: ${TABLET_STARTPOINT}) {
-                    @media (max-width: 1200px) {
-                      display: none;
-                    }
-                  }
-                `}
-              >
-                {view === "edit" && (
-                  <button
-                    css={styles.viewStoryBtn}
-                    onClick={handleViewStory}
-                    data-cy="view-story-button"
-                    aria-label="view story button"
-                  >
-                    <PlayIcon />
-                    View Story
-                  </button>
-                )}
-              </div>
             </div>
           </div>
           {view !== "initial" && (
@@ -397,6 +368,7 @@ export function StorySubheaderToolbar(
                           font-size: 12px;
                           font-weight: 325;
                           margin: 0px;
+                          white-space: nowrap;
                         `}
                       >
                         saving changes{" "}
@@ -426,6 +398,7 @@ export function StorySubheaderToolbar(
                           font-weight: 325;
                           margin: 0px;
                           margin-top: 2px;
+                          white-space: nowrap;
                         `}
                       >
                         All changes saved{" "}
@@ -466,12 +439,6 @@ export function StorySubheaderToolbar(
                           padding: 0px;
                           :disabled {
                             opacity: 0.5;
-                          }
-                          display: none;
-                          @media (min-width: ${TABLET_STARTPOINT}) {
-                            @media (max-width: 1200px) {
-                              display: block;
-                            }
                           }
                         `}
                         data-cy="view-story-button-tablet"

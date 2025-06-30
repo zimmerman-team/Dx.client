@@ -11,6 +11,10 @@ import moment from "moment";
 import InlineLogo from "app/modules/home-module/assets/inline-logo";
 import { DESKTOP_BREAKPOINT, MOBILE_BREAKPOINT } from "app/theme";
 import { useMediaQuery } from "usehooks-ts";
+import {
+  PRIVACY_POLICY_LINK,
+  TERMS_AND_CONDITION_LINK,
+} from "app/modules/chart-module/util/constants/links";
 
 interface Props {
   mini?: boolean;
@@ -27,7 +31,12 @@ export default function DesktopFooter(props: Props) {
   const mobile = useMediaQuery(`(max-width:${MOBILE_BREAKPOINT})`);
   const tablet = useMediaQuery(`(max-width:${DESKTOP_BREAKPOINT})`);
   return (
-    <div css={homeFootercss}>
+    <div
+      css={`
+        ${homeFootercss}
+        border-top: ${props.mini ? "none" : "1px solid #dadaf8"};
+      `}
+    >
       <Container
         maxWidth="lg"
         data-cy="home-footer"
@@ -45,6 +54,7 @@ export default function DesktopFooter(props: Props) {
           <div
             css={`
               padding: 24px 0;
+
               display: flex;
               justify-content: space-between;
               @media (max-width: ${DESKTOP_BREAKPOINT}) {
@@ -483,7 +493,7 @@ export default function DesktopFooter(props: Props) {
             <p>
               {" "}
               <a
-                href="https://drive.google.com/file/d/1andhlQEoaEq5qDxMbtnApXiZborsg-bG/view"
+                href={PRIVACY_POLICY_LINK}
                 className="privacy-link"
                 target="_blank"
                 rel="noreferrer"
@@ -494,7 +504,7 @@ export default function DesktopFooter(props: Props) {
             <p>
               {" "}
               <a
-                href="https://drive.google.com/file/d/1wgY5HYdE5-redIOF85E5fZZJT_YueOWP/view?usp=sharing"
+                href={TERMS_AND_CONDITION_LINK}
                 className="privacy-link"
                 target="_blank"
                 rel="noreferrer"

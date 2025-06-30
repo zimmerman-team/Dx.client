@@ -57,6 +57,7 @@ interface ChartToolBoxMappingItemProps {
   testId: string;
   mappingItemValue: string;
   dataTypes: any[];
+  mapSize?: number;
   marginBottom: string;
   backgroundColor?: string;
   type: "string" | "number" | "date";
@@ -84,7 +85,7 @@ const typeIcon = {
   date: <DateIcon />,
 };
 
-const AGGREGATIONS_LABELS = {
+export const AGGREGATIONS_LABELS = {
   count: "Count",
   mean: "Average",
   median: "Median",
@@ -618,6 +619,7 @@ const NonStaticDimensionContainer = (props: {
                   showAggregation
                   handleButtonToggle={props.handleButtonToggle}
                   setdraggingMappingItem={setdraggingMappingItem}
+                  mapSize={selectedMappingItemsState.length}
                 />
                 <DropPlaceholder
                   placeholderIndex={index + 1}
@@ -697,6 +699,7 @@ const NonStaticDimensionContainer = (props: {
                 handleNonStaticDimensionsUpdate={
                   props.handleNonStaticDimensionsUpdate
                 }
+                mapSize={validTypes.length}
                 dataTypes={props.dataTypes}
                 nonStaticDimensionsId={props.dimension.id}
                 nonStaticDimensionsIndex={props.dimensionIndex}
@@ -732,7 +735,6 @@ const DimensionSelect = (props: {
             > span {
               font-size: 14px;
             }
-            position: relative;
           `}
         >
           <Button
@@ -916,8 +918,9 @@ function ChartToolBoxMappingItem(
     isDragging: isDragging,
     dimension: props.dimension,
     mappingItemValue: props.mappingItemValue,
+    elevate: props.displayCloseButton && !!props.dimension?.aggregation,
+    elevationIndex: props.mapSize ? props.mapSize - props.index : 0,
   };
-
   return (
     <div
       key={props.mappingItemValue}
@@ -969,7 +972,6 @@ function ChartToolBoxMappingItem(
                 position: absolute;
                 right: 55px;
                 top: 2px;
-                z-index: 2;
               `}
             >
               <Dropdown.Toggle

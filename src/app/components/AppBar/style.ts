@@ -14,7 +14,7 @@ export const headercss = css`
       color: #6061e5;
     }
   }
-  button {
+  /* button {
     height: 33.58px;
     padding: 9.792px 35.496px;
     background: #dadaf8;
@@ -31,12 +31,11 @@ export const headercss = css`
     &:hover {
       opacity: 0.8;
     }
-  }
+  } */
 `;
 
 export const logocss = css`
   display: flex;
-  margin-right: 64px;
   justify-content: center;
   gap: 6px;
   text-decoration: none;

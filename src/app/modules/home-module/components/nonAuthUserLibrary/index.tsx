@@ -1,9 +1,15 @@
 import React from "react";
 import Container from "@material-ui/core/Container";
 import AssetsList from "./assetsList";
-import InfoIcon from "./assets/jsx/info-icon";
+import { PrimaryButton } from "app/components/Styled/button";
+import { ReactComponent as Logo } from "app/modules/home-module/assets/logo.svg";
+import { ReactComponent as RightArrow } from "app/modules/home-module/assets/right-arr.svg";
+import { DESKTOP_BREAKPOINT, MOBILE_BREAKPOINT } from "app/theme";
+import { useHistory } from "react-router-dom";
 
 export default function NonAuthUserLibrary() {
+  const history = useHistory();
+
   return (
     <React.Fragment>
       <div
@@ -25,45 +31,71 @@ export default function NonAuthUserLibrary() {
         >
           <div
             css={`
-              padding: 16px 40px;
-              background: #ffffff;
-              border-radius: 12px;
-              color: #6061e5;
-              box-shadow: 0px 4px 16px 0px rgba(0, 0, 0, 0.05);
+              display: flex;
+              justify-content: space-between;
+              align-items: center;
+              h2 {
+                color: #231d2c;
+                font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
+                font-size: 48px;
+                margin: 0;
+                line-height: 100%;
+              }
+              p {
+                color: #231d2c;
+                font-family: "GothamNarrow-Book", "Helvetica Neue", sans-serif;
+                font-size: 18px;
+                line-height: 24px;
+                margin: 0;
+              }
+              @media (max-width: ${DESKTOP_BREAKPOINT}) {
+                flex-direction: column;
+                align-items: flex-start;
+                row-gap: 20px;
+                h2 {
+                  svg {
+                    height: 34px;
+                    width: fit-content;
+                  }
+                }
+                @media (max-width: ${MOBILE_BREAKPOINT}) {
+                  h2 {
+                    font-size: 34px;
+                    svg {
+                      height: 25px;
+                      width: fit-content;
+                    }
+                  }
+                }
+              }
             `}
           >
+            <div>
+              <h2>
+                See Our Default <Logo /> Assets
+              </h2>
+              <p>
+                Explore ready-made assets from DataXplorer. Sign in to create
+                your own data stories.
+              </p>
+            </div>
             <div
               css={`
-                display: flex;
-                gap: 10px;
-                align-items: center;
-                h3 {
-                  margin: 0;
-                  font-size: 20px;
-                  font-family: "GothamNarrow-Bold", sans-serif;
-                  font-weight: 400;
-                }
-                svg {
-                  flex-shrink: 0;
+                button {
+                  height: 41px;
+                  gap: 28px;
                 }
               `}
             >
-              <InfoIcon />
-              <h3>You're Viewing Default Dataxplorer Assets</h3>
+              <PrimaryButton
+                bg="light"
+                size="small"
+                onClick={() => history.push("/onboarding/signin")}
+              >
+                See It in Action
+                <RightArrow />
+              </PrimaryButton>
             </div>
-            <p
-              css={`
-                margin: 0;
-                margin-top: 10px;
-                font-size: 14px;
-                font-family: "GothamNarrow-Book", sans-serif;
-                line-height: 20px;
-              `}
-            >
-              The items displayed here are default assets from Dataxplorer. Sign
-              in to create, customize, and personalize your own assets to match
-              your needs.
-            </p>
           </div>
           <AssetsList />
         </Container>

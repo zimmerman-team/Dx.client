@@ -3,18 +3,32 @@
   outline: none;
   cursor: pointer;
   border-radius: 8px;
+  background: transparent;
 }
-.undoRedoButton:focus {
+.undoRedoButton:hover {
   outline: 0; /* reset for :focus */
+  background: #f2f2f2;
+}
+.linkButton {
+  border: none;
+  outline: none;
+  cursor: pointer;
+  border-radius: 8px;
+  background: transparent;
+}
+.linkButton:hover {
+  background: #f2f2f2;
 }
 
-.undoRedoButton:disabled {
-  color: #ccc;
+.undoRedoButton:disabled svg > path {
+  fill: #ccc;
+
   background-color: transparent;
 }
 
 .buttonWrapper {
   display: inline-block;
+  width: 28px;
 }
 
 .button {
@@ -23,13 +37,12 @@
   color: #70777e;
   font-size: 18px;
   background: transparent;
-  width: 40px;
   height: 35px;
   border-radius: 8px;
   cursor: pointer;
 }
 
-@media (min-width: 801px) {
+/* @media (min-width: 801px) {
   @media (max-width: 853px) {
     .button {
       width: 30px;
@@ -40,7 +53,7 @@
   .button {
     width: 31px;
   }
-}
+} */
 
 .button svg {
   fill: #70777e;

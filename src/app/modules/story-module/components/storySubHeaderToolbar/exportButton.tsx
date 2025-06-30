@@ -27,17 +27,16 @@ export function ExportStoryButton(props: { filename: string }) {
   }
 
   function handleTypeChange(value: ".svg" | ".png" | ".pdf", filename: string) {
-    if (value === ".png") {
-      exportPage("png", "#f2f7fd", filename);
-    }
-    if (value === ".svg") {
-      exportPage("svg", "#f2f7fd", filename);
-    }
-    if (value === ".pdf") {
-      exportPage("pdf", "", filename);
-    }
-
-    handleClose();
+    // if (value === ".png") {
+    //   exportPage("png", "#f2f7fd", filename);
+    // }
+    // if (value === ".svg") {
+    //   exportPage("svg", "#f2f7fd", filename);
+    // }
+    // if (value === ".pdf") {
+    //   exportPage("pdf", "", filename);
+    // }
+    // handleClose();
   }
 
   return (

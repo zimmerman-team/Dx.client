@@ -26,7 +26,9 @@ import { useDrop } from "react-dnd";
 import { useStoreActions } from "app/state/store/hooks";
 import { ReactComponent as EditIcon } from "app/modules/story-module/asset/editIcon.svg";
 import { ReactComponent as DeleteIcon } from "app/modules/story-module/asset/deleteIcon.svg";
-import { MIN_BOX_WIDTH } from "app/modules/story-module/data";
+import { decorators } from "app/modules/common/RichEditor/decorators";
+import { MIN_BOX_WIDTH } from "./data";
+import { MOBILE_BREAKPOINT } from "app/theme";
 
 // Types
 interface BoxProps {
@@ -70,7 +72,7 @@ const Box = (props: BoxProps) => {
   const location = useLocation();
   const history = useHistory();
   const { page, view } = useParams<{ page: string; view: string }>();
-  const smScreen = useMediaQuery("(max-width: 767px)");
+  const smScreen = useMediaQuery(`(max-width: ${MOBILE_BREAKPOINT})`);
 
   // Store actions
   const setDataset = useStoreActions(
@@ -98,8 +100,9 @@ const Box = (props: BoxProps) => {
   const [chartError, setChartError] = useState(false);
   const [chartId, setChartId] = useState<string | null>(null);
   const [displayMode, setDisplayMode] = useState<ContentType>(null);
+  const [maxWidth, setMaxWidth] = useState(props.initialWidth);
   const [textContent, setTextContent] = useState<EditorState>(
-    EditorState.createEmpty()
+    EditorState.createEmpty(decorators())
   );
   const [displayBoxIcons, setDisplayBoxIcons] = useState(false);
   const [videoContent, setVideoContent] = useState<{
@@ -124,7 +127,7 @@ const Box = (props: BoxProps) => {
   const firstUpdate = useRef(true);
 
   // Derived state
-  const editorHeight = textResizableRef.current?.clientHeight;
+  const editorHeight = textResizableRef.current?.offsetHeight;
   const viewOnlyMode =
     location.pathname === `/story/${page}` ||
     location.pathname === `/story/${page}/downloaded-view`;
@@ -172,6 +175,7 @@ const Box = (props: BoxProps) => {
 
       draft[frameId].content[itemIndex] = itemContent;
       draft[frameId].contentTypes[itemIndex] = itemContentType;
+      draft[frameId].textEditorHeights[itemIndex] = textHeight || 0;
 
       // Only increase height of textbox if needed
       if (textHeight && textHeight > draft[frameId].contentHeights[itemIndex]) {
@@ -189,18 +193,18 @@ const Box = (props: BoxProps) => {
 
       draft[frameId].content[itemIndex] = null;
       draft[frameId].contentTypes[itemIndex] = null;
+      draft[frameId].textEditorHeights[itemIndex] = 0;
     });
   };
 
   const resetContent = () => {
     setDisplayMode(null);
     setChartId(null);
-    setTextContent(EditorState.createEmpty());
+    setTextContent(EditorState.createEmpty(decorators()));
     handleRowFrameItemRemoval(props.rowId, props.itemIndex);
   };
 
-  const [maxWidth, setMaxWidth] = useState(props.initialWidth);
-
+  // Handle resize events
   const onResizeStart = (
     _e: React.MouseEvent<HTMLElement> | React.TouchEvent<HTMLElement>,
     _dir: Direction,
@@ -210,7 +214,6 @@ const Box = (props: BoxProps) => {
     const minWidthPercentage = (MIN_BOX_WIDTH / containerWidth) * 100;
     setMaxWidth(props.initialWidth + neighborWidth - minWidthPercentage);
   };
-  // Handle resize events
   const onResizeStop = (
     _event: MouseEvent | TouchEvent,
     _direction: Direction,
@@ -266,7 +269,7 @@ const Box = (props: BoxProps) => {
   // Drag and drop configuration
   const [{ isOver }, drop] = useDrop(() => ({
     accept:
-      props.rowType === "oneByFive"
+      props.rowType === "oneByFive" || props.rowType === "oneByFour"
         ? elementTypes
         : elementTypes.filter((type) => type !== StoryElementsType.BIG_NUMBER),
     collect: (monitor) => ({
@@ -405,6 +408,16 @@ const Box = (props: BoxProps) => {
     border = "1px dashed #231d2c";
   }
 
+  const controlledHeight =
+    props.tempHeight > 0 ? props.tempHeight : props.initialHeight;
+
+  const resolvedHeight =
+    viewOnlyMode && displayMode === "text" && editorHeight
+      ? editorHeight > controlledHeight
+        ? editorHeight
+        : controlledHeight
+      : controlledHeight;
+
   // Common resizable props
   const getResizableProps = () => ({
     grid: [5, 5] as [number, number],
@@ -413,10 +426,7 @@ const Box = (props: BoxProps) => {
     onResizeStop,
     size: {
       width: smScreen ? "100%" : width,
-      height:
-        props.tempHeight > 0
-          ? `${props.tempHeight}px`
-          : `${props.initialHeight}px`,
+      height: `${resolvedHeight}px`,
     },
     maxWidth: !viewOnlyMode
       ? `${
