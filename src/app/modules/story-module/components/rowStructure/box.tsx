@@ -194,7 +194,6 @@ const Box = (props: BoxProps) => {
 
       draft[frameId].content[itemIndex] = null;
       draft[frameId].contentTypes[itemIndex] = null;
-      draft[frameId].textEditorHeights[itemIndex] = 0;
     });
   };
 
