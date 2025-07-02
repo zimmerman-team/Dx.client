@@ -28,7 +28,7 @@ export function ChartBuilderPreviewTheme(props: ChartBuilderPreviewThemeProps) {
   const { page } = useParams<{ page: string; view: string }>();
   const dataset = useStoreState((state) => state.charts.dataset.value);
   const history = useHistory();
-  const { render } = useDataThemesEchart();
+  const { render } = useDataThemesEchart({ readOnly: true });
   const mapping = useStoreState((state) => state.charts.mapping.value);
   const selectedChartType = useStoreState(
     (state) => state.charts.chartType.value
