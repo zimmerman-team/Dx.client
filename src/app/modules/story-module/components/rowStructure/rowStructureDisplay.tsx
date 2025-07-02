@@ -20,7 +20,7 @@ import { rowStructureHeights } from "./data";
 import { calculateWidths } from ".";
 import Box from "./box";
 import { usehandleRowFrameItemResize } from "app/hooks/useHandleRowFrameItemResize";
-import { MOBILE_BREAKPOINT } from "app/theme";
+import { DESKTOP_BREAKPOINT, MOBILE_BREAKPOINT } from "app/theme";
 import { NumberSize, Resizable } from "re-resizable";
 import { Direction } from "re-resizable/lib/resizer";
 import {
@@ -325,18 +325,17 @@ export default function RowstructureDisplay(
               overflow-y: hidden;
               gap: ${props.gap};
               border: ${border};
+              @media (max-width: ${DESKTOP_BREAKPOINT}) {
                 :hover {
                   overflow-x: ${props.rightPanelOpen ? "scroll" : "hidden"};
                 }
               }
               @media (max-width: ${MOBILE_BREAKPOINT}) {
                 display: grid;
-                grid-template-columns: ${
-                  props.forceSelectedType === "oneByFive" ||
-                  props.forceSelectedType === "oneByFour"
-                    ? " auto auto"
-                    : "auto"
-                };
+                grid-template-columns: ${props.forceSelectedType ===
+                  "oneByFive" || props.forceSelectedType === "oneByFour"
+                  ? " auto auto"
+                  : "auto"};
               }
             `}
             data-cy={`row-frame-${props.rowIndex}`}
