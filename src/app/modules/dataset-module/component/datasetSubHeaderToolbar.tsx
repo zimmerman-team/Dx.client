@@ -8,18 +8,14 @@ import {
   useMediaQuery,
 } from "@material-ui/core";
 import FileCopyIcon from "@material-ui/icons/FileCopy";
-import ShareIcon from "@material-ui/icons/Share";
 import EditIcon from "@material-ui/icons/Edit";
-import Button from "@material-ui/core/Button";
 import DeleteIcon from "@material-ui/icons/Delete";
 import MoreIcon from "@material-ui/icons/MoreVert";
 import React from "react";
-import CopyToClipboard from "react-copy-to-clipboard";
 import { Link, useHistory, useLocation, useParams } from "react-router-dom";
 import { useAuth0 } from "@auth0/auth0-react";
 import axios from "axios";
 /** Project */
-import { LinkIcon } from "app/assets/icons/Link";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 import { styles } from "app/modules/dataset-module/component/styles";
 import DeleteDatasetDialog from "app/components/Dialogs/deleteDatasetDialog";
@@ -28,16 +24,13 @@ import { InfoSnackbar } from "app/modules/story-module/components/storySubHeader
 import { DatasetListItemAPIModel } from "app/modules/dataset-module/data";
 import { useRecoilState, useSetRecoilState } from "recoil";
 import { planDialogAtom, shareAssetDetailsAtom } from "app/state/recoil/atoms";
-import ShareModal from "./shareModal";
 import DuplicateMessage from "app/modules/common/mobile-duplicate-message";
 import { PrimaryButton } from "app/components/Styled/button";
 import { ArrowBack } from "@material-ui/icons";
 import ArrowBackIosIcon from "@material-ui/icons/ArrowBackIos";
-import {
-  DESKTOP_BREAKPOINT,
-  MOBILE_BREAKPOINT,
-  TABLET_STARTPOINT,
-} from "app/theme";
+import { MOBILE_BREAKPOINT } from "app/theme";
+import ShareComponent from "app/components/ShareComponent";
+import { APPLICATION_JSON } from "app/state/api";
 
 export default function DatasetSubHeaderToolbar(
   props: Readonly<{ name: string }>
@@ -72,14 +65,21 @@ export default function DatasetSubHeaderToolbar(
   const setPlanDialog = useSetRecoilState(planDialogAtom);
 
   const open = Boolean(anchorEl);
-  const popoverId = open ? "simple-popover" : undefined;
   const [displayMobileMenu, setDisplayMobileMenu] = React.useState(false);
   const loadDataset = useStoreActions(
     (actions) => actions.dataThemes.DatasetGet.fetch
   );
+  const editDataset = useStoreActions(
+    (actions) => actions.dataThemes.DatasetGet.patch
+  );
   const datasetDetails = useStoreState(
     (state) =>
       (state.dataThemes.DatasetGet.crudData ?? {}) as DatasetListItemAPIModel
+  );
+
+  const datasetTempData = useStoreState(
+    (state) =>
+      (state.dataThemes.DatasetGet.tempData ?? {}) as DatasetListItemAPIModel
   );
   const shareURL = `${window.location.origin}/dataset/${datasetDetails.id}`;
   const loadDatasets = useStoreActions(
@@ -108,6 +108,24 @@ export default function DatasetSubHeaderToolbar(
     setAssetIdToShare({
       assetURL: `/dataset/${page}/edit`,
       title: props.name,
+    });
+  };
+
+  const onSetIsPublic = async (isPublic: boolean) => {
+    await axios.patch(
+      `${process.env.REACT_APP_API}/datasets/${page}`,
+      { public: isPublic },
+      {
+        headers: {
+          "Content-Type": APPLICATION_JSON,
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    await loadDataset({
+      token,
+      getId: page as string,
+      silent: true,
     });
   };
 
@@ -144,22 +162,6 @@ export default function DatasetSubHeaderToolbar(
 
   const handleCloseSnackbar = () => {
     setOpenSnackbar(false);
-  };
-
-  const handleCloseSharePopup = () => {
-    setAnchorEl(null);
-  };
-
-  const handleSharePopup = (event: React.MouseEvent<HTMLButtonElement>) => {
-    if (isSmallScreen) {
-      setIsShareModalOpen(true);
-    } else {
-      setAnchorEl(event.currentTarget);
-    }
-  };
-
-  const handleCopy = (text: string, result: boolean) => {
-    setOpenSnackbar(result);
   };
 
   const handleModal = () => {
@@ -250,13 +252,6 @@ export default function DatasetSubHeaderToolbar(
           }
         />
       )}
-      <ShareModal
-        datasetDetails={datasetDetails}
-        isShareModalOpen={isShareModalOpen}
-        setIsShareModalOpen={setIsShareModalOpen}
-        handleCopy={handleCopy}
-        url={shareURL}
-      />
 
       <Container maxWidth="lg">
         <div css={styles.innercontainer}>
@@ -312,40 +307,12 @@ export default function DatasetSubHeaderToolbar(
                       </IconButton>
                     </Tooltip>
                   )}
-                  <Tooltip title="Share">
-                    <IconButton onClick={handleSharePopup}>
-                      <ShareIcon htmlColor="#262c34" />
-                    </IconButton>
-                  </Tooltip>
-                  <Popover
-                    id={popoverId}
-                    open={open}
-                    anchorEl={anchorEl}
-                    onClose={handleCloseSharePopup}
-                    anchorOrigin={{
-                      vertical: "bottom",
-                      horizontal: "right",
-                    }}
-                    transformOrigin={{
-                      vertical: "top",
-                      horizontal: "right",
-                    }}
-                    css={`
-                      .MuiPaper-root {
-                        border-radius: 10px;
-                        background: #495057;
-                      }
-                    `}
-                  >
-                    <div css={styles.sharePopup}>
-                      <CopyToClipboard
-                        text={window.location.href}
-                        onCopy={handleCopy}
-                      >
-                        <Button startIcon={<LinkIcon />}>Copy link</Button>
-                      </CopyToClipboard>
-                    </div>
-                  </Popover>
+                  <ShareComponent
+                    shareURL={shareURL}
+                    itemName={datasetTempData?.name}
+                    isPublic={datasetTempData?.public}
+                    setIsPublic={onSetIsPublic}
+                  />
                   {canDatasetEditDelete && (
                     <Tooltip title="Edit">
                       <IconButton component={Link} to={`/dataset/${page}/edit`}>
@@ -425,11 +392,12 @@ export default function DatasetSubHeaderToolbar(
                         </IconButton>
                       </Tooltip>
                     )}
-                    <Tooltip title="Share">
-                      <IconButton onClick={handleSharePopup}>
-                        <ShareIcon htmlColor="#262c34" />
-                      </IconButton>
-                    </Tooltip>
+                    <ShareComponent
+                      shareURL={shareURL}
+                      itemName={datasetTempData?.name}
+                      isPublic={datasetTempData?.public}
+                      setIsPublic={onSetIsPublic}
+                    />
                   </div>
                 </React.Fragment>
               )}

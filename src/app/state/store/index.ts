@@ -64,7 +64,7 @@ const storeContent: StoreModel = {
   },
   dataThemes: {
     DatasetGetList: DatasetGetList,
-    DatasetGet: persist(DatasetGet),
+    DatasetGet: DatasetGet,
     DatasetCount: persist(DatasetCount),
   },
   assets: {

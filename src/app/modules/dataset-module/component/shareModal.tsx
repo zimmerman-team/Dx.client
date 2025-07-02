@@ -30,7 +30,7 @@ const useStyles = makeStyles(() =>
 export default function ShareModal(props: {
   isShareModalOpen: boolean;
   setIsShareModalOpen: (val: boolean) => void;
-  datasetDetails: any;
+  itemName?: string;
   handleCopy: (text: string, result: boolean) => void;
   url: string;
 }) {
@@ -57,9 +57,7 @@ export default function ShareModal(props: {
     >
       <div css={shareModalcss}>
         <p>
-          <span title={props.datasetDetails.name ?? ""}>
-            {props.datasetDetails?.name}
-          </span>{" "}
+          <span title={props.itemName ?? ""}>{props.itemName}</span>{" "}
           <span
             css={`
               margin-top: 1px;
@@ -136,25 +134,19 @@ export default function ShareModal(props: {
           </p>
           <div>
             <button
-              onClick={() =>
-                handleTypeChange(".pdf", props.datasetDetails?.name)
-              }
+              onClick={() => handleTypeChange(".pdf", props.itemName ?? "")}
             >
               <PDFIcon />
               PDF
             </button>
             <button
-              onClick={() =>
-                handleTypeChange(".png", props.datasetDetails?.name)
-              }
+              onClick={() => handleTypeChange(".png", props.itemName ?? "")}
             >
               <PNGIcon />
               PNG
             </button>
             <button
-              onClick={() =>
-                handleTypeChange(".svg", props.datasetDetails?.name)
-              }
+              onClick={() => handleTypeChange(".svg", props.itemName ?? "")}
             >
               <SVGIcon />
               SVG
