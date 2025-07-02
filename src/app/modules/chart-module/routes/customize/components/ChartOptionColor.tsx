@@ -1,6 +1,6 @@
 import React from "react";
 import { Col } from "react-bootstrap";
-import InilineColorPicker from "app/modules/chart-module/routes/customize/components/InlineColorPicker/";
+import InlineColorPicker from "app/modules/chart-module/routes/customize/components/InlineColorPicker";
 import ChartOptionSelect from "app/modules/chart-module/routes/customize/components/ChartOptionSelect";
 import { IColor } from "app/components/ColorPicker/services/color";
 
@@ -47,7 +47,7 @@ const ChartOptionColor = ({
         {label}
       </Col>
       <Col xs={6}>
-        <InilineColorPicker
+        <InlineColorPicker
           color={value}
           onChange={onChange}
           defaultColor={defaultColor}

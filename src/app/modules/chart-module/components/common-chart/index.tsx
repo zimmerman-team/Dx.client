@@ -44,11 +44,16 @@ interface Props {
   chartPreviewInStory?: boolean;
   mapping?: any;
   datasetDetails?: DatasetListItemAPIModel;
+  readOnly?: boolean;
 }
 
 // eslint-disable-next-line sonarjs/cognitive-complexity
 export function CommonChart(props: Readonly<Props>) {
-  const { render } = useDataThemesEchart();
+  const { render } = useDataThemesEchart({
+    readOnly: props.readOnly,
+    visualOptions: props.visualOptions,
+    setVisualOptions: props.setVisualOptions,
+  });
   const token = useStoreState((state) => state.AuthToken.value);
   const domRef = React.useRef<HTMLDivElement>(null);
   const chartTypeFromState = useStoreState(

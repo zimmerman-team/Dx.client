@@ -439,6 +439,11 @@ export default function StoryModule() {
           <div
             css={`
               height: ${canEditDeleteStory && !storyError401 ? "50px" : "0px"};
+              @media (max-width: 881px) {
+                height: ${canEditDeleteStory && !storyError401
+                  ? "66px"
+                  : "0px"};
+              }
             `}
           />
           <section
@@ -447,6 +452,11 @@ export default function StoryModule() {
               height: ${canEditDeleteStory && !storyError401
                 ? "calc(100vh - 50px)"
                 : "100vh"};
+              @media (max-width: 881px) {
+                height: ${canEditDeleteStory && !storyError401
+                  ? "calc(100vh - 66px)"
+                  : "100vh"};
+              }
               overflow-y: auto;
               overflow-x: hidden;
             `}
