@@ -86,9 +86,9 @@ export default function PlanCard({
           height: 100%;
           padding: 42.3px 13px 26px 22px;
           border-radius: 20px;
-          background: ${plan.recommended ? "#6061E5" : "#FFFFFF"};
+          background: ${plan.current ? "#6061E5" : "#FFFFFF"};
           box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.15);
-          color: ${plan.recommended ? "#FFFFFF" : "#231D2C"};
+          color: ${plan.current ? "#FFFFFF" : "#231D2C"};
           position: relative;
           @media (max-width: 1300px) {
             padding: 19px 20px 19.5px 19px;
@@ -160,23 +160,23 @@ export default function PlanCard({
             bottom: 23px;
             left: 23px;
             border-radius: 12px;
-            border: 1px solid ${plan.recommended ? "transparent" : "#231D2C"};
+            border: 1px solid ${plan.current ? "transparent" : "#231D2C"};
             line-height: normal;
             font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
             font-size: 16px;
             font-style: normal;
             font-weight: 400;
             line-height: normal;
-            color: ${plan.recommended ? "#FFFFFF" : "#231D2C"};
-            background: ${plan.recommended ? "#33347B" : "#FFFFFF"};
+            color: ${plan.current ? "#FFFFFF" : "#231D2C"};
+            background: ${plan.current ? "#33347B" : "#FFFFFF"};
             height: 48px;
             width: 175px;
             display: flex;
             justify-content: center;
             align-items: center;
             &:hover {
-              background: ${plan.recommended ? "#fff" : "#6061E5"};
-              color: ${plan.recommended ? "#231D2C" : "#fff"};
+              background: ${plan.current ? "#fff" : "#6061E5"};
+              color: ${plan.current ? "#231D2C" : "#fff"};
               cursor: pointer;
               border: none;
             }

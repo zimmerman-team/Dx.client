@@ -38,7 +38,7 @@ interface BoxProps {
   rowIndex: number;
   itemIndex: number;
   rowType: string;
-  setPlugins?: React.Dispatch<React.SetStateAction<ToolbarPluginsType>>;
+  setPluginsState: React.Dispatch<React.SetStateAction<ToolbarPluginsType>>;
   updateFramesArray: Updater<IFramesArray[]>;
   rowItemsCount: number;
   previewItem?: string | any;
@@ -123,11 +123,13 @@ const Box = (props: BoxProps) => {
     useState<string>(placeholder);
 
   // Refs
-  const textResizableRef = useRef<HTMLDivElement>(null);
   const firstUpdate = useRef(true);
 
   // Derived state
-  const editorHeight = textResizableRef.current?.offsetHeight;
+  const box = document.getElementById(
+    `box-${props.rowIndex}-${props.itemIndex}`
+  );
+  const editorHeight = box?.offsetHeight;
   const viewOnlyMode =
     location.pathname === `/story/${page}` ||
     location.pathname === `/story/${page}/downloaded-view`;
@@ -175,7 +177,6 @@ const Box = (props: BoxProps) => {
 
       draft[frameId].content[itemIndex] = itemContent;
       draft[frameId].contentTypes[itemIndex] = itemContentType;
-      draft[frameId].textEditorHeights[itemIndex] = textHeight || 0;
 
       // Only increase height of textbox if needed
       if (textHeight && textHeight > draft[frameId].contentHeights[itemIndex]) {
@@ -193,7 +194,6 @@ const Box = (props: BoxProps) => {
 
       draft[frameId].content[itemIndex] = null;
       draft[frameId].contentTypes[itemIndex] = null;
-      draft[frameId].textEditorHeights[itemIndex] = 0;
     });
   };
 
@@ -530,10 +530,10 @@ const Box = (props: BoxProps) => {
             `}
           >
             <div
-              ref={textResizableRef}
               onMouseEnter={() => setDisplayBoxIcons(true)}
               onMouseLeave={() => setDisplayBoxIcons(false)}
               data-cy={`row-frame-text-item`}
+              id={`box-${props.rowIndex}-${props.itemIndex}`}
             >
               {renderActionButtons()}
               <RichEditor
@@ -541,7 +541,7 @@ const Box = (props: BoxProps) => {
                 editMode={!viewOnlyMode}
                 textContent={textContent}
                 setTextContent={setTextContent}
-                setPlugins={props.setPlugins}
+                setPluginsState={props.setPluginsState}
                 placeholder={placeholder}
                 setPlaceholderState={setTextPlaceholderState}
                 placeholderState={textPlaceholderState}

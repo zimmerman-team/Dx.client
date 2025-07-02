@@ -193,11 +193,6 @@ function StoryEditView(props: Readonly<StoryEditViewProps>) {
         content,
         contentWidths: [...rowFrame.contentWidths?.widths],
         contentHeights: [...rowFrame.contentHeights?.heights],
-        textEditorHeights: [
-          ...rowFrame.contentHeights?.heights.map((height, i) =>
-            contentTypes[i] === "text" ? height : 0
-          ),
-        ],
         contentTypes,
       };
     });
@@ -331,7 +326,7 @@ function StoryEditView(props: Readonly<StoryEditViewProps>) {
           transition: all cubic-bezier(0.4, 0, 0.2, 1) 0.2s;
         `}
       />
-      <HeaderBlock
+      {/* <HeaderBlock
         previewMode={false}
         headerDetails={{
           ...props.headerDetails,
@@ -341,11 +336,11 @@ function StoryEditView(props: Readonly<StoryEditViewProps>) {
         hasStoryNameFocused={props.hasStoryNameFocused}
         sethasStoryNameFocused={props.setHasStoryNameFocused}
         setHeaderDetails={props.setHeaderDetails}
-        setPlugins={props.setPlugins}
+        setPluginsState={props.setPluginsState}
         isToolboxOpen={props.rightPanelOpen}
         handleRightPanelOpen={props.handleRightPanelOpen}
         isStoryHeadingModified={isStoryHeadingModified}
-      />
+      /> */}
       <Container maxWidth="lg">
         <div
           ref={ref}
@@ -400,12 +395,13 @@ function StoryEditView(props: Readonly<StoryEditViewProps>) {
                   >
                     <RowFrame
                       {...frame.frame}
+                      rowIndex={index}
                       framesArray={props.framesArray}
                       updateFramesArray={props.updateFramesArray}
                       view={props.view}
                       rowContentHeights={frame.contentHeights}
                       rowContentWidths={frame.contentWidths}
-                      setPlugins={props.setPlugins}
+                      setPluginsState={props.setPluginsState}
                       onSave={props.onSave}
                       endStoryTour={handleEndStoryTour}
                       rightPanelOpen={props.rightPanelOpen}

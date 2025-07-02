@@ -61,12 +61,14 @@ export function FontStyleHandler(props: Props) {
   };
 
   const getCurrentBlockType = () => {
+    if (!props.getEditorState) {
+      return "unstyled"; // Default block type if editor state is not available
+    }
     const selection = props.getEditorState().getSelection();
     const currentContent = props.getEditorState().getCurrentContent();
     const currentBlock = currentContent.getBlockForKey(selection.getStartKey());
     return currentBlock.getType();
   };
-
   const currentBlockType = getCurrentBlockType();
   const currentStyle =
     fontStylesState.find((style) => style.blockType === currentBlockType) ||
@@ -74,6 +76,9 @@ export function FontStyleHandler(props: Props) {
 
   // Handle block type change
   const handleStyleChange = (style: FontStyleType) => {
+    if (!props.getEditorState || !props.setEditorState) {
+      return;
+    }
     const newState = RichUtils.toggleBlockType(
       props.getEditorState(),
       style.blockType
@@ -159,6 +164,10 @@ export function FontStyleHandler(props: Props) {
           {fontStylesState.map((style, index) => (
             <div
               key={style.key}
+              onClick={(e) => {
+                e.stopPropagation();
+                handleStyleChange(style);
+              }}
               onMouseEnter={() => handleShowDetail(style, true)}
               onMouseLeave={() => handleShowDetail(style, false)}
               css={`
@@ -220,11 +229,11 @@ export function FontStyleHandler(props: Props) {
                     </svg>
                   </button>
                 )}
-                <button>
+                {/* <button>
                   <ChevronRightIcon />
-                </button>
+                </button> */}
               </div>
-              <div
+              {/* <div
                 css={`
                   display: ${style.selected ? "flex" : "none"};
                   width: 250px;
@@ -260,7 +269,7 @@ export function FontStyleHandler(props: Props) {
                 >
                   {promptText(style.label === currentStyle.label, style.label)}
                 </div>
-              </div>
+              </div> */}
             </div>
           ))}
         </div>

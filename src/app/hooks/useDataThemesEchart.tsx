@@ -515,7 +515,6 @@ export function useDataThemesEchart({
 
     const top = height - newHeight > 0 ? (height - newHeight) / 2 : 0;
     const left = width - newWidth > 0 ? (width - newWidth) / 2 : 0;
-
     return {
       tooltip: {
         trigger: showTooltip ? "item" : "none",

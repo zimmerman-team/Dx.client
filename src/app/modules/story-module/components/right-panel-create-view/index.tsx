@@ -283,14 +283,14 @@ export function StoryRightPanelCreateView(props: Readonly<Props>) {
   const [open, setOpen] = useState(true);
 
   const [elementItemDetails, setElementItemDetails] = React.useState([
-    {
-      elementType: StoryElementsType.HEADER,
-      leftIcon: <EditHeaderIcon />,
-      previewImg: HeaderPreviewImg,
-      name: "Header",
-      description: "Remove or add header to your story",
-      openTooltip: false,
-    },
+    // {
+    //   elementType: StoryElementsType.HEADER,
+    //   leftIcon: <EditHeaderIcon />,
+    //   previewImg: HeaderPreviewImg,
+    //   name: "Header",
+    //   description: "Remove or add header to your story",
+    //   openTooltip: false,
+    // },
     {
       elementType: StoryElementsType.ROWFRAME,
       leftIcon: <RowframeIcon />,

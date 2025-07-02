@@ -36,6 +36,7 @@ import NotAvailableOnMobile from "app/modules/common/not-available";
 import { MOBILE_BREAKPOINT } from "app/theme";
 import { decorators } from "app/modules/common/RichEditor/decorators";
 import { createHeadingEditorState } from "app/utils/draftjs/createEditorStateWithBlockType";
+import { useEditorPlugins } from "app/hooks/useEditorPlugins";
 
 export default function StoryModule() {
   const { user, isAuthenticated } = useAuth0();
@@ -52,7 +53,7 @@ export default function StoryModule() {
   }>({ isAutoSaveEnabled: false });
 
   const setPlanDialog = useSetRecoilState(planDialogAtom);
-  const [plugins, setPlugins] = React.useState<ToolbarPluginsType>([]);
+  const [plugins, setPluginsState] = React.useState<ToolbarPluginsType>([]);
   const token = useStoreState((state) => state.AuthToken.value);
   const [_rightPanelView, setRightPanelView] = useRecoilState(
     storyRightPanelViewAtom
@@ -117,6 +118,8 @@ export default function StoryModule() {
     (state) => state.stories.StoryCreate.crudData as any
   );
 
+  const { plugins: localPlugins } = useEditorPlugins();
+
   React.useEffect(() => {
     if (storyCreateData?.error && storyCreateData?.errorType === "planError") {
       setPlanDialog({
@@ -131,6 +134,10 @@ export default function StoryModule() {
   const storyPlanWarning = useStoreState(
     (state) => state.stories.StoryCreate.planWarning
   );
+
+  React.useEffect(() => {
+    setPluginsState(localPlugins);
+  }, []);
 
   React.useEffect(() => {
     if (isSmallScreen && view === "edit") {
@@ -173,27 +180,18 @@ export default function StoryModule() {
     };
   }, [hasStoryNameBlurred]);
 
-  const deleteFrame = (id: string) => {
-    updateFramesArray((draft) => {
-      const frameId = draft.findIndex((frame) => frame.id === id);
-      draft.splice(frameId, 1);
-    });
-  };
-
   const basicStoryInitialState = () => {
     const id = v4();
     return [
       {
         id,
         frame: {
-          rowIndex: 0,
           rowId: id,
           type: "rowFrame",
         },
         content: [],
         contentWidths: [],
         contentHeights: [],
-        textEditorHeights: [],
         contentTypes: [],
         structure: null,
       },
@@ -209,7 +207,6 @@ export default function StoryModule() {
         id: rowOne,
         frame: {
           rowId: rowOne,
-          rowIndex: 0,
           forceSelectedType: "oneByFive",
 
           type: "rowFrame",
@@ -217,7 +214,6 @@ export default function StoryModule() {
         content: [null, null, null, null, null],
         contentWidths: [20, 20, 20, 20, 20],
         contentHeights: [121, 121, 121, 121, 121],
-        textEditorHeights: [null, null, null, null, null],
         contentTypes: [null, null, null, null, null],
         structure: "oneByFive",
       },
@@ -225,14 +221,12 @@ export default function StoryModule() {
         id: rowTwo,
         frame: {
           rowId: rowTwo,
-          rowIndex: 1,
           forceSelectedType: "oneByOne",
 
           type: "rowFrame",
         },
         content: [null],
         contentWidths: [100],
-        textEditorHeights: [null],
         contentHeights: [400],
         contentTypes: [null],
         structure: "oneByOne",
@@ -242,7 +236,6 @@ export default function StoryModule() {
         id: rowFive,
         frame: {
           rowId: rowFive,
-          rowIndex: 2,
           forceSelectedType: "oneByThree",
 
           type: "rowFrame",
@@ -250,7 +243,6 @@ export default function StoryModule() {
         content: [null, null, null],
         contentWidths: [33, 33, 33],
         contentHeights: [460, 460, 460],
-        textEditorHeights: [null, null, null],
         contentTypes: [null, null, null],
         structure: "oneByThree",
       },
@@ -485,7 +477,7 @@ export default function StoryModule() {
               view={view}
               hasStoryNameFocused={hasStoryNameFocused}
               setHasStoryNameFocused={setHasStoryNameFocused}
-              setPlugins={setPlugins}
+              setPluginsState={setPluginsState}
               setAutoSave={setAutoSave}
               isSaveEnabled={isSaveEnabled}
               onSave={onSave}
