@@ -220,6 +220,10 @@ export function StoryPreviewView(
                 type="rowFrame"
                 rowIndex={index}
                 framesArray={[]}
+                redoStack={[]}
+                setRedoStack={() => {}}
+                undoStack={[]}
+                setUndoStack={() => {}}
                 setPluginsState={() => {}}
                 updateFramesArray={() => {}}
                 key={`rowframe${index}`}

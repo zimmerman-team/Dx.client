@@ -18,7 +18,7 @@ import { Updater } from "use-immer";
 import { useMediaQuery } from "@material-ui/core";
 import { rowStructureHeights } from "./data";
 import { calculateWidths } from ".";
-import Box from "./box";
+import Box, { ContentType } from "./box";
 import { usehandleRowFrameItemResize } from "app/hooks/useHandleRowFrameItemResize";
 import { TABLET_STARTPOINT } from "app/theme";
 import { NumberSize, Resizable } from "re-resizable";
@@ -27,6 +27,7 @@ import {
   MIN_BOX_HEIGHT,
   MIN_BOX_WIDTH,
 } from "app/modules/story-module/components/rowStructure/data";
+import { useUndoRedo } from "app/hooks/useUndoRedo";
 
 interface RowStructureDisplayProps {
   gap: string;
@@ -40,6 +41,10 @@ interface RowStructureDisplayProps {
   rowContentWidths: number[];
   rowContentHeights: number[];
   updateFramesArray: Updater<IFramesArray[]>;
+  undoStack: IFramesArray[][];
+  setUndoStack: React.Dispatch<React.SetStateAction<IFramesArray[][]>>;
+  redoStack: IFramesArray[][];
+  setRedoStack: React.Dispatch<React.SetStateAction<IFramesArray[][]>>;
   deleteFrame: (id: string) => void;
   rowStructureDetailItems: {
     rowId: string;
@@ -66,6 +71,14 @@ export default function RowstructureDisplay(
 ) {
   const isTablet = useMediaQuery("(max-width: 1110px)");
   const smScreen = useMediaQuery("(max-width: 767px)");
+  const { store } = useUndoRedo(
+    props.framesArray,
+    props.updateFramesArray,
+    props.undoStack,
+    props.setUndoStack,
+    props.redoStack,
+    props.setRedoStack
+  );
   const RIGHT_PANEL_WIDTH = isTablet ? "36.83%" : "400px"; //percentage value of 274px which is the width at 744px as per design
   const ref = useRef(null);
   useOnClickOutside(ref, () => setHandleDisplay(false));
@@ -88,7 +101,8 @@ export default function RowstructureDisplay(
       : "0.722415px dashed transparent";
 
   const { handleRowHeightResize } = usehandleRowFrameItemResize(
-    props.updateFramesArray
+    props.updateFramesArray,
+    store
   );
 
   const [_isResizing, setIsResizing] = useRecoilState(
@@ -137,7 +151,7 @@ export default function RowstructureDisplay(
         height: getHeight("oneByFive"),
       },
     ];
-
+    store();
     props.updateFramesArray((draft) => {
       const rowStructure = draft[props.rowIndex].structure;
       const defaultWidths =
@@ -358,6 +372,11 @@ export default function RowstructureDisplay(
                   `[${index}]`,
                   boxHeight
                 )}
+                contentType={
+                  props.framesArray[props.rowIndex].contentTypes[
+                    index
+                  ] as ContentType
+                }
                 last={index === props.rowStructureDetailItems.length - 1}
                 itemIndex={index}
                 neighbourIndex={getNeighbourIndex(index)}
@@ -366,6 +385,11 @@ export default function RowstructureDisplay(
                 rowType={row.rowType}
                 onRowBoxItemResize={props.onRowBoxItemResize}
                 updateFramesArray={props.updateFramesArray}
+                redoStack={props.redoStack}
+                setRedoStack={props.setRedoStack}
+                undoStack={props.undoStack}
+                setUndoStack={props.setUndoStack}
+                framesArray={props.framesArray}
                 previewItem={get(props.previewItems, `[${index}]`, undefined)}
                 rowItemsCount={props.rowStructureDetailItems.length}
                 setPluginsState={props.setPluginsState}

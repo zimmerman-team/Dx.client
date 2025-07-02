@@ -28,6 +28,7 @@ import { ReactComponent as EditIcon } from "app/modules/story-module/asset/editI
 import { ReactComponent as DeleteIcon } from "app/modules/story-module/asset/deleteIcon.svg";
 import { decorators } from "app/modules/common/RichEditor/decorators";
 import { MIN_BOX_WIDTH } from "./data";
+import { useUndoRedo } from "app/hooks/useUndoRedo";
 
 // Types
 interface BoxProps {
@@ -37,8 +38,14 @@ interface BoxProps {
   rowIndex: number;
   itemIndex: number;
   rowType: string;
+  contentType: ContentType;
   setPluginsState: React.Dispatch<React.SetStateAction<ToolbarPluginsType>>;
   updateFramesArray: Updater<IFramesArray[]>;
+  framesArray: IFramesArray[];
+  undoStack: IFramesArray[][];
+  setUndoStack: React.Dispatch<React.SetStateAction<IFramesArray[][]>>;
+  redoStack: IFramesArray[][];
+  setRedoStack: React.Dispatch<React.SetStateAction<IFramesArray[][]>>;
   rowItemsCount: number;
   previewItem?: string | any;
   neighbourIndex: number;
@@ -63,11 +70,19 @@ interface BoxProps {
 }
 
 // Content type definition
-type ContentType = "chart" | "text" | "image" | "video" | null;
+export type ContentType = "chart" | "text" | "image" | "video" | null;
 
 // eslint-disable-next-line sonarjs/cognitive-complexity
 const Box = (props: BoxProps) => {
   // Hooks
+  const { store } = useUndoRedo(
+    props.framesArray,
+    props.updateFramesArray,
+    props.undoStack,
+    props.setUndoStack,
+    props.redoStack,
+    props.setRedoStack
+  );
   const location = useLocation();
   const history = useHistory();
   const { page, view } = useParams<{ page: string; view: string }>();
@@ -97,7 +112,15 @@ const Box = (props: BoxProps) => {
 
   // Local state
   const [chartError, setChartError] = useState(false);
+  const boxContent = get(
+    props.framesArray[props.rowIndex],
+    `content[${props.itemIndex}]`,
+    null
+  );
+  const isChartId = typeof boxContent === "string";
+  console.log("Is boxContent a chartId?", isChartId, boxContent);
   const [chartId, setChartId] = useState<string | null>(null);
+
   const [displayMode, setDisplayMode] = useState<ContentType>(null);
   const [maxWidth, setMaxWidth] = useState(props.initialWidth);
   const [textContent, setTextContent] = useState<EditorState>(
@@ -173,10 +196,8 @@ const Box = (props: BoxProps) => {
     props.updateFramesArray((draft) => {
       const frameId = draft.findIndex((frame) => frame.id === rowId);
       if (frameId === -1) return [...draft];
-
       draft[frameId].content[itemIndex] = itemContent;
       draft[frameId].contentTypes[itemIndex] = itemContentType;
-
       // Only increase height of textbox if needed
       if (textHeight && textHeight > draft[frameId].contentHeights[itemIndex]) {
         draft[frameId].contentHeights.forEach((_, index) => {
@@ -187,6 +208,7 @@ const Box = (props: BoxProps) => {
   };
 
   const handleRowFrameItemRemoval = (rowId: string, itemIndex: number) => {
+    store();
     props.updateFramesArray((draft) => {
       const frameId = draft.findIndex((frame) => frame.id === rowId);
       if (frameId === -1) return [...draft];
@@ -266,59 +288,66 @@ const Box = (props: BoxProps) => {
   };
 
   // Drag and drop configuration
-  const [{ isOver }, drop] = useDrop(() => ({
-    accept:
-      props.rowType === "oneByFive" || props.rowType === "oneByFour"
-        ? elementTypes
-        : elementTypes.filter((type) => type !== StoryElementsType.BIG_NUMBER),
-    collect: (monitor) => ({
-      isOver: monitor.isOver(),
-      canDrop: monitor.canDrop(),
-      item: monitor.getItem(),
+  const [{ isOver }, drop] = useDrop(
+    () => ({
+      accept:
+        props.rowType === "oneByFive" || props.rowType === "oneByFour"
+          ? elementTypes
+          : elementTypes.filter(
+              (type) => type !== StoryElementsType.BIG_NUMBER
+            ),
+      collect: (monitor) => ({
+        isOver: monitor.isOver(),
+        canDrop: monitor.canDrop(),
+        item: monitor.getItem(),
+      }),
+      drop: (item: any, monitor) => {
+        store();
+        if (item.type === StoryElementsType.TEXT) {
+          handleRowFrameItemAddition(
+            props.rowId,
+            props.itemIndex,
+            textContent,
+            "text"
+          );
+          setDisplayMode("text");
+        } else if (
+          item.type === StoryElementsType.CHART ||
+          item.type === StoryElementsType.BIG_NUMBER
+        ) {
+          console.log("calling");
+          handleRowFrameItemAddition(
+            props.rowId,
+            props.itemIndex,
+            item.value,
+            "chart"
+          );
+          setChartId(item.value);
+          setDisplayMode("chart");
+          monitor.getDropResult();
+        } else if (item.type === StoryElementsType.VIDEO) {
+          handleRowFrameItemAddition(
+            props.rowId,
+            props.itemIndex,
+            item.value,
+            "video"
+          );
+          setVideoContent(item.value);
+          setDisplayMode("video");
+        } else if (item.type === StoryElementsType.IMAGE) {
+          handleRowFrameItemAddition(
+            props.rowId,
+            props.itemIndex,
+            item.value,
+            "image"
+          );
+          setImageContent(item.value);
+          setDisplayMode("image");
+        }
+      },
     }),
-    drop: (item: any, monitor) => {
-      if (item.type === StoryElementsType.TEXT) {
-        handleRowFrameItemAddition(
-          props.rowId,
-          props.itemIndex,
-          textContent,
-          "text"
-        );
-        setDisplayMode("text");
-      } else if (
-        item.type === StoryElementsType.CHART ||
-        item.type === StoryElementsType.BIG_NUMBER
-      ) {
-        handleRowFrameItemAddition(
-          props.rowId,
-          props.itemIndex,
-          item.value,
-          "chart"
-        );
-        setChartId(item.value);
-        setDisplayMode("chart");
-        monitor.getDropResult();
-      } else if (item.type === StoryElementsType.VIDEO) {
-        handleRowFrameItemAddition(
-          props.rowId,
-          props.itemIndex,
-          item.value,
-          "video"
-        );
-        setVideoContent(item.value);
-        setDisplayMode("video");
-      } else if (item.type === StoryElementsType.IMAGE) {
-        handleRowFrameItemAddition(
-          props.rowId,
-          props.itemIndex,
-          item.value,
-          "image"
-        );
-        setImageContent(item.value);
-        setDisplayMode("image");
-      }
-    },
-  }));
+    [props.framesArray]
+  );
 
   const widthNumberPercentage =
     isResizing && props.temporaryWidths[props.itemIndex] !== undefined
@@ -507,7 +536,7 @@ const Box = (props: BoxProps) => {
 
   // Render content based on display mode
   const renderContent = () => {
-    switch (displayMode) {
+    switch (props.contentType) {
       case "text":
         return (
           <Resizable
@@ -548,8 +577,8 @@ const Box = (props: BoxProps) => {
         );
 
       case "chart":
-        return chartId ? (
-          <Resizable key={chartId} {...getResizableProps()}>
+        return isChartId ? (
+          <Resizable key={boxContent} {...getResizableProps()}>
             <div
               css={`
                 height: 100%;
@@ -569,7 +598,7 @@ const Box = (props: BoxProps) => {
             >
               {renderActionButtons()}
               <StoryChartWrapper
-                id={chartId}
+                id={boxContent}
                 width={width.slice(0, -2)}
                 error={chartError}
                 setError={setChartError}

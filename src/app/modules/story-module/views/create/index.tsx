@@ -160,6 +160,10 @@ function StoryCreateView(props: Readonly<StoryCreateViewProps>) {
                     setPluginsState={props.setPluginsState}
                     endStoryTour={() => {}}
                     rightPanelOpen={props.rightPanelOpen}
+                    redoStack={props.redoStack}
+                    setRedoStack={props.setRedoStack}
+                    undoStack={props.undoStack}
+                    setUndoStack={props.setUndoStack}
                   />
                 </div>
                 <Box height={38} />
@@ -168,6 +172,10 @@ function StoryCreateView(props: Readonly<StoryCreateViewProps>) {
                   deleteFrame={props.deleteFrame}
                   framesArray={props.framesArray}
                   updateFramesArray={props.updateFramesArray}
+                  redoStack={props.redoStack}
+                  setRedoStack={props.setRedoStack}
+                  undoStack={props.undoStack}
+                  setUndoStack={props.setUndoStack}
                 />
               </ItemComponent>
             );
@@ -181,6 +189,10 @@ function StoryCreateView(props: Readonly<StoryCreateViewProps>) {
               setRowStructureType={setRowStructuretype}
               endTour={() => {}}
               rightPanelOpen={props.rightPanelOpen}
+              redoStack={props.redoStack}
+              setRedoStack={props.setRedoStack}
+              undoStack={props.undoStack}
+              setUndoStack={props.setUndoStack}
             />
           }
           <Box height={45} />

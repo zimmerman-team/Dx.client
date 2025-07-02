@@ -19,6 +19,8 @@ import {
   UnorderedListButton,
   OrderedListButton,
   BlockquoteButton,
+  UndoButton,
+  RedoButton,
 } from "app/modules/common/RichEditor/button/basicButtons";
 import { styles as commonstyles } from "app/modules/story-module/components/storySubHeaderToolbar/styles";
 import { ReactComponent as MoreIcon } from "app/modules/story-module/asset/more-icon.svg";
@@ -30,6 +32,9 @@ import {
   IncreaseIndentButton,
 } from "app/modules/common/RichEditor/button/indentButtons";
 import Tooltip from "@material-ui/core/Tooltip";
+import { useUndoRedo } from "app/hooks/useUndoRedo";
+import { IFramesArray } from "app/modules/story-module/views/create/data";
+import { Updater } from "use-immer";
 
 type UndoRedoType = {
   UndoButton: React.ComponentType<UndoRedoButtonProps>;
@@ -44,7 +49,23 @@ export type ToolbarPluginsType = (
   | EditorPlugin
 )[];
 
-export default function StaticToolbar(props: { plugins: ToolbarPluginsType }) {
+export default function StaticToolbar(props: {
+  plugins: ToolbarPluginsType;
+  updateFramesArray: Updater<IFramesArray[]>;
+  framesArray: IFramesArray[];
+  undoStack: IFramesArray[][];
+  setUndoStack: React.Dispatch<React.SetStateAction<IFramesArray[][]>>;
+  redoStack: IFramesArray[][];
+  setRedoStack: React.Dispatch<React.SetStateAction<IFramesArray[][]>>;
+}) {
+  const { redo, undo } = useUndoRedo(
+    props.framesArray,
+    props.updateFramesArray,
+    props.undoStack,
+    props.setUndoStack,
+    props.redoStack,
+    props.setRedoStack
+  );
   const isDesktop = useMediaQuery("(min-width: 1219px)");
   //control modals for color and background color pickers
   const [anchorEl, setAnchorEl] = React.useState<HTMLDivElement | null>(null);
@@ -76,10 +97,10 @@ export default function StaticToolbar(props: { plugins: ToolbarPluginsType }) {
 
   const Toolbar = (props.plugins[0] as StaticToolBarPlugin)?.Toolbar;
   const LinkButton = (props.plugins[1] as AnchorPlugin)?.LinkButton;
-  const UndoButton = (props.plugins[2] as EditorPlugin & UndoRedoType)
-    ?.UndoButton;
-  const RedoButton = (props.plugins[2] as EditorPlugin & UndoRedoType)
-    ?.RedoButton;
+  // const UndoButton = (props.plugins[2] as EditorPlugin & UndoRedoType)
+  //   ?.UndoButton;
+  // const RedoButton = (props.plugins[2] as EditorPlugin & UndoRedoType)
+  //   ?.RedoButton;
 
   const linkInputComponent = document.querySelector(
     "input[placeholder='Enter a URL and press enter']"
@@ -129,12 +150,12 @@ export default function StaticToolbar(props: { plugins: ToolbarPluginsType }) {
               <React.Fragment>
                 <Tooltip title="Undo" placement="bottom">
                   <div onMouseDown={(e) => e.preventDefault()}>
-                    <UndoButton {...externalProps} />
+                    <UndoButton handleClick={undo} />
                   </div>
                 </Tooltip>
                 <Tooltip title="Redo" placement="bottom">
                   <div onMouseDown={(e) => e.preventDefault()}>
-                    <RedoButton {...externalProps} />
+                    <RedoButton handleClick={redo} />
                   </div>
                 </Tooltip>
                 {divider}

@@ -37,6 +37,7 @@ import PlaceHolder from "app/modules/story-module/components/placeholder";
 import useAutosave from "app/hooks/useAutoSave";
 import { TABLET_STARTPOINT } from "app/theme";
 import { decorators } from "app/modules/common/RichEditor/decorators";
+import { useUndoRedo } from "app/hooks/useUndoRedo";
 
 function StoryEditView(props: Readonly<StoryEditViewProps>) {
   useTitle("Dataxplorer - Edit Story");
@@ -51,6 +52,14 @@ function StoryEditView(props: Readonly<StoryEditViewProps>) {
   );
   const [containerWidth, setContainerWidth] = useRecoilState(
     storyContentContainerWidth
+  );
+  const { store } = useUndoRedo(
+    props.framesArray,
+    props.updateFramesArray,
+    props.undoStack,
+    props.setUndoStack,
+    props.redoStack,
+    props.setRedoStack
   );
   const [isStoryHeadingModified, setIsStoryHeadingModified] =
     React.useState(false);
@@ -96,6 +105,7 @@ function StoryEditView(props: Readonly<StoryEditViewProps>) {
   );
 
   function deleteFrame(id: string) {
+    store();
     props.updateFramesArray((draft) => {
       const frameId = draft.findIndex((frame) => frame.id === id);
 
@@ -221,7 +231,7 @@ function StoryEditView(props: Readonly<StoryEditViewProps>) {
     };
   };
 
-  const hasChangesBeenMadeCheck = () => {
+  const handleSave = () => {
     if (storyData.id !== page) {
       return;
     }
@@ -245,9 +255,10 @@ function StoryEditView(props: Readonly<StoryEditViewProps>) {
       props.onSave("edit");
     }
   };
+
   useAutosave(
     () => {
-      hasChangesBeenMadeCheck();
+      handleSave();
     },
     2 * 1000,
     props.autoSave,
@@ -262,8 +273,19 @@ function StoryEditView(props: Readonly<StoryEditViewProps>) {
     props.setHasStoryNameFocused(storyData.name !== "Untitled story");
     props.setStoryName(storyData.name);
     props.setHeaderDetails(headerDetailsFromStoryData(storyData));
+    store();
     props.updateFramesArray(framesArrayFromStoryData(storyData));
   };
+
+  // React.useEffect(() => {
+  //   const areFramesArrayStatesEqual = compareFramesArrayState(
+  //     props.framesArray,
+  //     framesArrayFromStoryData(tempStoryData)
+  //   );
+  //   if (!areFramesArrayStatesEqual) {
+  //     store();
+  //   }
+  // }, [props.framesArray]);
 
   React.useEffect(() => {
     updateStoryStatesWithStoryData();
@@ -371,6 +393,10 @@ function StoryEditView(props: Readonly<StoryEditViewProps>) {
                     deleteFrame={deleteFrame}
                     framesArray={props.framesArray}
                     updateFramesArray={props.updateFramesArray}
+                    redoStack={props.redoStack}
+                    setRedoStack={props.setRedoStack}
+                    undoStack={props.undoStack}
+                    setUndoStack={props.setUndoStack}
                   />
                 )}
                 <Box height={8} />
@@ -396,6 +422,10 @@ function StoryEditView(props: Readonly<StoryEditViewProps>) {
                       onSave={props.onSave}
                       endStoryTour={handleEndStoryTour}
                       rightPanelOpen={props.rightPanelOpen}
+                      redoStack={props.redoStack}
+                      setRedoStack={props.setRedoStack}
+                      undoStack={props.undoStack}
+                      setUndoStack={props.setUndoStack}
                     />
                   </div>
                 </ItemComponent>
@@ -410,6 +440,10 @@ function StoryEditView(props: Readonly<StoryEditViewProps>) {
                   deleteFrame={deleteFrame}
                   framesArray={props.framesArray}
                   updateFramesArray={props.updateFramesArray}
+                  redoStack={props.redoStack}
+                  setRedoStack={props.setRedoStack}
+                  undoStack={props.undoStack}
+                  setUndoStack={props.setUndoStack}
                 />
               </div>
             );
@@ -423,6 +457,10 @@ function StoryEditView(props: Readonly<StoryEditViewProps>) {
             setRowStructureType={setRowStructuretype}
             endTour={handleEndStoryTour}
             rightPanelOpen={props.rightPanelOpen}
+            redoStack={props.redoStack}
+            setRedoStack={props.setRedoStack}
+            undoStack={props.undoStack}
+            setUndoStack={props.setUndoStack}
           />
           <Box height={45} />
           <GridColumns />

@@ -34,6 +34,7 @@ import { Updater } from "use-immer";
 import { useMediaQuery } from "@material-ui/core";
 import { rowStructureHeights } from "./data";
 import { isEmpty } from "lodash";
+import { useUndoRedo } from "app/hooks/useUndoRedo";
 
 const rowStructureDetailItems = [
   [{ rowType: "oneByOne", rowId: "oneByOne-1", width: "100%", factor: 1 }],
@@ -151,6 +152,10 @@ interface RowFrameProps {
   forceSelectedType?: string;
   updateFramesArray: Updater<IFramesArray[]>;
   framesArray: IFramesArray[];
+  undoStack: IFramesArray[][];
+  setUndoStack: React.Dispatch<React.SetStateAction<IFramesArray[][]>>;
+  redoStack: IFramesArray[][];
+  setRedoStack: React.Dispatch<React.SetStateAction<IFramesArray[][]>>;
   type: "rowFrame" | "divider";
   view: "initial" | "edit" | "create" | "preview" | "ai-template";
   previewItems?: (string | object)[];
@@ -180,8 +185,17 @@ export default function RowFrame(props: RowFrameProps) {
   const history = useHistory();
   const isTablet = useMediaQuery("(max-width: 1110px)");
 
+  const { store } = useUndoRedo(
+    props.framesArray,
+    props.updateFramesArray,
+    props.undoStack,
+    props.setUndoStack,
+    props.redoStack,
+    props.setRedoStack
+  );
   const { handleRowFrameItemResize } = usehandleRowFrameItemResize(
-    props.updateFramesArray
+    props.updateFramesArray,
+    store
   );
   const [selectedType, setSelectedType] = React.useState<string>(
     props.forceSelectedType ?? ""
@@ -242,6 +256,7 @@ export default function RowFrame(props: RowFrameProps) {
   };
 
   const deleteFrame = (id: string) => {
+    store();
     props.updateFramesArray((draft) => {
       const frameId = draft.findIndex((frame) => frame.id === id);
       draft.splice(frameId, 1);
@@ -306,6 +321,7 @@ export default function RowFrame(props: RowFrameProps) {
       default:
         break;
     }
+    store();
     props.updateFramesArray((draft) => {
       //the first time you select a row structure, framesArray is set to default values
       if (isEmpty(tempRowState)) {
@@ -434,6 +450,10 @@ export default function RowFrame(props: RowFrameProps) {
         forceSelectedType={props.forceSelectedType}
         setTempRowState={setTempRowState}
         rightPanelOpen={props.rightPanelOpen}
+        redoStack={props.redoStack}
+        setRedoStack={props.setRedoStack}
+        undoStack={props.undoStack}
+        setUndoStack={props.setUndoStack}
       />
     ),
     oneByTwo: (
@@ -458,6 +478,10 @@ export default function RowFrame(props: RowFrameProps) {
         forceSelectedType={props.forceSelectedType}
         setTempRowState={setTempRowState}
         rightPanelOpen={props.rightPanelOpen}
+        redoStack={props.redoStack}
+        setRedoStack={props.setRedoStack}
+        undoStack={props.undoStack}
+        setUndoStack={props.setUndoStack}
       />
     ),
     oneByThree: (
@@ -482,6 +506,10 @@ export default function RowFrame(props: RowFrameProps) {
         forceSelectedType={props.forceSelectedType}
         setTempRowState={setTempRowState}
         rightPanelOpen={props.rightPanelOpen}
+        redoStack={props.redoStack}
+        setRedoStack={props.setRedoStack}
+        undoStack={props.undoStack}
+        setUndoStack={props.setUndoStack}
       />
     ),
     oneByFour: (
@@ -506,6 +534,10 @@ export default function RowFrame(props: RowFrameProps) {
         forceSelectedType={props.forceSelectedType}
         setTempRowState={setTempRowState}
         rightPanelOpen={props.rightPanelOpen}
+        redoStack={props.redoStack}
+        setRedoStack={props.setRedoStack}
+        undoStack={props.undoStack}
+        setUndoStack={props.setUndoStack}
       />
     ),
     oneByFive: (
@@ -530,6 +562,10 @@ export default function RowFrame(props: RowFrameProps) {
         forceSelectedType={props.forceSelectedType}
         setTempRowState={setTempRowState}
         rightPanelOpen={props.rightPanelOpen}
+        redoStack={props.redoStack}
+        setRedoStack={props.setRedoStack}
+        undoStack={props.undoStack}
+        setUndoStack={props.setUndoStack}
       />
     ),
   };
