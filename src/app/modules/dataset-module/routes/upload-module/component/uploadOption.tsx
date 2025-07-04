@@ -1,7 +1,5 @@
 import React from "react";
-import SettingsIcon from "app/modules/dataset-module/routes/upload-module/assets/upload-options-icons/settings";
 import { useHistory } from "react-router-dom";
-import { PrimaryButton } from "app/components/Styled/button";
 import { Tooltip } from "react-tooltip";
 
 const UploadOption = (props: {
@@ -29,12 +27,12 @@ const UploadOption = (props: {
     >
       <button
         css={`
-          border-radius: 8px;
-          border: 1px solid #e2eaef;
+          border-radius: 10px;
+          border: 1px solid #adb5bd;
+          background: #fff;
           width: 100%;
           overflow: hidden;
           padding: 0;
-          background: #fff;
           cursor: pointer;
           :disabled {
             cursor: not-allowed;
@@ -123,97 +121,29 @@ const UploadOption = (props: {
           css={`
             padding: 7px 16px;
             background: #f3f5f8;
+            border-radius: 0 0 10px 10px;
+            border: 1px solid #adb5bd;
+            border-bottom: none;
+
+            border-right: none;
+            border-left: none;
           `}
         >
-          {props.canConnect ? (
-            <div
-              css={`
-                display: flex;
-                gap: 8px;
-                justify-content: space-between;
-                height: 24px;
-                align-items: center;
-              `}
-            >
-              <span
-                css={`
-                  display: flex;
-                  gap: 8px;
-                  align-items: center;
-                  font-size: 12px;
-                  font-style: normal;
-                  font-weight: 325;
-                  line-height: 15px; /* 125% */
-                  letter-spacing: 0.5px;
-                  font-family: "GothamNarrow-Book", "Helvetica Neue", sans-serif;
-                  color: #6b727b;
-                `}
-              >
-                <div
-                  css={`
-                    width: 8px;
-                    height: 8px;
-                    border-radius: 50%;
-                    background-color: ${props.connected
-                      ? "#51dbca"
-                      : "#D9D9D9"};
-                  `}
-                />
-                {props.connected ? "Connected" : "Not Connected"}
-              </span>
-
-              {props.connected ? (
-                <div
-                  css={`
-                    position: relative;
-                  `}
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    setOpenSettings(!openSettings);
-                  }}
-                >
-                  <div
-                    css={`
-                      position: absolute;
-                      right: calc(100% + 10px);
-                      top: -4px;
-                    `}
-                    hidden={!openSettings}
-                    onClick={(e) => {
-                      e.stopPropagation();
-                    }}
-                  >
-                    <PrimaryButton
-                      bg="light"
-                      size="xs"
-                      onClick={() => {
-                        props.onLogout?.();
-                        setOpenSettings(false);
-                      }}
-                    >
-                      Sign out
-                    </PrimaryButton>
-                  </div>
-
-                  <SettingsIcon />
-                </div>
-              ) : null}
-            </div>
-          ) : (
-            <div
-              css={`
-                display: flex;
-                gap: 8px;
-                height: 24px;
-                align-items: center;
-                font-size: 12px;
-              `}
-            >
-              {props.formats.map((f) => (
-                <span key={f}>{f}</span>
-              ))}
-            </div>
-          )}
+          <div
+            css={`
+              display: flex;
+              gap: 8px;
+              height: 24px;
+              align-items: center;
+              font-family: "GothamNarrow-Book", "Helvetica Neue", sans-serif;
+              font-size: 14px;
+              color: #6b727b;
+            `}
+          >
+            {props.formats.map((f) => (
+              <span key={f}>{f}</span>
+            ))}
+          </div>
         </div>
       </button>
 

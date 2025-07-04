@@ -3,7 +3,6 @@ import axios from "axios";
 import { useTitle } from "react-use";
 import { useAuth0 } from "@auth0/auth0-react";
 import { useStoreState } from "app/state/store/hooks";
-import BgEllipses from "app/modules/home-module/assets/full-bg-ellipses.svg";
 import { Box, Container, useMediaQuery } from "@material-ui/core";
 import PlanCard from "./components/plan-card";
 
@@ -18,6 +17,7 @@ import { APPLICATION_JSON } from "app/state/api";
 import { PageLoader } from "app/modules/common/page-loader";
 import { useCheckPricingActive } from "app/hooks/useCheckPricingActive";
 import { DESKTOP_BREAKPOINT } from "app/theme";
+import useBackgroundColor from "app/hooks/useBackgroundColor";
 
 const VIEWS = [
   {
@@ -85,6 +85,8 @@ export default function PricingModule() {
   useTitle("Dataxplorer - Pricing");
 
   const { user, isAuthenticated } = useAuth0();
+  useBackgroundColor("#FFF", []);
+
   const isMobile = useMediaQuery(`(max-width: ${DESKTOP_BREAKPOINT})`);
   const location = useLocation();
 
@@ -222,7 +224,6 @@ export default function PricingModule() {
   return (
     <section
       css={`
-        background: linear-gradient(180deg, #fff 0%, #f2f7fd 100%);
         display: flex;
         flex-direction: column;
         justify-content: space-between;

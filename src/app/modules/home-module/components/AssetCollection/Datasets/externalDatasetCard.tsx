@@ -1,6 +1,5 @@
 /** third party */
 import React from "react";
-import ArrowRightAltIcon from "@material-ui/icons/ArrowRightAlt";
 /** project */
 import WHOLogo from "app/modules/home-module/assets/WHO-logo.svg";
 import KaggleLogo from "app/modules/home-module/assets/kaggle-logo.svg";
@@ -10,7 +9,7 @@ import TGFLogo from "app/modules/home-module/assets/tgf-logo.svg";
 import { ReactComponent as ClockIcon } from "app/modules/home-module/assets/clock-icon.svg";
 
 import moment from "moment";
-import { IExternalDataset } from "app/modules/dataset-module/routes/upload-module/upload-steps/externalSearch";
+import { IExternalDataset } from "app/modules/dataset-module/routes/upload-module/upload-steps/step1/externalSearch";
 export default function ExternalDatasetCard(
   props: Readonly<{
     name: string;

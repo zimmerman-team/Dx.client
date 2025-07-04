@@ -7,16 +7,10 @@ import useDebounce from "react-use/lib/useDebounce";
 import axios from "axios";
 import CircleLoader from "app/modules/home-module/components/Loader";
 import { useInfinityScroll } from "app/hooks/useInfinityScroll";
-import SourceCategoryList from "app/modules/dataset-module/routes/upload-module/component/externalSourcesList";
-import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
+import { useRecoilState, useSetRecoilState } from "recoil";
 import { externalDataSortByAtom, planDialogAtom } from "app/state/recoil/atoms";
-import SaveAltIcon from "@material-ui/icons/SaveAlt";
 import ExternalSearchTable from "app/modules/dataset-module/routes/upload-module/component/table/externalSearchTable";
 import { useCheckUserPlan } from "app/hooks/useCheckUserPlan";
-import { PrimaryButton } from "app/components/Styled/button";
-import { SearchIcon } from "app/assets/icons/Search";
-import { ChevronRight } from "@material-ui/icons";
-import { set } from "lodash";
 
 export interface IExternalDataset {
   name: string;
@@ -181,80 +175,20 @@ export default function ExternalSearch(props: {
       loadSearch();
     }
   };
-  const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleSearch = (value: string) => {
     terminateSearch();
-    props.setSearchValue?.(e.target.value);
+    props.setSearchValue?.(value);
   };
 
   return (
     <>
       <div
         css={`
-          display: flex;
-          gap: 24px;
-          @media (max-width: 881px) {
-            margin-top: 40px;
-          }
-        `}
-      >
-        <div
-          css={`
-            border-radius: 20px;
-            border: 0.5px solid #000;
-            flex: 1;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            padding: 0 16px;
-
-            input {
-              font-size: 14px;
-              height: 40px;
-              flex: 1;
-              border: none;
-              outline: none;
-              background: transparent;
-            }
-          `}
-        >
-          <SearchIcon />
-          <input
-            type="text"
-            placeholder="Search your dataset via Federated search"
-            value={props.searchValue}
-            onChange={handleSearch}
-            onKeyPress={(e) => {
-              if (e.key === "Enter") {
-                onSearch();
-              }
-            }}
-            data-cy="external-search-input"
-            aria-label="search"
-            name="search"
-            autoComplete="search"
-          />
-        </div>
-
-        <PrimaryButton
-          bg="dark"
-          size="small"
-          css={`
-            height: 41px;
-            border-radius: 30px;
-          `}
-          onClick={onSearch}
-          data-cy="external-search-button"
-        >
-          SEARCH
-        </PrimaryButton>
-      </div>
-      <div
-        css={`
           height: 16px;
         `}
       />
       <Grid container alignItems="center">
-        <Grid
+        {/* <Grid
           item
           xs={12}
           sm={12}
@@ -272,10 +206,11 @@ export default function ExternalSearch(props: {
             baseSources={baseSources}
             terminateSearch={terminateSearch}
           />
-        </Grid>
-        <Grid item xs={12} sm={12} md={6} lg={6}>
+        </Grid> */}
+        <Grid item xs={12} sm={12} md={12} lg={12}>
           <Filter
             searchValue={props.searchValue as string}
+            setSearchValue={props.setSearchValue}
             setSortValue={setSortValue}
             setAssetsView={setView}
             sortValue={sortValue}
@@ -283,11 +218,18 @@ export default function ExternalSearch(props: {
             searchInputWidth="249px"
             searchIconCypressId="open-search-button"
             hasSearch={false}
+            openSearch
+            onKeyPress={(e) => {
+              if (e.key === "Enter") {
+                onSearch();
+              }
+            }}
+            terminateSearch={terminateSearch}
           />
         </Grid>
       </Grid>
 
-      <Box height={32} />
+      <Box height={25} />
       {datasets?.length ? (
         <>
           {view === "grid" && (
@@ -322,11 +264,10 @@ export default function ExternalSearch(props: {
               onItemClick={props.handleDownload}
               tableData={{
                 columns: [
-                  { key: "name", label: "Title" },
+                  { key: "name", label: "Dataset Title" },
+                  { key: "source", label: "Source" },
                   { key: "description", label: "Description" },
                   { key: "datePublished", label: "Date" },
-                  { key: "source", label: "Source" },
-                  { key: "download", label: "", icon: <ChevronRight /> },
                 ],
                 data: datasets,
               }}

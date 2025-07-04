@@ -137,7 +137,7 @@ export default function Card() {
             <PrimaryButton
               bg="light"
               size="small"
-              onClick={() => history.push("/about")}
+              onClick={() => history.push("/why-da")}
             >
               Learn More
             </PrimaryButton>

@@ -43,7 +43,7 @@ export function DatasetDataTable(props: DataThemesDataTableProps) {
     data: tableData,
     loading,
     refetch,
-  } = useGetDatasetContent(props.datasetId, 10);
+  } = useGetDatasetContent(props.datasetId, 20);
 
   React.useEffect(() => {
     //load data if intersection observer is triggered

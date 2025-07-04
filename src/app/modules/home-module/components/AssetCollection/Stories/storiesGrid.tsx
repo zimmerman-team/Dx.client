@@ -255,11 +255,19 @@ export default function StoriesGrid(props: Readonly<Props>) {
         <HomepageTable
           handleDelete={handleModal}
           handleDuplicate={handleDuplicate}
+          cellWidths={[50, 300, 350, 142, 142, 142, 138, 50]}
           tableData={{
             columns: [
-              { key: "name", label: "Name" },
-              { key: "title", label: "Description" },
+              { key: "name", label: "File Name" },
+              {
+                key: "description",
+                label: "Description",
+                icon: <ColoredStoryIcon />,
+              },
+              { key: "type", label: "File Type" },
               { key: "updatedDate", label: "Last modified" },
+              { key: "createdDate", label: "Date Created" },
+              { key: "ownerName", label: "Creator" },
             ],
             data: loadedStories.map((data) => ({
               ...data,
@@ -267,7 +275,7 @@ export default function StoriesGrid(props: Readonly<Props>) {
                 ? EditorState.createWithContent(convertFromRaw(data.heading))
                     .getCurrentContent()
                     .getPlainText()
-                : "",
+                : EditorState.createEmpty().getCurrentContent().getPlainText(),
               type: "story",
             })),
           }}

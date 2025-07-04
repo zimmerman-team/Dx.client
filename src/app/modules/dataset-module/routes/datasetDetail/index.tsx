@@ -1,4 +1,3 @@
-import FinishedFragment from "app/modules/dataset-module/routes/upload-module/upload-steps/finishedFragment";
 import { useChartsRawData } from "app/hooks/useChartsRawData";
 import React from "react";
 import DatasetSubHeaderToolbar from "app/modules/dataset-module/component/datasetSubHeaderToolbar";
@@ -12,6 +11,7 @@ import { PageLoader } from "app/modules/common/page-loader";
 import { useTitle } from "react-use";
 import { NotAuthorizedMessageModule } from "app/modules/common/not-authorized-message";
 import HomeFooter from "app/modules/home-module/components/Footer";
+import FinishedFragment from "./FinishedFragment";
 
 export default function DatasetDetail() {
   useTitle("Dataxplorer - Dataset Detail");

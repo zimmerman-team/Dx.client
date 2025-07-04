@@ -5,7 +5,7 @@ import {
   searchInputCss,
   sortByItemCss,
 } from "app/modules/home-module/style";
-import { IconButton, Popover, Tooltip } from "@material-ui/core";
+import { Popover, Tooltip } from "@material-ui/core";
 import { ReactComponent as SortIcon } from "app/modules/home-module/assets/sort-fill.svg";
 import { ReactComponent as GridIcon } from "app/modules/home-module/assets/grid-fill.svg";
 import { ReactComponent as FilterIcon } from "app/modules/home-module/assets/filter-fill.svg";
@@ -13,11 +13,40 @@ import { ReactComponent as CloseIcon } from "app/modules/home-module/assets/clos
 import { ReactComponent as SearchIcon } from "app/modules/home-module/assets/search-fill.svg";
 import { ReactComponent as TableIcon } from "app/modules/home-module/assets/table-icon.svg";
 import { ReactComponent as MenuIcon } from "app/modules/home-module/assets/menu.svg";
+import AddAssetDropdown from "app/modules/home-module/components/AddAssetDropdown";
+import { MultiSwitch } from "app/modules/home-module/components/TabSwitch";
+import { useOnClickOutside } from "usehooks-ts";
+
+const CustomGridIcon = ({ isActive }: { isActive?: boolean }) => (
+  <Tooltip title="List View" placement="bottom">
+    <GridIcon
+      css={`
+        path {
+          fill: ${isActive ? "#fff" : "#231d2c"};
+        }
+      `}
+    />
+  </Tooltip>
+);
+
+const CustomTableIcon = ({ isActive }: { isActive?: boolean }) => (
+  <Tooltip title="Table View" placement="bottom">
+    <TableIcon
+      css={`
+        g {
+          path {
+            fill: ${isActive ? "#fff" : "#231d2c"};
+          }
+        }
+      `}
+    />
+  </Tooltip>
+);
 
 export default function Filter(
   props: Readonly<{
     searchValue?: string;
-    setSearchValue?: (value: React.SetStateAction<string | undefined>) => void;
+    setSearchValue?: (value: string | undefined) => void;
     setSortValue: (value: "updatedDate" | "createdDate" | "name") => void;
     sortValue: string;
     setFilterValue?: (value: "allAssets" | "myAssets") => void;
@@ -30,6 +59,7 @@ export default function Filter(
     setOpenSearch?: React.Dispatch<React.SetStateAction<boolean>>;
     searchIconCypressId: string;
     hasSearch: boolean;
+    onKeyPress?: (e: React.KeyboardEvent<HTMLInputElement>) => void;
   }>
 ) {
   const inputRef = React.useRef<HTMLInputElement>(null);
@@ -38,6 +68,11 @@ export default function Filter(
     React.useState<HTMLButtonElement | null>(null);
   const [filterPopoverAnchorEl, setFilterPopoverAnchorEl] =
     React.useState<HTMLButtonElement | null>(null);
+  useOnClickOutside(inputRef, () => {
+    props.setSearchValue?.("");
+    props.terminateSearch && props.terminateSearch();
+    props.setOpenSearch?.(false);
+  });
   const handleCloseSortPopover = () => {
     setSortPopoverAnchorEl(null);
   };
@@ -64,6 +99,9 @@ export default function Filter(
   const handleIconsDisplay = () => {
     setDisplayIcons(!displayIcons);
   };
+  const handleTabSwitch = (tab: string) => {
+    props.setAssetsView(tab as "grid" | "table");
+  };
 
   return (
     <div
@@ -72,6 +110,7 @@ export default function Filter(
         justify-content: flex-start;
         flex-direction: row-reverse;
         gap: 8px;
+        width: 100%;
       `}
     >
       <div
@@ -79,6 +118,7 @@ export default function Filter(
           ${rowFlexCss}
           justify-content: flex-end;
           gap: 8px;
+          width: 100%;
         `}
       >
         <div
@@ -86,62 +126,80 @@ export default function Filter(
             display: flex;
             align-items: center;
             gap: 8px;
+            width: 100%;
           `}
         >
-          <div css={searchInputCss(!!props.openSearch, props.searchInputWidth)}>
+          <div css={searchInputCss(!!props.openSearch)}>
+            <SearchIcon />
             <input
               type="text"
               ref={inputRef}
               value={props.searchValue}
-              placeholder="eg. Kenya"
+              placeholder="Search"
               onChange={handleSearch}
+              onKeyPress={props.onKeyPress}
               data-cy="filter-search-input"
               aria-label="search"
               name="search"
               autoComplete="search"
             />
-
-            <IconButton
-              onClick={() => {
-                props.setSearchValue?.("");
-                props.terminateSearch && props.terminateSearch();
-                props.setOpenSearch?.(false);
-              }}
-              aria-label="close-search"
-              css={`
-                &:hover {
-                  background: transparent;
-                }
-              `}
-            >
-              <CloseIcon
-                css={`
-                  margin-top: 1px;
-                `}
-              />
-            </IconButton>
           </div>{" "}
-          {props.hasSearch && (
+          {props.hasSearch && !props.openSearch && (
             <Tooltip title="Search" placement="bottom">
-              <IconButton
+              <button
                 data-cy={props.searchIconCypressId}
                 onClick={() => {
                   props.setOpenSearch?.(true);
                   inputRef.current?.focus();
                 }}
-                css={iconButtonCss(props.openSearch)}
+                css={`
+                  ${iconButtonCss(props.openSearch)}
+                `}
                 aria-label="search-button"
               >
                 <SearchIcon />
-              </IconButton>
+              </button>
             </Tooltip>
           )}
         </div>
+        <div
+          css={`
+            height: 40px;
+            width: 100px;
+            svg {
+            }
+          `}
+        >
+          <MultiSwitch
+            activeTab={props.assetsView}
+            onTabChange={handleTabSwitch}
+            style={{
+              radius: 10,
+              paddingX: 4,
+              backgroundActive: "#6061E5",
+            }}
+            tabs={[
+              {
+                value: "grid",
+                label: CustomGridIcon({
+                  isActive: props.assetsView === "grid",
+                }),
+              },
+              {
+                value: "table",
+                label: CustomTableIcon({
+                  isActive: props.assetsView === "table",
+                }),
+              },
+            ]}
+          />
+        </div>
+
         {props.filterValue && (
           <>
             {" "}
             <Tooltip title="Filter" placement="bottom">
-              <IconButton
+              <button
                 onClick={(event: React.MouseEvent<HTMLButtonElement>) => {
                   setFilterPopoverAnchorEl(
                     filterPopoverAnchorEl ? null : event.currentTarget
@@ -151,7 +209,7 @@ export default function Filter(
                 aria-label="filter-button"
               >
                 <FilterIcon />
-              </IconButton>
+              </button>
             </Tooltip>
             <Popover
               open={openFilterPopover}
@@ -202,7 +260,7 @@ export default function Filter(
         )}
 
         <Tooltip title="Sort By" placement="bottom">
-          <IconButton
+          <button
             onClick={(event: React.MouseEvent<HTMLButtonElement>) => {
               setSortPopoverAnchorEl(
                 sortPopoverAnchorEl ? null : event.currentTarget
@@ -212,7 +270,7 @@ export default function Filter(
             aria-label="sort-button"
           >
             <SortIcon />
-          </IconButton>
+          </button>
         </Tooltip>
         <Popover
           open={openSortPopover}
@@ -259,38 +317,22 @@ export default function Filter(
             </div>
           ))}
         </Popover>
-        <Tooltip title="Card/List View" placement="bottom">
-          <IconButton
-            data-cy="home-table-view-button"
-            onClick={() => {
-              props.setAssetsView(
-                props.assetsView === "table" ? "grid" : "table"
-              );
-            }}
-            css={`
-              padding: 3px;
-              &:hover {
-                background: transparent;
-                padding: none;
-
-                svg > circle,
-                rect {
-                  fill: #231d2c;
-                }
-                svg > path,
-                svg > g > path,
-                svg > g > rect {
-                  fill: #fff;
-                }
-              }
-            `}
-            aria-label={`${
-              props.assetsView === "table" ? "grid" : "table"
-            }-view-button`}
-          >
-            {props.assetsView === "table" ? <TableIcon /> : <GridIcon />}
-          </IconButton>
-        </Tooltip>
+        <AddAssetDropdown />
+        <div
+          css={`
+            display: flex;
+            flex-shrink: 0;
+            width: 40px;
+            height: 40px;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            border-radius: 10px;
+            background: #f1f3f5;
+          `}
+        >
+          <MenuIcon />
+        </div>
       </div>
     </div>
   );
