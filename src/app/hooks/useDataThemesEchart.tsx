@@ -446,12 +446,12 @@ export function useDataThemesEchart({
           type: "pie",
           radius: drawDonut
             ? [`${thicknessPercent}%`, `${defaultRadius}%`]
-            : [`${defaultRadius}%`],
+            : ["0%", `${defaultRadius}%`],
           avoidLabelOverlap: false,
           label: {
-            show: showLabel,
-            position: labelPosition,
-            fontSize: labelFontSize,
+            show: showLabel ?? true,
+            position: labelPosition ?? "outside",
+            fontSize: labelFontSize ?? 12,
           },
           emphasis: {
             label: {
