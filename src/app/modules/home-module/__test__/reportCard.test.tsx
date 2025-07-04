@@ -6,7 +6,7 @@ import { screen, render } from "@testing-library/react";
 import { mockUseAuth0 } from "app/utils/mockAuth0";
 import { Router } from "react-router-dom";
 import { createMemoryHistory } from "history";
-import GridItem from "app/modules/home-module/components/AssetCollection/Reports/gridItem";
+import GridItem from "app/modules/home-module/components/AssetCollection/Stories/gridItem";
 import { ContentState, EditorState } from "draft-js";
 
 interface MockProps {
@@ -20,6 +20,7 @@ interface MockProps {
   handleDuplicate?: jest.Mock<any, any, any>;
   showMenuButton: boolean;
   owner: string;
+  ownerName: string;
   heading: EditorState;
 }
 
@@ -41,18 +42,18 @@ const history = createMemoryHistory({ initialEntries: ["/"] });
 const defaultProps = (newProps: Partial<MockProps> = {}): MockProps => {
   return {
     date: "2021-08-13",
-    id: "report-id",
+    id: "story-id",
     heading: EditorState.createWithContent(
-      ContentState.createFromText("report-title")
+      ContentState.createFromText("story-title")
     ),
-    name: "report-description",
+    name: "story-description",
     color: "#ffffff",
-    viz: <div data-testid="report-grid-item-viz-icon">report</div>,
+    viz: <div data-testid="story-grid-item-viz-icon">story</div>,
     handleDelete: jest.fn(),
     handleDuplicate: jest.fn(),
     showMenuButton: true,
     owner: "auth0|123",
-
+    ownerName: "owner-name",
     ...newProps,
   } as MockProps;
 };
@@ -73,8 +74,8 @@ const appSetup = (newProps: Partial<MockProps> = {}) => {
 test("card should display chart title, description and date", async () => {
   const { app } = appSetup({});
   render(app);
-  expect(screen.getByText("report-title")).toBeInTheDocument();
-  expect(screen.getByText("report-description")).toBeInTheDocument();
+  expect(screen.getByText("story-title")).toBeInTheDocument();
+  expect(screen.getByText("story-description")).toBeInTheDocument();
 
   expect(screen.getByText("August 2021")).toBeInTheDocument();
 });
@@ -82,19 +83,23 @@ test("card should display chart title, description and date", async () => {
 test("viz icon should be visible", async () => {
   const { app } = appSetup({});
   render(app);
-  expect(screen.getByTestId("report-grid-item-viz-icon")).toBeInTheDocument();
+  expect(screen.getByTestId("story-grid-item-viz-icon")).toBeInTheDocument();
 });
+
+const storyMenuButton = "story-menu-button";
+const storyDuplicateButton = "story-duplicate-button";
+const storyDeleteButton = "story-delete-button";
 
 test("menu popup should display when menu icon is clicked", async () => {
   const { app } = appSetup({});
   const user = userEvent.setup();
   render(app);
-  await user.click(screen.getByRole("button", { name: "report-menu-button" }));
+  await user.click(screen.getByRole("button", { name: storyMenuButton }));
   expect(
-    screen.getByRole("button", { name: "report-duplicate-button" })
+    screen.getByRole("button", { name: storyDuplicateButton })
   ).toBeInTheDocument();
   expect(
-    screen.getByRole("button", { name: "report-delete-button" })
+    screen.getByRole("button", { name: storyDeleteButton })
   ).toBeInTheDocument();
   expect(screen.getByRole("link", { name: "edit-icon" })).toBeInTheDocument();
 });
@@ -103,13 +108,13 @@ test("if menu popup is open, it should close when user clicks overlay", async ()
   const { app } = appSetup({});
   const user = userEvent.setup();
   render(app);
-  await user.click(screen.getByRole("button", { name: "report-menu-button" }));
+  await user.click(screen.getByRole("button", { name: storyMenuButton }));
   expect(
-    screen.getByRole("button", { name: "report-duplicate-button" })
+    screen.getByRole("button", { name: storyDuplicateButton })
   ).toBeInTheDocument();
-  await user.click(screen.getByTestId("report-grid-item-menu-overlay"));
+  await user.click(screen.getByTestId("story-grid-item-menu-overlay"));
   expect(
-    screen.queryByRole("button", { name: "report-duplicate-button" })
+    screen.queryByRole("button", { name: storyDuplicateButton })
   ).toBeNull();
 });
 
@@ -117,28 +122,26 @@ test("delete button should be clickable if user is owner ans user is authenticat
   const { app, props } = appSetup({});
   const user = userEvent.setup();
   render(app);
-  await user.click(screen.getByRole("button", { name: "report-menu-button" }));
+  await user.click(screen.getByRole("button", { name: storyMenuButton }));
 
   expect(
-    screen.getByRole("button", { name: "report-delete-button" })
+    screen.getByRole("button", { name: storyDeleteButton })
   ).toBeInTheDocument();
-  await user.click(
-    screen.getByRole("button", { name: "report-delete-button" })
-  );
-  expect(props.handleDelete).toHaveBeenCalledWith("report-id");
+  await user.click(screen.getByRole("button", { name: storyDeleteButton }));
+  expect(props.handleDelete).toHaveBeenCalledWith("story-id");
 });
 
 test("delete button should not be clickable if user is not owner", async () => {
   const { app, props } = appSetup({ owner: "random-user" });
   const user = userEvent.setup();
   render(app);
-  await user.click(screen.getByRole("button", { name: "report-menu-button" }));
+  await user.click(screen.getByRole("button", { name: storyMenuButton }));
 
   expect(
-    screen.getByRole("button", { name: "report-delete-button" })
+    screen.getByRole("button", { name: storyDeleteButton })
   ).toBeInTheDocument();
   await userEvent.click(
-    screen.getByRole("button", { name: "report-delete-button" }),
+    screen.getByRole("button", { name: storyDeleteButton }),
     {
       pointerEventsCheck: PointerEventsCheckLevel.Never,
     }
@@ -150,15 +153,13 @@ test("duplicate button should be clickable if user is owner ans user is authenti
   const { app, props } = appSetup({});
   const user = userEvent.setup();
   render(app);
-  await user.click(screen.getByRole("button", { name: "report-menu-button" }));
+  await user.click(screen.getByRole("button", { name: storyMenuButton }));
 
   expect(
-    screen.getByRole("button", { name: "report-duplicate-button" })
+    screen.getByRole("button", { name: storyDuplicateButton })
   ).toBeInTheDocument();
-  await user.click(
-    screen.getByRole("button", { name: "report-duplicate-button" })
-  );
-  expect(props.handleDuplicate).toHaveBeenCalledWith("report-id");
+  await user.click(screen.getByRole("button", { name: storyDuplicateButton }));
+  expect(props.handleDuplicate).toHaveBeenCalledWith("story-id");
 });
 
 test("duplicate button should not be clickable if user is not authenticated", async () => {
@@ -166,13 +167,13 @@ test("duplicate button should not be clickable if user is not authenticated", as
   const user = userEvent.setup();
   mockLoginStatus = false;
   render(app);
-  await user.click(screen.getByRole("button", { name: "report-menu-button" }));
+  await user.click(screen.getByRole("button", { name: storyMenuButton }));
 
   expect(
-    screen.getByRole("button", { name: "report-duplicate-button" })
+    screen.getByRole("button", { name: storyDuplicateButton })
   ).toBeInTheDocument();
   await userEvent.click(
-    screen.getByRole("button", { name: "report-duplicate-button" }),
+    screen.getByRole("button", { name: storyDuplicateButton }),
     {
       pointerEventsCheck: PointerEventsCheckLevel.Never,
     }
@@ -184,12 +185,12 @@ test("edit link should be clickable if user is owner and user is authenticated "
   const { app, props } = appSetup({ id: "66904b45783f35006988513a" });
   const user = userEvent.setup();
   render(app);
-  await user.click(screen.getByRole("button", { name: "report-menu-button" }));
+  await user.click(screen.getByRole("button", { name: storyMenuButton }));
 
   expect(screen.getByRole("link", { name: "edit-icon" })).toBeInTheDocument();
   await user.click(screen.getByRole("link", { name: "edit-icon" }));
   expect(history.location.pathname).toBe(
-    "/report/66904b45783f35006988513a/edit"
+    "/story/66904b45783f35006988513a/edit"
   );
 });
 
@@ -200,7 +201,7 @@ test("edit link should not be clickable if user is not owner", async () => {
   });
   const user = userEvent.setup();
   render(app);
-  await user.click(screen.getByRole("button", { name: "report-menu-button" }));
+  await user.click(screen.getByRole("button", { name: storyMenuButton }));
 
   expect(screen.getByRole("link", { name: "edit-icon" })).toBeInTheDocument();
   await userEvent.click(screen.getByRole("link", { name: "edit-icon" }), {

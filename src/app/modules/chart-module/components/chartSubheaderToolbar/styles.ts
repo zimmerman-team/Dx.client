@@ -3,7 +3,7 @@ import { css } from "styled-components/macro";
 export const styles = {
   container: css`
     left: 0;
-    top: 48px;
+    top: 50px;
     z-index: 100;
     width: 100vw;
     height: 50px;
@@ -41,7 +41,7 @@ export const styles = {
     color: white;
     text-decoration: none;
   `,
-  backToReport: css`
+  backToStory: css`
     background: #231d2c;
     border-radius: 8px;
     display: flex;

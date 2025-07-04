@@ -1,12 +1,15 @@
 /* third-party */
 import React from "react";
 import { useAuth0 } from "@auth0/auth0-react";
-import { useHistory, useParams } from "react-router-dom";
+import { useHistory, useLocation, useParams } from "react-router-dom";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 import { isEmpty } from "lodash";
-import { Slide, SnackbarContent, useMediaQuery } from "@material-ui/core";
+import { Slide, Tooltip, useMediaQuery } from "@material-ui/core";
 /* project */
-import { styles } from "app/modules/chart-module/components/toolbox/styles";
+import {
+  snackbarStyle,
+  styles,
+} from "app/modules/chart-module/components/toolbox/styles";
 import { ChartExporter } from "app/modules/chart-module/components/exporter";
 import {
   ChartToolBoxProps,
@@ -20,7 +23,9 @@ import {
   chartViews,
 } from "app/modules/chart-module/data";
 import ToolboxNav from "app/modules/chart-module/components/toolbox/steps/navbar";
-import { InfoSnackbar } from "../chartSubheaderToolbar/infoSnackbar";
+import { InfoSnackbar } from "app/modules/chart-module/components/chartSubheaderToolbar/infoSnackbar";
+import { PrimaryButton } from "app/components/Styled/button";
+import useTogglePanelWithKey from "app/hooks/useTogglePanelWithKey";
 
 export function ChartModuleToolBox(props: Readonly<ChartToolBoxProps>) {
   const { page, view } = useParams<{ page: string; view?: string }>();
@@ -29,6 +34,8 @@ export function ChartModuleToolBox(props: Readonly<ChartToolBoxProps>) {
   const { isAuthenticated, user } = useAuth0();
   const isMobile = useMediaQuery("(max-width: 767px)");
   const [isClickable, setIsClickable] = React.useState(false);
+
+  const location = useLocation();
 
   const dataset = useStoreState((state) => state.charts.dataset.value);
 
@@ -49,6 +56,10 @@ export function ChartModuleToolBox(props: Readonly<ChartToolBoxProps>) {
   const [displayToolbar, setDisplayToolbar] = React.useState<"block" | "none">(
     "block"
   );
+  useTogglePanelWithKey({
+    openToolbox: props.openToolbox,
+    setToolboxOpen: props.setToolboxOpen,
+  });
 
   const stepPaths = [
     { name: "dataset", path: `/chart/${page}/data` },
@@ -120,7 +131,7 @@ export function ChartModuleToolBox(props: Readonly<ChartToolBoxProps>) {
   React.useEffect(() => {
     if (
       location.pathname === `/chart/${page}` ||
-      view == "preview" ||
+      view === "preview" ||
       !isValidView
     ) {
       setDisplayToolbar("none");
@@ -148,44 +159,53 @@ export function ChartModuleToolBox(props: Readonly<ChartToolBoxProps>) {
       >
         <div css={styles.container}>
           {!isMobile && (
-            <div
-              role="button"
-              tabIndex={-1}
-              css={`
-                top: calc((100% - 205px) / 2);
-                left: -16px;
-                color: #fff;
-                width: 16px;
-                height: 133px;
-                display: flex;
-                cursor: pointer;
-                position: absolute;
-                background: #231d2c;
-                align-items: center;
-                flex-direction: column;
-                justify-content: center;
-                border-radius: 10px 0px 0px 10px;
-                transition: background 0.2s ease-in-out;
-                &:hover {
-                  background: #13183f;
-                }
-                > svg {
-                  transform: rotate(${!props.openToolbox ? "-" : ""}90deg);
-                  > path {
-                    fill: #fff;
-                  }
-                }
-              `}
-              onClick={() => {
-                if (props.openToolbox) {
-                  props.onClose();
-                } else {
-                  props.onOpen();
-                }
-              }}
+            <Tooltip
+              title={
+                <>
+                  Press <b>P</b> to quickly open/close the panel
+                </>
+              }
+              placement="right"
             >
-              <TriangleXSIcon />
-            </div>
+              <div
+                role="button"
+                tabIndex={-1}
+                css={`
+                  top: calc((100% - 205px) / 2);
+                  left: -16px;
+                  color: #fff;
+                  width: 16px;
+                  height: 133px;
+                  display: flex;
+                  cursor: pointer;
+                  position: absolute;
+                  background: #231d2c;
+                  align-items: center;
+                  flex-direction: column;
+                  justify-content: center;
+                  border-radius: 10px 0px 0px 10px;
+                  transition: background 0.2s ease-in-out;
+                  &:hover {
+                    background: #13183f;
+                  }
+                  > svg {
+                    transform: rotate(${!props.openToolbox ? "-" : ""}90deg);
+                    > path {
+                      fill: #fff;
+                    }
+                  }
+                `}
+                onClick={() => {
+                  if (props.openToolbox) {
+                    props.setToolboxOpen(false);
+                  } else {
+                    props.setToolboxOpen(true);
+                  }
+                }}
+              >
+                <TriangleXSIcon />
+              </div>
+            </Tooltip>
           )}
 
           <ToolboxNav
@@ -217,6 +237,7 @@ export function ChartModuleToolBox(props: Readonly<ChartToolBoxProps>) {
               onMouseOverNavBtn={onMouseOverNavBtn}
               setChartFromAPI={props.setChartFromAPI}
               deselectDataset={props.deselectDataset}
+              setShowSnackbar={setShowSnackbar}
             />
           )}
 
@@ -228,29 +249,40 @@ export function ChartModuleToolBox(props: Readonly<ChartToolBoxProps>) {
         </div>
       </Slide>
       <InfoSnackbar
-        gap={location.pathname.includes("report")}
+        gap={location.pathname.includes("story")}
         data-testid="create-chart-snackbar"
         onClose={() => setShowSnackbar(null)}
         open={showSnackbar !== null && showSnackbar !== ""}
       >
-        <SnackbarContent
-          message={showSnackbar}
-          aria-describedby="create-chart-snackbar-content"
-          action={
-            <>
-              {!location.pathname.includes("report") && (
-                <button
-                  onClick={() => {
-                    setShowSnackbar(null);
-                    history.push("/report/new/initial");
-                  }}
-                >
-                  CREATE NEW REPORT
-                </button>
-              )}
-            </>
-          }
-        />
+        <div css={snackbarStyle}>
+          <p>
+            Your chart has been successfully saved! You can now find it in your
+            library.
+          </p>
+          <div>
+            <PrimaryButton
+              size="big"
+              bg="light"
+              onClick={() => {
+                setShowSnackbar(null);
+                history.push("/story/new/initial");
+              }}
+            >
+              Create story
+            </PrimaryButton>
+
+            <PrimaryButton
+              size="big"
+              bg="dark"
+              onClick={() => {
+                setShowSnackbar(null);
+                history.push("/");
+              }}
+            >
+              Back to dashboard
+            </PrimaryButton>
+          </div>
+        </div>
       </InfoSnackbar>
     </>
   );

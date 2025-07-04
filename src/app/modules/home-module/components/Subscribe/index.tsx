@@ -73,13 +73,13 @@ export default function Subscribe() {
             margin-bottom: 16px;
           `}
         >
-          Subscribe to our newsletter
+          Stay Up to Date
         </p>
 
         {formError.email && (
           <label
             css={`
-              font-family: "Inter", sans-serif;
+              font-family: "GothamNarrow-Book", "Helvetica Neue", sans-serif;
               font-size: 12px;
               text-align: left;
               width: 100%;
@@ -111,7 +111,7 @@ export default function Subscribe() {
               background: #6061e5;
               text-transform: uppercase;
               color: #fff;
-              font-family: "Inter", sans-serif;
+              font-family: "GothamNarrow-Book", "Helvetica Neue", sans-serif;
               font-size: 16px;
               width: 30%;
             }

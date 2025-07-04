@@ -11,8 +11,8 @@ import {
   ChartsEnabledFilterOptionGroupsStateModel,
   ChartsMappingStateModel,
   SelectedAIChartModel,
-} from "../action-reducers/sync/charts";
-import { ChartsAppliedFiltersStateModel } from "../action-reducers/sync/charts/filters";
+} from "app/state/api/action-reducers/sync/charts";
+import { ChartsAppliedFiltersStateModel } from "app/state/api/action-reducers/sync/charts/filters";
 
 export interface RequestValues<T> {
   values?: T;
@@ -26,6 +26,7 @@ export interface RequestValues<T> {
   filterString?: string;
   nonAuthCall?: boolean;
   storeInCrudData?: boolean;
+  silent?: boolean;
 }
 
 export interface ResponseData<T> {
@@ -33,6 +34,8 @@ export interface ResponseData<T> {
   count: number;
   addOnData?: boolean;
   isUpdateCrudData?: boolean;
+  silent?: boolean;
+  payload?: any;
 }
 
 export interface Errors {
@@ -48,6 +51,7 @@ export interface ApiModel<QueryModel, ResponseModel> {
   planWarning: string | null;
   data: ResponseData<ResponseModel> | null | ResponseData<ResponseModel>[];
   crudData: object | object[] | null;
+  tempData: object | object[] | null;
   setData: Action<ApiModel<QueryModel, ResponseModel>, any>;
   setCrudData: Action<ApiModel<QueryModel, object | object[] | null>, any>;
   errorData: Errors | null;
@@ -111,7 +115,7 @@ export interface StoreModel {
   };
   charts: {
     ChartGet: ApiCallModel;
-    ChartGetInReport: ApiCallModel;
+    ChartGetInStory: ApiCallModel;
     ChartCreate: ApiCallModel;
     ChartUpdate: ApiCallModel;
     ChartDelete: ApiCallModel;
@@ -127,18 +131,18 @@ export interface StoreModel {
     appliedFilters: ChartsAppliedFiltersStateModel;
     enabledFilterOptionGroups: ChartsEnabledFilterOptionGroupsStateModel;
   };
-  reports: {
-    ReportGet: ApiCallModel;
-    ReportCreate: ApiCallModel;
-    ReportUpdate: ApiCallModel;
-    ReportDelete: ApiCallModel;
-    ReportDuplicate: ApiCallModel;
-    ReportGetList: ApiCallModel;
-    ReportsCount: ApiCallModel;
+  stories: {
+    StoryGet: ApiCallModel;
+    StoryCreate: ApiCallModel;
+    StoryUpdate: ApiCallModel;
+    StoryDelete: ApiCallModel;
+    StoryDuplicate: ApiCallModel;
+    StoryGetList: ApiCallModel;
+    StoriesCount: ApiCallModel;
   };
   search: {
     charts: ApiCallModel;
-    reports: ApiCallModel;
+    stories: ApiCallModel;
     datasets: ApiCallModel;
   };
 }

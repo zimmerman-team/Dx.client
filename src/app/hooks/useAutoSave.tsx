@@ -1,5 +1,3 @@
-import { IHeaderDetails } from "app/modules/report-module/components/right-panel/data";
-import { IFramesArray } from "app/modules/report-module/views/create/data";
 import React from "react";
 
 function useAutosave(

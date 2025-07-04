@@ -1,4 +1,5 @@
 import { yupResolver } from "@hookform/resolvers/yup";
+import { APPLICATION_JSON } from "app/state/api";
 import { emailSchema } from "app/utils/emailValidation";
 import axios, { AxiosResponse, AxiosError } from "axios";
 import React from "react";
@@ -17,14 +18,15 @@ export default function NewsletterForm(
     >;
   }>
 ) {
+  const emailAddress = "Email address";
   const inputRef = React.useRef<HTMLInputElement>(null);
-  const [placeholder, setPlaceholder] = React.useState("Email address");
+  const [placeholder, setPlaceholder] = React.useState(emailAddress);
   const inputRefFocus = () => {
     setPlaceholder("");
   };
   const inputRefBlur = () => {
     if (inputRef.current?.value === "") {
-      setPlaceholder("Email address");
+      setPlaceholder(emailAddress);
     }
   };
 
@@ -48,27 +50,23 @@ export default function NewsletterForm(
     props.setIsSubscriptionFailed(false);
     axios
       .post(
-        `https://api.hsforms.com/submissions/v3/integration/submit/${process.env.REACT_APP_HUBSPOT_PORTAL_ID}/${process.env.REACT_APP_HUBSPOT_SUBSCRIBE_FORM_ID}`,
+        `${process.env.REACT_APP_API}/users/subscribe-to-newsletter`,
         {
-          portalId: process.env.REACT_APP_HUBSPOT_PORTAL_ID,
-          formGuid: process.env.REACT_APP_HUBSPOT_SUBSCRIBE_FORM_ID,
-          fields: [
-            {
-              name: "email",
-              value: formValues.email,
-            },
-          ],
+          email: formValues.email,
         },
         {
           headers: {
-            "Content-Type": "application/json",
+            "Content-Type": APPLICATION_JSON,
           },
         }
       )
       .then((response: AxiosResponse) => {
         if (response.status === 200) {
+          if (response.data.error) {
+            return props.setIsSubscriptionFailed(true);
+          }
           setValue("email", "");
-          setPlaceholder("Email address");
+          setPlaceholder(emailAddress);
           props.setIsSubscribed(true);
         } else {
           props.setIsSubscriptionFailed(true);
@@ -89,8 +87,9 @@ export default function NewsletterForm(
       css={`
         width: 100%;
         display: flex;
+        gap: 16px;
         input {
-          font-family: "Roboto", sans-serif;
+          font-family: "GothamNarrow-Book", "Helvetica Neue", sans-serif;
         }
         button {
           cursor: pointer;
@@ -107,8 +106,14 @@ export default function NewsletterForm(
         ref={inputRef}
         onFocus={inputRefFocus}
         onBlur={inputRefBlur}
+        onKeyPress={(event) => {
+          if (event.key === "Enter") {
+            handleSubmit(handleSubscribeAction)();
+          }
+        }}
+        autoComplete="email"
       />
-      <button type="submit">SUBSCRIBE</button>
+      <button type="submit">Subscribe</button>
     </form>
   );
 }

@@ -20,8 +20,7 @@ export default function ToolboxSubHeader(
         display: flex;
         justify-content: space-between;
         align-items: center;
-        padding-left: 24px;
-        padding-right: 24px;
+        padding: 16px 24px;
         button {
           padding: 4px;
           color: #495057;
@@ -29,6 +28,9 @@ export default function ToolboxSubHeader(
           :hover {
             background: transparent;
           }
+        }
+        p {
+          margin: 0;
         }
         div {
           display: flex;
@@ -48,9 +50,9 @@ export default function ToolboxSubHeader(
       <div>
         <p>{props.name}</p>{" "}
         <p>
-          <a className="my-anchor-element">
+          <span className="my-anchor-element">
             <InfoIcon />
-          </a>
+          </span>
           <Tooltip
             anchorSelect=".my-anchor-element"
             place="top"
@@ -71,7 +73,7 @@ export default function ToolboxSubHeader(
       {props.showResetButton && (
         <div>
           <span>Reset filters</span>{" "}
-          <IconButton onClick={props.resetFilters}>
+          <IconButton onClick={props.resetFilters} data-cy="reset-filters">
             <SettingsBackupRestoreIcon color="inherit" />
           </IconButton>
         </div>

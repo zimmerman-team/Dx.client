@@ -7,12 +7,14 @@ import {
 import { useStoreActions } from "app/state/store/hooks";
 import { DatasetDataTable } from "app/modules/dataset-module/routes/upload-module/component/table/data-table";
 import { CssSnackbar, ISnackbarState } from "./previewFragment";
-import { ReactComponent as FullScreenIcon } from "../assets/full-screen.svg";
-import { ReactComponent as CloseFullScreenIcon } from "../assets/close-full-screen.svg";
-import { ArrowBack } from "@material-ui/icons";
+import { ReactComponent as FullScreenIcon } from "app/modules/dataset-module/routes/upload-module/assets/full-screen.svg";
+import { ReactComponent as CloseFullScreenIcon } from "app/modules/dataset-module/routes/upload-module/assets/close-full-screen.svg";
 import { useMediaQuery } from "usehooks-ts";
 import { DatasetListItemAPIModel } from "app/modules/dataset-module/data";
 import moment from "moment";
+import { useAuth0 } from "@auth0/auth0-react";
+import { PrimaryButton } from "app/components/Styled/button";
+import { MOBILE_BREAKPOINT } from "app/theme";
 
 interface Props {
   data: any[];
@@ -26,15 +28,16 @@ interface Props {
 
 export default function FinishedFragment(props: Props) {
   const location = useLocation();
-  const isSmallScreen = useMediaQuery("(max-width:767px)"); //at this breakpoint, we limit user creation abilities
+  const { user, isAuthenticated } = useAuth0();
+  const isSmallScreen = useMediaQuery(`(max-width:${MOBILE_BREAKPOINT})`); //at this breakpoint, we limit user creation abilities
   const queryParams = new URLSearchParams(location.search);
-  const reportPage = queryParams.get("page") as string;
+  const storyPage = queryParams.get("page") as string;
   const fromHome = location.search.includes("fromHome=true");
-  let redirectPath = `/dataset/${props.datasetId}/detail${
+  let redirectPath = `/dataset/${props.datasetId}${
     fromHome ? "?fromHome=true" : ""
   }`;
-  if (reportPage) {
-    redirectPath += `?fromreport=true&page=${reportPage}`;
+  if (storyPage) {
+    redirectPath += `?fromstory=true&page=${storyPage}`;
   }
   const setDatasetId = useStoreActions(
     (actions) => actions.charts.dataset.setValue
@@ -44,6 +47,7 @@ export default function FinishedFragment(props: Props) {
     open: false,
     vertical: "bottom",
     horizontal: "center",
+    message: "",
   });
 
   const [openFullScreenTooltip, setOpenFullScreenTooltip] =
@@ -55,47 +59,75 @@ export default function FinishedFragment(props: Props) {
   const [openFullScreen, setOpenFullScreen] = React.useState(false);
 
   React.useEffect(() => {
-    let snackbarTimeOut: any;
     if (
       props.dataTotalCount > 0 &&
       location.pathname === "/dataset/new/upload"
     ) {
-      setSnackbarState({ ...snackbarState, open: true });
-      snackbarTimeOut = setTimeout(() => {
-        setSnackbarState({ ...snackbarState, open: false });
-      }, 5000);
+      setSnackbarState((prev) => ({
+        ...prev,
+        open: true,
+        message: `${props.dataTotalCount} rows have been successfully processed!`,
+      }));
     }
-    return () => {
-      clearTimeout(snackbarTimeOut);
-    };
   }, [props.dataTotalCount]);
 
   function handleCreateNewChart() {
     setDatasetId(props.datasetId);
   }
 
+  const handleFullScreenDisplay = () => {
+    setOpenFullScreen(true);
+    setSnackbarState((prev) => ({
+      ...prev,
+      open: true,
+      message: "Press ESC to exit Full Screen",
+    }));
+  };
+
+  React.useEffect(() => {
+    if (snackbarState.open) {
+      if (snackbarState.message.includes("Press ESC to exit Full Screen")) {
+        const timer = setTimeout(() => {
+          setSnackbarState((prev) => ({ ...prev, open: false }));
+        }, 30000);
+        return () => clearTimeout(timer);
+      } else {
+        const timer = setTimeout(() => {
+          setSnackbarState((prev) => ({ ...prev, open: false }));
+        }, 3000);
+        return () => clearTimeout(timer);
+      }
+    }
+  }, [snackbarState.open]);
+
+  React.useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        setOpenFullScreen(false);
+        setSnackbarState((prev) => ({ ...prev, open: false }));
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, []);
+
+  const modifiedSourceUrl = () => {
+    const url = props.datasetDetails?.sourceUrl;
+    if (!url) {
+      return "";
+    }
+    if (url.startsWith("https://") || url.startsWith("http://")) {
+      return url;
+    } else {
+      return `https://${url}`;
+    }
+  };
+
   return (
     <div css={dataSetsCss}>
-      <Link
-        to={fromHome ? "/" : "/dashboard"}
-        css={`
-          display: flex;
-          align-items: center;
-          font-size: 14px;
-          color: #231d2c;
-          text-decoration: none;
-          margin-top: 16px;
-          margin-bottom: 16px;
-          column-gap: 8px;
-          cursor: pointer;
-          @media (max-width: 450px) {
-            display: none;
-          }
-        `}
-        data-cy="dataset-back-to-library-btn"
-      >
-        <ArrowBack fontSize={"small"} /> Back to Data Library
-      </Link>
       <div
         css={`
           width: 100%;
@@ -111,8 +143,8 @@ export default function FinishedFragment(props: Props) {
             color: #231d2c;
             font-size: 16px;
             font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
-            line-height: 19px;
-            margin-top: 19px;
+            line-height: 24px;
+            margin-top: 32px;
             @media (max-width: 450px) {
               display: none;
             }
@@ -126,7 +158,7 @@ export default function FinishedFragment(props: Props) {
             display: flex;
             margin-bottom: 12px;
             justify-content: space-between;
-            margin-top: 34px;
+            margin-top: 10px;
           `}
         >
           <div
@@ -138,20 +170,17 @@ export default function FinishedFragment(props: Props) {
           >
             <div
               css={`
-                width: 40px;
-                height: 40px;
+                width: 32px;
+                height: 32px;
                 cursor: pointer;
                 position: relative;
-                @media (max-width: 450px) {
-                  display: none;
-                }
               `}
               onMouseOver={() => setOpenFullScreenTooltip(true)}
               onMouseLeave={() => setOpenFullScreenTooltip(false)}
-              onClick={() => setOpenFullScreen(true)}
+              onClick={handleFullScreenDisplay}
               data-cy="dataset-full-screen-btn"
             >
-              <FullScreenIcon />
+              <FullScreenIcon width={32} height={32} />
               <div
                 css={`
                   background: #626262;
@@ -173,7 +202,7 @@ export default function FinishedFragment(props: Props) {
 
             <p
               css={`
-                font-size: 16px;
+                font-size: 14px;
                 font-family: "GothamNarrow-Book", "Helvetica Neue", sans-serif;
                 padding: 0;
                 margin: 0;
@@ -189,52 +218,51 @@ export default function FinishedFragment(props: Props) {
           {isSmallScreen ? (
             <></>
           ) : (
-            <Link
-              to={{
-                pathname: `/chart/new/chart-type`,
-                search: `?loadataset=true${
-                  reportPage ? `&fromreport=true&page=${reportPage}` : ""
-                }`,
-              }}
-              css={`
-                pointer-events: ${props.canDatasetEditDelete ? "auto" : "none"};
-              `}
-            >
-              <button
-                disabled={
-                  props.canDatasetEditDelete
-                    ? !props.canDatasetEditDelete
-                    : false
-                }
-                css={`
-                  opacity: ${props.canDatasetEditDelete ? "1" : "0.5"};
-                  color: #fff;
-                  width: 100%;
-                  width: 200px;
-                  height: 41px;
-                  font-size: 14px;
-                  font-weight: 700;
-                  padding: 12px 27px;
-                  background: #64afaa;
-                  border-radius: 30px;
-                  text-transform: uppercase;
-                  font-family: "GothamNarrow-Bold";
-                  outline: none;
-                  border: none;
-                  display: flex;
-                  justify-content: center;
-                  align-items: center;
-
-                  :hover {
-                    opacity: 0.8;
-                    cursor: pointer;
-                  }
-                `}
-                onClick={handleCreateNewChart}
-              >
-                create new chart
-              </button>
-            </Link>
+            <>
+              {!isAuthenticated ? (
+                <Link
+                  to="/onboarding/signin"
+                  css={`
+                    color: #fff;
+                    width: 100%;
+                    width: max-content;
+                    height: 48px;
+                    padding: 0 24px;
+                    font-size: 14px;
+                    background: #6061e5;
+                    border-radius: 12px;
+                    font-family: "GothamNarrow-Bold", sans-serif;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    :hover {
+                      opacity: 0.8;
+                      cursor: pointer;
+                    }
+                  `}
+                >
+                  Sign in to Create Chart
+                </Link>
+              ) : (
+                <Link
+                  to={{
+                    pathname: `/chart/new/chart-type`,
+                    search: `?loadataset=true${
+                      storyPage ? `&fromstory=true&page=${storyPage}` : ""
+                    }`,
+                  }}
+                >
+                  <PrimaryButton
+                    size="big"
+                    bg="dark"
+                    type="button"
+                    onClick={handleCreateNewChart}
+                  >
+                    create chart
+                  </PrimaryButton>
+                </Link>
+              )}
+            </>
           )}
         </div>
         <DatasetDataTable
@@ -250,10 +278,13 @@ export default function FinishedFragment(props: Props) {
             position: fixed;
             top: 0;
             left: 0;
-            z-index: 100001;
+            z-index: 1101;
             width: 100vw;
             height: 100vh;
             padding: 26px 100px 26px 108px;
+            @media (max-width: 450px) {
+              padding: 26px;
+            }
           `}
           hidden={!openFullScreen}
           data-cy="dataset-full-screen-view"
@@ -267,8 +298,8 @@ export default function FinishedFragment(props: Props) {
           >
             <div
               css={`
-                width: 40px;
-                height: 40px;
+                width: 32px;
+                height: 32px;
                 cursor: pointer;
                 margin-bottom: 15px;
                 position: relative;
@@ -278,7 +309,7 @@ export default function FinishedFragment(props: Props) {
               onClick={() => setOpenFullScreen(false)}
               data-cy="dataset-close-full-screen-btn"
             >
-              <CloseFullScreenIcon />
+              <CloseFullScreenIcon width={32} height={32} />
 
               <div
                 css={`
@@ -319,10 +350,15 @@ export default function FinishedFragment(props: Props) {
           p {
             margin-bottom: 8px;
             margin-top: 0;
-            font-size: 12px;
+            font-size: 14px;
             font-family: "GothamNarrow-Book", "Helvetica Neue", sans-serif;
+            > a {
+              text-decoration: none;
+              color: inherit;
+              border-bottom: 1px solid #70777e;
+            }
           }
-          @media (max-width: 450px) {
+          @media (max-width: 500px) {
             display: none;
           }
         `}
@@ -331,16 +367,53 @@ export default function FinishedFragment(props: Props) {
         <p>Data Description : {props.datasetDetails.description}</p>
         <p>Data Category : {props.datasetDetails.category}</p>
         <p>Data Source : {props.datasetDetails.source}</p>
-        <p>Link to data source : {props.datasetDetails.sourceUrl || "NIL"}</p>
+        <p>
+          Link to data source:{" "}
+          {props.datasetDetails.sourceUrl ? (
+            <a
+              href={modifiedSourceUrl()}
+              rel="noreferrer noopener"
+              target="_blank"
+            >
+              {props.datasetDetails.sourceUrl}
+            </a>
+          ) : (
+            "NIL"
+          )}
+        </p>
       </div>
       <div css={mobileDescriptioncss}>
         <div>
-          <p>Details</p>
+          <p>Data Title</p>
+          <p>{props.datasetDetails.name}</p>
+        </div>
+        <div>
+          <p>Data Description</p>
           <p>{props.datasetDetails.description}</p>
         </div>
         <div>
-          <p>category</p>
-          {props.datasetDetails.category}
+          <p>Category</p>
+          <p>{props.datasetDetails.category}</p>
+        </div>
+        <div>
+          <p>Data Source</p>
+          <p> {props.datasetDetails.source}</p>
+        </div>
+        <div>
+          <p>Link to Data Source</p>
+          <p>
+            {props.datasetDetails.sourceUrl ? (
+              <a
+                href={modifiedSourceUrl()}
+                rel="noreferrer noopener"
+                target="_blank"
+              >
+                {props.datasetDetails.sourceUrl}
+              </a>
+            ) : (
+              "NIL"
+            )}
+          </p>
         </div>
       </div>
       <div
@@ -365,7 +438,7 @@ export default function FinishedFragment(props: Props) {
 
       <div
         css={`
-          height: 50px;
+          height: 32px;
         `}
       />
       <CssSnackbar
@@ -374,8 +447,10 @@ export default function FinishedFragment(props: Props) {
           horizontal: snackbarState.horizontal,
         }}
         open={snackbarState.open}
-        onClose={() => setSnackbarState({ ...snackbarState, open: false })}
-        message={`${props.dataTotalCount} rows have been successfully parsed!`}
+        onClose={() =>
+          setSnackbarState((prev) => ({ ...prev, open: false, message: "" }))
+        }
+        message={snackbarState.message}
         key={snackbarState.vertical + snackbarState.horizontal}
       />
     </div>

@@ -10,12 +10,13 @@ import Container from "@material-ui/core/Container";
 /* project */
 import { Tab } from "app/components/Styled/tabs";
 import ChartsGrid from "app/modules/home-module/components/AssetCollection/Charts/chartsGrid";
-import ReportsGrid from "app/modules/home-module/components/AssetCollection/Reports/reportsGrid";
+import StoriesGrid from "app/modules/home-module/components/AssetCollection/Stories/storiesGrid";
 import DatasetsGrid from "app/modules/home-module/components/AssetCollection/Datasets/datasetsGrid";
 import {
   homeDisplayAtom,
   allAssetsViewAtom,
   allAssetsSortBy,
+  allAssetsFilterBy,
 } from "app/state/recoil/atoms";
 import {
   featuredAssetsCss,
@@ -27,7 +28,14 @@ import { datasetCategories } from "app/modules/dataset-module/routes/upload-modu
 import AssetsGrid from "app/modules/home-module/components/AssetCollection/All/assetsGrid";
 import BreadCrumbs from "app/modules/home-module/components/Breadcrumbs";
 import Filter from "app/modules/home-module/components/Filter";
-import { useCheckUserPlan } from "app/hooks/useCheckUserPlan";
+import AddAssetDropdown from "app/modules/home-module/components/AddAssetDropdown";
+import {
+  DESKTOP_BREAKPOINT,
+  DESKTOP_STARTPOINT,
+  MOBILE_BREAKPOINT,
+  TABLET_STARTPOINT,
+} from "app/theme";
+import useMediaQuery from "@material-ui/core/useMediaQuery";
 
 function AssetsCollection() {
   const { isAuthenticated, user } = useAuth0();
@@ -36,14 +44,13 @@ function AssetsCollection() {
   const [searchValue, setSearchValue] = React.useState<string | undefined>("");
   const [openSearch, setOpenSearch] = React.useState(false);
   const [sortValue, setSortValue] = useRecoilState(allAssetsSortBy);
+  const [filterValue, setFilterValue] = useRecoilState(allAssetsFilterBy);
   const [display, setDisplay] = useRecoilState(homeDisplayAtom);
   const [tabPrevPosition, setTabPrevPosition] = React.useState("");
 
-  const { handleClick } = useCheckUserPlan();
+  const laptop = useMediaQuery("(min-width: 960px)");
 
-  const history = useHistory();
-
-  const handleChange = (newValue: "all" | "data" | "charts" | "reports") => {
+  const handleChange = (newValue: "all" | "data" | "charts" | "stories") => {
     setDisplay(newValue);
   };
 
@@ -56,6 +63,7 @@ function AssetsCollection() {
             searchStr={searchStr}
             view={assetsView}
             categories={categories}
+            userOnly={filterValue === "myAssets"}
           />
         );
       case "charts":
@@ -64,14 +72,16 @@ function AssetsCollection() {
             sortBy={sortByStr}
             searchStr={searchStr}
             view={assetsView}
+            userOnly={filterValue === "myAssets"}
           />
         );
-      case "reports":
+      case "stories":
         return (
-          <ReportsGrid
+          <StoriesGrid
             sortBy={sortByStr}
             searchStr={searchStr}
             view={assetsView}
+            userOnly={filterValue === "myAssets"}
           />
         );
       case "all":
@@ -80,6 +90,7 @@ function AssetsCollection() {
             sortBy={sortByStr}
             searchStr={searchStr}
             view={assetsView}
+            userOnly={filterValue === "myAssets"}
           />
         );
       default:
@@ -96,29 +107,52 @@ function AssetsCollection() {
   }, [display]);
 
   const descriptions = {
-    all: "Explore the collection of Assets",
-    data: "Explore the collection of Datasets used to create Charts",
-    charts: "Explore the collection of Charts used in Reports",
-    reports: "Explore the collection of Reports",
+    all: "Explore The Collection of Assets",
+    data: "Explore The Collection of Datasets ",
+    charts: "Explore The Collection of Charts ",
+    stories: "Explore The Collection of Stories",
+  };
+
+  const shareData = {
+    title: "MDN",
+    text: "Best Seller Book chart",
+    url: "http://localhost:3000/chart/6796530b8f00e1006902376d",
   };
 
   return (
-    <Container maxWidth="lg">
+    <Container
+      maxWidth="lg"
+      css={`
+        @media (max-width: 960px) {
+          padding: 0 32px;
+        }
+      `}
+    >
       <div css={turnsDataCss}>
         {isAuthenticated ? (
-          <Grid container>
-            <Grid lg={5} md={5} sm={12} xs={11}>
+          <Grid container alignItems="center">
+            <Grid item lg={5} md={5} sm={7} xs={11}>
+              <h4
+                css={`
+                  font-size: 18px;
+                `}
+              >
+                Library
+              </h4>
               <h2>Welcome {user?.given_name ?? user?.name?.split(" ")[0]}</h2>
             </Grid>
             <Grid
+              item
               lg={7}
               md={7}
-              sm={12}
+              sm={5}
               xs={1}
               css={`
+                display: block;
+
                 @media (max-width: 965px) {
                   margin-top: 16px;
-                  @media (max-width: 767px) {
+                  @media (max-width: ${MOBILE_BREAKPOINT}) {
                     display: none;
                   }
                 }
@@ -127,62 +161,10 @@ function AssetsCollection() {
               <div
                 css={`
                   display: flex;
-                  width: 100%;
-                  justify-content: flex-end;
-                  align-items: center;
-                  gap: 8px;
-                  a,
-                  button {
-                    padding: 8px 24px;
-                    white-space: nowrap;
-                    @media (max-width: 700px) {
-                      font-size: 12px;
-                      padding: 8px 19px;
-                    }
-                  }
+                  justify-self: flex-end;
                 `}
               >
-                <button
-                  css={`
-                    background: #e492bd;
-                  `}
-                  data-cy="home-connect-dataset-button"
-                  onClick={() =>
-                    handleClick("dataset", () =>
-                      history.push(
-                        `/dataset/new/upload${
-                          location.pathname === "/" ? "?fromHome=true" : ""
-                        }`
-                      )
-                    )
-                  }
-                >
-                  CONNECT DATASET
-                </button>
-                <button
-                  css={`
-                    background: #64afaa;
-                  `}
-                  data-cy="home-create-chart-button"
-                  onClick={() =>
-                    handleClick("chart", () => history.push("/chart/new/data"))
-                  }
-                >
-                  CREATE CHART
-                </button>
-                <button
-                  css={`
-                    background: #6061e5;
-                  `}
-                  data-cy="home-create-report-button"
-                  onClick={() =>
-                    handleClick("report", () =>
-                      history.push("/report/new/initial")
-                    )
-                  }
-                >
-                  CREATE REPORT
-                </button>
+                <AddAssetDropdown />
               </div>
             </Grid>
           </Grid>
@@ -190,10 +172,8 @@ function AssetsCollection() {
           <div />
         )}
       </div>
-      <Box height={24} />
+      <Box height={32} />
       <Box css={featuredAssetsCss}>
-        <BreadCrumbs items={[{ title: "Library" }]} />
-        <Box height={24} />
         <Grid
           container
           alignContent="space-between"
@@ -228,20 +208,72 @@ function AssetsCollection() {
                 position={tabPrevPosition}
                 data-cy="home-charts-tab"
               >
-                Charts
+                Chart
               </Tab.Center>
 
               <Tab.Right
-                active={display === "reports"}
-                onClick={() => handleChange("reports")}
-                data-cy="home-reports-tab"
+                active={display === "stories"}
+                onClick={() => handleChange("stories")}
+                data-cy="home-stories-tab"
               >
-                Reports
+                Story
               </Tab.Right>
             </Tab.Container>
           </Grid>
 
           <Grid item lg={6} md={6} sm={6} xs={12}>
+            <div
+              css={`
+                display: none;
+
+                @media (min-width: ${DESKTOP_STARTPOINT}) {
+                  display: block;
+                }
+              `}
+            >
+              <Filter
+                searchValue={searchValue as string}
+                setSearchValue={setSearchValue}
+                setSortValue={setSortValue}
+                setAssetsView={setAssetsView}
+                sortValue={sortValue}
+                assetsView={assetsView}
+                openSearch={openSearch}
+                setOpenSearch={setOpenSearch}
+                searchIconCypressId="home-search-button"
+                filterValue={filterValue}
+                setFilterValue={setFilterValue}
+                hasSearch
+              />
+            </div>
+          </Grid>
+        </Grid>
+        <div
+          css={`
+            padding-top: 16px;
+            font-size: 14px;
+            font-family: "GothamNarrow-Book", "Helvetica Neue", sans-serif;
+            color: #231d2c;
+            line-height: normal;
+          `}
+        >
+          {descriptions[display]}
+        </div>{" "}
+        <div
+          css={`
+            display: none;
+            @media (min-width: ${TABLET_STARTPOINT}) {
+              @media (max-width: ${DESKTOP_BREAKPOINT}) {
+                padding-top: 16px;
+                display: block;
+              }
+            }
+            @media (max-width: ${MOBILE_BREAKPOINT}) {
+              display: none;
+            }
+          `}
+        >
+          {laptop ? null : (
             <Filter
               searchValue={searchValue as string}
               setSearchValue={setSearchValue}
@@ -252,27 +284,11 @@ function AssetsCollection() {
               openSearch={openSearch}
               setOpenSearch={setOpenSearch}
               searchIconCypressId="home-search-button"
+              filterValue={filterValue}
+              setFilterValue={setFilterValue}
+              hasSearch
             />
-            <div
-              css={`
-                display: none;
-                @media (max-width: 599px) {
-                  height: 20px;
-                  display: block;
-                }
-              `}
-            />
-          </Grid>
-        </Grid>
-        <div
-          css={`
-            padding-top: 24px;
-            font-size: 14px;
-            font-family: "GothamNarrow-Book", "Helvetica Neue", sans-serif;
-            color: #000000;
-          `}
-        >
-          {descriptions[display]}
+          )}
         </div>
         {display === "data" ? (
           <DatasetCategoryList
@@ -281,15 +297,19 @@ function AssetsCollection() {
             categories={categories}
           />
         ) : (
-          <Box height={24} />
+          <Box height={32} />
         )}
       </Box>
+
       <div
         id="scrollableDiv"
         css={`
           ::-webkit-scrollbar {
             width: 0px;
             background: transparent;
+          }
+          @media (max-width: 960px) {
+            padding: 0 32px;
           }
         `}
       >

@@ -3,12 +3,12 @@ import Checkbox from "@material-ui/core/Checkbox";
 import { socialAuth } from "app/utils/socialAuth";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import { socialloginbuttoncss, termsOfServiceCss } from "./style";
-import { ReactComponent as GoogleIcon } from "../../asset/google-img.svg";
-import { ReactComponent as LinkedInIcon } from "../../asset/linkedIn-img.svg";
-import { ReactComponent as MicrosoftIcon } from "../../asset/microsoft-img.svg";
+import { ReactComponent as GoogleIcon } from "app/modules/home-module/components/SignInButtons/assets/google-icon.svg";
+import { ReactComponent as LinkedInIcon } from "app/modules/home-module/components/SignInButtons/assets/linkedin-icon.svg";
+import { ReactComponent as MicrosoftIcon } from "app/modules/home-module/components/SignInButtons/assets/microsoft-icon.svg";
 import { useLocation } from "react-router-dom";
 
-export default function AuthCard(props: { isLogin?: boolean }) {
+export default function AuthCard(props: { isSignIn?: boolean }) {
   const [checked, setChecked] = React.useState(true);
   const location = useLocation();
 
@@ -25,7 +25,7 @@ export default function AuthCard(props: { isLogin?: boolean }) {
       css={`
         display: flex;
         color: #231d2c;
-        padding-top: 38px;
+        padding-top: 50px;
         align-items: center;
         flex-direction: column;
         justify-content: center;
@@ -41,7 +41,7 @@ export default function AuthCard(props: { isLogin?: boolean }) {
         css={socialloginbuttoncss}
         disabled={!checked}
         onClick={() => {
-          if (props.isLogin) {
+          if (props.isSignIn) {
             socialAuth("google-oauth2", undefined, location.search);
           } else {
             storeSignUpState();
@@ -49,14 +49,14 @@ export default function AuthCard(props: { isLogin?: boolean }) {
           }
         }}
       >
-        <GoogleIcon /> {props.isLogin ? "Log in" : "Sign up"} with Google
+        <GoogleIcon /> {props.isSignIn ? "Sign in" : "Sign up"} with Google
       </button>
       <button
         type="button"
         css={socialloginbuttoncss}
         disabled={!checked}
         onClick={() => {
-          if (props.isLogin) {
+          if (props.isSignIn) {
             socialAuth("linkedin", undefined, location.search);
           } else {
             storeSignUpState();
@@ -65,14 +65,14 @@ export default function AuthCard(props: { isLogin?: boolean }) {
         }}
       >
         <LinkedInIcon />
-        {props.isLogin ? "Log in" : "Sign up"} with LinkedIn
+        {props.isSignIn ? "Sign in" : "Sign up"} with LinkedIn
       </button>
       <button
         type="button"
         css={socialloginbuttoncss}
         disabled={!checked}
         onClick={() => {
-          if (props.isLogin) {
+          if (props.isSignIn) {
             socialAuth("windowslive", undefined, location.search);
           } else {
             storeSignUpState();
@@ -81,9 +81,9 @@ export default function AuthCard(props: { isLogin?: boolean }) {
         }}
       >
         <MicrosoftIcon />
-        {props.isLogin ? "Log in" : "Sign up"} with Microsoft
+        {props.isSignIn ? "Sign in" : "Sign up"} with Microsoft
       </button>
-      {props.isLogin ? null : (
+      {props.isSignIn ? null : (
         <FormControlLabel
           control={
             <Checkbox
@@ -101,9 +101,9 @@ export default function AuthCard(props: { isLogin?: boolean }) {
                 font-family: "GothamNarrow-Book", "Helvetica Neue", sans-serif;
               `}
             >
-              I agree with DX's{" "}
+              I agree with Dataxplorer's{" "}
               <a
-                href=""
+                href="/"
                 target="_blank"
                 rel="noreferrer noopener"
                 css={`

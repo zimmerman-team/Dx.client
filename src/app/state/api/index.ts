@@ -9,6 +9,8 @@ import {
   ResponseData,
 } from "app/state/api/interfaces";
 
+export const APPLICATION_JSON = "application/json";
+
 export const APIModel = <QueryModel, ResponseModel>(
   url: string
 ): ApiModel<QueryModel, ResponseModel> => ({
@@ -19,6 +21,7 @@ export const APIModel = <QueryModel, ResponseModel>(
     data: [],
   },
   crudData: null,
+  tempData: null,
   errorData: null,
   planWarning: null,
   onError: action((state, payload: Errors) => {
@@ -31,11 +34,14 @@ export const APIModel = <QueryModel, ResponseModel>(
     state.crudData = null;
   }),
   onSuccess: action((state, payload: ResponseData<ResponseModel>) => {
-    const { addOnData, isUpdateCrudData, ...actualPayload } = payload;
+    const { addOnData, isUpdateCrudData, silent, ...actualPayload } = payload;
+    state.tempData = actualPayload;
+    if (silent) {
+      return;
+    }
     state.loading = false;
     state.success = true;
     state.errorData = null;
-
     if (isUpdateCrudData) {
       state.crudData = actualPayload;
     }
@@ -51,11 +57,15 @@ export const APIModel = <QueryModel, ResponseModel>(
       state.data = actualPayload;
     }
   }),
-  onSuccessCrudData: action((state, payload: ResponseData<ResponseModel>) => {
+  onSuccessCrudData: action((state, _payload: ResponseData<ResponseModel>) => {
+    const { silent, payload } = _payload;
+    state.tempData = payload;
+    if (silent) {
+      return;
+    }
     state.loading = false;
     state.success = true;
     state.errorData = null;
-
     state.crudData = payload;
   }),
   setSuccess: action((state) => {
@@ -69,7 +79,10 @@ export const APIModel = <QueryModel, ResponseModel>(
     state.errorData = null;
   }),
   fetch: thunk(async (actions, query: RequestValues<QueryModel>) => {
-    actions.onRequest();
+    if (!query.silent) {
+      actions.onRequest();
+    }
+
     let Authorization: string | undefined = `Bearer ${get(
       query,
       "token",
@@ -85,7 +98,7 @@ export const APIModel = <QueryModel, ResponseModel>(
         }${query.filterString ? "?" : ""}${query.filterString ?? ""}`,
         {
           headers: {
-            "Content-Type": "application/json",
+            "Content-Type": APPLICATION_JSON,
             Authorization: Authorization as string,
           },
         }
@@ -93,8 +106,16 @@ export const APIModel = <QueryModel, ResponseModel>(
       .then(
         (resp: AxiosResponse) =>
           query.getId || query.storeInCrudData
-            ? actions.onSuccessCrudData(resp.data)
-            : actions.onSuccess({ ...resp.data, addOnData: false }),
+            ? actions.onSuccessCrudData({
+                ...resp.data,
+                silent: query.silent,
+                payload: resp.data,
+              })
+            : actions.onSuccess({
+                ...resp.data,
+                addOnData: false,
+                silent: query.silent,
+              }),
         (error: any) => actions.onError(error.response)
       );
   }),
@@ -131,7 +152,7 @@ export const APIModel = <QueryModel, ResponseModel>(
           }`,
           {
             headers: {
-              "Content-Type": "application/json",
+              "Content-Type": APPLICATION_JSON,
             },
           }
         )
@@ -150,7 +171,7 @@ export const APIModel = <QueryModel, ResponseModel>(
     axios
       .post(url, query.values, {
         headers: {
-          "Content-Type": "application/json",
+          "Content-Type": APPLICATION_JSON,
           Authorization: `Bearer ${get(query, "token", undefined)}`,
         },
       })
@@ -173,7 +194,7 @@ export const APIModel = <QueryModel, ResponseModel>(
     axios
       .patch(`${url}/${query.patchId}`, query.values, {
         headers: {
-          "Content-Type": "application/json",
+          "Content-Type": APPLICATION_JSON,
           Authorization: `Bearer ${get(query, "token", undefined)}`,
         },
       })
@@ -188,7 +209,7 @@ export const APIModel = <QueryModel, ResponseModel>(
     axios
       .delete(`${url}/${query.deleteId}`, {
         headers: {
-          "Content-Type": "application/json",
+          "Content-Type": APPLICATION_JSON,
           Authorization: `Bearer ${get(query, "token", undefined)}`,
         },
       })

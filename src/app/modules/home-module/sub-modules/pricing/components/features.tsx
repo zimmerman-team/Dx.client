@@ -1,12 +1,11 @@
 import React from "react";
-import BackupIcon from "../assets/backup";
-import AddChartIcon from "../assets/add-chart";
-import GoodIcon from "../assets/good-icon";
-import ReportIcon from "../assets/report";
-import UserShieldIcon from "../assets/user-shied";
-import SupportIcon from "../assets/support";
-import { InfoOutlined } from "@material-ui/icons";
-import InfoIcon from "../assets/info-icon";
+import BackupIcon from "app/modules/home-module/sub-modules/pricing/assets/backup";
+import AddChartIcon from "app/modules/home-module/sub-modules/pricing/assets/add-chart";
+import GoodIcon from "app/modules/home-module/sub-modules/pricing/assets/good-icon";
+import StoryIcon from "app/modules/home-module/sub-modules/pricing/assets/story";
+import UserShieldIcon from "app/modules/home-module/sub-modules/pricing/assets/user-shied";
+import SupportIcon from "app/modules/home-module/sub-modules/pricing/assets/support";
+import InfoIcon from "app/modules/home-module/sub-modules/pricing/assets/info-icon";
 import { Tooltip } from "react-tooltip";
 
 const Features = () => {
@@ -15,7 +14,7 @@ const Features = () => {
       title: "Connect Data",
       subtitle:
         "Effortlessly integrate your data from multiple sources with our comprehensive data connection features.",
-      color: "#73D3CD",
+      color: "#DADAF8",
       icon: BackupIcon,
       options: [
         {
@@ -29,7 +28,7 @@ const Features = () => {
           ],
         },
         {
-          name: "Federated search",
+          name: "External search",
           info: "Access to datasources like Worldbank, Kaggle, WHO, HDX and more.",
           values: ["Max 12 results", "Unlimited", "Unlimited", "Unlimited"],
         },
@@ -52,6 +51,11 @@ const Features = () => {
         {
           name: "Connect your own data source",
           info: "Connect data from your database",
+          values: ["", true, true, true],
+        },
+        {
+          name: "Microsoft Drive data connect",
+          info: "Connect data from your Microsoft Drive",
           values: ["", true, true, true],
         },
         {
@@ -106,15 +110,15 @@ const Features = () => {
       ],
     },
     {
-      title: "Create report",
+      title: "Create story",
       subtitle:
-        "Create comprehensive reports effortlessly with our versatile report creation tools.",
+        "Create comprehensive stories effortlessly with our versatile story creation tools.",
       color: "#E492BD",
-      icon: ReportIcon,
+      icon: StoryIcon,
       options: [
         {
-          name: "Number of reports",
-          info: "The amount of reports you can manage.",
+          name: "Number of stories",
+          info: "The amount of stories you can manage.",
           values: [5, 100, "1.000", "10.000"],
         },
         {
@@ -133,14 +137,14 @@ const Features = () => {
           values: ["", true, true, true],
         },
         {
-          name: "Report AI Chat",
+          name: "Story AI Chat",
           info: "Talk to your data",
           button: true,
           values: ["", true, true, true],
         },
         {
-          name: "Report AI Builder",
-          info: "Use AI Agent to draft your Report",
+          name: "Story AI Builder",
+          info: "Use AI Agent to draft your Story",
           button: true,
           values: ["", true, true, true],
         },
@@ -202,6 +206,142 @@ const Features = () => {
       ],
     },
   ];
+
+  const renderFeatureOptions = (
+    option: {
+      name: string;
+      values: any[];
+      button?: boolean;
+      info?: string;
+    },
+    optionIndex: number,
+    idx: number
+  ) => (
+    <div
+      key={option.name}
+      css={`
+        display: flex;
+        justify-content: space-between;
+        border-top: 1px solid rgba(223, 227, 229, 0.5);
+        :last-of-type {
+          border-bottom: 1px solid rgba(223, 227, 229, 0.5);
+        }
+      `}
+    >
+      <p
+        css={`
+          display: flex;
+          align-items: center;
+          gap: 8px;
+          margin: 0;
+          padding: 0px 12px;
+          line-height: normal;
+          font-family: "GothamNarrow-Book", "Helvetica Neue", sans-serif;
+          font-size: 14px;
+          font-style: normal;
+          font-weight: 325;
+          white-space: pre-line;
+          button {
+            border: none;
+            background: none;
+            outline: none;
+            width: 88px;
+            height: 17px;
+            flex-shrink: 0;
+            border-radius: 30px;
+            border: 1px solid #252c34;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-transform: uppercase;
+            font-size: 10px;
+            font-family: "GothamNarrow-Book", "Helvetica Neue", sans-serif;
+          }
+        `}
+      >
+        {option.name}{" "}
+        <div
+          css={`
+            flex-shrink: 0;
+            cursor: pointer;
+          `}
+          className={`feature-${idx}-option-${optionIndex}`}
+        >
+          {option.button ? <button>Coming soon!</button> : <InfoIcon />}
+        </div>
+        <Tooltip
+          anchorSelect={`.feature-${idx}-option-${optionIndex}`}
+          place="right"
+          css={`
+            opacity: 1 !important;
+          `}
+          style={{
+            backgroundColor: "#231D2C",
+            borderRadius: "8px",
+            color: "#fff",
+            fontSize: "12px",
+            fontFamily: "GothamNarrow-Medium",
+            maxWidth: "320px",
+            lineHeight: "16px",
+            zIndex: "1",
+            padding: "12px",
+          }}
+        >
+          {option.info}
+        </Tooltip>
+      </p>
+
+      <div
+        css={`
+          display: flex;
+          column-gap: 24px;
+        `}
+      >
+        {option.values.map((value) => (
+          <p
+            css={`
+              margin: 0;
+              line-height: normal;
+              font-family: "GothamNarrow-Book", "Helvetica Neue", sans-serif;
+              font-size: 14px;
+              font-style: normal;
+              font-weight: 325;
+              color: #252c34;
+              display: flex;
+              justify-content: center;
+              background: rgba(202, 202, 202, 0.1);
+              width: 224px;
+              padding: 9px 0;
+              position: relative;
+              @media (max-width: 1300px) {
+                width: 179px;
+              }
+            `}
+          >
+            {value === ">" || value === "<" ? (
+              <span
+                css={`
+                  position: absolute;
+                  width: 24px;
+                  height: 100%;
+                  top: 0;
+                  ${value === ">" ? "right" : "left"}: -24px;
+                  background: rgba(202, 202, 202, 0.1);
+                `}
+              />
+            ) : value === true ? (
+              <GoodIcon />
+            ) : value === false ? (
+              "-"
+            ) : (
+              value
+            )}
+          </p>
+        ))}
+      </div>
+    </div>
+  );
+
   return (
     <section>
       {features.map((feature, idx) => (
@@ -234,7 +374,7 @@ const Features = () => {
                       line-height: normal;
                       font-family: "GothamNarrow-Bold", "Helvetica Neue",
                         sans-serif;
-                      font-size: 20px;
+                      font-size: 24px;
                     `}
                   >
                     {feature.title}
@@ -245,10 +385,11 @@ const Features = () => {
                     margin: 0;
                     padding: 0;
                     color: #787f88;
-                    font-family: Inter;
+                    font-family: "GothamNarrow-Book", "Helvetica Neue",
+                      sans-serif;
                     font-size: 12px;
                     font-style: normal;
-                    font-weight: 500;
+                    font-weight: 325;
                     white-space: pre-line;
                     line-height: normal;
                     margin-top: 8px;
@@ -273,6 +414,9 @@ const Features = () => {
                         background: rgba(202, 202, 202, 0.1);
                         width: 224px;
                         height: 100%;
+                        @media (max-width: 1300px) {
+                          width: 179px;
+                        }
                       `}
                     />
                   ))}
@@ -283,144 +427,8 @@ const Features = () => {
                 border-left: 4px solid ${feature.color};
               `}
             >
-              {feature.options.map(
-                (
-                  option: {
-                    name: string;
-                    values: any[];
-                    button?: boolean;
-                    info?: string;
-                  },
-                  optionIndex
-                ) => (
-                  <div
-                    key={option.name}
-                    css={`
-                      display: flex;
-
-                      justify-content: space-between;
-                      border-top: 1px solid rgba(223, 227, 229, 0.5);
-                      :last-of-type {
-                        border-bottom: 1px solid rgba(223, 227, 229, 0.5);
-                      }
-                    `}
-                  >
-                    <p
-                      css={`
-                        display: flex;
-                        align-items: center;
-                        gap: 8px;
-                        margin: 0;
-                        padding: 0px 12px;
-                        line-height: normal;
-                        font-family: "Inter", sans-serif;
-                        font-size: 13px;
-                        font-style: normal;
-                        font-weight: 500;
-                        white-space: pre-line;
-                        button {
-                          border: none;
-                          background: none;
-                          outline: none;
-                          width: 88px;
-                          height: 17px;
-                          flex-shrink: 0;
-                          border-radius: 30px;
-                          border: 1px solid #252c34;
-                          display: flex;
-                          justify-content: center;
-                          align-items: center;
-                          text-transform: uppercase;
-                          font-size: 10px;
-                          font-family: "GothamNarrow-Book", "Helvetica Neue",
-                            sans-serif;
-                        }
-                      `}
-                    >
-                      {option.name}{" "}
-                      <div
-                        css={`
-                          flex-shrink: 0;
-                          cursor: pointer;
-                        `}
-                        className={`feature-${idx}-option-${optionIndex}`}
-                      >
-                        {option.button ? (
-                          <button>Coming soon!</button>
-                        ) : (
-                          <InfoIcon />
-                        )}
-                      </div>
-                      <Tooltip
-                        anchorSelect={`.feature-${idx}-option-${optionIndex}`}
-                        place="right"
-                        css={`
-                          opacity: 1 !important;
-                        `}
-                        style={{
-                          backgroundColor: "#231D2C",
-                          borderRadius: "8px",
-                          color: "#fff",
-                          fontSize: "12px",
-                          fontFamily: "GothamNarrow-Medium",
-                          maxWidth: "320px",
-                          lineHeight: "16px",
-                          zIndex: "1",
-                          padding: "12px",
-                        }}
-                      >
-                        {option.info}
-                      </Tooltip>
-                    </p>
-
-                    <div
-                      css={`
-                        display: flex;
-                        column-gap: 24px;
-                      `}
-                    >
-                      {option.values.map((value) => (
-                        <p
-                          css={`
-                            margin: 0;
-                            line-height: normal;
-                            font-family: "Inter", sans-serif;
-                            font-size: 14px;
-                            font-style: normal;
-                            font-weight: 500;
-                            color: #252c34;
-                            /* text-align: center; */
-                            display: flex;
-                            justify-content: center;
-                            background: rgba(202, 202, 202, 0.1);
-                            width: 224px;
-                            padding: 9px 0;
-                            position: relative;
-                          `}
-                        >
-                          {value === ">" || value === "<" ? (
-                            <div
-                              css={`
-                                position: absolute;
-                                width: 24px;
-                                height: 100%;
-                                top: 0;
-                                ${value === ">" ? "right" : "left"}: -24px;
-                                background: rgba(202, 202, 202, 0.1);
-                              `}
-                            />
-                          ) : value === true ? (
-                            <GoodIcon />
-                          ) : value === false ? (
-                            "-"
-                          ) : (
-                            value
-                          )}
-                        </p>
-                      ))}
-                    </div>
-                  </div>
-                )
+              {feature.options.map((option, optionIndex) =>
+                renderFeatureOptions(option, optionIndex, idx)
               )}
             </div>
           </div>
@@ -446,6 +454,9 @@ const Features = () => {
                       ? `border-bottom-right-radius: 20px;
                           border-bottom-left-radius: 20px;`
                       : ""}
+                    @media (max-width: 1300px) {
+                      width: 179px;
+                    }
                   `}
                 />
               ))}

@@ -11,10 +11,10 @@ export const headercss = css`
     color: #231d2c;
     font-size: 14px;
     :hover {
-      color: #cea8bc;
+      color: #6061e5;
     }
   }
-  button {
+  /* button {
     height: 33.58px;
     padding: 9.792px 35.496px;
     background: #dadaf8;
@@ -25,26 +25,24 @@ export const headercss = css`
     color: #231d2c;
     font-weight: 500;
     font-size: 11.424px;
-    text-transform: uppercase;
     border: none;
     outline: none;
     cursor: pointer;
     &:hover {
       opacity: 0.8;
     }
-    /* left: calc(50% - 109.99px / 2 + 576px);
-    position: absolute; */
-  }
+  } */
 `;
 
 export const logocss = css`
   display: flex;
-  margin-right: 64px;
   justify-content: center;
+  gap: 6px;
+  text-decoration: none;
 `;
 
 export const navLinkcss = (display: string, location: string) => css`
   a {
-    color: ${display === location ? "#CEA8BC !important" : "#231D2C"};
+    color: ${display === location ? "#6061E5 !important" : "#231D2C"};
   }
 `;

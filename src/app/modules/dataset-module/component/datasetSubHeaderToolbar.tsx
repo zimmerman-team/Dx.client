@@ -12,9 +12,10 @@ import ShareIcon from "@material-ui/icons/Share";
 import EditIcon from "@material-ui/icons/Edit";
 import Button from "@material-ui/core/Button";
 import DeleteIcon from "@material-ui/icons/Delete";
+import MoreIcon from "@material-ui/icons/MoreVert";
 import React from "react";
 import CopyToClipboard from "react-copy-to-clipboard";
-import { Link, useHistory, useParams } from "react-router-dom";
+import { Link, useHistory, useLocation, useParams } from "react-router-dom";
 import { useAuth0 } from "@auth0/auth0-react";
 import axios from "axios";
 /** Project */
@@ -23,24 +24,37 @@ import { useStoreActions, useStoreState } from "app/state/store/hooks";
 import { styles } from "app/modules/dataset-module/component/styles";
 import DeleteDatasetDialog from "app/components/Dialogs/deleteDatasetDialog";
 import { ISnackbarState } from "app/modules/dataset-module/routes/upload-module/upload-steps/previewFragment";
-import { InfoSnackbar } from "app/modules/report-module/components/reportSubHeaderToolbar/infosnackbar";
+import { InfoSnackbar } from "app/modules/story-module/components/storySubHeaderToolbar/infosnackbar";
 import { DatasetListItemAPIModel } from "app/modules/dataset-module/data";
-import { useSetRecoilState } from "recoil";
-import { planDialogAtom } from "app/state/recoil/atoms";
+import { useRecoilState, useSetRecoilState } from "recoil";
+import { planDialogAtom, shareAssetDetailsAtom } from "app/state/recoil/atoms";
 import ShareModal from "./shareModal";
 import DuplicateMessage from "app/modules/common/mobile-duplicate-message";
+import { PrimaryButton } from "app/components/Styled/button";
+import { ArrowBack } from "@material-ui/icons";
+import ArrowBackIosIcon from "@material-ui/icons/ArrowBackIos";
+import {
+  DESKTOP_BREAKPOINT,
+  MOBILE_BREAKPOINT,
+  TABLET_STARTPOINT,
+} from "app/theme";
 
 export default function DatasetSubHeaderToolbar(
   props: Readonly<{ name: string }>
 ) {
   const { user, isAuthenticated } = useAuth0();
   const history = useHistory();
-  const isMobile = useMediaQuery("(max-width: 599px)");
+  const location = useLocation();
+  const [_assetIdToShare, setAssetIdToShare] = useRecoilState(
+    shareAssetDetailsAtom
+  );
+  const isSmallScreen = useMediaQuery(`(max-width:${MOBILE_BREAKPOINT})`); //at this breakpoint, we limit user creation abilities
   const { page } = useParams<{ page: string }>();
   const token = useStoreState((state) => state.AuthToken.value);
   const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(
     null
   );
+  const fromHome = location.search.includes("fromHome=true");
   const [isShareModalOpen, setIsShareModalOpen] =
     React.useState<boolean>(false);
   const [openSnackbar, setOpenSnackbar] = React.useState(false);
@@ -53,11 +67,13 @@ export default function DatasetSubHeaderToolbar(
     open: false,
     vertical: "bottom",
     horizontal: "center",
+    message: "Your dataset has been successfully duplicated!",
   });
   const setPlanDialog = useSetRecoilState(planDialogAtom);
 
   const open = Boolean(anchorEl);
   const popoverId = open ? "simple-popover" : undefined;
+  const [displayMobileMenu, setDisplayMobileMenu] = React.useState(false);
   const loadDataset = useStoreActions(
     (actions) => actions.dataThemes.DatasetGet.fetch
   );
@@ -65,7 +81,7 @@ export default function DatasetSubHeaderToolbar(
     (state) =>
       (state.dataThemes.DatasetGet.crudData ?? {}) as DatasetListItemAPIModel
   );
-  const shareURL = `${window.location.origin}/dataset/${datasetDetails.id}/detail`;
+  const shareURL = `${window.location.origin}/dataset/${datasetDetails.id}`;
   const loadDatasets = useStoreActions(
     (actions) => actions.dataThemes.DatasetGetList.fetch
   );
@@ -88,9 +104,16 @@ export default function DatasetSubHeaderToolbar(
     }
   }, [token, page]);
 
+  const handleEditMobile = () => {
+    setAssetIdToShare({
+      assetURL: `/dataset/${page}/edit`,
+      title: props.name,
+    });
+  };
+
   const handleBackToDataset = () => {
     setSnackbarState({ ...snackbarState, open: false });
-    history.push(`/dataset/${duplicatedDatasetId}/detail`);
+    history.push(`/dataset/${duplicatedDatasetId}`);
     setDuplicatedDatasetId(null);
   };
 
@@ -110,7 +133,7 @@ export default function DatasetSubHeaderToolbar(
             onTryAgain: () => {},
           });
         }
-        setDuplicatedDatasetId(response.data.id);
+        setDuplicatedDatasetId(response.data?.data?.id);
         setSnackbarState({
           ...snackbarState,
           open: true,
@@ -128,7 +151,7 @@ export default function DatasetSubHeaderToolbar(
   };
 
   const handleSharePopup = (event: React.MouseEvent<HTMLButtonElement>) => {
-    if (isMobile) {
+    if (isSmallScreen) {
       setIsShareModalOpen(true);
     } else {
       setAnchorEl(event.currentTarget);
@@ -157,15 +180,21 @@ export default function DatasetSubHeaderToolbar(
           filterString: "filter[order]=updatedDate desc",
         });
       })
-      .catch((error) => console.log(error));
-    history.replace("/");
+      .catch((error) => console.log(error))
+      .finally(() => {
+        history.replace("/");
+      });
   }
+
+  const handleCloseSnackbarState = () => {
+    setSnackbarState((prev) => ({ ...prev, open: false }));
+  };
 
   return (
     <div id="subheader-toolbar" css={styles.container}>
       <Snackbar
         anchorOrigin={{
-          vertical: isMobile ? "top" : "bottom",
+          vertical: isSmallScreen ? "top" : "bottom",
           horizontal: "left",
         }}
         open={openSnackbar}
@@ -181,7 +210,7 @@ export default function DatasetSubHeaderToolbar(
         setModalDisplay={setModalDisplay}
         setEnableButton={setEnableButton}
       />
-      {isMobile ? (
+      {isSmallScreen ? (
         <InfoSnackbar
           anchorOrigin={{
             vertical: snackbarState.vertical,
@@ -189,14 +218,12 @@ export default function DatasetSubHeaderToolbar(
           }}
           open={snackbarState.open}
           autoHideDuration={6000}
-          onClose={() => setSnackbarState({ ...snackbarState, open: false })}
+          onClose={handleCloseSnackbarState}
           key={snackbarState.vertical + snackbarState.horizontal}
         >
           <DuplicateMessage
             action={handleBackToDataset}
-            closeSnackbar={() =>
-              setSnackbarState({ ...snackbarState, open: false })
-            }
+            closeSnackbar={handleCloseSnackbarState}
             name={datasetDetails.name}
             type="data"
           />
@@ -208,10 +235,19 @@ export default function DatasetSubHeaderToolbar(
             horizontal: snackbarState.horizontal,
           }}
           open={snackbarState.open}
-          onClose={() => setSnackbarState({ ...snackbarState, open: false })}
-          message={`Dataset has been duplicated successfully!`}
+          onClose={handleCloseSnackbarState}
+          message={snackbarState.message}
           key={snackbarState.vertical + snackbarState.horizontal}
-          action={<button onClick={handleBackToDataset}>GO TO Dataset</button>}
+          action={
+            <PrimaryButton
+              size="big"
+              bg="dark"
+              style={{ textTransform: "none" }}
+              onClick={handleBackToDataset}
+            >
+              Go to Copied Dataset
+            </PrimaryButton>
+          }
         />
       )}
       <ShareModal
@@ -224,76 +260,178 @@ export default function DatasetSubHeaderToolbar(
 
       <Container maxWidth="lg">
         <div css={styles.innercontainer}>
-          <p
-            title={props.name}
+          <div
             css={`
-              ${styles.nameInput}
-              display: block;
-              max-width: 1000px;
-              white-space: nowrap;
-              overflow: hidden;
-              text-overflow: ellipsis;
+              display: flex;
+              gap: 4px;
+              width: 70%;
             `}
           >
-            {props.name}
-          </p>
+            <Link
+              to={fromHome ? "/" : "/dashboard"}
+              css={`
+                display: flex;
+                align-items: center;
+                font-size: 14px;
+                color: #231d2c;
+                text-decoration: none;
+                cursor: pointer;
+              `}
+              data-cy="dataset-back-to-library-btn"
+            >
+              <Tooltip title="Back to Dashboard">
+                {isSmallScreen ? (
+                  <ArrowBackIosIcon fontSize="small" />
+                ) : (
+                  <ArrowBack fontSize={"small"} />
+                )}
+              </Tooltip>
+            </Link>
+            <p
+              title={props.name}
+              css={`
+                ${styles.nameInput}
+                display: block;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+              `}
+            >
+              {props.name}
+            </p>
+          </div>
 
           <div css={styles.endContainer}>
             <div css={styles.iconbtns}>
-              {isAuthenticated && (
-                <Tooltip title="Duplicate">
-                  <IconButton onClick={handleDuplicate}>
-                    <FileCopyIcon htmlColor="#262c34" />
-                  </IconButton>
-                </Tooltip>
-              )}
-              <Tooltip title="Share">
-                <IconButton onClick={handleSharePopup}>
-                  <ShareIcon htmlColor="#262c34" />
-                </IconButton>
-              </Tooltip>
-              <Popover
-                id={popoverId}
-                open={open}
-                anchorEl={anchorEl}
-                onClose={handleCloseSharePopup}
-                anchorOrigin={{
-                  vertical: "bottom",
-                  horizontal: "right",
-                }}
-                transformOrigin={{
-                  vertical: "top",
-                  horizontal: "right",
-                }}
-                css={`
-                  .MuiPaper-root {
-                    border-radius: 10px;
-                    background: #495057;
-                  }
-                `}
-              >
-                <div css={styles.sharePopup}>
-                  <CopyToClipboard
-                    text={window.location.href}
-                    onCopy={handleCopy}
+              {!isSmallScreen && (
+                <React.Fragment>
+                  {isAuthenticated && (
+                    <Tooltip title="Duplicate">
+                      <IconButton onClick={handleDuplicate}>
+                        <FileCopyIcon htmlColor="#262c34" />
+                      </IconButton>
+                    </Tooltip>
+                  )}
+                  <Tooltip title="Share">
+                    <IconButton onClick={handleSharePopup}>
+                      <ShareIcon htmlColor="#262c34" />
+                    </IconButton>
+                  </Tooltip>
+                  <Popover
+                    id={popoverId}
+                    open={open}
+                    anchorEl={anchorEl}
+                    onClose={handleCloseSharePopup}
+                    anchorOrigin={{
+                      vertical: "bottom",
+                      horizontal: "right",
+                    }}
+                    transformOrigin={{
+                      vertical: "top",
+                      horizontal: "right",
+                    }}
+                    css={`
+                      .MuiPaper-root {
+                        border-radius: 10px;
+                        background: #495057;
+                      }
+                    `}
                   >
-                    <Button startIcon={<LinkIcon />}>Copy link</Button>
-                  </CopyToClipboard>
-                </div>
-              </Popover>
-              {canDatasetEditDelete && !isMobile && (
-                <Tooltip title="Edit">
-                  <IconButton component={Link} to={`/dataset/${page}/edit`}>
-                    <EditIcon htmlColor="#262c34" />
-                  </IconButton>
-                </Tooltip>
+                    <div css={styles.sharePopup}>
+                      <CopyToClipboard
+                        text={window.location.href}
+                        onCopy={handleCopy}
+                      >
+                        <Button startIcon={<LinkIcon />}>Copy link</Button>
+                      </CopyToClipboard>
+                    </div>
+                  </Popover>
+                  {canDatasetEditDelete && (
+                    <Tooltip title="Edit">
+                      <IconButton component={Link} to={`/dataset/${page}/edit`}>
+                        <EditIcon htmlColor="#262c34" />
+                      </IconButton>
+                    </Tooltip>
+                  )}
+                  {canDatasetEditDelete && (
+                    <Tooltip title="Delete">
+                      <IconButton onClick={handleModal}>
+                        <DeleteIcon htmlColor="#262c34" />
+                      </IconButton>
+                    </Tooltip>
+                  )}
+                </React.Fragment>
               )}
-              {canDatasetEditDelete && !isMobile && (
-                <Tooltip title="Delete">
-                  <IconButton onClick={handleModal}>
-                    <DeleteIcon htmlColor="#262c34" />
+              {isSmallScreen && (
+                <React.Fragment>
+                  <IconButton
+                    aria-describedby={"more-button-mobile"}
+                    onClick={() => setDisplayMobileMenu(!displayMobileMenu)}
+                    aria-label="more"
+                    data-testid="more-button"
+                  >
+                    <MoreIcon htmlColor="#262c34" />
                   </IconButton>
-                </Tooltip>
+                  <div
+                    css={`
+                      position: absolute;
+                      top: 115%;
+                      right: -4px;
+                      opacity: ${displayMobileMenu ? 1 : 0};
+                      box-shadow: 0px 0px 10px 0px #98a1aa99;
+                      transition: opacity 211ms cubic-bezier(0.4, 0, 0.2, 1),
+                        transform 141ms cubic-bezier(0.4, 0, 0.2, 1);
+                      border-radius: 4px;
+                      background: #f4f4f4;
+                      display: flex;
+                      height: 56px;
+                      padding: 16px;
+                      align-items: center;
+                      gap: 16px;
+                      flex-shrink: 0;
+
+                      a {
+                        height: 100%;
+                        padding: 0;
+                      }
+                    `}
+                  >
+                    {canDatasetEditDelete && (
+                      <Tooltip title="Edit">
+                        <IconButton
+                          component={Link}
+                          aria-label="edit-button"
+                          to={`/dataset/${page}/not-available`}
+                          onClick={handleEditMobile}
+                          css={`
+                            @media (max-width: ${MOBILE_BREAKPOINT}) {
+                              svg {
+                                path {
+                                  fill: #70777e;
+                                }
+                              }
+                            }
+                          `}
+                        >
+                          <EditIcon htmlColor="#262c34" />
+                        </IconButton>
+                      </Tooltip>
+                    )}
+
+                    {isAuthenticated && (
+                      <Tooltip title="Duplicate">
+                        <IconButton onClick={handleDuplicate}>
+                          <FileCopyIcon htmlColor="#262c34" />
+                        </IconButton>
+                      </Tooltip>
+                    )}
+                    <Tooltip title="Share">
+                      <IconButton onClick={handleSharePopup}>
+                        <ShareIcon htmlColor="#262c34" />
+                      </IconButton>
+                    </Tooltip>
+                  </div>
+                </React.Fragment>
               )}
             </div>
           </div>

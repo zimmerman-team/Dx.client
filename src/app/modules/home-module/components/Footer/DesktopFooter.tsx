@@ -8,8 +8,20 @@ import { Link } from "react-router-dom";
 import NewsletterForm from "app/modules/common/newsletterForm";
 import { FieldErrors } from "react-hook-form";
 import moment from "moment";
+import InlineLogo from "app/modules/home-module/assets/inline-logo";
+import { DESKTOP_BREAKPOINT, MOBILE_BREAKPOINT } from "app/theme";
+import { useMediaQuery } from "usehooks-ts";
+import {
+  PRIVACY_POLICY_LINK,
+  TELEPHONE_NUMBER,
+  TERMS_AND_CONDITION_LINK,
+} from "app/modules/chart-module/util/constants";
 
-export default function DesktopFooter() {
+interface Props {
+  mini?: boolean;
+}
+
+export default function DesktopFooter(props: Props) {
   const [isSubscribed, setIsSubscribed] = React.useState(false);
   const [isSubscriptionFailed, setIsSubscriptionFailed] = React.useState(false);
   const [formError, setFormError] = React.useState<
@@ -17,137 +29,317 @@ export default function DesktopFooter() {
       email: string;
     }>
   >({});
+  const mobile = useMediaQuery(`(max-width:${MOBILE_BREAKPOINT})`);
+  const tablet = useMediaQuery(`(max-width:${DESKTOP_BREAKPOINT})`);
   return (
-    <>
-      <div
+    <div
+      css={`
+        ${homeFootercss}
+        border-top: ${props.mini ? "none" : "1px solid #dadaf8"};
+      `}
+    >
+      <Container
+        maxWidth="lg"
+        data-cy="home-footer"
         css={`
-          height: 422px;
+          @media (max-width: ${DESKTOP_BREAKPOINT}) {
+            padding: 0 32px !important;
+          }
+
+          @media (max-width: ${MOBILE_BREAKPOINT}) {
+            padding: 0 16px !important;
+          }
         `}
-      />
-      <div css={homeFootercss}>
-        <Container maxWidth="lg">
-          <Grid
-            container
-            alignContent="space-between"
-            alignItems="center"
-            spacing={2}
+      >
+        {props.mini ? null : (
+          <div
+            css={`
+              padding: 24px 0;
+
+              display: flex;
+              justify-content: space-between;
+              @media (max-width: ${DESKTOP_BREAKPOINT}) {
+                flex-direction: column;
+                justify-content: center;
+                gap: 24px;
+              }
+            `}
           >
-            <Grid
-              item
-              lg={3}
-              md={3}
-              sm={2}
+            <div
               css={`
-                a {
-                  font-size: 16px;
-                  text-decoration: none;
-                  color: #000;
-                  font-family: "GothamNarrow-Medium", sans-serif;
+                display: flex;
+                flex-direction: column;
+                gap: 40px;
+                @media (max-width: ${DESKTOP_BREAKPOINT}) {
+                  gap: 24px;
                 }
               `}
             >
-              <ul
+              <p
+                data-cy="footer-logo"
                 css={`
-                  display: flex;
-                  flex-direction: column;
-                  gap: 18px;
-                  li {
-                    font-size: 16px;
-                    font-weight: 350;
-                    color: #000;
-                  }
-                  li:first-child {
-                    margin-bottom: 20px;
-                  }
+                  margin: 0;
+                  margin-top: 12px;
                 `}
               >
-                <li>
-                  <Link to="/">
-                    <LogoIcon />
-                  </Link>
-                </li>
-                <li>
-                  <Link to="/why-dataxplorer"> Why Dataxplorer?</Link>{" "}
-                </li>
-                <li>
-                  <Link to="/explore">Explore</Link>{" "}
-                </li>
-                <li>
-                  <Link to="/about">About</Link>
-                </li>
-                <li>
-                  <Link to="/partners">Partners</Link>
-                </li>
-                <li>
-                  <Link to="/contact">Contact</Link>
-                </li>
-              </ul>
-            </Grid>
-            <Grid
-              item
-              lg={3}
-              md={3}
-              sm={4}
-              css={`
-                ul {
-                  margin-top: 20px;
+                <Link
+                  to="/"
+                  css={`
+                    text-decoration: none;
+                    display: flex;
+                    align-items: center;
+                    gap: 8px;
+                  `}
+                >
+                  <LogoIcon />
+                  <div
+                    css={`
+                      font-family: "Inter", sans-serif;
+                      color: #e75656;
+                      font-size: 14.978px;
+                      font-weight: 500;
+                      line-height: 14.978px;
+                      padding: 3.329px 10.922px;
+                      border-radius: 20.803px;
+                      border: 0.993px solid #e75656;
+                    `}
+                  >
+                    beta
+                  </div>
+                </Link>
+              </p>
+              <ul
+                css={`
+                  margin: 0;
+                  display: flex;
+                  flex-direction: column;
+                  gap: 16px;
                   color: #000;
                   font-weight: 325;
                   font-family: "GothamNarrow-Medium", sans-serif;
-                  @media (max-width: 945px) {
-                    padding-left: 40px;
+                  @media (max-width: ${DESKTOP_BREAKPOINT}) {
+                    flex-direction: row-reverse;
+                    justify-content: space-between;
                   }
-                }
-                a {
-                  text-decoration: none;
-                  color: #000;
-                }
-                li {
-                  font-size: 12px;
-                  :nth-child(1),
-                  :nth-child(2) {
-                    margin-bottom: 17px;
+                  a {
+                    text-decoration: none;
+                    color: #000;
                   }
-                  p {
-                    margin: 0px;
-                    line-height: normal;
+                  li {
+                    font-size: 14px;
+                    p {
+                      margin: 0px;
+                      line-height: normal;
+                    }
                   }
-                }
-              `}
-            >
-              <ul>
-                <li>Tel: +3185 401 5241</li>
-                <li>
+                `}
+              >
+                <li
+                  css={`
+                    @media (max-width: ${DESKTOP_BREAKPOINT}) {
+                      display: none;
+                    }
+                  `}
+                >
+                  Tel: {TELEPHONE_NUMBER}
+                </li>
+
+                <li
+                  css={`
+                    @media (max-width: ${MOBILE_BREAKPOINT}) {
+                      display: none;
+                    }
+                  `}
+                >
                   {" "}
                   <a href="mailto:contact@dataxplorer.org">
                     Email: contact@dataxplorer.org
                   </a>{" "}
                 </li>
+
+                <li
+                  css={`
+                    display: none;
+                    @media (max-width: ${DESKTOP_BREAKPOINT}) {
+                      display: block;
+                    }
+                  `}
+                >
+                  Tel: {TELEPHONE_NUMBER}
+                  <a
+                    css={`
+                      display: none;
+                      @media (max-width: ${MOBILE_BREAKPOINT}) {
+                        display: block;
+                      }
+                    `}
+                    href="mailto:contact@dataxplorer.org"
+                  >
+                    Email: contact@dataxplorer.org
+                  </a>{" "}
+                </li>
                 <li>
-                  <p>Keizersgracht 520H</p>
-
-                  <p>1017 EK Amsterdam</p>
-
-                  <p>The Netherlands</p>
+                  <p>
+                    Keizersgracht 520H
+                    {mobile ? <br /> : tablet ? ", " : <br />}
+                    1017 EK Amsterdam <br /> The Netherlands
+                  </p>
                 </li>
               </ul>
-            </Grid>
+            </div>
 
-            <Grid item lg={6} md={6} sm={6}>
+            <div
+              css={`
+                display: none;
+                @media (max-width: ${DESKTOP_BREAKPOINT}) {
+                  display: block;
+                  border-bottom: 1px solid #dadaf8;
+                }
+              `}
+            />
+            <div>
+              <ul
+                css={`
+                  display: none;
+                  @media (max-width: ${DESKTOP_BREAKPOINT}) {
+                    display: grid;
+                    grid-template-columns: 40% 60%;
+                    gap: 16px;
+                    margin: 0;
+                    a {
+                      font-size: 16px;
+                      text-decoration: none;
+                      font-weight: 400;
+                      color: #000;
+                      font-family: "GothamNarrow-Bold", sans-serif;
+                    }
+                  }
+                `}
+              >
+                <li>
+                  <Link to="/">Dashboard</Link>{" "}
+                </li>
+                <li>
+                  <Link to="/about">Who We Are</Link>
+                </li>
+
+                <li>
+                  <Link to="/pricing">Pricing</Link>
+                </li>
+                <li>
+                  <Link
+                    to="/why-dataxplorer"
+                    css={`
+                      display: flex;
+                      gap: 6px;
+                      align-items: center;
+                    `}
+                  >
+                    Why
+                    <InlineLogo
+                      css={`
+                        width: 103px;
+                        height: 12px;
+                      `}
+                    />
+                  </Link>
+                </li>
+                <li>
+                  <Link to="/contact">Contact Us</Link>
+                </li>
+                <li>
+                  <Link to="/partners">Our Partners</Link>
+                </li>
+              </ul>
+
+              <ul
+                css={`
+                  display: flex;
+                  flex-direction: column;
+                  gap: 16px;
+                  margin: 0;
+                  @media (max-width: ${DESKTOP_BREAKPOINT}) {
+                    display: none;
+                  }
+                  a {
+                    font-size: 16px;
+                    text-decoration: none;
+                    font-weight: 400;
+                    color: #000;
+                    font-family: "GothamNarrow-Bold", sans-serif;
+                  }
+                `}
+              >
+                <li>
+                  <Link to="/">Dashboard</Link>{" "}
+                </li>
+                <li>
+                  <Link to="/about">Who We Are</Link>
+                </li>
+                <li>
+                  <Link
+                    to="/why-dataxplorer"
+                    css={`
+                      display: flex;
+                      gap: 6px;
+                      align-items: center;
+                    `}
+                  >
+                    Why
+                    <InlineLogo
+                      css={`
+                        width: 103px;
+                        height: 12px;
+                      `}
+                    />
+                  </Link>
+                </li>
+
+                <li>
+                  <Link to="/partners">Our Partners</Link>
+                </li>
+                <li>
+                  <Link to="/pricing">Pricing</Link>
+                </li>
+                <li>
+                  <Link to="/contact">Contact Us</Link>
+                </li>
+              </ul>
+            </div>
+            <div
+              css={`
+                display: none;
+                @media (max-width: ${DESKTOP_BREAKPOINT}) {
+                  display: block;
+                  border-bottom: 1px solid #dadaf8;
+                }
+              `}
+            />
+            <div
+              css={`
+                width: 606px;
+                @media (max-width: ${DESKTOP_BREAKPOINT}) {
+                  width: 100%;
+                }
+              `}
+            >
               <p
                 css={`
                   font-size: 16px;
-                  font-weight: 350;
+                  font-weight: 400;
                   color: #000;
-                  font-family: "GothamNarrow-Medium", sans-serif;
+                  font-family: "GothamNarrow-Bold", sans-serif;
+                  margin: 0;
+                  margin: 12px 0;
                 `}
               >
-                Subscribe to our newsletter
+                Stay Up To Date
               </p>
               {formError.email && (
                 <label
                   css={`
-                    font-family: "Inter", sans-serif;
+                    font-family: "GothamNarrow-Book", "Helvetica Neue",
+                      sans-serif;
                     font-size: 12px;
                     text-align: left;
                     width: 100%;
@@ -160,39 +352,41 @@ export default function DesktopFooter() {
               )}
               <div
                 css={`
-                  border-radius: 40px;
-                  background: #f7f7f7;
-                  /* width: 611px; */
                   width: 100%;
-                  height: 47px;
                   display: flex;
+                  gap: 16px;
 
                   input {
                     outline: none;
                     border: none;
-                    border-radius: 34.5px 0 0 34.5px;
-                    width: 70%;
-                    padding-left: 24px;
-                    background: #f7f7f7;
-                    font-family: "Roboto", sans-serif;
-                    font-weight: 400;
+                    border-radius: 10px;
+                    flex: 1;
+                    font-size: 16px;
+                    padding: 11px 16px;
+                    border-bottom: 1px solid #98a1aa;
+                    background: #f1f3f5;
+                    font-family: "GothamNarrow-Book", "Helvetica Neue",
+                      sans-serif;
+                    font-weight: 325;
                     ::placeholder {
-                      font-family: "Roboto", sans-serif;
-                      font-weight: 400;
-                      color: #000;
+                      font-family: "GothamNarrow-Book", "Helvetica Neue",
+                        sans-serif;
+                      font-weight: 325;
+                      color: #98a1aa;
                     }
                   }
                   button {
                     border: none;
                     outline: none;
-                    border-radius: 0 34.5px 34.5px 0;
-                    background: #231d2c;
-                    text-transform: uppercase;
+                    border-radius: 10px;
+                    background: #6061e5;
                     color: #fff;
-                    font-family: "Inter", sans-serif;
-                    font-size: 14px;
-                    width: 30%;
-                    font-weight: 700;
+                    font-family: "GothamNarrow-Bold", "Helvetica Neue",
+                      sans-serif;
+                    font-size: 16px;
+                    height: 41px;
+                    padding: 10px 16px;
+                    font-weight: 400;
                     cursor: pointer;
                   }
                 `}
@@ -205,72 +399,102 @@ export default function DesktopFooter() {
               </div>
               <p
                 css={`
-                  line-height: normal;
-                  font-size: 12px;
-                  height: 30px;
+                  font-size: 14px;
+                  line-height: 20px;
                 `}
               >
                 {isSubscribed
                   ? "Thank you for subscribing!"
                   : isSubscriptionFailed
                   ? "Oops! Something went wrong with the request! Please fill your email again."
-                  : "  You will receive occasional emails from DX. You always have choice to unsubscribe within every Email."}
+                  : "You will receive occasional emails from DataXplorer. You can unsubscribe anytime."}
               </p>
-              <a
-                rel="noreferrer noopener"
-                href={`https://${process.env.REACT_APP_AUTH0_DOMAIN}/authorize?response_type=token&client_id=${process.env.REACT_APP_AUTH0_CLIENT}&audience=${process.env.REACT_APP_AUTH0_AUDIENCE}&scope=openid%20profile%20email&redirect_uri=${window.location.origin}/callback`}
-              >
-                <button
-                  css={`
-                    height: 40px;
-                    width: 120px;
-                    border-radius: 10px;
-                    background: "#000";
-                    cursor: pointer;
-                    color: #fff;
-                    border: none;
-                    outline: none;
-                  `}
-                >
-                  Sign In
-                </button>
-              </a>
-            </Grid>
-          </Grid>
+            </div>
+          </div>
+        )}{" "}
+      </Container>
+      <div
+        css={`
+          background: #f2f7fd;
+        `}
+      >
+        <Container
+          maxWidth="lg"
+          data-cy="home-footer"
+          css={`
+            @media (max-width: ${DESKTOP_BREAKPOINT}) {
+              padding: 0 32px !important;
+            }
+
+            @media (max-width: ${MOBILE_BREAKPOINT}) {
+              padding: 0 16px !important;
+            }
+          `}
+        >
           <div
             css={`
               display: flex;
-              gap: 38px;
+              gap: 20px;
               align-items: center;
-              border-top: 1px solid #d9d9d9;
-              padding-top: 4px;
-              padding-bottom: 20px;
               font-size: 12px;
+              padding: 8px 0;
+              line-height: normal;
+              font-family: "GothamNarrow-Book", "Helvetica Neue", sans-serif;
+              font-weight: 325;
+              color: #373d43;
+              flex-wrap: wrap;
+              @media (max-width: ${MOBILE_BREAKPOINT}) {
+                row-gap: 12px;
+              }
 
-              margin-top: 40px;
               a {
                 text-decoration: none;
                 color: #000;
               }
-            `}
-          >
-            <p
-              css={`
-                display: flex;
-                align-items: center;
-                gap: 8px;
+              p {
                 margin: 0;
                 padding: 0;
+              }
+            `}
+          >
+            <div
+              css={`
+                display: flex;
+                gap: 10px;
+                align-items: center;
               `}
             >
               <CopyIcon />
-              {moment(new Date()).format("YYYY")} Dataxplorer All Rights
-              Reserved
-            </p>
+              <p
+                css={`
+                  display: flex;
+                  align-items: center;
+                  gap: 4px;
+                `}
+              >
+                {moment(new Date()).format("YYYY")}
+                <InlineLogo
+                  css={`
+                    width: 78.41px;
+                    height: 11px;
+                  `}
+                />
+                All Rights Reserved
+              </p>
+            </div>
+
+            <div
+              css={`
+                width: 3px;
+                height: 3px;
+                background: #373d43;
+                border-radius: 50%;
+              `}
+            />
             <p>
               {" "}
               <a
-                href="https://drive.google.com/file/d/1andhlQEoaEq5qDxMbtnApXiZborsg-bG/view"
+                href={PRIVACY_POLICY_LINK}
                 className="privacy-link"
                 target="_blank"
                 rel="noreferrer"
@@ -281,7 +505,7 @@ export default function DesktopFooter() {
             <p>
               {" "}
               <a
-                href="https://drive.google.com/file/d/1wgY5HYdE5-redIOF85E5fZZJT_YueOWP/view?usp=sharing"
+                href={TERMS_AND_CONDITION_LINK}
                 className="privacy-link"
                 target="_blank"
                 rel="noreferrer"
@@ -292,6 +516,6 @@ export default function DesktopFooter() {
           </div>
         </Container>
       </div>
-    </>
+    </div>
   );
 }

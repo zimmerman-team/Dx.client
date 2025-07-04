@@ -1,5 +1,7 @@
 import React from "react";
 import { ReactComponent as ErrorICon } from "app/modules/dataset-module/routes/upload-module/assets/error-icon.svg";
+import { PrimaryButton } from "app/components/Styled/button";
+import { formatRemainingTime } from "app/hooks/useOnUploadProgress";
 
 interface ProcessingMetaDataProps {
   setProcessingError: React.Dispatch<React.SetStateAction<string | null>>;
@@ -13,15 +15,6 @@ interface ProcessingMetaDataProps {
 }
 
 export default function Processing(props: ProcessingMetaDataProps) {
-  const getTimeInHoursnMins = (time: number) => {
-    const mft = Math.floor(time / 60);
-    const se = " seconds (estimated)";
-    let ret = mft + se;
-    if (mft <= 0) ret = "Finishing up...";
-    if (mft > 60) ret = mft + " minutes and " + Math.floor(time % 60) + se;
-    return ret;
-  };
-
   return (
     <>
       {props.processingError ? (
@@ -35,57 +28,53 @@ export default function Processing(props: ProcessingMetaDataProps) {
             margin-top: 151px;
           `}
         >
-          <ErrorICon />
-
+          <div
+            css={`
+              padding: 5px;
+            `}
+          >
+            <ErrorICon width={53} height={53} />
+          </div>
+          <h2
+            css={`
+              margin: 0;
+              padding: 0;
+              margin-top: 8px;
+              font-size: 36px;
+              font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
+              line-height: normal;
+            `}
+          >
+            Error{" "}
+          </h2>
           <p
             css={`
               font-size: 18px;
               text-align: center;
               margin: 0;
               padding: 0;
-              margin-top: 16px;
+              margin-top: 8px;
               width: 365px;
               text-align: center;
             `}
             data-testid="error-message"
           >
-            <b>{props.processingError}</b>
+            {props.processingError}
           </p>
 
-          <p
-            css={`
-              margin: 0;
-              padding: 0;
-              margin-top: 16px;
-            `}
-          >
-            Error{" "}
-          </p>
-          <button
-            type="button"
+          <PrimaryButton
             onClick={props.tryAgain}
             data-cy="dataset-processing-try-again"
+            bg="dark"
+            size="small"
             css={`
-              color: #231d2c;
-              text-transform: uppercase;
-              background: #231d2c;
-              color: #fff;
-              margin-top: 58px;
-              padding: 12px 27px;
-              border: none;
-              outline: none;
-              border-radius: 30px;
-              font-weight: 500;
-              font-size: 14px;
-              font-family: "Inter";
-              cursor: pointer;
-              :hover {
-                opacity: 0.8;
-              }
+              margin-top: 24px;
+              height: 48px;
+              font-size: 16px;
             `}
           >
             Try Again
-          </button>
+          </PrimaryButton>
         </div>
       ) : (
         <div
@@ -93,8 +82,11 @@ export default function Processing(props: ProcessingMetaDataProps) {
             display: flex;
             justify-content: center;
             align-items: center;
-            height: calc(100vh - 98px);
+            height: calc(100vh - 140px - 64px);
             flex-direction: column;
+            @media (max-width: 881px) {
+              height: calc(100vh - 156px - 64px);
+            }
           `}
         >
           <p
@@ -102,7 +94,8 @@ export default function Processing(props: ProcessingMetaDataProps) {
               font-size: 18px;
               color: #231d2c;
               text-align: center;
-              margin-bottom: 45px;
+              margin: 0;
+              margin-bottom: 40px;
             `}
             dangerouslySetInnerHTML={{
               __html: props.processingMessage || "Data is being processed...",
@@ -111,7 +104,7 @@ export default function Processing(props: ProcessingMetaDataProps) {
 
           <div
             css={`
-              width: 399.71px;
+              width: 400px;
             `}
           >
             <p
@@ -128,14 +121,16 @@ export default function Processing(props: ProcessingMetaDataProps) {
               css={`
                 display: flex;
                 flex-wrap: wrap;
-                width: 399.71px;
+                width: 400px;
                 justify-content: space-between;
                 align-items: center;
                 p {
                   font-family: "GothamNarrow-Book", "Helvetica Neue", sans-serif;
                   font-size: 12px;
                   color: #adb5bd;
-                  margin-top: 0;
+                  margin: 0;
+                  line-height: normal;
+                  margin-top: 6.42px;
                 }
               `}
             >
@@ -143,7 +138,7 @@ export default function Processing(props: ProcessingMetaDataProps) {
                 css={`
                   width: 100%;
                   height: 6.42px;
-                  border-radius: 3px;
+
                   background-color: #dfe3e5;
 
                   border-radius: 3.211px;
@@ -154,6 +149,7 @@ export default function Processing(props: ProcessingMetaDataProps) {
                   css={`
                     width: ${props.percentageLoaded}%;
                     height: 100%;
+                    border-radius: 3px;
                     background: linear-gradient(
                       90deg,
                       #6466f1 7.48%,
@@ -164,7 +160,7 @@ export default function Processing(props: ProcessingMetaDataProps) {
               </div>
               <p>{props.loaded}</p>
               <p data-testid="estimated-time">
-                {getTimeInHoursnMins(props.estimatedUploadTime)}
+                {formatRemainingTime(props.estimatedUploadTime)}
               </p>
             </div>
           </div>

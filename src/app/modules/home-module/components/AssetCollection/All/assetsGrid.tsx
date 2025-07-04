@@ -12,15 +12,18 @@ import { useInfinityScroll } from "app/hooks/useInfinityScroll";
 import CircleLoader from "app/modules/home-module/components/Loader";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 import DeleteChartDialog from "app/components/Dialogs/deleteChartDialog";
-import { coloredEchartTypes } from "app/modules/chart-module/routes/chart-type/data";
+import {
+  coloredEchartTypes,
+  echartTypes,
+} from "app/modules/chart-module/routes/chart-type/data";
 import ChartGridItem from "app/modules/home-module/components/AssetCollection/Charts/gridItem";
 import DatasetGridItem from "app/modules/home-module/components/AssetCollection/Datasets/gridItem";
-import ReportGridItem from "app/modules/home-module/components/AssetCollection/Reports/gridItem";
-import ColoredReportIcon from "app/assets/icons/ColoredReportIcon";
+import StoryGridItem from "app/modules/home-module/components/AssetCollection/Stories/gridItem";
+import ColoredStoryIcon from "app/assets/icons/ColoredStoryIcon";
 import DeleteDatasetDialog from "app/components/Dialogs/deleteDatasetDialog";
-import DeleteReportDialog from "app/components/Dialogs/deleteReportDialog";
+import DeleteStoryDialog from "app/components/Dialogs/deleteStoryDialog";
 import { EditorState, convertFromRaw } from "draft-js";
-import { DatasetListItemAPIModel } from "app/modules/dataset-module/data";
+import { getLimit } from "app/modules/home-module/components/AssetCollection/Datasets/datasetsGrid";
 import { HomepageTable } from "app/modules/home-module/components/Table/";
 import { planDialogAtom } from "app/state/recoil/atoms";
 import { useSetRecoilState } from "recoil";
@@ -29,14 +32,16 @@ import { getColumns } from "app/modules/home-module/components/AssetCollection/A
 interface Props {
   sortBy: string;
   searchStr: string;
+  userOnly?: boolean;
   view: "grid" | "table";
   inChartBuilder?: boolean;
   category?: string;
   onItemClick?: (v: string) => void;
   md?: GridSize;
   lg?: GridSize;
+  noAuth?: boolean;
 }
-type assetType = "chart" | "dataset" | "report";
+export type assetType = "chart" | "dataset" | "story";
 
 export default function AssetsGrid(props: Props) {
   const observerTarget = React.useRef(null);
@@ -52,7 +57,7 @@ export default function AssetsGrid(props: Props) {
 
   const token = useStoreState((state) => state.AuthToken.value);
 
-  const limit = 15;
+  const limit = getLimit();
   const [offset, setOffset] = React.useState(0);
 
   const { isObserved } = useInfinityScroll(observerTarget);
@@ -85,15 +90,20 @@ export default function AssetsGrid(props: Props) {
       props.searchStr?.length > 0
         ? `"where":{"name":{"like":"${props.searchStr}.*","options":"i"}},`
         : "";
-    return `filter={${value}"order":"${
+
+    return `${props.userOnly ? "userOnly=true&" : ""}filter={${value}"order":"${
       props.sortBy
-    } desc","limit":${limit},"offset":${fromZeroOffset ? 0 : offset}}`;
+    } ${props.sortBy === "name" ? "asc" : "desc"}","limit":${limit},"offset":${
+      fromZeroOffset ? 0 : offset
+    }}`;
   };
 
   const getWhereString = () => {
-    return props.searchStr?.length > 0
-      ? `where={"name":{"like":"${props.searchStr}.*","options":"i"}}`
-      : "";
+    const value =
+      props.searchStr?.length > 0
+        ? `where={"name":{"like":"${props.searchStr}.*","options":"i"}}`
+        : "";
+    return `${props.userOnly ? "userOnly=true&" : ""}${value}`;
   };
 
   const loadData = (fromZeroOffset?: boolean) => {
@@ -126,13 +136,16 @@ export default function AssetsGrid(props: Props) {
 
   React.useEffect(() => {
     //load data if intersection observer is triggered
-    if (assetsCount > limit) {
-      if (isObserved && assetsLoadSuccess) {
-        if (loadedAssets.length !== assetsCount) {
-          //update the offset value for the next load
-          setOffset(offset + limit);
-        }
-      }
+    if (
+      assetsCount > limit &&
+      isObserved &&
+      assetsLoadSuccess &&
+      loadedAssets.length !== assetsCount &&
+      !props.noAuth
+    ) {
+      //update the offset value for the next load
+
+      setOffset(offset + limit);
     }
   }, [isObserved]);
 
@@ -156,7 +169,7 @@ export default function AssetsGrid(props: Props) {
     const url = {
       chart: `${process.env.REACT_APP_API}/chart/${id}`,
       dataset: `${process.env.REACT_APP_API}/datasets/${id}`,
-      report: `${process.env.REACT_APP_API}/report/${id}`,
+      story: `${process.env.REACT_APP_API}/story/${id}`,
     }[activeAssetType as assetType];
 
     axios
@@ -179,7 +192,7 @@ export default function AssetsGrid(props: Props) {
     const url = {
       chart: `${process.env.REACT_APP_API}/chart/duplicate/${id}`,
       dataset: `${process.env.REACT_APP_API}/dataset/duplicate/${id}`,
-      report: `${process.env.REACT_APP_API}/report/duplicate/${id}`,
+      story: `${process.env.REACT_APP_API}/story/duplicate/${id}`,
     }[assettype];
     axios
       .get(url, {
@@ -234,7 +247,7 @@ export default function AssetsGrid(props: Props) {
     if (!assetsLoadSuccess) {
       return;
     }
-    //update the loaded reports
+    //update the loaded stories
     setLoadedAssets((prevAssets) => {
       const prevAssetsIds = prevAssets.map((c) => c.id);
       const f = assets.filter((asset) => !prevAssetsIds.includes(asset.id));
@@ -244,7 +257,7 @@ export default function AssetsGrid(props: Props) {
 
   React.useEffect(() => {
     reloadData();
-  }, [props.sortBy, token]);
+  }, [props.sortBy, token, props.userOnly]);
 
   const [,] = useDebounce(
     () => {
@@ -265,24 +278,31 @@ export default function AssetsGrid(props: Props) {
           onItemClick={props.onItemClick}
           inChartBuilder={props.inChartBuilder}
           all
+          handleDelete={handleModal}
+          handleDuplicate={handleDuplicate}
+          setActiveAssetType={setActiveAssetType}
           tableData={{
-            columns: getColumns("chart" as assetType),
+            columns: getColumns(),
             data: loadedAssets.map((data) => {
               if (data.assetType === "chart") {
                 return {
                   id: data.id,
                   name: data.name,
                   description: data.title,
-                  createdDate: data.createdDate,
+                  updatedDate: data.updatedDate,
                   type: data.assetType,
+                  owner: data.owner,
+                  vizType: echartTypes(false).find((e) => e.id === data.vizType)
+                    ?.label,
                 };
               } else if (data.assetType === "dataset") {
                 return {
                   id: data.id,
                   name: data.name,
                   description: data.description,
-                  createdDate: data.createdDate,
+                  updatedDate: data.updatedDate,
                   type: data.assetType,
+                  owner: data.owner,
                 };
               }
               return {
@@ -291,8 +311,9 @@ export default function AssetsGrid(props: Props) {
                 heading: data.heading
                   ? EditorState.createWithContent(convertFromRaw(data.heading))
                   : EditorState.createEmpty(),
-                createdDate: data.createdDate,
+                updatedDate: data.updatedDate,
                 type: data.assetType,
+                owner: data.owner,
               };
             }),
           }}
@@ -307,7 +328,7 @@ export default function AssetsGrid(props: Props) {
                     <ChartGridItem
                       id={d.id}
                       title={d.name}
-                      date={d.createdDate}
+                      date={d.updatedDate}
                       viz={getIcon(d.vizType)}
                       vizType={d.vizType}
                       isMappingValid={d.isMappingValid}
@@ -320,13 +341,14 @@ export default function AssetsGrid(props: Props) {
                       }
                       owner={d.owner}
                       isAIAssisted={d.isAIAssisted}
+                      ownerName={d.ownerName ?? ""}
                     />
                   ),
                   dataset: (
                     <DatasetGridItem
                       path={`/dataset/${d.id}/edit`}
                       title={d.name}
-                      date={d.createdDate}
+                      date={d.updatedDate}
                       handleDelete={() => {
                         setActiveAssetType(d.assetType as assetType);
                         handleModal(d.id);
@@ -339,15 +361,16 @@ export default function AssetsGrid(props: Props) {
                       id={d.id}
                       owner={d.owner}
                       inChartBuilder={props.inChartBuilder as boolean}
+                      ownerName={d.ownerName ?? ""}
                     />
                   ),
-                  report: (
-                    <ReportGridItem
+                  story: (
+                    <StoryGridItem
                       id={d.id}
                       key={d.id}
                       name={d.name}
-                      date={d.createdDate}
-                      viz={<ColoredReportIcon />}
+                      date={d.updatedDate}
+                      viz={<ColoredStoryIcon />}
                       color={d.backgroundColor}
                       handleDelete={() => {
                         setActiveAssetType(d.assetType as assetType);
@@ -364,6 +387,7 @@ export default function AssetsGrid(props: Props) {
                           : EditorState.createEmpty()
                       }
                       owner={d.owner}
+                      ownerName={d.ownerName ?? ""}
                     />
                   ),
                 }[d.assetType as assetType]
@@ -402,8 +426,8 @@ export default function AssetsGrid(props: Props) {
               setEnableButton={setEnableButton}
             />
           ),
-          report: (
-            <DeleteReportDialog
+          story: (
+            <DeleteStoryDialog
               cardId={cardId}
               modalDisplay={modalDisplay}
               enableButton={enableButton}

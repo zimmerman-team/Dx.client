@@ -5,7 +5,7 @@ export const styles = {
     right: 0;
     z-index: 99;
     position: fixed;
-    top: 97px;
+    top: 100px;
     display: flex;
     background: #f1f3f5;
     box-shadow: 0px 0px 10px 0px rgba(152, 161, 170, 0.6);
@@ -30,7 +30,7 @@ export const styles = {
     }
     @media (min-width: 768px) {
       @media (max-width: 881px) {
-        top: 113px;
+        top: 116px;
       }
     }
   `,
@@ -98,7 +98,7 @@ export const mappingStyles = {
     background: ${dimension.mappedValues.length > 0 && !dimension.multiple
       ? "#262c34"
       : "#dfe3e5"};
-    text-transform: capitalize;
+    text-transform: none;
     justify-content: space-between;
     color: ${dimension.mappedValues.length > 0 && !dimension.multiple
       ? "#fff"
@@ -130,21 +130,23 @@ export const mappingStyles = {
       }
     }
   `,
-  mappingItemcss: (props: any) => css`
+  mappingItemcss: (params: any) => css`
     height: 31px;
     display: flex;
     justify-content: space-between;
     min-height: 31px;
-    position: relative;
+    position: ${params.elevate ? "relative" : "unset"};
+    z-index: ${params.elevate ? params.elevationIndex : 0};
     padding-left: 16px;
     align-items: center;
     border-radius: 25px;
-    margin-bottom: ${props.marginBottom};
+    margin-bottom: ${params.marginBottom};
     color: #262c34;
-    background: ${props.backgroundColor ?? "#cfd4da"};
-    ${props.dimension.mappedValues.includes(props.mappingItemValue) &&
+    background: ${params.backgroundColor ?? "#cfd4da"};
+    ${params.dimension.mappedValues.includes(params.mappingItemValue) &&
     "background: #262c34; color: #fff;"}
-    >div:nth-of-type(1) {
+    transform: translate(0, 0);
+    > div:nth-of-type(1) {
       display: flex;
       align-items: center;
       gap: 13px;
@@ -163,7 +165,7 @@ export const mappingStyles = {
         }
       }
     }
-    cursor: pointer;
+    cursor: ${params.isDragging ? "grab" : "pointer"};
   `,
   mappedValuecss: css`
     height: 31px;
@@ -202,3 +204,44 @@ export const mappingStyles = {
     cursor: pointer;
   `,
 };
+
+export const snackbarStyle = css`
+  border-radius: 12px;
+  width: 1232px;
+  padding: 16px 56px;
+  display: flex;
+  align-items: center;
+  background: #fff;
+  box-shadow: 0px 0px 10px 0px rgba(152, 161, 170, 0.6);
+  justify-content: space-between;
+  gap: 48px;
+  p {
+    font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
+    font-weight: 400;
+    font-size: 18px;
+    margin: 0;
+    @media (max-width: 744px) {
+      font-size: 14px;
+
+      white-space: nowrap;
+    }
+  }
+  div {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+  }
+  @media (max-width: 1255px) {
+    width: 90vw;
+
+    @media (max-width: 978px) {
+      padding: 16px;
+      gap: 16px;
+      flex-wrap: wrap;
+      div {
+        justify-content: end;
+        width: 100%;
+      }
+    }
+  }
+`;

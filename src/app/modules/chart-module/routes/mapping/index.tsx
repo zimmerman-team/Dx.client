@@ -12,15 +12,18 @@ import {
   ChartBuilderMappingProps,
 } from "app/modules/chart-module/routes/mapping/data";
 import ChartPlaceholder from "app/modules/chart-module/components/placeholder";
-import { ReactComponent as AIIcon } from "app/modules/chart-module/assets/ai-icon.svg";
 import { useRecoilState } from "recoil";
-import { chartFromReportAtom } from "app/state/recoil/atoms";
-import { useParams } from "react-router-dom";
+import { chartFromStoryAtom } from "app/state/recoil/atoms";
+import { useLocation, useParams } from "react-router-dom";
 import MappingErrorComponent from "app/modules/chart-module/routes/mapping/error";
+import AIIcon from "app/assets/icons/AIIcon";
+import ChartArea from "app/modules/chart-module/components/chart-area";
 
 function ChartBuilderMapping(props: Readonly<ChartBuilderMappingProps>) {
-  useTitle("DX Dataxplorer - Mapping");
+  useTitle("Dataxplorer - Mapping");
   const { page, view } = useParams<{ page: string; view?: string }>();
+
+  const location = useLocation();
 
   const mapping = useStoreState((state) => state.charts.mapping.value);
 
@@ -31,12 +34,12 @@ function ChartBuilderMapping(props: Readonly<ChartBuilderMappingProps>) {
     { id: string; name: string; minValues: number }[]
   >([]);
 
-  const [chartFromReport, setChartFromReport] =
-    useRecoilState(chartFromReportAtom);
+  const [chartFromStory, setChartFromStory] =
+    useRecoilState(chartFromStoryAtom);
   // access query parameters
   const queryParams = new URLSearchParams(location.search);
-  const paramValue = queryParams.get("fromreport");
-  const reportPage = queryParams.get("page") as string;
+  const paramValue = queryParams.get("fromstory");
+  const storyPage = queryParams.get("page") as string;
 
   React.useEffect(() => {
     const { updRequiredFields, updMinValuesFields } =
@@ -49,11 +52,11 @@ function ChartBuilderMapping(props: Readonly<ChartBuilderMappingProps>) {
 
   React.useEffect(() => {
     if (paramValue === "true") {
-      setChartFromReport((prev) => ({
-        ...chartFromReport,
+      setChartFromStory((prev) => ({
+        ...chartFromStory,
         state: true,
         action: "create",
-        page: reportPage,
+        page: storyPage,
         chartId: page,
       }));
     }
@@ -73,54 +76,48 @@ function ChartBuilderMapping(props: Readonly<ChartBuilderMappingProps>) {
   }
 
   return (
-    <div css={commonStyles.container}>
-      <div css={commonStyles.innercontainer}>
-        {isEmpty(props.renderedChartMappedData) ? (
-          <ChartPlaceholder
-            loading={props.loading}
-            css={`
-              width: calc(100% - 24px);
-            `}
-          />
-        ) : (
-          <div
-            ref={props.containerRef}
-            css={`
-              width: calc(100% - 24px);
-            `}
-          >
-            {requiredFields.length === 0 && minValuesFields.length === 0 && (
-              <CommonChart
-                containerRef={props.containerRef}
-                renderedChart={props.renderedChart}
-                visualOptions={props.visualOptions}
-                setVisualOptions={props.setVisualOptions}
-                renderedChartMappedData={props.renderedChartMappedData}
-                setChartErrorMessage={props.setChartErrorMessage}
-                setChartError={props.setChartError}
-                renderedChartType={props.renderedChartType}
-                mapping={mapping}
-              />
-            )}
-          </div>
-        )}
-        <ChartBuilderMappingMessage
-          requiredFields={requiredFields}
-          minValuesFields={minValuesFields}
-          dimensions={props.dimensions}
-        />
+    <ChartArea chartName={props.chartName}>
+      {isEmpty(props.renderedChartMappedData) ? (
+        <ChartPlaceholder loading={props.loading} />
+      ) : (
         <div
+          ref={props.containerRef}
           css={`
-            position: absolute;
-            right: 0%;
-            top: 4%;
-            display: ${props.isAIAssistedChart ? "block" : "none"};
+            width: 100%;
+            height: 100%;
           `}
         >
-          <AIIcon />
+          {requiredFields.length === 0 && minValuesFields.length === 0 && (
+            <CommonChart
+              containerRef={props.containerRef}
+              renderedChart={props.renderedChart}
+              visualOptions={props.visualOptions}
+              setVisualOptions={props.setVisualOptions}
+              renderedChartMappedData={props.renderedChartMappedData}
+              setChartErrorMessage={props.setChartErrorMessage}
+              setChartError={props.setChartError}
+              renderedChartType={props.renderedChartType}
+              mapping={mapping}
+            />
+          )}
         </div>
+      )}
+      <ChartBuilderMappingMessage
+        requiredFields={requiredFields}
+        minValuesFields={minValuesFields}
+        dimensions={props.dimensions}
+      />
+      <div
+        css={`
+          position: absolute;
+          right: 0%;
+          top: 4%;
+          display: ${props.isAIAssistedChart ? "block" : "none"};
+        `}
+      >
+        <AIIcon />
       </div>
-    </div>
+    </ChartArea>
   );
 }
 
@@ -137,9 +134,9 @@ function ChartBuilderMappingMessage(
         font-weight: 400;
         min-height: 56px;
         position: absolute;
-        bottom: 5%;
-        padding: 10px 20px;
-        border-radius: 43px;
+        bottom: 19px;
+        padding: 18px 22px;
+        border-radius: 10px;
         color: #262c34;
         background: #fff;
         box-shadow: 0px 0px 10px 0px rgba(152, 161, 170, 0.6);
@@ -148,12 +145,17 @@ function ChartBuilderMappingMessage(
           : "none"};
         align-items: center;
         gap: 4px;
+        line-height: 20px;
       `}
     >
       {requiredFields.length > 0 && (
         <React.Fragment>
           Required chart variables: you need to map{" "}
-          <b>
+          <b
+            css={`
+              line-height: 20px;
+            `}
+          >
             {requiredFields
               .map((f: { id: string; name: string }) => f.name)
               .join(", ")}

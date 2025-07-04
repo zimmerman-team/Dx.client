@@ -1,6 +1,5 @@
 import { atom } from "recoil";
 import { recoilPersist } from "recoil-persist";
-import { convertToRaw, EditorState } from "draft-js";
 import { DatasetListItemAPIModel } from "app/modules/dataset-module/data";
 
 export interface IRowFrameStructure {
@@ -16,14 +15,18 @@ export interface IRowFrameStructure {
   index: number;
 }
 
+export type textEditorElementIdAtomType =
+  | "headerTitle"
+  | "headerSubtitle"
+  | "boxText";
 const { persistAtom } = recoilPersist();
 
 export const emptyRowsAtom = atom({
   key: "emptyRowsAtom",
   default: false,
 });
-export const untitledReportAtom = atom({
-  key: "untitledReportAtom",
+export const untitledStoryAtom = atom({
+  key: "untitledStoryAtom",
   default: false,
 });
 
@@ -39,16 +42,48 @@ export const allAssetsSortBy = atom<"name" | "updatedDate" | "createdDate">({
   effects_UNSTABLE: [persistAtom],
 });
 
-export const homeDisplayAtom = atom<"all" | "data" | "charts" | "reports">({
-  key: "homeDisplayAtom",
-  default: "all",
+export const allAssetsFilterBy = atom<"allAssets" | "myAssets">({
+  key: "allAssetsFilterBy",
+  default: "allAssets",
   effects_UNSTABLE: [persistAtom],
 });
 
-export const reportRightPanelViewAtom = atom<
+export const externalDataSortByAtom = atom<
+  "name" | "updatedDate" | "createdDate"
+>({
+  key: "externalDataSortByAtom",
+  default: "updatedDate",
+  effects_UNSTABLE: [persistAtom],
+});
+
+export const shareAssetDetailsAtom = atom<{
+  assetURL: string;
+  title: string;
+}>({
+  key: "shareAssetDetailsAtom",
+  default: {
+    assetURL: "",
+    title: "",
+  },
+});
+
+export const textEditorElementIdAtom = atom<textEditorElementIdAtomType | null>(
+  {
+    key: "textEditorElementIdAtom",
+    default: null,
+  }
+);
+
+export const homeDisplayAtom = atom<"all" | "data" | "charts" | "stories">({
+  key: "homeDisplayAtom",
+  default: "stories",
+  effects_UNSTABLE: [persistAtom],
+});
+
+export const storyRightPanelViewAtom = atom<
   "elements" | "charts" | "media" | "editHeader"
 >({
-  key: "reportRightPanelViewAtom",
+  key: "storyRightPanelViewAtom",
   default: "charts",
 });
 
@@ -77,24 +112,19 @@ export const isChartAutoMappedAtom = atom<boolean>({
   default: false,
 });
 
-export const reportContentIsResizingAtom = atom<boolean>({
-  key: "reportContentIsResizing",
+export const storyContentIsResizingAtom = atom<boolean>({
+  key: "storyContentIsResizing",
   default: false,
 });
 
-export const reportContentContainerWidth = atom<number>({
-  key: "reportContentContainerWidth",
+export const storyContentContainerWidth = atom<number>({
+  key: "storyContentContainerWidth",
   default: 0,
 });
 
-export const reportCreationTourStepAtom = atom<number>({
-  key: "reportCreationTourStepAtom",
+export const storyCreationTourStepAtom = atom<number>({
+  key: "storyCreationTourStepAtom",
   default: 0,
-});
-export const unSavedReportPreviewModeAtom = atom<boolean>({
-  key: "unSavedReportPreviewModeAtom",
-  default: false,
-  effects_UNSTABLE: [persistAtom],
 });
 
 export const loadedDatasetsAtom = atom<DatasetListItemAPIModel[]>({
@@ -103,58 +133,35 @@ export const loadedDatasetsAtom = atom<DatasetListItemAPIModel[]>({
   effects_UNSTABLE: [persistAtom],
 });
 
-export const chartFromReportAtom = atom<{
+export const loadedChartsInStoryAtom = atom<string[]>({
+  key: "loadedChartsInStoryAtom",
+  default: [],
+});
+
+export const chartsRenderedAtom = atom<{
+  [key: string]: {
+    renderCount: number;
+    finishedCount: number;
+  };
+}>({
+  key: "chartsRenderedAtom",
+  default: {},
+});
+
+export const chartFromStoryAtom = atom<{
   state: boolean;
   view: string;
   page: string;
   action: "create" | "edit" | null;
   chartId: string | null;
 }>({
-  key: "chartFromReportAtom",
+  key: "chartFromStoryAtom",
   default: {
     state: false,
     view: "",
     page: "",
     action: null,
     chartId: null,
-  },
-  effects_UNSTABLE: [persistAtom],
-});
-
-export const persistedReportStateAtom = atom<{
-  reportName: string;
-  headerDetails: {
-    title: string;
-    description: string;
-    heading: string;
-    showHeader: boolean;
-    backgroundColor: string;
-    titleColor: string;
-    descriptionColor: string;
-    dateColor: string;
-  };
-
-  framesArray: string;
-}>({
-  key: "reportCreateStateAtom",
-  default: {
-    reportName: "Untitled report",
-    headerDetails: {
-      title: "",
-      description: JSON.stringify(
-        convertToRaw(EditorState.createEmpty().getCurrentContent())
-      ),
-      heading: JSON.stringify(
-        convertToRaw(EditorState.createEmpty().getCurrentContent())
-      ),
-      showHeader: true,
-      backgroundColor: "#252c34",
-      titleColor: "#ffffff",
-      descriptionColor: "#ffffff",
-      dateColor: "#ffffff",
-    },
-
-    framesArray: JSON.stringify([]),
   },
   effects_UNSTABLE: [persistAtom],
 });

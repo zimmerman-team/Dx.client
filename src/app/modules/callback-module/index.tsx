@@ -5,9 +5,10 @@ import { useAuth0 } from "@auth0/auth0-react";
 import { PageLoader } from "app/modules/common/page-loader";
 import axios from "axios";
 import { useCookie, useTitle } from "react-use";
+import { APPLICATION_JSON } from "app/state/api";
 
 function AuthCallbackModule() {
-  useTitle("DX Dataxplorer - Auth Callback");
+  useTitle("Dataxplorer - Auth Callback");
 
   const history = useHistory();
   const { error, isAuthenticated, getAccessTokenSilently } = useAuth0();
@@ -18,20 +19,20 @@ function AuthCallbackModule() {
   const queryParams = new URLSearchParams(location.search);
   const destinationPath = queryParams.get("to") as string;
 
-  const duplicateReport = async (id: string) => {
+  const duplicateStory = async (id: string) => {
     getAccessTokenSilently().then(async (newToken) => {
       const response = await axios.get(
-        `${process.env.REACT_APP_API}/users/duplicate-landing-report/${id}`,
+        `${process.env.REACT_APP_API}/users/duplicate-landing-story/${id}`,
         {
           headers: {
-            "Content-Type": "application/json",
+            "Content-Type": APPLICATION_JSON,
             Authorization: `Bearer ${newToken}`,
           },
         }
       );
       if (response.data) {
-        localStorage.removeItem("duplicateReportAfterSignIn");
-        history.push(`/report/${response.data.id}/edit`);
+        localStorage.removeItem("duplicateStoryAfterSignIn");
+        history.push(`/story/${response.data.id}/edit`);
       } else {
         history.replace("/");
       }
@@ -39,34 +40,33 @@ function AuthCallbackModule() {
   };
 
   const duplicateAssets = async () => {
-    getAccessTokenSilently().then(async (newToken) => {
-      await axios.post(
-        `${process.env.REACT_APP_API}/users/duplicate-assets`,
-        {},
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${newToken}`,
-          },
-        }
-      );
-      const response = await axios.get(
-        `${process.env.REACT_APP_API}/users/google-drive/user-token`,
-        {
-          headers: {
-            Authorization: `Bearer ${newToken}`,
-          },
-        }
-      );
-      if (response.data.access_token) {
-        setGoogleDriveToken(response.data.access_token, {
-          expires: new Date(response.data.token_details.exp * 1000),
-          httpsOnly: true,
-          secure: true,
-          sameSite: "strict",
-        });
+    const newToken = await getAccessTokenSilently();
+    await axios.post(
+      `${process.env.REACT_APP_API}/users/duplicate-assets`,
+      {},
+      {
+        headers: {
+          "Content-Type": APPLICATION_JSON,
+          Authorization: `Bearer ${newToken}`,
+        },
       }
-    });
+    );
+    const response = await axios.get(
+      `${process.env.REACT_APP_API}/users/google-drive/user-token`,
+      {
+        headers: {
+          Authorization: `Bearer ${newToken}`,
+        },
+      }
+    );
+    if (response.data.access_token) {
+      setGoogleDriveToken(response.data.access_token, {
+        expires: new Date(response.data.token_details.exp * 1000),
+        httpsOnly: true,
+        secure: true,
+        sameSite: "strict",
+      });
+    }
   };
 
   React.useEffect(() => {
@@ -75,25 +75,24 @@ function AuthCallbackModule() {
         setLoading(true);
         await duplicateAssets();
         setLoading(false);
-      })();
-      if (destinationPath) {
-        return history.replace(destinationPath);
-      }
-      const reportId = localStorage.getItem("duplicateReportAfterSignIn");
-      if (reportId) {
-        (async () => {
-          setLoading(true);
-          await duplicateReport(reportId);
-          setLoading(false);
-        })();
-      } else {
-        if (localStorage.getItem("signup-state") == "true") {
-          history.replace("/report/new/initial");
-          localStorage.removeItem("signup-state");
-        } else {
-          history.replace("/");
+
+        if (destinationPath) {
+          return history.replace(destinationPath);
         }
-      }
+        const storyId = localStorage.getItem("duplicateStoryAfterSignIn");
+        if (storyId) {
+          setLoading(true);
+          await duplicateStory(storyId);
+          setLoading(false);
+        } else {
+          if (localStorage.getItem("signup-state") === "true") {
+            history.replace("/story/new/initial");
+            localStorage.removeItem("signup-state");
+          } else {
+            history.replace("/");
+          }
+        }
+      })();
     } else {
       getAccessTokenSilently();
     }

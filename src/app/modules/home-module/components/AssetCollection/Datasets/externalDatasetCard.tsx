@@ -20,6 +20,7 @@ export default function ExternalDatasetCard(
     publishedDate: string;
     handleDownload: (dataset: IExternalDataset) => void;
     dataset: IExternalDataset;
+    searchValue?: string;
   }>
 ) {
   const sourceLogo = (source: string) => {
@@ -40,6 +41,17 @@ export default function ExternalDatasetCard(
   };
   const [showButton, setShowButton] = React.useState<boolean>(false);
 
+  const highlightMatch = (text: string, searchValue?: string) => {
+    if (!searchValue) {
+      return text;
+    }
+    const regex = new RegExp(`(${searchValue})`, "i");
+    const parts = text.split(regex);
+    return parts.map((part, index) =>
+      regex.test(part) ? <span key={index}>{part}</span> : part
+    );
+  };
+
   return (
     <div
       onMouseEnter={() => setShowButton(true)}
@@ -49,9 +61,7 @@ export default function ExternalDatasetCard(
         width: 296px;
         height: 162px;
         box-shadow: 0px 7px 16px 0px rgba(0, 0, 0, 0.05);
-        padding-left: 11.7px;
-        padding-right: 12px;
-        padding-top: 16.2px;
+        padding: 12px;
         background: #fff;
         position: relative;
         p:nth-of-type(1) {
@@ -64,39 +74,48 @@ export default function ExternalDatasetCard(
           overflow: hidden;
           text-overflow: ellipsis;
           white-space: nowrap;
+          span {
+            color: #6061e5;
+            text-decoration: underline;
+            font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
+            font-size: 14px;
+          }
         }
         p:nth-of-type(2) {
           color: #495057;
           font-family: "GothamNarrow-Book", "Helvetica Neue", sans-serif;
-          font-size: 10px;
+          font-size: 12px;
           margin: 0;
-          height: 24px;
-          //multi-line ellipses
-          -webkit-box-orient: vertical;
           display: -webkit-box;
           -webkit-line-clamp: 2;
+          -webkit-box-orient: vertical;
           overflow: hidden;
-          text-overflow: ellipsis;
-          white-space: normal;
           line-height: normal;
+          span {
+            color: #6061e5;
+            text-decoration: underline;
+            font-family: "GothamNarrow-Book", "Helvetica Neue", sans-serif;
+            font-size: 12px;
+          }
         }
         p:nth-of-type(3) {
           color: #495057;
           font-family: "GothamNarrow-Book", "Helvetica Neue", sans-serif;
-          font-size: 10px;
+          font-size: 12px;
           text-decoration-line: underline;
           margin: 0;
-          margin-top: 10px;
-          margin-bottom: 10px;
+          margin-top: 4px;
+          margin-bottom: 9px;
           height: 12px;
           line-height: normal;
           a {
             text-decoration: none;
             color: inherit;
+            font-size: 12px;
           }
         }
         div {
-          height: 62px;
+          /* height: 62px; */
           margin: 0;
           display: flex;
           align-items: center;
@@ -111,32 +130,28 @@ export default function ExternalDatasetCard(
             display: flex;
             justify-content: center;
             align-items: center;
-            gap: 5.959px;
-            padding: 7.15px 10px;
-            border-radius: 17.876px;
+            padding: 8px 16px;
+            border-radius: 8px;
             background: #231d2c;
-            text-transform: uppercase;
             color: #fff;
-            font-family: "GothamNarrow-Bold";
+            font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
             font-size: 12px;
-            svg {
-              width: 9px;
-              height: 9px;
-            }
+            line-height: 8px;
           }
         }
         p:nth-of-type(4) {
           color: #231d2c;
           font-family: "GothamNarrow-Book";
-          font-size: 8.814px;
+          font-size: 10px;
           display: flex;
           justify-content: flex-end;
           align-items: center;
-          gap: 5px;
+          gap: 4px;
           position: absolute;
-          right: 11.7px;
-          bottom: 0px;
+          right: 16px;
+          bottom: 12px;
           margin: 0;
+          line-height: normal;
           svg {
             width: 12px;
             height: 12px;
@@ -144,8 +159,10 @@ export default function ExternalDatasetCard(
         }
       `}
     >
-      <p title={props.name}>{props.name}</p>
-      <p title={props.description}>{props.description}</p>
+      <p title={props.name}>{highlightMatch(props.name, props.searchValue)}</p>
+      <p title={props.description}>
+        {highlightMatch(props.description, props.searchValue)}
+      </p>
       <p>
         <a href={props.url} rel="noreferrer noopener" target="_blank">
           Link to data source.
@@ -153,7 +170,7 @@ export default function ExternalDatasetCard(
       </p>
       <div
         css={`
-          height: 62px;
+          /* height: 62px; */
           margin: 0;
           display: flex;
           align-items: center;
@@ -165,7 +182,7 @@ export default function ExternalDatasetCard(
             onClick={() => props.handleDownload(props.dataset)}
             data-cy="import-to-dx-button"
           >
-            import to dx <ArrowRightAltIcon color="inherit" />
+            Connect to Dataxplorer
           </button>
         )}
       </div>

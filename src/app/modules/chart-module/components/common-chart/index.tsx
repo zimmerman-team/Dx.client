@@ -6,7 +6,6 @@ import GeomapLegend from "app/modules/chart-module/components/geomap-legend";
 import { ChartAPIModel } from "app/modules/chart-module/data";
 import { DatasetListItemAPIModel } from "app/modules/dataset-module/data";
 import { get } from "lodash";
-import { getDatasetDetailsSource } from "app/modules/chart-module/util/getDatasetDetailsSource";
 
 export type ChartType =
   | "echartsBarchart"
@@ -38,18 +37,23 @@ interface Props {
   setVisualOptions: (value: any) => void;
   containerRef: React.RefObject<HTMLDivElement>;
   chartId?: string;
-  hideChartSource?: boolean;
   setChartError: React.Dispatch<React.SetStateAction<boolean>>;
   setChartErrorMessage: React.Dispatch<React.SetStateAction<string>>;
   renderedChartType?: ChartType;
   inChartWrapper?: boolean;
-  chartPreviewInReport?: boolean;
+  chartPreviewInStory?: boolean;
   mapping?: any;
   datasetDetails?: DatasetListItemAPIModel;
+  readOnly?: boolean;
 }
 
+// eslint-disable-next-line sonarjs/cognitive-complexity
 export function CommonChart(props: Readonly<Props>) {
-  const { render } = useDataThemesEchart();
+  const { render } = useDataThemesEchart({
+    readOnly: props.readOnly,
+    visualOptions: props.visualOptions,
+    setVisualOptions: props.setVisualOptions,
+  });
   const token = useStoreState((state) => state.AuthToken.value);
   const domRef = React.useRef<HTMLDivElement>(null);
   const chartTypeFromState = useStoreState(
@@ -65,26 +69,8 @@ export function CommonChart(props: Readonly<Props>) {
   const loadDataset = useStoreActions(
     (actions) => actions.dataThemes.DatasetGet.fetch
   );
-  const datasetDetails = useStoreState(
-    (state) =>
-      (state.dataThemes.DatasetGet.crudData ?? {}) as DatasetListItemAPIModel
-  );
-  const { sourceUrl, filename } = getDatasetDetailsSource(
-    datasetDetails,
-    props.datasetDetails
-  );
-
-  const dataSourcePHeight = document
-    .getElementById(`datasource-${props.chartId || "1"}`)
-    ?.getBoundingClientRect().height;
 
   let content;
-  let contentHeight;
-  if (!props.chartPreviewInReport && props.renderedChartType !== "bigNumber") {
-    contentHeight = props.visualOptions?.height - 28 + "px";
-  } else {
-    contentHeight = "auto";
-  }
 
   React.useEffect(() => {
     if (token) {
@@ -157,13 +143,14 @@ export function CommonChart(props: Readonly<Props>) {
           {
             ...visualOptions,
             height: props.inChartWrapper
-              ? visualOptions.height - 28
-              : visualOptions.height,
+              ? props.containerRef.current.clientHeight - 60
+              : props.containerRef.current.clientHeight,
           },
           props.mapping,
           `common-chart-render-container-${props.chartId || "1"}-${
-            props.chartPreviewInReport
-          }`
+            props.chartPreviewInStory
+          }`,
+          props.chartId
         );
       } catch (e: any) {
         if (process.env.NODE_ENV === "development") {
@@ -181,7 +168,10 @@ export function CommonChart(props: Readonly<Props>) {
         width: 100%;
         overflow: hidden;
         position: relative;
-        height: ${contentHeight};
+        height: ${props.inChartWrapper &&
+        props.renderedChartType !== "bigNumber"
+          ? "calc(100% - 60px)"
+          : "100%"};
         * {
           font-family: "GothamNarrow-Book", "Helvetica Neue", sans-serif !important;
         }
@@ -190,12 +180,12 @@ export function CommonChart(props: Readonly<Props>) {
       <div
         ref={domRef}
         id={`common-chart-render-container-${props.chartId || "1"}-${
-          props.chartPreviewInReport
+          props.chartPreviewInStory
         }`}
         data-cy="common-chart-container"
         css={`
           width: auto !important;
-          height: calc(100% - ${dataSourcePHeight ?? 0}px);
+          height: 100%;
 
           > div:first-of-type {
             ${props.renderedChartType === "bigNumber" &&
@@ -235,39 +225,14 @@ export function CommonChart(props: Readonly<Props>) {
         `}
 
             > svg {
-              height: calc(100% - ${dataSourcePHeight ?? 0}px);
-
-              > rect {
-                height: calc(100% - ${dataSourcePHeight ?? 0}px);
+              height: 100% > rect {
+                height: 100%;
               }
             }
           }
         `}
       />
 
-      <p
-        id={`datasource-${props.chartId || "1"}`}
-        css={`
-          color: #70777e;
-          font-family: "GothamNarrow-Bold", sans-serif;
-          font-size: 12px;
-          margin: 0;
-          display: ${props.hideChartSource ? "none" : "block"};
-          a {
-            font-family: "GothamNarrow-Bold", sans-serif;
-
-            color: #70777e;
-            text-decoration: none;
-            border-bottom: 1px solid #70777e;
-          }
-        `}
-      >
-        Source:{" "}
-        <a href={sourceUrl} target="_blank" rel="noopener noreferrer">
-          {props.datasetDetails?.source ?? datasetDetails.source} - Data file:{" "}
-          {filename}
-        </a>
-      </p>
       {chartType === "echartsGeomap" && props.visualOptions?.showLegend ? (
         <div
           css={`

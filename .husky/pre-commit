@@ -1,5 +1,14 @@
 #!/usr/bin/env sh
 . "$(dirname -- "$0")/_/husky.sh"
 
-yarn prettier src/app --check
+# Get staged files in src/app directory to check with prettier.
+files=$(git diff --cached --name-only --diff-filter=ACM | grep -E '^src/app/.*\.(js|jsx|ts|tsx|json)$' || true)
 
+# Check if there are any files to format
+if [ -n "$files" ]; then
+  echo "Checking formatting for: $files"
+  yarn prettier --check $files
+  npx eslint $files
+else
+  echo "No matching files to check."
+fi

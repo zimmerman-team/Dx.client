@@ -40,6 +40,10 @@ export default function PreviewTable(props: PreviewTableProps) {
   const [toolboxDisplay, setToolboxDisplay] = React.useState(false);
   let columns: string[] = [];
   let dataStats: IdatasStats[] = [];
+  let tableData: { [key: string]: number | string | null | boolean }[] = [];
+
+  const tableRef = React.useRef<HTMLDivElement>(null);
+
   if (props.columns.length > 0 && props.dataStats.length > 0) {
     if (props.columns.length < 5) {
       columns = [...props.columns, ...Array(5).fill("")];
@@ -48,6 +52,11 @@ export default function PreviewTable(props: PreviewTableProps) {
       columns = [...props.columns, ...Array(2).fill("")];
       dataStats = [...props.dataStats, ...Array(2).fill("")];
     }
+  }
+  if (props.tableData.length > 0 && props.tableData.length < 10) {
+    tableData = [...props.tableData, ...Array(10).fill("")];
+  } else {
+    tableData = props.tableData;
   }
 
   return (
@@ -90,7 +99,7 @@ export default function PreviewTable(props: PreviewTableProps) {
           }
         `}
       >
-        <Table css={previewTablecss}>
+        <Table innerRef={tableRef} css={previewTablecss}>
           <TableHead
             css={`
               top: 0;
@@ -105,7 +114,7 @@ export default function PreviewTable(props: PreviewTableProps) {
             >
               {columns.map((val, index) => {
                 return (
-                  <TableCell key={val}>
+                  <TableCell key={val + `${index}`}>
                     <div
                       title={val}
                       css={`
@@ -154,9 +163,9 @@ export default function PreviewTable(props: PreviewTableProps) {
               })}
             </TableRow>
             <TableRow>
-              {dataStats?.map((val) => (
+              {dataStats?.map((val, i) => (
                 <TableCell
-                  key={val.name}
+                  key={val.name + `${i}`}
                   css={`
                     color: #000;
                     font-size: 12px;
@@ -177,15 +186,15 @@ export default function PreviewTable(props: PreviewTableProps) {
             </TableRow>
           </TableHead>
           <TableBody>
-            {props.tableData.map((data, rowIndex) => (
+            {tableData.map((data, rowIndex) => (
               <TableRow
-                key={Object.values(data).join("-")}
+                key={Object.values(data).join("-") + `${rowIndex}`}
                 css={`
                   background: #fff;
                 `}
               >
                 {columns.map((val, cellIndex) => (
-                  <TableCell key={val}>
+                  <TableCell key={val + `${cellIndex}`}>
                     <p
                       title={data?.[val] as string}
                       css={`
@@ -196,6 +205,7 @@ export default function PreviewTable(props: PreviewTableProps) {
                         text-overflow: ellipsis;
                         min-width: ${cellIndex === 0 ? "30px" : "auto"};
                         text-align: ${cellIndex === 0 ? "center" : "left"};
+                        font-size: 12px;
                       `}
                     >
                       {data?.[val] ?? ""}
@@ -206,12 +216,13 @@ export default function PreviewTable(props: PreviewTableProps) {
             ))}
           </TableBody>
         </Table>
-        <tr
+        <div
           ref={props.observerTarget}
           css={`
             height: 1px;
+            width: ${tableRef?.current?.clientWidth}px;
           `}
-        ></tr>
+        ></div>
         <div>{props.loading ? <CircleLoader /> : null}</div>
       </TableContainer>
 

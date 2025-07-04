@@ -3,16 +3,21 @@ import Grid, { GridSpacing } from "@material-ui/core/Grid";
 import { ReactComponent as AIPoweredImg } from "app/modules/home-module/assets/whydx-ai-powered-illustration.svg";
 import { ReactComponent as CharVizImg } from "app/modules/home-module/assets/whydx-chartviz-illustration.svg";
 import { ReactComponent as OpenSourceImg } from "app/modules/home-module/assets/whydx-opensource-illustration.svg";
-import { ReactComponent as ReportsImg } from "app/modules/home-module/assets/whydx-reports-illustration.svg";
+import { ReactComponent as StoriesImg } from "app/modules/home-module/assets/whydx-stories-illustration.svg";
 import { ReactComponent as SearchImg } from "app/modules/home-module/assets/whydx-search-illustration.svg";
-import { keyfeaturescss } from "../style";
+import { keyfeaturescss } from "app/modules/home-module/sub-modules/why-dx/style";
 import { useMediaQuery } from "@material-ui/core";
+import {
+  DESKTOP_BREAKPOINT,
+  MOBILE_BREAKPOINT,
+  TABLET_STARTPOINT,
+} from "app/theme";
 
 export default function KeyFeaturesBlock() {
   const isTablet = useMediaQuery("(max-width:1024px)");
-  const isMobile = useMediaQuery("(max-width:600px)");
+  const isMobile = useMediaQuery(`(max-width:${MOBILE_BREAKPOINT})`);
 
-  let spacing: GridSpacing = 9;
+  let spacing: GridSpacing = 8;
   if (isTablet) {
     spacing = 6;
   }
@@ -22,68 +27,62 @@ export default function KeyFeaturesBlock() {
   return (
     <div css={keyfeaturescss.container}>
       <h3>Unlock the Power of Data with Dataxplorer</h3>
-      <Grid
-        container
-        spacing={spacing}
-        alignItems="center"
-        css={`
-          @media (min-width: 1111px) {
-            @media (max-width: 1279px) {
-              flex-wrap: nowrap;
-            }
-          }
-          @media (max-width: 1110px) {
-            flex-direction: column;
-            align-items: center;
-          }
-        `}
-      >
-        <Grid item lg={6} md={9} sm={12} xs={12}>
-          <SearchImg />
-        </Grid>
-        <Grid item lg={6} md={9} sm={12} xs={12}>
+      <div css={keyfeaturescss.flexContainer(false)}>
+        <div
+          css={`
+            flex-basis: 50%;
+          `}
+        >
+          <SearchImg
+            css={`
+              border-radius: 16px;
+              box-shadow: 0px 13.449px 20.173px 0px rgba(0, 0, 0, 0.05),
+                0px 4.035px 6.724px 0px rgba(0, 0, 0, 0.05),
+                0px 0.672px 6.724px 0px rgba(0, 0, 0, 0.05);
+              width: 100%;
+            `}
+          />
+        </div>
+        <div
+          css={`
+            flex-basis: 50%;
+          `}
+        >
           <div css={keyfeaturescss.text}>
             <p>All-in-One Stack</p>
             <p>
               Dataxplorer consolidates all your data management needs into a
               single, integrated stack. Whether it's data integration,
-              visualization, or report creation, you'll find it all here. No
-              more juggling multiple tools or struggling to maintain
-              compatibility. <br /> <br />
+              visualization, or story creation, you'll find it all here. No more
+              juggling multiple tools or struggling to maintain compatibility.{" "}
+              <br /> <br />
               Our open-source platform simplifies your workflow, making your
               mission more efficient, and saving you time and resources
             </p>
           </div>
-        </Grid>
-      </Grid>
+        </div>
+      </div>
       <div
         css={`
-          height: 120px;
+          height: 80px;
           @media (max-width: 1024px) {
-            height: 73px;
+            height: 80px;
           }
           @media (max-width: 600px) {
-            height: 48px;
+            height: 32px;
           }
         `}
       />
-      <Grid
-        container
-        spacing={spacing}
-        alignItems="center"
+      <div
         css={`
-          @media (min-width: 1111px) {
-            @media (max-width: 1279px) {
-              flex-wrap: nowrap;
-            }
-          }
-          @media (max-width: 1110px) {
-            flex-direction: column-reverse;
-            align-items: center;
-          }
+          ${keyfeaturescss.flexContainer(true)};
         `}
       >
-        <Grid item lg={6} md={9} sm={12} xs={12}>
+        <div
+          css={`
+            flex-basis: 50%;
+          `}
+        >
           <div css={keyfeaturescss.text}>
             <p>Connect Data with Ease</p>
             <p>
@@ -95,50 +94,54 @@ export default function KeyFeaturesBlock() {
               making informed decisions.
             </p>
           </div>
-        </Grid>
-        <Grid item lg={6} md={9} sm={12} xs={12}>
+        </div>
+        <div
+          css={`
+            flex-basis: 50%;
+          `}
+        >
           <AIPoweredImg
             css={`
-              margin-left: -30px;
+              box-shadow: 0px 14.97px 22.455px 0px rgba(0, 0, 0, 0.05),
+                0px 4.491px 7.485px 0px rgba(0, 0, 0, 0.05),
+                0px 0.749px 7.485px 0px rgba(0, 0, 0, 0.05);
+              border-radius: 16px;
             `}
           />
-        </Grid>
-      </Grid>
+        </div>
+      </div>
       <div
         css={`
-          height: 100px;
+          height: 80px;
           @media (max-width: 1024px) {
-            height: 73px;
+            height: 80px;
           }
           @media (max-width: 600px) {
-            height: 48px;
+            height: 32px;
           }
         `}
       />
-      <Grid
-        container
-        spacing={spacing}
-        alignItems="center"
-        css={`
-          @media (min-width: 1111px) {
-            @media (max-width: 1279px) {
-              flex-wrap: nowrap;
-            }
-          }
-          @media (max-width: 1110px) {
-            flex-direction: column;
-            align-items: center;
-          }
-        `}
-      >
-        <Grid item lg={6} md={9} sm={12} xs={12}>
+      <div css={keyfeaturescss.flexContainer(false)}>
+        <div
+          css={`
+            flex-basis: 50%;
+          `}
+        >
           <CharVizImg
             css={`
-              margin-left: -30px;
+              border-radius: 16px;
+              background: #fbfbfb;
+              box-shadow: 0px 18.798px 28.197px 0px rgba(0, 0, 0, 0.05),
+                0px 5.639px 9.399px 0px rgba(0, 0, 0, 0.05),
+                0px 0.94px 9.399px 0px rgba(0, 0, 0, 0.05);
             `}
           />
-        </Grid>
-        <Grid item lg={6} md={9} sm={12} xs={12}>
+        </div>
+        <div
+          css={`
+            flex-basis: 50%;
+          `}
+        >
           <div css={keyfeaturescss.text}>
             <p>Visualize Your Impact</p>
             <p>
@@ -150,82 +153,84 @@ export default function KeyFeaturesBlock() {
               uncover trends and patterns.
             </p>
           </div>
-        </Grid>
-      </Grid>
+        </div>
+      </div>
       <div
         css={`
-          height: 111px;
+          height: 80px;
+          @media (max-width: 1024px) {
+            height: 80px;
+          }
           @media (max-width: 600px) {
-            height: 48px;
+            height: 32px;
           }
         `}
       />
-      <Grid
-        container
-        spacing={spacing}
-        alignItems="center"
-        css={`
-          @media (min-width: 1111px) {
-            @media (max-width: 1279px) {
-              flex-wrap: nowrap;
-            }
-          }
-          @media (max-width: 1110px) {
-            flex-direction: column-reverse;
-            align-items: center;
-          }
-        `}
-      >
-        <Grid item lg={6} md={9} sm={12} xs={12}>
+      <div css={keyfeaturescss.flexContainer(true)}>
+        <div
+          css={`
+            flex-basis: 50%;
+          `}
+        >
           <div css={keyfeaturescss.text}>
-            <p>Interactive Reports </p>
+            <p>Interactive Stories </p>
             <p>
               Transform your data-driven insights into engaging narratives that
               captivate and inform your stakeholders. Dataxplorer allows you to
-              effortlessly create interactive reports that captivate and inform
+              effortlessly create interactive stories that captivate and inform
               your stakeholders. <br /> <br />
               Incorporate charts, text, images, and videos seamlessly. Your
               ability to convey your findings with impact is now within reach,
               enhancing your ability to drive positive change.
             </p>
           </div>
-        </Grid>
-        <Grid item lg={6} md={9} sm={12} xs={12}>
-          <OpenSourceImg />
-        </Grid>
-      </Grid>
+        </div>
+        <div
+          css={`
+            flex-basis: 50%;
+          `}
+        >
+          <OpenSourceImg
+            css={`
+              border-radius: 16px;
+              background: #fbfbfb;
+              box-shadow: 0px 13.449px 20.173px 0px rgba(0, 0, 0, 0.05),
+                0px 4.035px 6.724px 0px rgba(0, 0, 0, 0.05),
+                0px 0.672px 6.724px 0px rgba(0, 0, 0, 0.05);
+            `}
+          />
+        </div>
+      </div>
       <div
         css={`
-          height: 85px;
-          @media (max-width: 600px) {
-            height: 48px;
+          height: 80px;
+
+          @media (max-width: ${MOBILE_BREAKPOINT}) {
+            height: 32px;
           }
         `}
       />
-      <Grid
-        container
-        spacing={spacing}
-        alignItems="center"
-        css={`
-          @media (min-width: 1111px) {
-            @media (max-width: 1279px) {
-              flex-wrap: nowrap;
-            }
-          }
-          @media (max-width: 1110px) {
-            flex-direction: column;
-            align-items: center;
-          }
-        `}
-      >
-        <Grid item lg={6} md={9} sm={12} xs={12}>
-          <ReportsImg
+      <div css={keyfeaturescss.flexContainer(false)}>
+        <div
+          css={`
+            flex-basis: 50%;
+          `}
+        >
+          <StoriesImg
             css={`
-              margin-left: -30px;
+              border-radius: 16px;
+              background: #fbfbfb;
+              box-shadow: 0px 14.97px 22.455px 0px rgba(0, 0, 0, 0.05),
+                0px 4.491px 7.485px 0px rgba(0, 0, 0, 0.05),
+                0px 0.749px 7.485px 0px rgba(0, 0, 0, 0.05);
             `}
           />
-        </Grid>
-        <Grid item lg={6} md={9} sm={12} xs={12}>
+        </div>
+        <div
+          css={`
+            flex-basis: 50%;
+          `}
+        >
           <div css={keyfeaturescss.text}>
             <p>Join The Data Revolution</p>
             <p>
@@ -238,8 +243,8 @@ export default function KeyFeaturesBlock() {
               now.
             </p>
           </div>
-        </Grid>
-      </Grid>
+        </div>
+      </div>
     </div>
   );
 }

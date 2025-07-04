@@ -1,3 +1,4 @@
+/* eslint-disable sonarjs/cognitive-complexity */
 /* third-party */
 import React from "react";
 import get from "lodash/get";
@@ -44,6 +45,9 @@ export function ChartToolBoxCustomize(props: ChartToolBoxCustomizeProps) {
     const newOptionsConfig = getOptionsConfig(fChart.visualOptions);
     if (!fChart.visualOptions.width) {
       delete newOptionsConfig.width;
+    }
+    if (!fChart.visualOptions.height) {
+      delete newOptionsConfig.height;
     }
     if (!fChart.visualOptions.background) {
       delete newOptionsConfig.background;

@@ -39,12 +39,13 @@ export default function SourceCategoryList(props: Readonly<Props>) {
         > button {
           font-size: 14px;
           cursor: pointer;
-          min-width: 160px;
+          width: max-content;
           background: #fff;
-          border-radius: 30px;
+          border-radius: 12px;
           border: 0.5px solid #231d2c;
           font-family: "GothamNarrow-Book", "Helvetica Neue", sans-serif;
-          padding: 12px 0px;
+          padding: 0px 24px;
+          height: 35px;
         }
       `}
     >

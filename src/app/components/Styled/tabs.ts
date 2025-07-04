@@ -4,25 +4,27 @@ interface ITab {
   active?: boolean;
   position?: string;
 }
+
+const gothamNarrowBold = "GothamNarrow-Bold";
+const gothamNarrowBook = "GothamNarrow-Book";
+const translateX0 = "translateX(0%)";
 export const Tab = {
   Container: styled.div`
     display: flex;
     justify-content: flex-start;
     color: #000000;
     /* margin: 4% 0%; */
-    width: 30%;
-    gap: 40px;
+    width: 317px;
+    gap: 58px;
     cursor: pointer;
     position: relative;
   `,
   Left: styled.div<ITab>`
     text-align: center;
     position: relative;
-    color: ${(props) => (props.active ? "#6061E5" : "#000000")};
-    font-weight: ${(props) => (props.active ? "bold" : "normal")};
-    font-family: ${(props) =>
-        props.active ? "GothamNarrow-Bold" : "GothamNarrow-Book"},
-      "Helvetica Neue", sans-serif;
+    color: ${(props) => (props.active ? "#6061E5" : "#231D2C")};
+    font-family: "GothamNarrow-Book", "Helvetica Neue", sans-serif;
+    font-size: 18px;
 
     ::after {
       content: "";
@@ -33,18 +35,16 @@ export const Tab = {
       border-bottom: 2px solid
         ${(props) => (props.active ? "#6061E5" : "transparent")};
       transform: ${(props) =>
-        props.active ? "translateX(0%)" : `translateX(100%)`};
+        props.active ? translateX0 : `translateX(100%)`};
       transition: transform 0.3s linear;
     }
   `,
   Center: styled.div<ITab>`
     text-align: center;
     position: relative;
-    color: ${(props) => (props.active ? "#6061E5" : "#000000")};
-    font-weight: ${(props) => (props.active ? "bold" : "normal")};
-    font-family: ${(props) =>
-        props.active ? "GothamNarrow-Bold" : "GothamNarrow-Book"},
-      "Helvetica Neue", sans-serif;
+    color: ${(props) => (props.active ? "#6061E5" : "#231D2C")};
+    font-family: "GothamNarrow-Book", "Helvetica Neue", sans-serif;
+    font-size: 18px;
 
     ::after {
       content: "";
@@ -56,8 +56,8 @@ export const Tab = {
         ${(props) => (props.active ? "#6061E5" : "transparent")};
       transform: ${(props) =>
         props.active
-          ? "translateX(0%)"
-          : `translateX(${props.position == "left" ? "-100%" : "100%"} )`};
+          ? translateX0
+          : `translateX(${props.position === "left" ? "-100%" : "100%"} )`};
       transition: transform 0.3s linear;
     }
   `,
@@ -65,11 +65,10 @@ export const Tab = {
   Right: styled.div<ITab>`
     text-align: center;
     position: relative;
-    color: ${(props) => (props.active ? "#6061E5" : "#000000")};
+    color: ${(props) => (props.active ? "#6061E5" : "#231D2C")};
     font-weight: ${(props) => (props.active ? "700" : "normal")};
-    font-family: ${(props) =>
-        props.active ? "GothamNarrow-Bold" : "GothamNarrow-Book"},
-      "Helvetica Neue", sans-serif;
+    font-family: "GothamNarrow-Book", "Helvetica Neue", sans-serif;
+    font-size: 18px;
 
     ::after {
       content: "";
@@ -80,7 +79,7 @@ export const Tab = {
       border-bottom: 2px solid
         ${(props) => (props.active ? "#6061E5" : "transparent")};
       transform: ${(props) =>
-        props.active ? "translateX(0%)" : "translateX(-100%)"};
+        props.active ? translateX0 : "translateX(-100%)"};
       transition: transform 0.3s linear;
     }
   `,

@@ -16,13 +16,13 @@ export interface ChartBuilderCustomizeProps {
   chartError: boolean;
   dataError: boolean;
   chartErrorMessage: string;
+  chartName: string;
 }
 
 export const checkLists = [
   {
-    label: "TGF Default",
-
-    value: ["#B1BCC8", "#F1ECEC", "#C3C9EC", "#C9CAD4", "#252C34"],
+    label: "DataXplorer default",
+    value: ["#E75656", "#E492BD", "#F6C445", "#73D3CD", "#6061E5"],
   },
   {
     label: "Nordic Aurora",
@@ -43,10 +43,7 @@ export const checkLists = [
     label: "Sprint forest",
     value: ["#D0FEA3", "#A4D37E", "#7BA95A", "#538137", "#2B5B16"],
   },
-  {
-    label: "DataXplorer default",
-    value: ["#E75656", "#E492BD", "#F6C445", "#73D3CD", "#6061E5"],
-  },
+
   {
     label: "Purple Gradient",
     value: ["#DADAF8", "#DAB5FF", "#B194D1", "#655579", "#231D2C"],

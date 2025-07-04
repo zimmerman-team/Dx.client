@@ -19,9 +19,10 @@ import { ReactComponent as GraphglPlaceholderImage } from "app/modules/chart-mod
 import { ReactComponent as HeatmapPlaceholderImage } from "app/modules/chart-module/assets/heatmapPlaceholder.svg";
 import { ReactComponent as AreatimeaxisPlaceholderImage } from "app/modules/chart-module/assets/areatimeaxisPlaceholder.svg";
 import ErrorOutlineIcon from "@material-ui/icons/ErrorOutline";
-
 import { useStoreState } from "app/state/store/hooks";
-import { CHART_DEFAULT_HEIGHT } from "../../data";
+import { Link } from "react-router-dom";
+import ChartArea from "app/modules/chart-module/components/chart-area";
+
 export default function MappingErrorComponent(props: {
   page: string;
   chartError: boolean;
@@ -372,81 +373,113 @@ export default function MappingErrorComponent(props: {
     return placeholder?.placeholder;
   };
 
+  const handleRetryMapping = () => {};
+
   return (
-    <div
-      css={`
-        ${commonStyles.container}
-        position: relative;
-      `}
-    >
-      <div css={commonStyles.innercontainer}>
+    <ChartArea hideChartSourceAndTitle hideMobileContainer>
+      <div
+        css={`
+          height: 100%;
+        `}
+      >
+        {getChartPlaceholder()}
+      </div>
+      <div
+        css={`
+          height: 100%;
+          width: 100%;
+          position: absolute;
+          top: 0;
+          left: 0;
+        `}
+      >
         <div
           css={`
-            height: ${CHART_DEFAULT_HEIGHT}px;
+            height: 100%;
+            margin: auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: #e75656;
+            font-size: 14px;
+            line-height: 20px;
+            font-weight: bold;
+            font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
+            text-align: center;
+            svg {
+              width: 64px;
+              height: 64px;
+            }
+
+            h3 {
+              margin-top: 13.3px;
+              margin-bottom: 0px;
+              font-size: 36px;
+              white-space: pre-line;
+              font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
+            }
+            p:nth-of-type(1) {
+              margin: 0;
+              margin-top: 20px;
+              white-space: pre-line;
+              font-family: "GothamNarrow-Book", "Helvetica Neue", sans-serif;
+              font-weight: normal;
+              font-size: 18px;
+              width: 358px;
+            }
+            p:nth-of-type(2) {
+              margin: 0;
+              font-family: "GothamNarrow-Book", "Helvetica Neue", sans-serif;
+            }
           `}
         >
-          {getChartPlaceholder()}
-        </div>
-        <div
-          css={`
-            position: absolute;
-            top: 28%;
-            left: 32%;
-          `}
-        >
+          <>
+            <ErrorOutlineIcon htmlColor="#E75656" />
+            <h3>Error</h3>
+
+            <p>
+              Mapping could not be processed, please try again or contact your
+              administrator.
+            </p>
+          </>
           <div
             css={`
-              height: 362.598px;
-
-              margin: auto;
-              margin-top: 5%;
+              gap: 16px;
               display: flex;
-              flex-direction: column;
-              align-items: center;
               justify-content: center;
-              color: #e75656;
-              font-size: 14px;
-              line-height: 20px;
-              font-weight: bold;
-              font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
-              text-align: center;
-              svg {
-                width: 48px;
-                height: 48px;
+              margin-top: 32px;
+              @media (max-width: 768px) {
+                flex-direction: column;
               }
-              button {
-                outline: none;
-                border: none;
-                background: transparent;
-                cursor: pointer;
-                text-decoration: underline;
-              }
-              p:nth-of-type(1) {
-                margin-top: 34px;
-                white-space: pre-line;
-                line-height: 22px;
+              button,
+              a {
+                border-radius: 12px;
+                background: #231d2c;
+                display: flex;
+                padding: 0px 24px;
+                justify-content: center;
+                align-items: center;
+                color: #fff;
                 font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
-                font-size: 18px;
-              }
-              p:nth-of-type(2) {
-                margin: 0;
-                font-family: "GothamNarrow-Book", "Helvetica Neue", sans-serif;
+                font-size: 16px;
+                font-weight: 400;
+                border: none;
+                outline: none;
+                text-decoration: none;
+                height: 48px;
+                cursor: pointer;
               }
             `}
           >
-            <>
-              <ErrorOutlineIcon htmlColor="#E75656" />
-              <p>
-                Something went wrong rendering your chart! <br /> Check your
-                mapping or pick different dimensions.
-              </p>
-              <p>"Error rendering dimensions" </p>
-            </>
-            {/* {(props.chartError || props.dataError) && (
-          )} */}
+            <button onClick={handleRetryMapping}>Retry</button>
+            <Link to={`/chart/${props.page}/data`}>
+              Select Different Dimensions
+            </Link>
+            <Link to="/">Back to Dashboard</Link>
           </div>
-        </div>{" "}
-      </div>
-    </div>
+        </div>
+      </div>{" "}
+    </ChartArea>
   );
 }

@@ -1,25 +1,26 @@
-import { Select, TextField, withStyles } from "@material-ui/core";
+import { Select, TextField, withStyles, InputLabel } from "@material-ui/core";
+import { MOBILE_BREAKPOINT } from "app/theme";
+import { pad } from "lodash";
 import { css } from "styled-components/macro";
 
 export const stepcss = css`
   left: 0;
-  top: 47px;
+  /* top: 50px; */
   z-index: 10;
-  width: 100vw;
-  height: 50px;
+  /* width: 100vw; */
+  height: 90px;
 
   display: flex;
   align-items: center;
-  position: fixed;
+  /* position: fixed; */
   justify-content: center;
-  background: #f4f4f4;
-  gap: 1rem;
-  @media (min-width: 768px) {
-    @media (max-width: 881px) {
-      top: 66px;
-    }
+  gap: 8px;
+  padding: 16px 0;
+  @media (max-width: 881px) {
+    top: 66px;
   }
 `;
+const gothamNarrowBold = "'GothamNarrow-Book', 'Helvetica Neue', sans-serif";
 
 export const uploadAreacss = (isDragActive: boolean, disabled?: boolean) => css`
   height: 131px;
@@ -57,7 +58,7 @@ export const uploadAreacss = (isDragActive: boolean, disabled?: boolean) => css`
     p {
       font-weight: 500;
       font-size: 14px;
-      font-family: "Inter", sans-serif;
+      font-family: "GothamNarrow-Book", "Helvetica Neue", sans-serif;
       text-transform: uppercase;
     }
   }
@@ -71,31 +72,19 @@ export const uploadAreacss = (isDragActive: boolean, disabled?: boolean) => css`
 export const metaDatacss = css`
   width: 100%;
   h1 {
-    font-weight: 500;
+    font-weight: 400;
     font-size: 48px;
-    font-family: "Inter", sans-serif;
+    font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
+    margin: 0;
+    margin-bottom: 36px;
+    line-height: normal;
 
-    margin-bottom: 4.5rem;
     @media (min-width: 768px) {
       @media (max-width: 1024px) {
         margin-top: 10px;
         margin-bottom: 3.5rem;
       }
     }
-  }
-  button {
-    border-radius: 30px;
-    padding: 12px 27px;
-    height: 41px;
-
-    font-weight: 500;
-    font-size: 14px;
-    border: none;
-    outline: none;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    cursor: pointer;
   }
 `;
 
@@ -110,12 +99,12 @@ export const dataSetsCss = css`
 `;
 export const mobileDescriptioncss = css`
   display: none;
-  @media (max-width: 500px) {
+  @media (max-width: ${MOBILE_BREAKPOINT}) {
     display: flex;
     padding: 24px;
     flex-direction: column;
     align-items: flex-start;
-    gap: 24px;
+    gap: 16px;
     border-radius: 10px;
     background: #fff;
     box-shadow: 0px 0px 8px 0px rgba(0, 0, 0, 0.1);
@@ -138,18 +127,27 @@ export const mobileDescriptioncss = css`
 
 export const CssTextField = withStyles({
   root: {
+    "& .MuiInputLabel-outlined": {
+      fontSize: "18px",
+      lineHeight: "24px",
+      fontFamily: gothamNarrowBold,
+      color: "#231D2C",
+      padding: "0px",
+      marginLeft: "9px",
+    },
     "& label.Mui-focused": {
       color: "#231D2C",
+      lineHeight: "normal",
+      marginLeft: "0px",
     },
-    "&.MuiInputLabel-outlined": {
-      fontSize: "16px",
-      fontFamily: "'GothamNarrow-Book', 'Helvetica Neue', sans-serif",
-      color: "#231D2C",
+    "& .MuiFormLabel-filled": {
+      lineHeight: "normal",
+      marginLeft: "0px",
     },
     "& .MuiOutlinedInput-input": {
-      padding: "2px 14px",
-      height: "48px",
+      padding: "14.5px 24px",
       backgroundColor: "#Fff",
+      height: "24px",
     },
     "& .MuiFormHelperText-root": {
       color: "#231D2C",
@@ -162,8 +160,10 @@ export const CssTextField = withStyles({
     },
     "& .MuiOutlinedInput-multiline ": {
       backgroundColor: "#Fff",
+      padding: "0px",
     },
     "& .MuiOutlinedInput-root": {
+      fontSize: "18px",
       "& fieldset": {
         borderColor: "#231D2C",
         borderRadius: "10px",
@@ -184,17 +184,18 @@ export const CssSelectField = withStyles({
     "& label.Mui-focused": {
       color: "#231D2C",
     },
-    "&.MuiInputLabel-outlined": {
-      fontSize: "16px",
-      fontFamily: "'GothamNarrow-Book', 'Helvetica Neue', sans-serif",
+    "& .MuiInputLabel-outlined": {
+      fontSize: "18px",
+      fontFamily: gothamNarrowBold,
       color: "#231D2C",
+      lineHeight: "24px",
     },
     "&.MuiSelect-outlined": {
-      padding: "2px 14px",
-      height: "48px",
+      padding: "14.5px 24px",
       background: "#fff",
       display: "flex",
       alignItems: "center",
+      lineHeight: "24px",
     },
     "&.MuiFormHelperText-root": {
       color: "#231D2C",
@@ -220,3 +221,25 @@ export const CssSelectField = withStyles({
     },
   },
 })(Select);
+
+export const CssInputLabel = withStyles({
+  root: {
+    "&.MuiInputLabel-outlined": {
+      fontSize: "18px",
+      lineHeight: "24px",
+      fontFamily: gothamNarrowBold,
+      color: "#231D2C",
+      padding: "0px",
+      marginLeft: "9px",
+    },
+    "&.Mui-focused": {
+      color: "#231D2C",
+      lineHeight: "normal",
+      marginLeft: "0px",
+    },
+    "&.MuiFormLabel-filled": {
+      lineHeight: "normal",
+      marginLeft: "-2px",
+    },
+  },
+})(InputLabel);

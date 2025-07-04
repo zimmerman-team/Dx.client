@@ -2,121 +2,84 @@ import React from "react";
 import AboutCard from "app/modules/home-module/assets/about-card.png";
 import GrantsCard from "app/modules/home-module/assets/grants-card.png";
 import BudgetsCard from "app/modules/home-module/assets/budgets-card.png";
-import PerfomanceCard from "app/modules/home-module/assets/targets-results.png";
-import { TabCardEllipseCss } from "app/modules/home-module/sub-modules/partners/style";
-import { ReactComponent as FullEliipse } from "app/modules/home-module/assets/full-light-ellipse.svg";
+import PerfomanceCard from "app/modules/home-module/assets/targets-result.png";
 
 function TabCard(props: {
   src: string;
   alt: string;
   title: string;
   description: React.ReactNode;
+  reverse?: boolean;
 }) {
   return (
-    <>
-      <div
-        css={`
-          position: relative;
-          z-index: 1;
-          width: 100%;
-          display: flex;
-          justify-content: center;
-          gap: 39px;
-          font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
-          padding: 72px 40px 100px 88px;
-          color: #231d2c;
-          overflow-x: hidden;
+    <div
+      css={`
+        position: relative;
+        z-index: 1;
+        width: 100%;
+        display: flex;
+        flex-direction: ${props.reverse ? "row-reverse" : "row"};
+        height: 100%;
+        justify-content: center;
+        align-items: center;
+        gap: 56px;
+        font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
+        color: #ffffff;
+        overflow-x: hidden;
 
-          a {
-            text-decoration: none;
-            color: #231d2c;
-            border-bottom: 1px solid #231d2c;
-            cursor: pointer;
+        a {
+          text-decoration: none;
+          color: #ffffff;
+          border-bottom: 1px solid #ffffff;
+          cursor: pointer;
+        }
+
+        img {
+          width: 508px;
+          object-fit: contain;
+          position: relative;
+          z-index: 2;
+        }
+
+        h4 {
+          font-size: 34px;
+          line-height: normal;
+          margin: 0;
+          margin-bottom: 11px;
+        }
+        p {
+          font-family: "GothamNarrow-Book", "Helvetica Neue", sans-serif;
+          white-space: pre-line;
+          font-weight: 400;
+          line-height: 24px;
+          font-size: 18px;
+        }
+
+        @media (max-width: 1439px) {
+          flex-direction: column;
+          gap: 30px;
+          img {
+            width: 473.5px;
           }
-          div:nth-child(1) {
-            width: 60%;
-            img {
-              height: 363px;
-              object-fit: contain;
-              position: relative;
-              z-index: 2;
-            }
+        }
+        @media (max-width: 743px) {
+          gap: 20px;
+          img {
+            width: 285.841px;
           }
-          h4 {
-            font-size: 24px;
-            line-height: 29px;
-            margin: 0;
-            margin-bottom: 11px;
-          }
-          p {
-            font-family: "GothamNarrow-Light", "Helvetica Neue", sans-serif;
-            white-space: pre-line;
-            font-weight: 400;
-            line-height: 19px;
-            color: #231d2c;
-            font-size: 16px;
-          }
-          @media (max-width: 1179px) {
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            height: 644px;
-            gap: 22px;
-            padding: unset;
-            div:nth-child(1) {
-              width: auto;
-            }
-            @media (max-width: 761px) {
-              height: 100%;
-              padding-top: 40px;
-              h4 {
-                font-size: 20px;
-                line-height: 24px;
-              }
-              p {
-                font-size: 16px;
-                line-height: 19.2px;
-              }
-              div:nth-child(1) {
-                img {
-                  width: 100%;
-                  height: 100%;
-                }
-              }
-            }
-          }
-        `}
-      >
-        <div>
-          <img src={props.src} alt={props.alt} />
-        </div>
-        <div
-          css={`
-            @media (max-width: 1179px) {
-              margin-top: -4%;
-              width: 100%;
-              padding: 0 calc((100% - 551px) / 2);
-            }
-            @media (max-width: 769px) {
-              margin-top: -4%;
-              width: 92%;
-              padding: 0;
-            }
-            @media (max-width: 600px) {
-              margin-top: -4%;
-              width: 91%;
-              padding: 0;
-            }
-          `}
-        >
-          <h4>
-            <b>{props.title}</b>
-          </h4>
-          {props.description}
-        </div>
-        <FullEliipse css={TabCardEllipseCss} />
+        }
+      `}
+    >
+      <div>
+        <img src={props.src} alt={props.alt} />
       </div>
-    </>
+      <div>
+        <h4>
+          <b>{props.title}</b>
+        </h4>
+        {props.description}
+      </div>
+    </div>
   );
 }
 
@@ -146,6 +109,7 @@ export const AboutTabCard = () => {
       alt="about_snippet"
       title="The Global Fund Data Explorer"
       description={description}
+      reverse
     />
   );
 };
@@ -161,6 +125,7 @@ export const GrantsTabCard = () => {
       <a
         target="_blank"
         href="https://data.theglobalfund.org/location/KEN/grants"
+        rel="noreferrer"
       >
         LiveView
       </a>{" "}
@@ -183,9 +148,9 @@ export const BudgetsTabCard = () => {
       The Global Fund applies strict budget requirements during the development,
       review and implementation of Global Fund-supported programs. It
       establishes clear eligibility criteria for grant expenditures and
-      requirements for monitoring and financial reporting obligations.
+      requirements for monitoring and financial storytelling obligations.
       <br />
-      <br /> All collected financial reporting data on budgets including
+      <br /> All collected financial storytelling data on budgets including
       investment landscapes and corresponding cost categories is presented via
       the Data Explorer.
       <br />
@@ -193,6 +158,7 @@ export const BudgetsTabCard = () => {
       <a
         target="_blank"
         href="https://data.theglobalfund.org/location/KEN/budgets/flow"
+        rel="noreferrer"
       >
         LiveView
       </a>{" "}
@@ -201,6 +167,7 @@ export const BudgetsTabCard = () => {
   );
   return (
     <TabCard
+      reverse
       src={BudgetsCard}
       alt="budgets_snippet"
       title="Grant Budgeting"
@@ -212,7 +179,7 @@ export const BudgetsTabCard = () => {
 export const PerformanceTabCard = () => {
   const description = (
     <p>
-      The Global Fund requires countries to report grant performance indicators
+      The Global Fund requires countries to story grant performance indicators
       on funded programs. The data provided by national monitoring and
       evaluation systems is critical to informing decision-making on the part of
       both implementers and funders.
@@ -225,6 +192,7 @@ export const PerformanceTabCard = () => {
       <a
         target="_blank"
         href="https://data.theglobalfund.org/grant/KEN-H-TNT/3/targets-results"
+        rel="noreferrer"
       >
         LiveView
       </a>{" "}

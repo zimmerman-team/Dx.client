@@ -1,16 +1,16 @@
-import EmpowerBlock from "../partners/components/empowerBlock";
+import EmpowerBlock from "app/modules/home-module/sub-modules/partners/components/empowerBlock";
 import { Box, Container } from "@material-ui/core";
-import ReportImage from "app/modules/home-module/sub-modules/landing/assets/report.png";
+import StoryImage from "app/modules/home-module/sub-modules/landing/assets/story.png";
 import InteractImage from "app/modules/home-module/sub-modules/landing/assets/interact.png";
 import Investment from "app/modules/home-module/sub-modules/landing/assets/investment.png";
 import ThePowerImage from "app/modules/home-module/sub-modules/landing/assets/the-power.png";
-import HomeFooter from "../../components/Footer";
-import Subscribe from "../../components/Subscribe";
+import HomeFooter from "app/modules/home-module/components/Footer";
+import Subscribe from "app/modules/home-module/components/Subscribe";
 import { useTitle } from "react-use";
 import { Link } from "react-router-dom";
 
 export default function LandingModule() {
-  useTitle("DX Dataxplorer - Landing");
+  useTitle("Dataxplorer - Landing");
 
   return (
     <div
@@ -21,10 +21,10 @@ export default function LandingModule() {
       <EmpowerBlock view="landing" />
 
       <Container maxWidth="lg">
-        <Link to="/report/664f406b82350800ca942b92?fromLanding=true">
+        <Link to="/story/664f406b82350800ca942b92?fromLanding=true">
           <img
-            src={ReportImage}
-            alt="report-image"
+            src={StoryImage}
+            alt="Story"
             css={`
               width: 100%;
               margin-top: -140px;
@@ -69,12 +69,12 @@ export default function LandingModule() {
                 width: 583px;
               `}
             >
-              <h2>Interactive Reports</h2>
+              <h2>Interactive Stories</h2>
 
               <p>
                 Transform your data-driven insights into engaging narratives
                 that captivate and inform your stakeholders. Dataxplorer allows
-                you to effortlessly create interactive reports that captivate
+                you to effortlessly create interactive stories that captivate
                 and inform your stakeholders.
                 <br /> <br />
                 Incorporate charts, text, images, and videos seamlessly. Your
@@ -84,7 +84,7 @@ export default function LandingModule() {
             </div>
             <img
               src={InteractImage}
-              alt="interact-image"
+              alt="interact"
               css={`
                 width: 551px;
                 margin-right: -18.449px;
@@ -102,7 +102,7 @@ export default function LandingModule() {
           >
             <img
               src={Investment}
-              alt="investment-image"
+              alt="investment"
               css={`
                 width: 551px;
                 margin-left: -25px;
