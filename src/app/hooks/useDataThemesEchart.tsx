@@ -626,7 +626,6 @@ export function useDataThemesEchart({
         type: "value",
         zlevel: -1,
         z: -1,
-        name: mapping?.y?.value?.[0] ?? "",
         nameTextStyle: {
           align: "left",
         },
@@ -649,19 +648,17 @@ export function useDataThemesEchart({
       },
       backgroundColor: "transparent",
 
-      series: filter(get(data, "lines", []), (l: any) => l !== null).map(
-        (d: any) => ({
-          type: "line",
-          name: d?.[0] ?? 0,
-          data: d[1].map((l: any) => [String(l.x), l.y]),
-          z: -1,
-          zlevel: -1,
-          lineStyle: {
-            type: lineType,
-            width: lineWidth,
-          },
-        })
-      ),
+      series: data.series.map((d: any) => ({
+        type: "line",
+        name: d.name,
+        data: data.xAxisValues.map((x: any) => d.values[x] || 0),
+        z: -1,
+        zlevel: -1,
+        lineStyle: {
+          type: lineType,
+          width: lineWidth,
+        },
+      })),
       tooltip: {
         show: showTooltip,
         trigger: "axis",
@@ -802,7 +799,6 @@ export function useDataThemesEchart({
         type: "value",
         zlevel: -1,
         z: -1,
-        name: mapping?.y?.value?.[0] ?? "",
         nameTextStyle: {
           align: "left",
         },
@@ -829,21 +825,19 @@ export function useDataThemesEchart({
       // backgroundColor: background,
       backgroundColor: "transparent",
 
-      series: filter(get(data, "lines", []), (l: any) => l !== null).map(
-        (d: any) => ({
-          type: "line",
-          name: mapping?.y?.value?.[0],
-          data: d[1].map((l: any) => l.y),
-          stack: "Total",
-          areaStyle: {},
-          lineStyle: {
-            type: lineType,
-            width: lineWidth,
-          },
-          z: -1,
-          zlevel: -1,
-        })
-      ),
+      series: data.series.map((d: any) => ({
+        type: "line",
+        name: d.name,
+        data: data.xAxisValues.map((x: any) => d.values[x] || 0),
+        stack: "Total",
+        areaStyle: {},
+        lineStyle: {
+          type: lineType,
+          width: lineWidth,
+        },
+        z: -1,
+        zlevel: -1,
+      })),
       tooltip: {
         show: showTooltip,
         trigger: "axis",
