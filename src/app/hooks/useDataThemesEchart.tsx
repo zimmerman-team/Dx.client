@@ -413,6 +413,9 @@ export function useDataThemesEchart({
       // chart
       drawDonut,
       arcThickness,
+      showLabel,
+      labelPosition,
+      labelFontSize,
       // Palette
       palette,
     } = visualOptions;
@@ -446,8 +449,9 @@ export function useDataThemesEchart({
             : [`${defaultRadius}%`],
           avoidLabelOverlap: false,
           label: {
-            show: false,
-            position: "center",
+            show: showLabel,
+            position: labelPosition,
+            fontSize: labelFontSize,
           },
           emphasis: {
             label: {
@@ -455,9 +459,6 @@ export function useDataThemesEchart({
               fontSize: 40,
               fontWeight: "bold",
             },
-          },
-          labelLine: {
-            show: false,
           },
           data: data,
         },
