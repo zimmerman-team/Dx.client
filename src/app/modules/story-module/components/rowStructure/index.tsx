@@ -158,7 +158,9 @@ interface RowFrameProps {
   setRedoStack: React.Dispatch<React.SetStateAction<IFramesArray[][]>>;
   type: "rowFrame" | "divider";
   view: "initial" | "edit" | "create" | "preview" | "ai-template";
-  previewItems?: (string | object)[];
+  previewItems?: {
+    items: (string | object)[];
+  };
   rowContentHeights: number[];
   rowContentWidths: number[];
   setPluginsState: React.Dispatch<React.SetStateAction<ToolbarPluginsType>>;
@@ -441,7 +443,6 @@ export default function RowFrame(props: RowFrameProps) {
         rowContentHeights={props.rowContentHeights}
         rowContentWidths={props.rowContentWidths}
         deleteFrame={deleteFrame}
-        setSelectedType={setSelectedType}
         rowStructureDetailItems={rowStructureDetailItemsState[0]}
         previewItems={props.previewItems}
         onRowBoxItemResize={onRowBoxItemResize}
@@ -469,7 +470,6 @@ export default function RowFrame(props: RowFrameProps) {
         rowContentHeights={props.rowContentHeights}
         rowContentWidths={props.rowContentWidths}
         deleteFrame={deleteFrame}
-        setSelectedType={setSelectedType}
         rowStructureDetailItems={rowStructureDetailItemsState[1]}
         previewItems={props.previewItems}
         onRowBoxItemResize={onRowBoxItemResize}
@@ -497,7 +497,6 @@ export default function RowFrame(props: RowFrameProps) {
         rowContentHeights={props.rowContentHeights}
         rowContentWidths={props.rowContentWidths}
         deleteFrame={deleteFrame}
-        setSelectedType={setSelectedType}
         rowStructureDetailItems={rowStructureDetailItemsState[2]}
         previewItems={props.previewItems}
         onRowBoxItemResize={onRowBoxItemResize}
@@ -518,7 +517,6 @@ export default function RowFrame(props: RowFrameProps) {
         height={desktopHeight}
         tabletHeight={tabletHeight}
         selectedType={selectedType}
-        setSelectedType={setSelectedType}
         rowStructureDetailItems={rowStructureDetailItemsState[3]}
         onRowBoxItemResize={onRowBoxItemResize}
         rowId={props.rowId}
@@ -553,7 +551,6 @@ export default function RowFrame(props: RowFrameProps) {
         rowContentHeights={props.rowContentHeights}
         rowContentWidths={props.rowContentWidths}
         deleteFrame={deleteFrame}
-        setSelectedType={setSelectedType}
         rowStructureDetailItems={rowStructureDetailItemsState[4]}
         previewItems={props.previewItems}
         onRowBoxItemResize={onRowBoxItemResize}
@@ -569,8 +566,12 @@ export default function RowFrame(props: RowFrameProps) {
       />
     ),
   };
+  let selectedTypeFromFramesArray: any = props.framesArray[rowIndex]?.structure;
+  if (props.framesArray[rowIndex]?.structure === undefined) {
+    selectedTypeFromFramesArray = props.forceSelectedType;
+  }
 
-  if (onlyView && !selectedType) {
+  if (onlyView && !selectedTypeFromFramesArray) {
     return <div></div>;
   }
 
@@ -578,11 +579,11 @@ export default function RowFrame(props: RowFrameProps) {
     <>
       {props.type === "rowFrame" ? (
         <>
-          {selectedType ? (
+          {selectedTypeFromFramesArray ? (
             <>
               {
                 checkSelectedType[
-                  selectedType as keyof typeof checkSelectedType
+                  selectedTypeFromFramesArray as keyof typeof checkSelectedType
                 ]
               }
             </>

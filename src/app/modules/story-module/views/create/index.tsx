@@ -153,9 +153,7 @@ function StoryCreateView(props: Readonly<StoryCreateViewProps>) {
                     view={props.view}
                     rowContentHeights={frame.contentHeights}
                     rowContentWidths={frame.contentWidths}
-                    previewItems={
-                      frame.frame.previewItems as (string | object)[]
-                    }
+                    previewItems={undefined}
                     onSave={props.onSave}
                     setPluginsState={props.setPluginsState}
                     endStoryTour={() => {}}

@@ -17,23 +17,28 @@ const PlaceHolder = (props: PlaceholderProps) => {
     props.setRedoStack
   );
 
-  const moveCard = React.useCallback((itemId: string) => {
-    store();
-    props.updateFramesArray((draft) => {
-      const dragIndex = draft.findIndex((frame) => frame.id === itemId);
+  const moveCard = React.useCallback(
+    (itemId: string) => {
+      store();
+      props.updateFramesArray((draft) => {
+        const dragIndex = draft.findIndex((frame) => frame.id === itemId);
 
-      const dropIndex =
-        props.index ?? draft.findIndex((frame) => frame.id === props.rowId) + 1;
+        const dropIndex =
+          props.index ??
+          draft.findIndex((frame) => frame.id === props.rowId) + 1;
 
-      const fakeId = v4();
-      const tempItem = { ...draft[dragIndex] };
-      draft[dragIndex].id = fakeId;
+        const fakeId = v4();
+        const tempItem = { ...draft[dragIndex] };
+        draft[dragIndex].id = fakeId;
 
-      draft.splice(dropIndex, 0, tempItem);
-      const fakeIndex = draft.findIndex((frame) => frame.id === fakeId);
-      draft.splice(fakeIndex, 1);
-    });
-  }, []);
+        draft.splice(dropIndex, 0, tempItem);
+        const fakeIndex = draft.findIndex((frame) => frame.id === fakeId);
+        draft.splice(fakeIndex, 1);
+      });
+    },
+    [props.framesArray]
+  );
+
   const [{ isOver, handlerId, item: dragItem }, drop] = useDrop(
     () => ({
       // The type (or types) to accept - strings or symbols

@@ -150,12 +150,18 @@ export default function StaticToolbar(props: {
               <React.Fragment>
                 <Tooltip title="Undo" placement="bottom">
                   <div onMouseDown={(e) => e.preventDefault()}>
-                    <UndoButton handleClick={undo} />
+                    <UndoButton
+                      handleClick={undo}
+                      disabled={props.undoStack.length === 1}
+                    />
                   </div>
                 </Tooltip>
                 <Tooltip title="Redo" placement="bottom">
                   <div onMouseDown={(e) => e.preventDefault()}>
-                    <RedoButton handleClick={redo} />
+                    <RedoButton
+                      handleClick={redo}
+                      disabled={props.redoStack.length === 0}
+                    />
                   </div>
                 </Tooltip>
                 {divider}

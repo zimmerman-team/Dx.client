@@ -47,7 +47,7 @@ interface BoxProps {
   redoStack: IFramesArray[][];
   setRedoStack: React.Dispatch<React.SetStateAction<IFramesArray[][]>>;
   rowItemsCount: number;
-  previewItem?: string | any;
+  previewItem?: any;
   neighbourIndex: number;
   rowContentWidths: number[];
   temporaryWidths: {
@@ -112,33 +112,29 @@ const Box = (props: BoxProps) => {
 
   // Local state
   const [chartError, setChartError] = useState(false);
-  const boxContent = get(
-    props.framesArray[props.rowIndex],
-    `content[${props.itemIndex}]`,
-    null
-  );
-  const isChartId = typeof boxContent === "string";
-  console.log("Is boxContent a chartId?", isChartId, boxContent);
+  const boxContent = React.useMemo(() => {
+    return (
+      props.previewItem ??
+      get(
+        props.framesArray[props.rowIndex],
+        `content[${props.itemIndex}]`,
+        null
+      )
+    );
+  }, [props.previewItem, props.framesArray, props.rowIndex, props.itemIndex]);
+
   const [chartId, setChartId] = useState<string | null>(null);
 
-  const [displayMode, setDisplayMode] = useState<ContentType>(null);
   const [maxWidth, setMaxWidth] = useState(props.initialWidth);
   const [textContent, setTextContent] = useState<EditorState>(
     EditorState.createEmpty(decorators())
   );
+  React.useEffect(() => {
+    if (boxContent && props.contentType === "text") {
+      setTextContent(boxContent);
+    }
+  }, [boxContent, props.contentType]);
   const [displayBoxIcons, setDisplayBoxIcons] = useState(false);
-  const [videoContent, setVideoContent] = useState<{
-    videoId: string;
-    embedUrl: string;
-    snippet: any;
-    source: "youtube";
-  }>();
-  const [imageContent, setImageContent] = useState<{
-    imageId: string;
-    imageUrl: string;
-    source: "shutterstock";
-    thumbnail: string;
-  }>();
 
   const placeholder = "Add your story...";
   const [textPlaceholderState, setTextPlaceholderState] =
@@ -148,6 +144,22 @@ const Box = (props: BoxProps) => {
   const firstUpdate = useRef(true);
 
   // Derived state
+  const contentTypeFromPreviewItem = React.useMemo(() => {
+    if (props.previewItem) {
+      if (typeof props.previewItem === "string") {
+        return "chart";
+      } else if (get(props.previewItem, "embedUrl", null)) {
+        return "video";
+      } else if (get(props.previewItem, "imageUrl", null)) {
+        return "image";
+      } else {
+        return "text";
+      }
+    }
+    return null;
+  }, [props.previewItem]);
+
+  const contentType = contentTypeFromPreviewItem ?? props.contentType;
   const box = document.getElementById(
     `box-${props.rowIndex}-${props.itemIndex}`
   );
@@ -218,8 +230,7 @@ const Box = (props: BoxProps) => {
     });
   };
 
-  const resetContent = () => {
-    setDisplayMode(null);
+  const deleteContent = () => {
     setChartId(null);
     setTextContent(EditorState.createEmpty(decorators()));
     handleRowFrameItemRemoval(props.rowId, props.itemIndex);
@@ -310,12 +321,10 @@ const Box = (props: BoxProps) => {
             textContent,
             "text"
           );
-          setDisplayMode("text");
         } else if (
           item.type === StoryElementsType.CHART ||
           item.type === StoryElementsType.BIG_NUMBER
         ) {
-          console.log("calling");
           handleRowFrameItemAddition(
             props.rowId,
             props.itemIndex,
@@ -323,7 +332,6 @@ const Box = (props: BoxProps) => {
             "chart"
           );
           setChartId(item.value);
-          setDisplayMode("chart");
           monitor.getDropResult();
         } else if (item.type === StoryElementsType.VIDEO) {
           handleRowFrameItemAddition(
@@ -332,8 +340,6 @@ const Box = (props: BoxProps) => {
             item.value,
             "video"
           );
-          setVideoContent(item.value);
-          setDisplayMode("video");
         } else if (item.type === StoryElementsType.IMAGE) {
           handleRowFrameItemAddition(
             props.rowId,
@@ -341,8 +347,6 @@ const Box = (props: BoxProps) => {
             item.value,
             "image"
           );
-          setImageContent(item.value);
-          setDisplayMode("image");
         }
       },
     }),
@@ -368,7 +372,16 @@ const Box = (props: BoxProps) => {
         return;
       }
 
-      if (displayMode === "text") {
+      if (props.contentType === "text") {
+        // if (
+        //   !isEqual(
+        //     boxContent.getCurrentContent(),
+        //     textContent.getCurrentContent()
+        //   )
+        // ) {
+        //   store();
+        // }
+        // const contentRaw = convertToRaw(textContent.getCurrentContent());
         handleRowFrameItemAddition(
           props.rowId,
           props.itemIndex,
@@ -382,50 +395,6 @@ const Box = (props: BoxProps) => {
     [textContent, editorHeight]
   );
 
-  // Effects
-  React.useEffect(() => {
-    if (displayMode === "chart" && chartId) {
-      handleRowFrameItemAddition(
-        props.rowId,
-        props.itemIndex,
-        chartId,
-        "chart"
-      );
-    } else if (displayMode === "video") {
-      handleRowFrameItemAddition(
-        props.rowId,
-        props.itemIndex,
-        videoContent,
-        "video"
-      );
-    } else if (displayMode === "image") {
-      handleRowFrameItemAddition(
-        props.rowId,
-        props.itemIndex,
-        imageContent,
-        "image"
-      );
-    }
-  }, [chartId, displayMode, imageContent, videoContent]);
-
-  React.useEffect(() => {
-    if (props.previewItem) {
-      if (typeof props.previewItem === "string") {
-        setChartId(props.previewItem);
-        setDisplayMode("chart");
-      } else if (get(props.previewItem, "embedUrl", null)) {
-        setVideoContent(props.previewItem);
-        setDisplayMode("video");
-      } else if (get(props.previewItem, "imageUrl", null)) {
-        setImageContent(props.previewItem);
-        setDisplayMode("image");
-      } else {
-        setTextContent(props.previewItem);
-        setDisplayMode("text");
-      }
-    }
-  }, [props.previewItem]);
-
   // Determine border style based on drag state
   let border = "none";
   if (isOver) {
@@ -437,7 +406,7 @@ const Box = (props: BoxProps) => {
   }
 
   const resolvedHeight =
-    viewOnlyMode && smScreen && displayMode === "text"
+    viewOnlyMode && smScreen && contentType === "text"
       ? `${editorHeight ?? props.initialHeight}px`
       : props.tempHeight > 0
       ? `${props.tempHeight}px`
@@ -473,7 +442,7 @@ const Box = (props: BoxProps) => {
     return (
       <>
         <IconButton
-          onClick={resetContent}
+          onClick={deleteContent}
           css={`
             top: 12px;
             z-index: 1;
@@ -501,7 +470,7 @@ const Box = (props: BoxProps) => {
           </Tooltip>
         </IconButton>
 
-        {displayMode === "chart" && !chartError && (
+        {contentType === "chart" && !chartError && (
           <IconButton
             onClick={handleEditChart}
             data-cy="edit-chart-button"
@@ -536,7 +505,7 @@ const Box = (props: BoxProps) => {
 
   // Render content based on display mode
   const renderContent = () => {
-    switch (props.contentType) {
+    switch (contentType) {
       case "text":
         return (
           <Resizable
@@ -577,7 +546,7 @@ const Box = (props: BoxProps) => {
         );
 
       case "chart":
-        return isChartId ? (
+        return (
           <Resizable key={boxContent} {...getResizableProps()}>
             <div
               css={`
@@ -605,7 +574,7 @@ const Box = (props: BoxProps) => {
               />
             </div>
           </Resizable>
-        ) : null;
+        );
 
       case "video":
         return (
@@ -632,7 +601,7 @@ const Box = (props: BoxProps) => {
               {renderActionButtons()}
               <iframe
                 title="Video Content"
-                src={videoContent?.embedUrl}
+                src={boxContent?.embedUrl}
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                 allowFullScreen
                 css={css`
@@ -675,8 +644,8 @@ const Box = (props: BoxProps) => {
             >
               {renderActionButtons()}
               <img
-                src={imageContent?.imageUrl}
-                alt={imageContent?.imageId}
+                src={boxContent?.imageUrl}
+                alt={boxContent?.imageId}
                 css={css`
                   width: 100%;
                   height: 100%;

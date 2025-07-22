@@ -14,8 +14,8 @@ export function useUndoRedo<T>(
   redo(): void;
   store(): void;
 } {
+  console.log("undostack", undoStack);
   const store = () => {
-    console.log(framesArray, "framesArray added");
     setUndoStack((prev) => [...prev, framesArray]);
     setRedoStack([]);
   };
@@ -23,9 +23,8 @@ export function useUndoRedo<T>(
   const undo = () => {
     if (undoStack.length > 1) {
       const last = undoStack[undoStack.length - 1];
-      // const desired = undoStack[undoStack.length - 2];
+      setRedoStack([...redoStack, framesArray]);
       setUndoStack(undoStack.slice(0, undoStack.length - 1));
-      setRedoStack([...redoStack, last]);
       updateFramesArray(last);
     }
   };
@@ -33,7 +32,7 @@ export function useUndoRedo<T>(
   const redo = () => {
     if (redoStack.length > 0) {
       const last = redoStack[redoStack.length - 1];
-      setUndoStack([...undoStack, last]);
+      setUndoStack([...undoStack, framesArray]);
       setRedoStack(redoStack.slice(0, redoStack.length - 1));
       updateFramesArray(last);
     }

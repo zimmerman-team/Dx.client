@@ -61,8 +61,7 @@ function StoryEditView(props: Readonly<StoryEditViewProps>) {
     props.redoStack,
     props.setRedoStack
   );
-  const [isStoryHeadingModified, setIsStoryHeadingModified] =
-    React.useState(false);
+  const [isStoryHydrated, setIsStoryHydrated] = React.useState(false);
   const [rowStructureType, setRowStructuretype] =
     React.useState<IRowFrameStructure>({
       index: 0,
@@ -121,20 +120,6 @@ function StoryEditView(props: Readonly<StoryEditViewProps>) {
       clearStoryData();
     };
   }, [page, token]);
-
-  React.useEffect(() => {
-    if (storyData.id !== page) {
-      return;
-    }
-    const items = storyData.rows.map((rowFrame, index) =>
-      rowFrame.items.filter((item) => typeof item === "string")
-    ) as string[][];
-    let pickedItems: string[] = [];
-
-    for (const element of items) {
-      pickedItems = [...pickedItems, ...element];
-    }
-  }, [storyData]);
 
   React.useEffect(() => {
     if (width && width !== containerWidth) {
@@ -273,19 +258,13 @@ function StoryEditView(props: Readonly<StoryEditViewProps>) {
     props.setHasStoryNameFocused(storyData.name !== "Untitled story");
     props.setStoryName(storyData.name);
     props.setHeaderDetails(headerDetailsFromStoryData(storyData));
-    store();
+    if (!isStoryHydrated) {
+      store(); // Push to undo stack on initial load only
+      setIsStoryHydrated(true);
+    }
+
     props.updateFramesArray(framesArrayFromStoryData(storyData));
   };
-
-  // React.useEffect(() => {
-  //   const areFramesArrayStatesEqual = compareFramesArrayState(
-  //     props.framesArray,
-  //     framesArrayFromStoryData(tempStoryData)
-  //   );
-  //   if (!areFramesArrayStatesEqual) {
-  //     store();
-  //   }
-  // }, [props.framesArray]);
 
   React.useEffect(() => {
     updateStoryStatesWithStoryData();
@@ -426,6 +405,7 @@ function StoryEditView(props: Readonly<StoryEditViewProps>) {
                       setRedoStack={props.setRedoStack}
                       undoStack={props.undoStack}
                       setUndoStack={props.setUndoStack}
+                      previewItems={undefined}
                     />
                   </div>
                 </ItemComponent>

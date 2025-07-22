@@ -249,20 +249,57 @@ export const BGHiglightPicker = (
   </svg>
 );
 interface UndoRedoButtonProps {
+  disabled: boolean;
   handleClick?: () => void;
 }
 
-export const UndoButton = ({ handleClick }: UndoRedoButtonProps) => {
+export const UndoButton = ({ handleClick, disabled }: UndoRedoButtonProps) => {
   return (
-    <button onClick={handleClick}>
+    <button
+      onClick={handleClick}
+      css={`
+        border: none;
+        background: none;
+        border-radius: 8px;
+        cursor: pointer;
+        svg {
+          path {
+            fill: ${disabled ? " #ccc" : "#212529"};
+          }
+        }
+        :hover,
+        :active {
+          background: #f2f2f2;
+          outline: 0; /* reset for :focus */
+        }
+      `}
+    >
       <UndoIcon />
     </button>
   );
 };
 
-export const RedoButton = ({ handleClick }: UndoRedoButtonProps) => {
+export const RedoButton = ({ handleClick, disabled }: UndoRedoButtonProps) => {
   return (
-    <button onClick={handleClick}>
+    <button
+      onClick={handleClick}
+      css={`
+        border: none;
+        background: none;
+        border-radius: 8px;
+        cursor: pointer;
+        svg {
+          path {
+            fill: ${disabled ? " #ccc" : "#212529"};
+          }
+        }
+        :hover,
+        :active {
+          background: #f2f2f2;
+          outline: 0; /* reset for :focus */
+        }
+      `}
+    >
       <RedoIcon />
     </button>
   );

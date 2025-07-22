@@ -260,11 +260,7 @@ export default function StoryModule() {
 
   const [framesArray, updateFramesArray] =
     useImmer<IFramesArray[]>(initialFramesArray);
-  const [undoStack, setUndoStack] = React.useState<IFramesArray[][]>([
-    framesArray,
-  ]);
-  console.log(undoStack, "undoStack");
-  console.log(framesArray, "framesArray");
+  const [undoStack, setUndoStack] = React.useState<IFramesArray[][]>([]);
   const [redoStack, setRedoStack] = React.useState<IFramesArray[][]>([]);
 
   React.useEffect(() => {
