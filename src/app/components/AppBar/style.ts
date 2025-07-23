@@ -4,7 +4,7 @@ export const headercss = css`
   width: 100%;
   height: 100%;
 
-  background-color: transparent;
+  background-color: #fff;
 
   a {
     text-decoration: none;

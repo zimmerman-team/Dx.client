@@ -11,7 +11,9 @@ import { isValidDate } from "app/utils/isValidDate";
 import MoreHorizIcon from "@material-ui/icons/MoreHoriz";
 import MenuItems from "app/modules/home-module/components/AssetCollection/All/menuItems";
 import { IconButton } from "@material-ui/core";
-import { assetType } from "app/modules/home-module/components/AssetCollection/All/assetsGrid";
+import { AssetType } from "app/modules/home-module/components/AssetCollection/All/assetsGrid";
+import { ReactComponent as AddIcon } from "app/modules/home-module/assets/add-icon.svg";
+import { ReactComponent as RemoveIcon } from "app/modules/home-module/assets/remove-icon.svg";
 
 interface IData {
   id: string;
@@ -21,23 +23,179 @@ interface IData {
   type: string;
   isMappingValid?: boolean;
 }
-export function HomepageTable(
-  props: Readonly<{
-    inChartBuilder?: boolean;
-    onItemClick?: (v: string) => void;
-    all?: boolean;
-    tableData: {
-      columns: { key: string; label: string; icon?: React.ReactNode }[];
-      data: any[];
-    };
-    handleDelete?: (id: string) => void;
-    handleDuplicate?: (id: string, type: assetType) => void;
-    setActiveAssetType?: React.Dispatch<React.SetStateAction<assetType | null>>;
-    cellWidths: number[];
-  }>
-) {
+
+interface RegularCellProps {
+  value: any;
+  isFirstColumn: boolean;
+}
+
+interface DescriptionCellProps {
+  value: any;
+  isExpanded: boolean;
+  onToggleExpand: React.MouseEventHandler<HTMLButtonElement>;
+}
+
+interface TableComponentProps {
+  inChartBuilder?: boolean;
+  onItemClick?: (v: string) => void;
+  all?: boolean;
+  tableData: {
+    columns: {
+      key: string;
+      label: string;
+      icon?: React.ReactNode;
+    }[];
+    data: any[];
+  };
+  handleDelete?: (id: string) => void;
+  handleDuplicate?: (id: string, type: AssetType) => void;
+  setActiveAssetType?: React.Dispatch<React.SetStateAction<AssetType | null>>;
+  cellWidths: number[];
+}
+
+interface ActionsCellProps {
+  data: any;
+  onMenuClick: (id: string) => void;
+  handleDelete: (id: string) => void;
+  handleDuplicate: (id: string, type: AssetType) => void;
+  getEditDetailPath: (data: any) => string;
+  showMenu: boolean;
+  setActiveAssetType?: (type: AssetType | null) => void;
+}
+
+// Utility functions
+
+const formatCellValue = (value: any): string => {
+  if (isValidDate(value)) {
+    return moment(value).format("MM-DD-YYYY");
+  }
+  return value ?? "";
+};
+
+const getCellStyles = (width: number) => ({
+  maxWidth: `${width - 16}px`,
+  minWidth: `${width - 16}px`,
+  overflow: "hidden",
+});
+
+const getTextStyles = (
+  isExpanded: boolean,
+  isDescription: boolean,
+  isFirstColumn: boolean
+) =>
+  ` margin: 0;
+  overflow: ${isExpanded && isDescription ? "visible" : "hidden"};
+  white-space: ${isExpanded && isDescription ? "normal" : "nowrap"};
+  padding: ${isExpanded && isDescription ? "15px 0px" : "auto"};
+  text-overflow: ellipsis;
+  max-width: 100%;
+  display: block;
+  text-align: ${isFirstColumn ? "center" : "left"};
+  text-decoration: ${isFirstColumn ? "underline" : "none"};
+  text-underline-position: from-font;`;
+
+// Sub-components
+
+const DescriptionCell: React.FC<DescriptionCellProps> = ({
+  value,
+  isExpanded,
+  onToggleExpand,
+}) => (
+  <div
+    css={`
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      button {
+        background: none;
+        border: none;
+        cursor: pointer;
+        svg {
+          flex-shrink: 0;
+          path {
+            stroke: #231d2c;
+          }
+        }
+      }
+    `}
+  >
+    <p title={value} css={getTextStyles(isExpanded, true, false)}>
+      {formatCellValue(value)}
+    </p>
+    <button onClick={onToggleExpand}>
+      {isExpanded ? <RemoveIcon /> : <AddIcon />}
+    </button>
+  </div>
+);
+
+const RegularCell: React.FC<RegularCellProps> = ({ value, isFirstColumn }) => (
+  <p title={value} css={getTextStyles(false, false, isFirstColumn)}>
+    {formatCellValue(value)}
+  </p>
+);
+
+const ActionsCell: React.FC<ActionsCellProps> = ({
+  data,
+  onMenuClick,
+  handleDelete,
+  handleDuplicate,
+  getEditDetailPath,
+  showMenu,
+  setActiveAssetType,
+}) => (
+  <TableCell
+    style={{ minWidth: "10px", maxWidth: "10px" }}
+    css={`
+      position: relative;
+      padding: 0 5px !important;
+    `}
+  >
+    <IconButton
+      onClick={(e) => {
+        e.stopPropagation();
+        onMenuClick(data.id);
+      }}
+      css={`
+        width: 10px;
+        height: 10px;
+        :hover {
+          background: none;
+        }
+        svg {
+          transform: rotate(90deg);
+        }
+      `}
+    >
+      <MoreHorizIcon htmlColor="#231D2C" />
+    </IconButton>
+    <MenuItems
+      type={data.type}
+      handleClose={() => onMenuClick(data.id)}
+      handleDelete={() => {
+        setActiveAssetType?.(data.type);
+        handleDelete?.(data.id as string);
+      }}
+      handleDuplicate={() => handleDuplicate?.(data.id as string, data.type)}
+      id={data.id}
+      owner={data.owner}
+      path={getEditDetailPath(data)}
+      top="40px"
+      right="none"
+      left="0%"
+      alignLeft
+      display={showMenu}
+    />
+  </TableCell>
+);
+
+export function HomepageTable(props: Readonly<TableComponentProps>) {
   const history = useHistory();
   const location = useLocation();
+  const [expandDescription, setExpandDescription] = React.useState<
+    Record<string, boolean>
+  >({});
+
   const getDestinationPath = (data: IData) => {
     let destinationPath = `/${data.type}/${data.id}`;
     if (data.type === "dataset") {
@@ -74,6 +232,34 @@ export function HomepageTable(
         return item;
       });
     });
+  };
+
+  const handleRowClick = (
+    e: React.MouseEvent<HTMLTableRowElement, MouseEvent>,
+    data: any
+  ) => {
+    e.stopPropagation();
+    if (!props.inChartBuilder) {
+      history.push(getDestinationPath(data));
+    } else if (props.inChartBuilder && props.onItemClick) {
+      props.onItemClick(data.id);
+    }
+  };
+
+  const handleExpandToggle = (
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
+    dataId: string,
+    index: number
+  ) => {
+    e.stopPropagation();
+    const key = dataId || index;
+    setExpandDescription((prev) => ({
+      ...prev,
+      [key]: !prev[key],
+    }));
+  };
+  const isMenuOpen = (data: any): boolean => {
+    return tableData.some((d: any) => d.isModalOpen && d.id === data.id);
   };
 
   return (
@@ -129,17 +315,10 @@ export function HomepageTable(
             background: #fff;
           `}
         >
-          {tableData.map((data: any, index: any) => (
+          {tableData.map((data: any, rowIndex: any) => (
             <TableRow
               key={data.id}
-              onClick={(e) => {
-                e.stopPropagation();
-                if (!props.inChartBuilder) {
-                  history.push(getDestinationPath(data));
-                } else if (props.inChartBuilder && props.onItemClick) {
-                  props.onItemClick(data.id);
-                }
-              }}
+              onClick={(e) => handleRowClick(e, data)}
               css={`
                 &:hover {
                   cursor: pointer;
@@ -151,83 +330,49 @@ export function HomepageTable(
               `}
               data-cy={`table-row-${data.type}`}
             >
+              {/* Row number cell */}
               <TableCell style={{ minWidth: "10px", maxWidth: "10px" }}>
                 {" "}
-                {index + 1}
+                {rowIndex + 1}
               </TableCell>
-              {props.tableData.columns.map((val, index) => (
-                <TableCell
-                  key={val.key}
-                  style={{
-                    maxWidth: props.cellWidths[index + 1] - 16 + "px",
-                    minWidth: props.cellWidths[index + 1] - 16 + "px",
-                    overflow: "hidden",
-                  }}
-                >
-                  <p
-                    title={data[val.key] as string}
-                    css={`
-                      margin: 0;
-                      overflow: hidden;
-                      white-space: nowrap;
-                      text-overflow: ellipsis;
-                      max-width: 100%;
-                      display: block;
-                      text-align: ${val.key === "id" ? "center" : "left"};
-                      text-decoration: ${index === 0 ? "underline" : "none"};
-                      text-underline-position: from-font;
-                    `}
+
+              {/* Data cells */}
+              {props.tableData.columns.map((column, columnIndex) => {
+                const isExpanded = expandDescription[data.id || rowIndex];
+                const isDescription = column.label === "Description";
+
+                return (
+                  <TableCell
+                    key={column.key}
+                    style={getCellStyles(props.cellWidths[columnIndex + 1])}
                   >
-                    {isValidDate(data[val.key])
-                      ? moment(data[val.key]).format("MM-DD-YYYY")
-                      : data[val.key] ?? ""}
-                  </p>
-                </TableCell>
-              ))}
-              <TableCell
-                style={{ minWidth: "10px", maxWidth: "10px" }}
-                css={`
-                  position: relative;
-                  padding: 0 5px !important;
-                `}
-              >
-                <IconButton
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    handleCloseModal(data.id);
-                  }}
-                  css={`
-                    width: 10px;
-                    height: 10px;
-                    svg {
-                      transform: rotate(90deg);
-                    }
-                  `}
-                >
-                  <MoreHorizIcon htmlColor="#231D2C" />
-                </IconButton>
-                <MenuItems
-                  type={data.type}
-                  handleClose={() => handleCloseModal(data.id)}
-                  handleDelete={() => {
-                    props.setActiveAssetType?.(data.type);
-                    props.handleDelete?.(data.id as string);
-                  }}
-                  handleDuplicate={() =>
-                    props.handleDuplicate?.(data.id as string, data.type)
-                  }
-                  id={data.id}
-                  owner={data.owner}
-                  path={getEditDetailPath(data)}
-                  top="40px"
-                  right="none"
-                  left="0%"
-                  alignLeft
-                  display={tableData.find(
-                    (d: any) => d.isModalOpen && d.id === data.id
-                  )}
-                />
-              </TableCell>
+                    {isDescription ? (
+                      <DescriptionCell
+                        value={data[column.key]}
+                        isExpanded={!!isExpanded}
+                        onToggleExpand={(e) => {
+                          handleExpandToggle(e, data.id, rowIndex);
+                        }}
+                      />
+                    ) : (
+                      <RegularCell
+                        value={data[column.key]}
+                        isFirstColumn={false}
+                      />
+                    )}
+                  </TableCell>
+                );
+              })}
+              {/* Actions cell */}
+              <ActionsCell
+                data={data}
+                onMenuClick={handleCloseModal}
+                handleDelete={props.handleDelete || (() => {})}
+                handleDuplicate={props.handleDuplicate || (() => {})}
+                getEditDetailPath={getEditDetailPath}
+                showMenu={isMenuOpen(data)}
+                setActiveAssetType={props.setActiveAssetType}
+              />
             </TableRow>
           ))}
         </TableBody>

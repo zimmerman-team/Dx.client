@@ -62,14 +62,14 @@ export default function Filter(
     onKeyPress?: (e: React.KeyboardEvent<HTMLInputElement>) => void;
   }>
 ) {
-  const inputRef = React.useRef<HTMLInputElement>(null);
+  const inputRef = React.useRef<HTMLDivElement>(null);
   const [displayIcons, setDisplayIcons] = React.useState(true);
   const [sortPopoverAnchorEl, setSortPopoverAnchorEl] =
     React.useState<HTMLButtonElement | null>(null);
   const [filterPopoverAnchorEl, setFilterPopoverAnchorEl] =
     React.useState<HTMLButtonElement | null>(null);
+
   useOnClickOutside(inputRef, () => {
-    props.setSearchValue?.("");
     props.terminateSearch && props.terminateSearch();
     props.setOpenSearch?.(false);
   });
@@ -122,6 +122,7 @@ export default function Filter(
         `}
       >
         <div
+          ref={inputRef}
           css={`
             display: flex;
             align-items: center;
@@ -133,10 +134,10 @@ export default function Filter(
             <SearchIcon />
             <input
               type="text"
-              ref={inputRef}
               value={props.searchValue}
               placeholder="Search"
               onChange={handleSearch}
+              onMouseDown={(e) => e.stopPropagation()}
               onKeyPress={props.onKeyPress}
               data-cy="filter-search-input"
               aria-label="search"

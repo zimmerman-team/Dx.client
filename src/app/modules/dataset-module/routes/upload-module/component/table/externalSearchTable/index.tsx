@@ -8,14 +8,196 @@ import TableCell from "@material-ui/core/TableCell";
 import TableContainer from "@material-ui/core/TableContainer";
 import { isValidDate } from "app/utils/isValidDate";
 import { IExternalDataset } from "app/modules/dataset-module/routes/upload-module/upload-steps/step1/externalSearch";
+import { ReactComponent as AddIcon } from "app/modules/home-module/assets/add-icon.svg";
+import { ReactComponent as RemoveIcon } from "app/modules/home-module/assets/remove-icon.svg";
 
-interface IData {
-  id: string;
-  name: string;
-  description: string;
-  createdDate: Date;
-  type: string;
+type Column = { key: string; label: string; icon?: React.ReactNode };
+interface TableCellContentProps {
+  data: any;
+  column: Column;
+  colIndex: number;
+  cellWidth: number;
 }
+interface RegularCellProps {
+  data: any;
+  column: Column;
+  cellWidth: number;
+}
+
+interface LinkCellProps {
+  data: any;
+  columnKey: string;
+  cellWidth: number;
+}
+// Separate component for link cells
+const LinkCell = ({ data, columnKey, cellWidth }: LinkCellProps) => (
+  <a
+    href={data.url}
+    target="_blank"
+    rel="noopener noreferrer"
+    onClick={(e) => e.stopPropagation()}
+    css={`
+      margin: 0;
+      overflow: hidden;
+      max-width: 99%;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      font-size: 14px;
+      text-align: left;
+      line-height: normal;
+      text-decoration: underline;
+      text-underline-position: from-font;
+      font-family: "GothamNarrow-Book", "Helvetica Neue", sans-serif;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: #231d2c;
+    `}
+  >
+    {data[columnKey]}
+    <svg width="10" height="10" viewBox="0 0 10 10" fill="none">
+      <path
+        d="M0.833008 0.834961H9.16634M9.16634 0.834961V9.16829M9.16634 0.834961L0.833008 9.16829"
+        stroke="#231D2C"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  </a>
+);
+
+interface DescriptionCellProps {
+  data: any;
+  columnKey: string;
+  itemId: string | number;
+}
+// Separate component for description cells with expand/collapse
+const DescriptionCell = ({ data, columnKey, itemId }: DescriptionCellProps) => {
+  const [isExpanded, setIsExpanded] = React.useState(false);
+  const toggleExpansion = (
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => {
+    e.stopPropagation();
+    setIsExpanded(!isExpanded);
+  };
+
+  return (
+    <div
+      css={`
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        padding: ${isExpanded ? "15px 0" : "auto"};
+
+        button {
+          background: none;
+          border: none;
+          cursor: pointer;
+          padding: 0;
+
+          svg {
+            flex-shrink: 0;
+            width: 15px;
+            height: 14px;
+
+            path {
+              stroke: #231d2c;
+            }
+          }
+        }
+      `}
+    >
+      <p
+        title={data[columnKey]}
+        css={`
+          margin: 0;
+          overflow: ${isExpanded ? "visible" : "hidden"};
+          white-space: ${isExpanded ? "normal" : "nowrap"};
+          text-overflow: ellipsis;
+          display: block;
+          font-size: 14px;
+          font-family: "GothamNarrow-Book", "Helvetica Neue", sans-serif;
+          text-align: left;
+          line-height: normal;
+        `}
+      >
+        {formatCellValue(data[columnKey])}
+      </p>
+      <button onClick={toggleExpansion}>
+        {isExpanded ? <RemoveIcon /> : <AddIcon />}
+      </button>
+    </div>
+  );
+};
+
+// Separate component for regular cells
+
+const RegularCell = ({ data, column, cellWidth }: RegularCellProps) => {
+  const textAlign = column.key === "id" ? "center" : "left";
+
+  return (
+    <p
+      title={data[column.key]}
+      css={`
+        margin: 0;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        display: block;
+        font-size: 14px;
+        font-family: "GothamNarrow-Book", "Helvetica Neue", sans-serif;
+        text-align: ${textAlign};
+        line-height: normal;
+      `}
+    >
+      {formatCellValue(data[column.key])}
+    </p>
+  );
+};
+
+// Helper function for formatting cell values
+const formatCellValue = (value: string) => {
+  if (!value) return "";
+  return isValidDate(value) ? moment(value).format("MM-DD-YYYY") : value;
+};
+
+// Helper function to determine cell type
+const getCellType = (colIndex: number, column: Column) => {
+  if (colIndex === 1) return "link";
+  if (column.label === "Description") return "description";
+  return "regular";
+};
+
+// Main cell renderer
+
+const TableCellContent = ({
+  data,
+  column,
+  colIndex,
+  cellWidth,
+}: TableCellContentProps) => {
+  if (!data[column.key]) return <></>;
+
+  const itemId = data.id || colIndex;
+  const cellType = getCellType(colIndex, column);
+
+  switch (cellType) {
+    case "link":
+      return (
+        <LinkCell data={data} columnKey={column.key} cellWidth={cellWidth} />
+      );
+
+    case "description":
+      return (
+        <DescriptionCell data={data} columnKey={column.key} itemId={itemId} />
+      );
+
+    default:
+      return <RegularCell data={data} column={column} cellWidth={cellWidth} />;
+  }
+};
+
 export default function ExternalSearchTable(props: {
   onItemClick: (dataset: IExternalDataset) => void;
   tableData: {
@@ -74,9 +256,7 @@ export default function ExternalSearchTable(props: {
           {props.tableData.data.map((data, index) => (
             <TableRow
               key={`${data.id}-${index}`}
-              onClick={() => {
-                props.onItemClick(data);
-              }}
+              onClick={() => props.onItemClick(data)}
               css={`
                 &:hover {
                   cursor: pointer;
@@ -88,88 +268,21 @@ export default function ExternalSearchTable(props: {
               `}
               data-cy={`table-row-${data.type}`}
             >
-              {props.tableData.columns.map((val, colIndex) => (
+              {props.tableData.columns.map((column, colIndex) => (
                 <TableCell
-                  key={val.key}
+                  key={column.key}
                   style={{
                     maxWidth: cellWidths[colIndex] - 16 + "px",
                     minWidth: cellWidths[colIndex] - 16 + "px",
                     overflow: "hidden",
                   }}
                 >
-                  {data[val.key] ? (
-                    <>
-                      {colIndex === 1 ? (
-                        <a
-                          href={data.url as string}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          onClick={(e) => {
-                            e.stopPropagation();
-                          }}
-                          css={`
-                            margin: 0;
-                            overflow: hidden;
-                            max-width: 99%;
-                            white-space: nowrap;
-                            text-overflow: ellipsis;
-                            font-size: 14px;
-                            max-width: 100%;
-                            text-align: left;
-                            line-height: normal;
-                            text-decoration: underline;
-                            text-underline-position: from-font;
-                            font-family: "GothamNarrow-Book", "Helvetica Neue",
-                              sans-serif;
-                            display: flex;
-                            align-items: center;
-                            gap: 8px;
-                            color: #231d2c;
-                          `}
-                        >
-                          {data[val.key]}
-
-                          <svg
-                            width="10"
-                            height="10"
-                            viewBox="0 0 10 10"
-                            fill="none"
-                            xmlns="http://www.w3.org/2000/svg"
-                          >
-                            <path
-                              d="M0.833008 0.834961H9.16634M9.16634 0.834961V9.16829M9.16634 0.834961L0.833008 9.16829"
-                              stroke="#231D2C"
-                              stroke-linecap="round"
-                              stroke-linejoin="round"
-                            />
-                          </svg>
-                        </a>
-                      ) : (
-                        <p
-                          title={data[val.key] as string}
-                          css={`
-                            margin: 0;
-                            overflow: hidden;
-                            white-space: nowrap;
-                            text-overflow: ellipsis;
-                            display: block;
-                            font-size: 14px;
-                            font-family: "GothamNarrow-Book", "Helvetica Neue",
-                              sans-serif;
-
-                            text-align: ${val.key === "id" ? "center" : "left"};
-                            line-height: normal;
-                          `}
-                        >
-                          {isValidDate(data[val.key])
-                            ? moment(data[val.key]).format("MM-DD-YYYY")
-                            : data[val.key] ?? ""}
-                        </p>
-                      )}
-                    </>
-                  ) : (
-                    ""
-                  )}
+                  <TableCellContent
+                    data={data}
+                    column={column}
+                    colIndex={colIndex}
+                    cellWidth={cellWidths[colIndex]}
+                  />
                 </TableCell>
               ))}
             </TableRow>

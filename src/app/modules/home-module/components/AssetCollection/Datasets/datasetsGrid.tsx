@@ -16,6 +16,7 @@ import DatasetAddnewCard from "app/modules/home-module/components/AssetCollectio
 import CircleLoader from "app/modules/home-module/components/Loader";
 import { loadedDatasetsAtom, planDialogAtom } from "app/state/recoil/atoms";
 import { DatasetListItemAPIModel } from "app/modules/dataset-module/data";
+import { useHistory, useLocation } from "react-router-dom";
 
 interface Props {
   sortBy: string;
@@ -238,6 +239,7 @@ export default function DatasetsGrid(props: Readonly<Props>) {
     500,
     [props.searchStr]
   );
+
   const md = props.md ?? 4;
   const lg = props.lg ?? 3;
   return (
@@ -245,7 +247,7 @@ export default function DatasetsGrid(props: Readonly<Props>) {
       {props.view === "grid" && (
         <Grid container spacing={!props.inChartBuilder ? 2 : 1}>
           {props.addCard ? <DatasetAddnewCard /> : null}
-          {loadedDatasets?.map((data, index) => (
+          {loadedDatasets?.map((data) => (
             <Grid
               item
               key={data.id}
@@ -253,13 +255,6 @@ export default function DatasetsGrid(props: Readonly<Props>) {
               sm={6}
               md={md}
               lg={lg}
-              onClick={(e) => {
-                e.preventDefault();
-                e.stopPropagation();
-                if (props.onItemClick) {
-                  props.onItemClick(data.id);
-                }
-              }}
               css={
                 props.inChartBuilder
                   ? `
@@ -272,7 +267,7 @@ export default function DatasetsGrid(props: Readonly<Props>) {
               }
             >
               <GridItem
-                path={`/dataset/${data.id}/edit`}
+                editPath={`/dataset/${data.id}/edit`}
                 title={data.name}
                 date={data.updatedDate}
                 handleDelete={() => {
@@ -282,6 +277,7 @@ export default function DatasetsGrid(props: Readonly<Props>) {
                   handleDuplicate(data.id);
                 }}
                 descr={data.description}
+                onItemClick={props.onItemClick}
                 showMenu={!props.inChartBuilder}
                 id={data.id}
                 owner={data.owner}

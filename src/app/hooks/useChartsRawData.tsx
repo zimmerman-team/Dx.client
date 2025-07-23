@@ -144,7 +144,7 @@ export function useChartsRawData(props: {
     props.dimensions,
     mapping
   );
-  async function loadDataset(id: string) {
+  async function loadDataset(path: string) {
     const extraLoader = document.getElementById("extra-loader");
     if (extraLoader) {
       extraLoader.style.display = "block";
@@ -152,17 +152,12 @@ export function useChartsRawData(props: {
     setLoading(true);
     setDataError(false);
     return await axios
-      .get(
-        `${process.env.REACT_APP_API}/chart/sample-data${
-          token ? "" : "/public"
-        }/${id}`,
-        {
-          headers: {
-            "Content-Type": APPLICATION_JSON,
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      )
+      .get(path, {
+        headers: {
+          "Content-Type": APPLICATION_JSON,
+          Authorization: `Bearer ${token}`,
+        },
+      })
       .then((response: AxiosResponse) => {
         if (extraLoader) {
           extraLoader.style.display = "none";

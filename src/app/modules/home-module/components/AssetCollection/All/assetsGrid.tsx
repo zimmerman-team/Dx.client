@@ -41,7 +41,7 @@ interface Props {
   lg?: GridSize;
   noAuth?: boolean;
 }
-export type assetType = "chart" | "dataset" | "story";
+export type AssetType = "chart" | "dataset" | "story";
 
 export default function AssetsGrid(props: Props) {
   const observerTarget = React.useRef(null);
@@ -49,7 +49,7 @@ export default function AssetsGrid(props: Props) {
   const [loadedAssets, setLoadedAssets] = React.useState<any[]>([]);
   const [modalDisplay, setModalDisplay] = React.useState<boolean>(false);
   const [activeAssetType, setActiveAssetType] =
-    React.useState<assetType | null>(null);
+    React.useState<AssetType | null>(null);
   const [enableButton, setEnableButton] = React.useState<boolean>(false);
   const initialRender = React.useRef(true);
 
@@ -166,7 +166,7 @@ export default function AssetsGrid(props: Props) {
       chart: `${process.env.REACT_APP_API}/chart/${id}`,
       dataset: `${process.env.REACT_APP_API}/datasets/${id}`,
       story: `${process.env.REACT_APP_API}/story/${id}`,
-    }[activeAssetType as assetType];
+    }[activeAssetType as AssetType];
 
     axios
       .delete(url, {
@@ -181,7 +181,7 @@ export default function AssetsGrid(props: Props) {
       .catch((error) => console.log(error));
   };
 
-  const handleDuplicate = (id: string, assettype: assetType) => {
+  const handleDuplicate = (id: string, assettype: AssetType) => {
     if (!id) {
       return;
     }
@@ -357,11 +357,11 @@ export default function AssetsGrid(props: Props) {
                       vizType={d.vizType}
                       isMappingValid={d.isMappingValid}
                       handleDelete={() => {
-                        setActiveAssetType(d.assetType as assetType);
+                        setActiveAssetType(d.assetType as AssetType);
                         handleModal(d.id);
                       }}
                       handleDuplicate={() =>
-                        handleDuplicate(d.id, d.assetType as assetType)
+                        handleDuplicate(d.id, d.assetType as AssetType)
                       }
                       owner={d.owner}
                       isAIAssisted={d.isAIAssisted}
@@ -370,16 +370,16 @@ export default function AssetsGrid(props: Props) {
                   ),
                   dataset: (
                     <DatasetGridItem
-                      path={`/dataset/${d.id}/edit`}
+                      editPath={`/dataset/${d.id}/edit`}
                       title={d.name}
                       date={d.updatedDate}
                       handleDelete={() => {
-                        setActiveAssetType(d.assetType as assetType);
+                        setActiveAssetType(d.assetType as AssetType);
                         handleModal(d.id);
                       }}
                       descr={d.description}
                       handleDuplicate={() => {
-                        handleDuplicate(d.id, d.assetType as assetType);
+                        handleDuplicate(d.id, d.assetType as AssetType);
                       }}
                       showMenu={!props.inChartBuilder}
                       id={d.id}
@@ -399,11 +399,11 @@ export default function AssetsGrid(props: Props) {
                       viz={<ColoredStoryIcon />}
                       color={d.backgroundColor}
                       handleDelete={() => {
-                        setActiveAssetType(d.assetType as assetType);
+                        setActiveAssetType(d.assetType as AssetType);
                         handleModal(d.id);
                       }}
                       handleDuplicate={() =>
-                        handleDuplicate(d.id, d.assetType as assetType)
+                        handleDuplicate(d.id, d.assetType as AssetType)
                       }
                       heading={
                         d.heading
@@ -416,7 +416,7 @@ export default function AssetsGrid(props: Props) {
                       ownerName={d.ownerName ?? ""}
                     />
                   ),
-                }[d.assetType as assetType]
+                }[d.assetType as AssetType]
               }
 
               <Box height={16} />
@@ -462,7 +462,7 @@ export default function AssetsGrid(props: Props) {
               handleInputChange={handleInputChange}
             />
           ),
-        }[activeAssetType as assetType]
+        }[activeAssetType as AssetType]
       }
     </>
   );

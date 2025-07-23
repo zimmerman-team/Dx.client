@@ -228,7 +228,9 @@ function DatasetUploadSteps(props: Props) {
         if (!response.data.error) {
           // setActiveStep(2);
           setProcessed(true);
-          loadSampleDataset(id);
+          loadSampleDataset(
+            `${process.env.REACT_APP_API}/chart/sample-data/connect-data/${id}`
+          );
           return;
         }
         if (response.data?.errorType !== "planError") {
@@ -292,7 +294,9 @@ function DatasetUploadSteps(props: Props) {
           setProcessingError(response.data.error);
           console.debug(dataUploadError, response.data.error);
         } else {
-          loadSampleDataset(id);
+          loadSampleDataset(
+            `${process.env.REACT_APP_API}/chart/sample-data/connect-data/${id}`
+          );
 
           setFormDetails({
             category: "",

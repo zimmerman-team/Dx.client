@@ -1,7 +1,7 @@
 /* third-party */
 import React from "react";
 import useTitle from "react-use/lib/useTitle";
-import { useStoreActions } from "app/state/store/hooks";
+import { useStoreActions, useStoreState } from "app/state/store/hooks";
 import { useParams, useHistory } from "react-router-dom";
 /* project */
 import { datasetCategories } from "app/modules/dataset-module/routes/upload-module/upload-steps/step3/metaData";
@@ -36,11 +36,15 @@ function ChartModuleDataView(
   const setDataset = useStoreActions(
     (actions) => actions.charts.dataset.setValue
   );
+  const token = useStoreState((state) => state.AuthToken.value);
 
   const handleItemClick = (id: string) => {
+    const loadDatasetAPI = `${process.env.REACT_APP_API}/chart/sample-data${
+      token ? "" : "/public"
+    }/${id}`;
     setDataset(id);
     props.setChartFromAPI(null);
-    props.loadDataset(id).then(() => {
+    props.loadDataset(loadDatasetAPI).then(() => {
       history.push(`/chart/${page}/preview-data`);
     });
   };

@@ -63,7 +63,11 @@ export default function DatasetDetail() {
   });
 
   React.useEffect(() => {
-    loadSampleDataset(page);
+    loadSampleDataset(
+      `${process.env.REACT_APP_API}/chart/sample-data${
+        token ? "" : "/public"
+      }/${page}`
+    );
     reloadDataset();
   }, [token, page]);
 

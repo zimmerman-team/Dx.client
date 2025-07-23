@@ -14,7 +14,7 @@ import SourceLink from "./sourceLink";
 import { Tooltip } from "react-tooltip";
 
 interface Props {
-  path: string;
+  editPath: string;
   title: string;
   descr: string;
   date: Date;
@@ -26,6 +26,7 @@ interface Props {
   id?: string;
   owner: string;
   inChartBuilder: boolean;
+  onItemClick?: (id: string) => void;
   ownerName: string;
 }
 
@@ -63,7 +64,7 @@ export default function GridItem(props: Readonly<Props>) {
           pathname: location.pathname,
           search: queryParams.toString(),
         });
-      }, 10000);
+      }, 5000);
 
       return () => clearTimeout(timeout);
     }
@@ -80,7 +81,6 @@ export default function GridItem(props: Readonly<Props>) {
       <Tooltip
         anchorSelect=".asset-indicator"
         place="right"
-        hidden={highlightedId !== props.id}
         defaultIsOpen
         style={{
           background: "#231D2C",
@@ -95,13 +95,20 @@ export default function GridItem(props: Readonly<Props>) {
           lineHeight: "16px",
           textAlign: "center",
           zIndex: 1,
+          display: highlightedId !== props.id ? "none" : "block",
         }}
       >
         Your Dataset is here!
       </Tooltip>
       <div
         onClick={(e) => {
-          history.push(destinationPath);
+          e.preventDefault();
+          e.stopPropagation();
+          if (props.inChartBuilder && props.onItemClick) {
+            props.onItemClick(props.id!!);
+          } else {
+            history.push(destinationPath);
+          }
         }}
         css={`
           width: 100%;
@@ -281,7 +288,7 @@ export default function GridItem(props: Readonly<Props>) {
         handleDuplicate={() => props.handleDuplicate?.(props.id as string)}
         id={props.id as string}
         owner={props.owner}
-        path={props.path}
+        path={props.editPath}
         type="dataset"
         display={menuOptionsDisplay}
       />

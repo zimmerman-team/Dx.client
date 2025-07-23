@@ -63,7 +63,7 @@ export const NavList = (props: {
     <>
       {list.map((item) => (
         <div
-          key={item.cy}
+          key={item.path}
           css={`
             ${navLinkcss(item.class ?? item.path, props.navLocation)}
             ${props.mobile

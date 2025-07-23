@@ -160,12 +160,11 @@ export default function ExternalSearch(props: {
           firstTimeRef.current = false;
           return;
         }
-        setDatasets([]);
-        loadSearch();
+        onSearch();
       }
     },
     500,
-    [token, props.sources, sortValue]
+    [token, props.sources, props.searchValue, sortValue]
   );
 
   const onSearch = () => {
@@ -175,6 +174,7 @@ export default function ExternalSearch(props: {
       loadSearch();
     }
   };
+
   const handleSearch = (value: string) => {
     terminateSearch();
     props.setSearchValue?.(value);
