@@ -30,7 +30,7 @@ module.exports = () => {
       loaders: [
         {
           test: /plugin\.css$/,
-          loaders: ['style-loader', 'css'],
+          loaders: ["style-loader", "css"],
         },
       ],
     },
