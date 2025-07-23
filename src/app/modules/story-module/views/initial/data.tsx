@@ -31,13 +31,13 @@ export const templates: StoryTemplateModel[] = [
     templateImg: <AdvancedTemplateImg />,
     available: true,
   },
-  {
-    name: "AI-powered template",
-    description: "Use AI to create your story",
-    value: "ai",
-    templateImg: <AITemplateImg />,
-    available: false,
-  },
+  // {
+  //   name: "AI-powered template",
+  //   description: "Use AI to create your story",
+  //   value: "ai",
+  //   templateImg: <AITemplateImg />,
+  //   available: false,
+  // },
 ];
 
 export const TemplateItem = ({

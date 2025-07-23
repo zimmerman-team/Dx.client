@@ -25,13 +25,11 @@ export default function AddRowFrameButton(props: Props) {
         id,
         frame: {
           rowId: id,
-          rowIndex: draft.length,
           type: "rowFrame" as "rowFrame",
         },
         content: [],
         contentWidths: [],
         contentHeights: [],
-        textEditorHeights: [],
         contentTypes: [],
         structure: null,
       };
@@ -48,12 +46,6 @@ export default function AddRowFrameButton(props: Props) {
     <div
       css={`
         width: 100%;
-        @media (min-width: ${TABLET_STARTPOINT}) and (max-width: 1080px) {
-          transition: width 225ms cubic-bezier(0, 0, 0.2, 1) 0ms;
-          width: ${props.rightPanelOpen
-            ? `calc(100% - ${RIGHT_PANEL_WIDTH})`
-            : "100%"};
-        }
       `}
     >
       <div

@@ -16,6 +16,10 @@ import { ReactComponent as SuccessIcon } from "./assets/success-icon.svg";
 import TryUsBlock from "app/modules/home-module/components/TryUsBlock";
 import { ChevronRight } from "@material-ui/icons";
 import { MOBILE_BREAKPOINT } from "app/theme";
+import {
+  CONTACT_EMAIL,
+  TELEPHONE_NUMBER,
+} from "app/modules/chart-module/util/constants";
 
 export default function ContactModule() {
   useTitle("Dataxplorer - Contact");
@@ -501,7 +505,7 @@ export default function ContactModule() {
 
                   <p>
                     Zimmerman B.V. <br />
-                    Keizersgracht 520
+                    Keizersgracht 520H
                     <br />
                     1017 EK Amsterdam
                     <br />
@@ -509,9 +513,9 @@ export default function ContactModule() {
                   </p>
 
                   <p>
-                    Tel: +3120 213 4466
+                    Tel: {TELEPHONE_NUMBER}
                     <br />
-                    info@zimmerman.team
+                    {CONTACT_EMAIL}
                   </p>
                 </div>
               </div>

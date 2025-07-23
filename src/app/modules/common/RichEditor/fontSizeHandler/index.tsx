@@ -52,13 +52,18 @@ const SizeInput = styled.input`
   color: #231d2c;
   outline: none;
 `;
-
+const EDITOR_STATE_UNDEFINED_MESSAGE =
+  "getEditorState function is not provided.";
 export default function FontSizeController(props: Props) {
   const [fontSize, setFontSize] = React.useState(DEFAULT_FONT_SIZE);
 
   // Helper to extract current font size from editor state
   const getCurrentFontSize = useCallback(() => {
+    if (!props.getEditorState) {
+      return DEFAULT_FONT_SIZE;
+    }
     const editorState = props.getEditorState();
+
     if (!editorState) return DEFAULT_FONT_SIZE;
     const currentStyle = editorState.getCurrentInlineStyle();
 
@@ -86,13 +91,19 @@ export default function FontSizeController(props: Props) {
   }, [props]);
 
   useEffect(() => {
+    if (!props.getEditorState) {
+      return;
+    }
     // Only update local state when editor state changes
     setFontSize(getCurrentFontSize());
-  }, [props.getEditorState(), getCurrentFontSize]);
+  }, [props.getEditorState ?? null, getCurrentFontSize]);
 
   // Update the editor state with new font size
   const updateEditorStateWithFontSize = useCallback(
     (newFontSize: number) => {
+      if (!props.getEditorState || !props.setEditorState) {
+        return;
+      }
       const editorState = props.getEditorState();
       const currentStyle = editorState.getCurrentInlineStyle();
       let nextEditorState = editorState;
@@ -125,6 +136,9 @@ export default function FontSizeController(props: Props) {
 
   // Sync font size with editor state on selection or content changes
   useEffect(() => {
+    if (!props.getEditorState) {
+      return;
+    }
     const editorState = props.getEditorState();
 
     const syncFontSize = () => {

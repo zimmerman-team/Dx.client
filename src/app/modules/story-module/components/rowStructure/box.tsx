@@ -28,6 +28,7 @@ import { ReactComponent as EditIcon } from "app/modules/story-module/asset/editI
 import { ReactComponent as DeleteIcon } from "app/modules/story-module/asset/deleteIcon.svg";
 import { decorators } from "app/modules/common/RichEditor/decorators";
 import { MIN_BOX_WIDTH } from "./data";
+import { MOBILE_BREAKPOINT } from "app/theme";
 
 // Types
 interface BoxProps {
@@ -37,7 +38,7 @@ interface BoxProps {
   rowIndex: number;
   itemIndex: number;
   rowType: string;
-  setPlugins?: React.Dispatch<React.SetStateAction<ToolbarPluginsType>>;
+  setPluginsState: React.Dispatch<React.SetStateAction<ToolbarPluginsType>>;
   updateFramesArray: Updater<IFramesArray[]>;
   rowItemsCount: number;
   previewItem?: string | any;
@@ -71,7 +72,7 @@ const Box = (props: BoxProps) => {
   const location = useLocation();
   const history = useHistory();
   const { page, view } = useParams<{ page: string; view: string }>();
-  const smScreen = useMediaQuery("(max-width: 767px)");
+  const smScreen = useMediaQuery(`(max-width: ${MOBILE_BREAKPOINT})`);
 
   // Store actions
   const setDataset = useStoreActions(
@@ -122,11 +123,13 @@ const Box = (props: BoxProps) => {
     useState<string>(placeholder);
 
   // Refs
-  const textResizableRef = useRef<HTMLDivElement>(null);
   const firstUpdate = useRef(true);
 
   // Derived state
-  const editorHeight = textResizableRef.current?.offsetHeight;
+  const box = document.getElementById(
+    `box-${props.rowIndex}-${props.itemIndex}`
+  );
+  const editorHeight = box?.offsetHeight;
   const viewOnlyMode =
     location.pathname === `/story/${page}` ||
     location.pathname === `/story/${page}/downloaded-view`;
@@ -174,7 +177,6 @@ const Box = (props: BoxProps) => {
 
       draft[frameId].content[itemIndex] = itemContent;
       draft[frameId].contentTypes[itemIndex] = itemContentType;
-      draft[frameId].textEditorHeights[itemIndex] = textHeight || 0;
 
       // Only increase height of textbox if needed
       if (textHeight && textHeight > draft[frameId].contentHeights[itemIndex]) {
@@ -406,12 +408,15 @@ const Box = (props: BoxProps) => {
     border = "1px dashed #231d2c";
   }
 
+  const controlledHeight =
+    props.tempHeight > 0 ? props.tempHeight : props.initialHeight;
+
   const resolvedHeight =
-    viewOnlyMode && smScreen && displayMode === "text"
-      ? `${editorHeight ?? props.initialHeight}px`
-      : props.tempHeight > 0
-      ? `${props.tempHeight}px`
-      : `${props.initialHeight}px`;
+    viewOnlyMode && displayMode === "text" && editorHeight
+      ? editorHeight > controlledHeight
+        ? editorHeight
+        : controlledHeight
+      : controlledHeight;
 
   // Common resizable props
   const getResizableProps = () => ({
@@ -421,7 +426,7 @@ const Box = (props: BoxProps) => {
     onResizeStop,
     size: {
       width: smScreen ? "100%" : width,
-      height: resolvedHeight,
+      height: `${resolvedHeight}px`,
     },
     maxWidth: !viewOnlyMode
       ? `${
@@ -525,10 +530,10 @@ const Box = (props: BoxProps) => {
             `}
           >
             <div
-              ref={textResizableRef}
               onMouseEnter={() => setDisplayBoxIcons(true)}
               onMouseLeave={() => setDisplayBoxIcons(false)}
               data-cy={`row-frame-text-item`}
+              id={`box-${props.rowIndex}-${props.itemIndex}`}
             >
               {renderActionButtons()}
               <RichEditor
@@ -536,7 +541,7 @@ const Box = (props: BoxProps) => {
                 editMode={!viewOnlyMode}
                 textContent={textContent}
                 setTextContent={setTextContent}
-                setPlugins={props.setPlugins}
+                setPluginsState={props.setPluginsState}
                 placeholder={placeholder}
                 setPlaceholderState={setTextPlaceholderState}
                 placeholderState={textPlaceholderState}

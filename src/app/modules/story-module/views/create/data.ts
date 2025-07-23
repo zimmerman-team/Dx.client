@@ -3,7 +3,6 @@ import { IHeaderDetails } from "app/modules/story-module/components/right-panel/
 import { Updater } from "use-immer";
 
 interface IRowFrame {
-  rowIndex: number;
   rowId: string;
   forceSelectedType?: string;
   type: "rowFrame" | "divider";
@@ -14,7 +13,6 @@ export interface IFramesArray {
   frame: IRowFrame;
   contentWidths: number[];
   contentHeights: number[];
-  textEditorHeights: (number | null)[];
   content: (object | string | null)[];
   contentTypes: ("text" | "divider" | "chart" | "video" | "image" | null)[];
   structure:
@@ -40,7 +38,7 @@ export interface StoryCreateViewProps {
   headerDetails: IHeaderDetails;
   setHeaderDetails: React.Dispatch<React.SetStateAction<IHeaderDetails>>;
   onSave: (type: "create" | "edit") => Promise<void>;
-  setPlugins: React.Dispatch<React.SetStateAction<ToolbarPluginsType>>;
+  setPluginsState: React.Dispatch<React.SetStateAction<ToolbarPluginsType>>;
 }
 
 export interface PlaceholderProps {

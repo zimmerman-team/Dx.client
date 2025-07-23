@@ -8,7 +8,7 @@ describe("testing footer for valid links", () => {
   });
   it("it should verify footer copies", () => {
     cy.contains("2025 Dataxplorer All Rights Reserved").scrollIntoView();
-    cy.contains("Tel: +3185 401 5241");
+    cy.contains("Tel: +3120 213 4466");
     cy.contains("Email: contact@dataxplorer.org");
     cy.contains("Keizersgracht 520H");
     cy.contains("1017 EK Amsterdam");

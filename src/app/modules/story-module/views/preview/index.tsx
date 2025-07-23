@@ -153,7 +153,7 @@ export function StoryPreviewView(
         background: white;
       `}
     >
-      <HeaderBlock
+      {/* <HeaderBlock
         isToolboxOpen={false}
         previewMode={true}
         headerDetails={{
@@ -172,10 +172,10 @@ export function StoryPreviewView(
           descriptionColor: storyData.descriptionColor,
           dateColor: storyData.dateColor,
         }}
-        setPlugins={() => {}}
+        setPluginsState={() => {}}
         setHeaderDetails={() => {}}
         handleRightPanelOpen={() => {}}
-      />
+      /> */}
       <Container id="content-container" maxWidth="lg" ref={ref}>
         <Box height={45} />
 
@@ -220,7 +220,7 @@ export function StoryPreviewView(
                 type="rowFrame"
                 rowIndex={index}
                 framesArray={[]}
-                setPlugins={() => {}}
+                setPluginsState={() => {}}
                 updateFramesArray={() => {}}
                 key={`rowframe${index}`}
                 endStoryTour={() => {}}

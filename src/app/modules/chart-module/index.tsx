@@ -444,6 +444,8 @@ export default function ChartModule() {
     setVisualOptions(tmpVisualOptions);
   }
 
+  console.log(visualOptions, "visualOptions");
+
   async function clear() {
     sessionStorage.setItem("visualOptions", JSON.stringify({}));
     resetDataset();

@@ -20,7 +20,7 @@ import { rowStructureHeights } from "./data";
 import { calculateWidths } from ".";
 import Box from "./box";
 import { usehandleRowFrameItemResize } from "app/hooks/useHandleRowFrameItemResize";
-import { TABLET_STARTPOINT } from "app/theme";
+import { DESKTOP_BREAKPOINT, MOBILE_BREAKPOINT } from "app/theme";
 import { NumberSize, Resizable } from "re-resizable";
 import { Direction } from "re-resizable/lib/resizer";
 import {
@@ -35,13 +35,12 @@ interface RowStructureDisplayProps {
   rowIndex: number;
   rowId: string;
   selectedType: string;
+  setSelectedType: React.Dispatch<React.SetStateAction<string>>;
   framesArray: IFramesArray[];
-  selectedTypeHistory: string[];
   rowContentWidths: number[];
   rowContentHeights: number[];
   updateFramesArray: Updater<IFramesArray[]>;
   deleteFrame: (id: string) => void;
-  setSelectedTypeHistory: React.Dispatch<React.SetStateAction<string[]>>;
   rowStructureDetailItems: {
     rowId: string;
     width: number;
@@ -55,7 +54,7 @@ interface RowStructureDisplayProps {
     width: number,
     height: number
   ) => void;
-  setPlugins: React.Dispatch<React.SetStateAction<ToolbarPluginsType>>;
+  setPluginsState: React.Dispatch<React.SetStateAction<ToolbarPluginsType>>;
   onSave: (type: "create" | "edit") => Promise<void>;
   forceSelectedType: string | undefined;
   setTempRowState: React.Dispatch<React.SetStateAction<IFramesArray>>;
@@ -66,8 +65,6 @@ export default function RowstructureDisplay(
   props: Readonly<RowStructureDisplayProps>
 ) {
   const isTablet = useMediaQuery("(max-width: 1110px)");
-  const smScreen = useMediaQuery("(max-width: 767px)");
-  const RIGHT_PANEL_WIDTH = isTablet ? "36.83%" : "400px"; //percentage value of 274px which is the width at 744px as per design
   const ref = useRef(null);
   useOnClickOutside(ref, () => setHandleDisplay(false));
   const location = useLocation();
@@ -192,10 +189,19 @@ export default function RowstructureDisplay(
     _dir: Direction,
     _elementRef: HTMLElement
   ) => {
-    const textEditorHeights = props.framesArray[props.rowIndex]
-      .textEditorHeights as number[];
+    const textBoxHeights: number[] = [];
+
+    props.framesArray[props.rowIndex].contentTypes.forEach((c, index) => {
+      if (c === "text") {
+        const box = document.getElementById(`box-${props.rowIndex}-${index}`);
+        const boxHeight = box?.offsetHeight || MIN_BOX_HEIGHT;
+        textBoxHeights.push(boxHeight);
+      }
+    });
+
     //get the biggest value from the array
-    const maxHeight = Math.max(...textEditorHeights);
+    const maxHeight = Math.max(...textBoxHeights);
+    //if the text editor heights are not empty, get the
     if (maxHeight && maxHeight > MIN_BOX_HEIGHT) {
       setMinHeight(maxHeight);
     }
@@ -275,12 +281,8 @@ export default function RowstructureDisplay(
                 </IconButton>
                 <IconButton
                   onClick={() => {
-                    props.setSelectedTypeHistory([
-                      ...props.selectedTypeHistory,
-                      props.selectedType,
-                      "",
-                    ]);
-                    props.setTempRowState(props.framesArray[props.rowIndex]);
+                    props.setTempRowState(props.framesArray[props.rowIndex]); // Set the current row state to tempRowState
+                    props.setSelectedType("");
                   }}
                   data-cy="edit-row-structure-button"
                 >
@@ -304,7 +306,7 @@ export default function RowstructureDisplay(
           onResizeStart={onResizeStart}
           size={{
             width: "100%",
-            height: smScreen
+            height: viewOnlyMode
               ? "100%"
               : get(props.rowContentHeights, `[${0}]`, boxHeight),
           }}
@@ -323,15 +325,12 @@ export default function RowstructureDisplay(
               overflow-y: hidden;
               gap: ${props.gap};
               border: ${border};
-              @media (min-width: ${TABLET_STARTPOINT}) and (max-width: 1260px) {
-                width: ${props.rightPanelOpen
-                  ? `calc(100% - ${RIGHT_PANEL_WIDTH})`
-                  : "100%"};
+              @media (max-width: ${DESKTOP_BREAKPOINT}) {
                 :hover {
                   overflow-x: ${props.rightPanelOpen ? "scroll" : "hidden"};
                 }
               }
-              @media (max-width: 767px) {
+              @media (max-width: ${MOBILE_BREAKPOINT}) {
                 display: grid;
                 grid-template-columns: ${props.forceSelectedType ===
                   "oneByFive" || props.forceSelectedType === "oneByFour"
@@ -364,7 +363,7 @@ export default function RowstructureDisplay(
                 updateFramesArray={props.updateFramesArray}
                 previewItem={get(props.previewItems, `[${index}]`, undefined)}
                 rowItemsCount={props.rowStructureDetailItems.length}
-                setPlugins={props.setPlugins}
+                setPluginsState={props.setPluginsState}
                 onSave={props.onSave}
                 rowContentWidths={props.rowContentWidths}
                 temporaryWidths={temporaryWidths}

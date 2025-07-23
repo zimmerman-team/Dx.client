@@ -83,7 +83,7 @@ function StoryInitialView(props: Readonly<StoryInitialViewProps>) {
           height: 48px;
         `}
       />
-      <Grid container spacing={isMobile ? 4 : 7} justifyContent="space-between">
+      <Grid container spacing={isMobile ? 4 : 7} justifyContent="flex-start">
         {templates.map((option) => (
           <Grid key={option.value} item lg={"auto"} md={4} sm={6} xs={12}>
             <TemplateItem

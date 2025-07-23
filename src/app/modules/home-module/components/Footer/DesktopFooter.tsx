@@ -13,8 +13,9 @@ import { DESKTOP_BREAKPOINT, MOBILE_BREAKPOINT } from "app/theme";
 import { useMediaQuery } from "usehooks-ts";
 import {
   PRIVACY_POLICY_LINK,
+  TELEPHONE_NUMBER,
   TERMS_AND_CONDITION_LINK,
-} from "app/modules/chart-module/util/constants/links";
+} from "app/modules/chart-module/util/constants";
 
 interface Props {
   mini?: boolean;
@@ -140,7 +141,7 @@ export default function DesktopFooter(props: Props) {
                     }
                   `}
                 >
-                  Tel: +3185 401 5241
+                  Tel: {TELEPHONE_NUMBER}
                 </li>
 
                 <li
@@ -164,7 +165,7 @@ export default function DesktopFooter(props: Props) {
                     }
                   `}
                 >
-                  Tel: +3185 401 5241
+                  Tel: {TELEPHONE_NUMBER}
                   <a
                     css={`
                       display: none;

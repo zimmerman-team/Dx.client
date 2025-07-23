@@ -29,6 +29,7 @@ import {
   DecreaseIndentButton,
   IncreaseIndentButton,
 } from "app/modules/common/RichEditor/button/indentButtons";
+import Tooltip from "@material-ui/core/Tooltip";
 
 type UndoRedoType = {
   UndoButton: React.ComponentType<UndoRedoButtonProps>;
@@ -93,7 +94,6 @@ export default function StaticToolbar(props: { plugins: ToolbarPluginsType }) {
       `}
     />
   );
-
   return (
     <div>
       {props.plugins.length > 0 && (
@@ -127,12 +127,16 @@ export default function StaticToolbar(props: { plugins: ToolbarPluginsType }) {
             );
             return (
               <React.Fragment>
-                <div onMouseDown={(e) => e.preventDefault()}>
-                  <UndoButton {...externalProps} />
-                </div>
-                <div onMouseDown={(e) => e.preventDefault()}>
-                  <RedoButton {...externalProps} />
-                </div>
+                <Tooltip title="Undo" placement="bottom">
+                  <div onMouseDown={(e) => e.preventDefault()}>
+                    <UndoButton {...externalProps} />
+                  </div>
+                </Tooltip>
+                <Tooltip title="Redo" placement="bottom">
+                  <div onMouseDown={(e) => e.preventDefault()}>
+                    <RedoButton {...externalProps} />
+                  </div>
+                </Tooltip>
                 {divider}
                 <FontStyleHandler {...externalProps} />
 
@@ -140,63 +144,69 @@ export default function StaticToolbar(props: { plugins: ToolbarPluginsType }) {
                 <FontFamilyHandler {...externalProps} />
                 {divider}
                 <div>
-                  <FontSizeController {...externalProps} />
+                  <FontSizeController {...externalProps} />{" "}
                 </div>
                 {divider}
                 <BoldButton {...externalProps} />
+
                 <ItalicButton {...externalProps} />
                 <UnderlineButton {...externalProps} />
-                <div
-                  onMouseDown={(e) => e.preventDefault()}
-                  onClick={(e) => handleClick(e, "color")}
-                  id={colorId}
-                  tabIndex={0} // Add tabIndex attribute to make the div focusable
-                  css={`
-                    ${commonstyles.highlightPicker} ${commonstyles.colorPicker(
-                      color
-                    )}
-                  `}
-                >
-                  {HiglightPicker}
-                </div>
-
-                <div
-                  onMouseDown={(e) => e.preventDefault()}
-                  onClick={(e) => handleClick(e, "bg")}
-                  id={bgId}
-                  tabIndex={0} // Add tabIndex attribute to make the div focusable
-                  css={`
-                    ${commonstyles.highlightPicker} ${commonstyles.bgHighlightPicker(
-                      bgColor
-                    )}
-                  `}
-                >
-                  {BGHiglightPicker}
-                </div>
-
-                <ColorModal
-                  {...externalProps}
-                  anchorEl={anchorEl}
-                  handleClose={handleClose}
-                  id={colorId}
-                  open={colorOpen}
-                  hex={color}
-                  setHex={setColor}
-                  defaultColor={defaultColor}
-                  prefix="COLOR-"
-                />
-
-                <ColorModal
-                  {...externalProps}
-                  anchorEl={anchorEl}
-                  handleClose={handleClose}
-                  id={bgId}
-                  open={bgOpen}
-                  hex={bgColor}
-                  setHex={setBgColor}
-                  defaultColor={defaultBgColor}
-                  prefix="BG-COLOR-"
-                />
+                <Tooltip title="Text color" placement="bottom">
+                  <div
+                    onMouseDown={(e) => e.preventDefault()}
+                    onClick={(e) => handleClick(e, "color")}
+                    id={colorId}
+                    tabIndex={0} // Add tabIndex attribute to make the div focusable
+                    css={`
+                      ${commonstyles.highlightPicker} ${commonstyles.colorPicker(
+                        color
+                      )}
+                    `}
+                  >
+                    {HiglightPicker}
+                  </div>
+                </Tooltip>
+                <Tooltip title="Highlight color" placement="bottom">
+                  <div
+                    onMouseDown={(e) => e.preventDefault()}
+                    onClick={(e) => handleClick(e, "bg")}
+                    id={bgId}
+                    tabIndex={0} // Add tabIndex attribute to make the div focusable
+                    css={`
+                      ${commonstyles.highlightPicker} ${commonstyles.bgHighlightPicker(
+                        bgColor
+                      )}
+                    `}
+                  >
+                    {BGHiglightPicker}
+                  </div>
+                </Tooltip>
+                {externalProps.getEditorState !== undefined && (
+                  <ColorModal
+                    {...externalProps}
+                    anchorEl={anchorEl}
+                    handleClose={handleClose}
+                    id={colorId}
+                    open={colorOpen}
+                    hex={color}
+                    setHex={setColor}
+                    defaultColor={defaultColor}
+                    prefix="COLOR-"
+                  />
+                )}
+                {externalProps.getEditorState !== undefined && (
+                  <ColorModal
+                    {...externalProps}
+                    anchorEl={anchorEl}
+                    handleClose={handleClose}
+                    id={bgId}
+                    open={bgOpen}
+                    hex={bgColor}
+                    setHex={setBgColor}
+                    defaultColor={defaultBgColor}
+                    prefix="BG-COLOR-"
+                  />
+                )}
 
                 {divider}
 
