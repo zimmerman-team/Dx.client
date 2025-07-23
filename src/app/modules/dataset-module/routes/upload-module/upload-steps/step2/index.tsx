@@ -9,6 +9,39 @@ export default function PrepareForUse(props: {
   processing: ProcessingMetaDataProps;
   tablePreview: FinishedFragmentProps;
 }) {
+  const processingState = () => {
+    if (props.processing.processingError) {
+      return (
+        <>
+          <p>{props.processing.processingError}</p>
+        </>
+      );
+    }
+    if (props.processing.processed) {
+      return (
+        <>
+          <div
+            css={`
+              height: 50px;
+            `}
+          />{" "}
+          <TablePreview {...props.tablePreview} />
+        </>
+      );
+    } else {
+      return (
+        <>
+          <Processing {...props.processing} />
+          <div
+            css={`
+              height: 50px;
+            `}
+          />
+          <TableSkeleton />
+        </>
+      );
+    }
+  };
   return (
     <div>
       <div
@@ -99,30 +132,7 @@ export default function PrepareForUse(props: {
         </div>
       </div>
 
-      {props.processing.processingError ? null : (
-        <>
-          {props.processing.processed ? (
-            <>
-              <div
-                css={`
-                  height: 50px;
-                `}
-              />{" "}
-              <TablePreview {...props.tablePreview} />
-            </>
-          ) : (
-            <>
-              <Processing {...props.processing} />
-              <div
-                css={`
-                  height: 50px;
-                `}
-              />
-              <TableSkeleton />
-            </>
-          )}
-        </>
-      )}
+      {processingState()}
       <div
         css={`
           height: 60px;
