@@ -2,6 +2,27 @@ import React from "react";
 import { IFramesArray } from "app/modules/story-module/views/create/data";
 import { Updater } from "use-immer";
 
+interface NavigatorUAData {
+  platform: string;
+}
+
+interface ExtendedNavigator extends Navigator {
+  userAgentData?: NavigatorUAData;
+}
+
+function isMacOS(): boolean {
+  // Modern browsers
+  //@ts-ignore
+  if (navigator.userAgentData) {
+    //@ts-ignore
+    return navigator.userAgentData.platform === "macOS";
+  }
+
+  // Fallback for older browsers
+  return navigator.userAgent.toUpperCase().indexOf("MAC") >= 0;
+}
+
+const isMac = isMacOS();
 export function useUndoRedo<T>(
   framesArray: IFramesArray[],
   updateFramesArray: Updater<IFramesArray[]>,
@@ -12,13 +33,32 @@ export function useUndoRedo<T>(
 ): {
   undo(): void;
   redo(): void;
-  store(): void;
+  store: (modifiedFramesArray?: IFramesArray[]) => void;
 } {
-  console.log("undostack", undoStack);
-  const store = () => {
-    setUndoStack((prev) => [...prev, framesArray]);
+  const store = (modifiedFramesArray?: IFramesArray[]) => {
+    if (modifiedFramesArray) {
+      setUndoStack((prev) => [...prev, modifiedFramesArray]);
+    } else {
+      setUndoStack((prev) => [...prev, framesArray]);
+    }
     setRedoStack([]);
   };
+  React.useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      const ctrlOrCmd = isMac ? e.metaKey : e.ctrlKey;
+
+      if (ctrlOrCmd && e.key.toLowerCase() === "z") {
+        e.preventDefault();
+        undo();
+      } else if (ctrlOrCmd && e.key.toLowerCase() === "y") {
+        e.preventDefault();
+        redo();
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [undoStack, redoStack, framesArray]);
 
   const undo = () => {
     if (undoStack.length > 1) {

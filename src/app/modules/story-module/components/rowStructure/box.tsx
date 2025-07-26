@@ -29,6 +29,7 @@ import { ReactComponent as DeleteIcon } from "app/modules/story-module/asset/del
 import { decorators } from "app/modules/common/RichEditor/decorators";
 import { MIN_BOX_WIDTH } from "./data";
 import { useUndoRedo } from "app/hooks/useUndoRedo";
+import isEqual from "lodash/isEqual";
 
 // Types
 interface BoxProps {
@@ -129,6 +130,23 @@ const Box = (props: BoxProps) => {
   const [textContent, setTextContent] = useState<EditorState>(
     EditorState.createEmpty(decorators())
   );
+  const handleTextContentChange = (value: EditorState) => {
+    setTextContent(value);
+    if (!isEqual(boxContent.getCurrentContent(), value.getCurrentContent())) {
+      const modifiedFramesArray = props.framesArray.map((frame) => {
+        if (frame.id === props.rowId) {
+          const updatedContent = [...frame.content];
+          updatedContent[props.itemIndex] = value;
+          return {
+            ...frame,
+            content: updatedContent,
+          };
+        }
+        return frame;
+      });
+      store(modifiedFramesArray);
+    }
+  };
   React.useEffect(() => {
     if (boxContent && props.contentType === "text") {
       setTextContent(boxContent);
@@ -372,16 +390,14 @@ const Box = (props: BoxProps) => {
         return;
       }
 
-      if (props.contentType === "text") {
-        // if (
-        //   !isEqual(
-        //     boxContent.getCurrentContent(),
-        //     textContent.getCurrentContent()
-        //   )
-        // ) {
-        //   store();
-        // }
-        // const contentRaw = convertToRaw(textContent.getCurrentContent());
+      if (
+        !isEqual(
+          boxContent.getCurrentContent(),
+          textContent.getCurrentContent()
+        ) &&
+        props.contentType === "text"
+      ) {
+        // store();
         handleRowFrameItemAddition(
           props.rowId,
           props.itemIndex,
@@ -534,7 +550,7 @@ const Box = (props: BoxProps) => {
                 fullWidth
                 editMode={!viewOnlyMode}
                 textContent={textContent}
-                setTextContent={setTextContent}
+                setTextContent={handleTextContentChange}
                 setPluginsState={props.setPluginsState}
                 placeholder={placeholder}
                 setPlaceholderState={setTextPlaceholderState}
