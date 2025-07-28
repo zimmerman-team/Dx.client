@@ -1,5 +1,5 @@
 import React, { useRef, useState } from "react";
-import { IconButton } from "@material-ui/core";
+import { debounce, IconButton } from "@material-ui/core";
 import { RichEditor } from "app/modules/common/RichEditor";
 import {
   isChartDraggingAtom,
@@ -30,6 +30,7 @@ import { decorators } from "app/modules/common/RichEditor/decorators";
 import { MIN_BOX_WIDTH } from "./data";
 import { useUndoRedo } from "app/hooks/useUndoRedo";
 import isEqual from "lodash/isEqual";
+import { compareEditorStates } from "app/modules/story-module/views/edit/compareStates";
 
 // Types
 interface BoxProps {
@@ -130,25 +131,25 @@ const Box = (props: BoxProps) => {
   const [textContent, setTextContent] = useState<EditorState>(
     EditorState.createEmpty(decorators())
   );
+
+  const debouncedStore = React.useCallback(
+    debounce((value: EditorState) => {
+      if (!boxContent || props.contentType !== "text") {
+        return;
+      }
+      if (!compareEditorStates(boxContent, value)) {
+        store();
+      }
+    }, 500),
+    [boxContent]
+  );
+
   const handleTextContentChange = (value: EditorState) => {
+    debouncedStore(value);
     setTextContent(value);
-    if (!isEqual(boxContent.getCurrentContent(), value.getCurrentContent())) {
-      const modifiedFramesArray = props.framesArray.map((frame) => {
-        if (frame.id === props.rowId) {
-          const updatedContent = [...frame.content];
-          updatedContent[props.itemIndex] = value;
-          return {
-            ...frame,
-            content: updatedContent,
-          };
-        }
-        return frame;
-      });
-      store(modifiedFramesArray);
-    }
   };
   React.useEffect(() => {
-    if (boxContent && props.contentType === "text") {
+    if (props.contentType === "text" && boxContent) {
       setTextContent(boxContent);
     }
   }, [boxContent, props.contentType]);
@@ -391,11 +392,11 @@ const Box = (props: BoxProps) => {
       }
 
       if (
+        props.contentType === "text" &&
         !isEqual(
           boxContent.getCurrentContent(),
           textContent.getCurrentContent()
-        ) &&
-        props.contentType === "text"
+        )
       ) {
         // store();
         handleRowFrameItemAddition(
