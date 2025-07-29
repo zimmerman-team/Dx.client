@@ -275,6 +275,7 @@ export default function ContactModule() {
                       width: 100%;
                     }
                   `}
+                  data-cy="contact-form-alert"
                 >
                   <SuccessIcon />
                   <p

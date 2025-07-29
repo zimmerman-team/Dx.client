@@ -8,6 +8,7 @@ describe("Testing the Partners page logged in", () => {
 
     cy.get('[data-cy="cookie-btn"]').click();
     cy.get('[data-cy="app-bar"]').within(() => {
+      cy.get('[data-cy="nav-about-group"]').click();
       cy.contains("a", "Partners").click();
     });
   });
