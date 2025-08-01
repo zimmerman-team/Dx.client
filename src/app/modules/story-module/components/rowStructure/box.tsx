@@ -31,6 +31,7 @@ import { MIN_BOX_WIDTH } from "./data";
 import { useUndoRedo } from "app/hooks/useUndoRedo";
 import isEqual from "lodash/isEqual";
 import { compareEditorStates } from "app/modules/story-module/views/edit/compareStates";
+import { MOBILE_BREAKPOINT } from "app/theme";
 
 // Types
 interface BoxProps {
@@ -88,7 +89,7 @@ const Box = (props: BoxProps) => {
   const location = useLocation();
   const history = useHistory();
   const { page, view } = useParams<{ page: string; view: string }>();
-  const smScreen = useMediaQuery("(max-width: 767px)");
+  const smScreen = useMediaQuery(`(max-width: ${MOBILE_BREAKPOINT})`);
 
   // Store actions
   const setDataset = useStoreActions(
@@ -422,6 +423,9 @@ const Box = (props: BoxProps) => {
     border = "1px dashed #231d2c";
   }
 
+  const controlledHeight =
+    props.tempHeight > 0 ? props.tempHeight : props.initialHeight;
+
   const resolvedHeight =
     viewOnlyMode && smScreen && contentType === "text"
       ? `${editorHeight ?? props.initialHeight}px`
@@ -437,7 +441,7 @@ const Box = (props: BoxProps) => {
     onResizeStop,
     size: {
       width: smScreen ? "100%" : width,
-      height: resolvedHeight,
+      height: `${resolvedHeight}px`,
     },
     maxWidth: !viewOnlyMode
       ? `${

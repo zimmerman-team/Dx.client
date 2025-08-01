@@ -106,6 +106,7 @@ export default function ChartContainer(props: {
             inChartWrapper={true}
             mapping={props.chartFromAPI?.mapping}
             datasetDetails={props.datasetDetails}
+            readOnly
           />
         </div>
       )}

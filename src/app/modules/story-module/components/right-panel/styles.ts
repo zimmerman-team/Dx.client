@@ -16,6 +16,9 @@ export const styles = {
     @media (min-width: ${TABLET_STARTPOINT}) and (max-width: 1110px) {
       width: 36.83%; //percentage value of 274px which is the width at 744px as per design
     }
+    @media (max-width: 881px) {
+      top: 169px;
+    }
   `,
   initial: css`
     display: flex;

@@ -285,6 +285,7 @@ export function StoryChartWrapper(props: Props) {
         chartPreviewInStory={props.chartPreviewInStory}
         mapping={chartFromAPI?.mapping}
         datasetDetails={datasetDetails}
+        readOnly
       />
 
       {renderedChartType !== "bigNumber" && !props.hideChartSource && (
