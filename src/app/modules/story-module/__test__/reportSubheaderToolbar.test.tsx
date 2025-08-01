@@ -47,6 +47,11 @@ interface MockProps {
   isEditorFocused: boolean;
   headerDetails: IHeaderDetails;
   framesArray: IFramesArray[];
+  // updateFramesArray: (updater: (draft: IFramesArray[]) => void) => void;
+  undoStack: IFramesArray[][];
+  setUndoStack: React.Dispatch<React.SetStateAction<IFramesArray[][]>>;
+  redoStack: IFramesArray[][];
+  setRedoStack: React.Dispatch<React.SetStateAction<IFramesArray[][]>>;
   setStopInitializeFramesWidth?: (value: boolean) => void;
   handlePersistStoryState?: () => void;
   isPreviewView: boolean;
@@ -101,6 +106,12 @@ const defaultProps = (props: Partial<MockProps> = {}): MockProps => {
     framesArray: [],
     handlePersistStoryState: jest.fn(),
     isPreviewView: false,
+    redoStack: [],
+    setRedoStack: jest.fn(),
+    // updateFramesArray: jest.fn((Updater: IFramesArray[]) => []),
+    undoStack: [],
+    setUndoStack: jest.fn(),
+
     ...props,
   };
 };
@@ -154,7 +165,7 @@ const appSetup = (params: Params, newProps: Partial<MockProps> = {}) => {
                 node={homeDisplayAtom}
                 onChange={onHomeTabChange}
               />
-              <StorySubheaderToolbar {...props} />
+              {/* <StorySubheaderToolbar {...props} /> */}
             </RecoilRoot>
           </StoreProvider>
         </Auth0Provider>

@@ -96,6 +96,7 @@ export const DropDownNav = ({
                     <NavLink
                       to={option.path}
                       data-cy={option.cy}
+                      key={option.cy}
                       css={`
                         margin: 0px;
                         line-height: normal;

@@ -1,5 +1,5 @@
 import React, { useRef, useState } from "react";
-import { IconButton } from "@material-ui/core";
+import { debounce, IconButton } from "@material-ui/core";
 import { RichEditor } from "app/modules/common/RichEditor";
 import {
   isChartDraggingAtom,
@@ -28,6 +28,9 @@ import { ReactComponent as EditIcon } from "app/modules/story-module/asset/editI
 import { ReactComponent as DeleteIcon } from "app/modules/story-module/asset/deleteIcon.svg";
 import { decorators } from "app/modules/common/RichEditor/decorators";
 import { MIN_BOX_WIDTH } from "./data";
+import { useUndoRedo } from "app/hooks/useUndoRedo";
+import isEqual from "lodash/isEqual";
+import { compareEditorStates } from "app/modules/story-module/views/edit/compareStates";
 import { MOBILE_BREAKPOINT } from "app/theme";
 
 // Types
@@ -38,10 +41,16 @@ interface BoxProps {
   rowIndex: number;
   itemIndex: number;
   rowType: string;
+  contentType: ContentType;
   setPluginsState: React.Dispatch<React.SetStateAction<ToolbarPluginsType>>;
   updateFramesArray: Updater<IFramesArray[]>;
+  framesArray: IFramesArray[];
+  undoStack: IFramesArray[][];
+  setUndoStack: React.Dispatch<React.SetStateAction<IFramesArray[][]>>;
+  redoStack: IFramesArray[][];
+  setRedoStack: React.Dispatch<React.SetStateAction<IFramesArray[][]>>;
   rowItemsCount: number;
-  previewItem?: string | any;
+  previewItem?: any;
   neighbourIndex: number;
   rowContentWidths: number[];
   temporaryWidths: {
@@ -64,11 +73,19 @@ interface BoxProps {
 }
 
 // Content type definition
-type ContentType = "chart" | "text" | "image" | "video" | null;
+export type ContentType = "chart" | "text" | "image" | "video" | null;
 
 // eslint-disable-next-line sonarjs/cognitive-complexity
 const Box = (props: BoxProps) => {
   // Hooks
+  const { store } = useUndoRedo(
+    props.framesArray,
+    props.updateFramesArray,
+    props.undoStack,
+    props.setUndoStack,
+    props.redoStack,
+    props.setRedoStack
+  );
   const location = useLocation();
   const history = useHistory();
   const { page, view } = useParams<{ page: string; view: string }>();
@@ -98,25 +115,46 @@ const Box = (props: BoxProps) => {
 
   // Local state
   const [chartError, setChartError] = useState(false);
+  const boxContent = React.useMemo(() => {
+    return (
+      props.previewItem ??
+      get(
+        props.framesArray[props.rowIndex],
+        `content[${props.itemIndex}]`,
+        null
+      )
+    );
+  }, [props.previewItem, props.framesArray, props.rowIndex, props.itemIndex]);
+
   const [chartId, setChartId] = useState<string | null>(null);
-  const [displayMode, setDisplayMode] = useState<ContentType>(null);
+
   const [maxWidth, setMaxWidth] = useState(props.initialWidth);
   const [textContent, setTextContent] = useState<EditorState>(
     EditorState.createEmpty(decorators())
   );
+
+  const debouncedStore = React.useCallback(
+    debounce((value: EditorState) => {
+      if (!boxContent || props.contentType !== "text") {
+        return;
+      }
+      if (!compareEditorStates(boxContent, value)) {
+        store();
+      }
+    }, 500),
+    [boxContent]
+  );
+
+  const handleTextContentChange = (value: EditorState) => {
+    debouncedStore(value);
+    setTextContent(value);
+  };
+  React.useEffect(() => {
+    if (props.contentType === "text" && boxContent) {
+      setTextContent(boxContent);
+    }
+  }, [boxContent, props.contentType]);
   const [displayBoxIcons, setDisplayBoxIcons] = useState(false);
-  const [videoContent, setVideoContent] = useState<{
-    videoId: string;
-    embedUrl: string;
-    snippet: any;
-    source: "youtube";
-  }>();
-  const [imageContent, setImageContent] = useState<{
-    imageId: string;
-    imageUrl: string;
-    source: "shutterstock";
-    thumbnail: string;
-  }>();
 
   const placeholder = "Add your story...";
   const [textPlaceholderState, setTextPlaceholderState] =
@@ -126,6 +164,22 @@ const Box = (props: BoxProps) => {
   const firstUpdate = useRef(true);
 
   // Derived state
+  const contentTypeFromPreviewItem = React.useMemo(() => {
+    if (props.previewItem) {
+      if (typeof props.previewItem === "string") {
+        return "chart";
+      } else if (get(props.previewItem, "embedUrl", null)) {
+        return "video";
+      } else if (get(props.previewItem, "imageUrl", null)) {
+        return "image";
+      } else {
+        return "text";
+      }
+    }
+    return null;
+  }, [props.previewItem]);
+
+  const contentType = contentTypeFromPreviewItem ?? props.contentType;
   const box = document.getElementById(
     `box-${props.rowIndex}-${props.itemIndex}`
   );
@@ -174,10 +228,8 @@ const Box = (props: BoxProps) => {
     props.updateFramesArray((draft) => {
       const frameId = draft.findIndex((frame) => frame.id === rowId);
       if (frameId === -1) return [...draft];
-
       draft[frameId].content[itemIndex] = itemContent;
       draft[frameId].contentTypes[itemIndex] = itemContentType;
-
       // Only increase height of textbox if needed
       if (textHeight && textHeight > draft[frameId].contentHeights[itemIndex]) {
         draft[frameId].contentHeights.forEach((_, index) => {
@@ -188,6 +240,7 @@ const Box = (props: BoxProps) => {
   };
 
   const handleRowFrameItemRemoval = (rowId: string, itemIndex: number) => {
+    store();
     props.updateFramesArray((draft) => {
       const frameId = draft.findIndex((frame) => frame.id === rowId);
       if (frameId === -1) return [...draft];
@@ -197,8 +250,7 @@ const Box = (props: BoxProps) => {
     });
   };
 
-  const resetContent = () => {
-    setDisplayMode(null);
+  const deleteContent = () => {
     setChartId(null);
     setTextContent(EditorState.createEmpty(decorators()));
     handleRowFrameItemRemoval(props.rowId, props.itemIndex);
@@ -267,59 +319,59 @@ const Box = (props: BoxProps) => {
   };
 
   // Drag and drop configuration
-  const [{ isOver }, drop] = useDrop(() => ({
-    accept:
-      props.rowType === "oneByFive" || props.rowType === "oneByFour"
-        ? elementTypes
-        : elementTypes.filter((type) => type !== StoryElementsType.BIG_NUMBER),
-    collect: (monitor) => ({
-      isOver: monitor.isOver(),
-      canDrop: monitor.canDrop(),
-      item: monitor.getItem(),
+  const [{ isOver }, drop] = useDrop(
+    () => ({
+      accept:
+        props.rowType === "oneByFive" || props.rowType === "oneByFour"
+          ? elementTypes
+          : elementTypes.filter(
+              (type) => type !== StoryElementsType.BIG_NUMBER
+            ),
+      collect: (monitor) => ({
+        isOver: monitor.isOver(),
+        canDrop: monitor.canDrop(),
+        item: monitor.getItem(),
+      }),
+      drop: (item: any, monitor) => {
+        store();
+        if (item.type === StoryElementsType.TEXT) {
+          handleRowFrameItemAddition(
+            props.rowId,
+            props.itemIndex,
+            textContent,
+            "text"
+          );
+        } else if (
+          item.type === StoryElementsType.CHART ||
+          item.type === StoryElementsType.BIG_NUMBER
+        ) {
+          handleRowFrameItemAddition(
+            props.rowId,
+            props.itemIndex,
+            item.value,
+            "chart"
+          );
+          setChartId(item.value);
+          monitor.getDropResult();
+        } else if (item.type === StoryElementsType.VIDEO) {
+          handleRowFrameItemAddition(
+            props.rowId,
+            props.itemIndex,
+            item.value,
+            "video"
+          );
+        } else if (item.type === StoryElementsType.IMAGE) {
+          handleRowFrameItemAddition(
+            props.rowId,
+            props.itemIndex,
+            item.value,
+            "image"
+          );
+        }
+      },
     }),
-    drop: (item: any, monitor) => {
-      if (item.type === StoryElementsType.TEXT) {
-        handleRowFrameItemAddition(
-          props.rowId,
-          props.itemIndex,
-          textContent,
-          "text"
-        );
-        setDisplayMode("text");
-      } else if (
-        item.type === StoryElementsType.CHART ||
-        item.type === StoryElementsType.BIG_NUMBER
-      ) {
-        handleRowFrameItemAddition(
-          props.rowId,
-          props.itemIndex,
-          item.value,
-          "chart"
-        );
-        setChartId(item.value);
-        setDisplayMode("chart");
-        monitor.getDropResult();
-      } else if (item.type === StoryElementsType.VIDEO) {
-        handleRowFrameItemAddition(
-          props.rowId,
-          props.itemIndex,
-          item.value,
-          "video"
-        );
-        setVideoContent(item.value);
-        setDisplayMode("video");
-      } else if (item.type === StoryElementsType.IMAGE) {
-        handleRowFrameItemAddition(
-          props.rowId,
-          props.itemIndex,
-          item.value,
-          "image"
-        );
-        setImageContent(item.value);
-        setDisplayMode("image");
-      }
-    },
-  }));
+    [props.framesArray]
+  );
 
   const widthNumberPercentage =
     isResizing && props.temporaryWidths[props.itemIndex] !== undefined
@@ -340,7 +392,14 @@ const Box = (props: BoxProps) => {
         return;
       }
 
-      if (displayMode === "text") {
+      if (
+        props.contentType === "text" &&
+        !isEqual(
+          boxContent.getCurrentContent(),
+          textContent.getCurrentContent()
+        )
+      ) {
+        // store();
         handleRowFrameItemAddition(
           props.rowId,
           props.itemIndex,
@@ -353,50 +412,6 @@ const Box = (props: BoxProps) => {
     300,
     [textContent, editorHeight]
   );
-
-  // Effects
-  React.useEffect(() => {
-    if (displayMode === "chart" && chartId) {
-      handleRowFrameItemAddition(
-        props.rowId,
-        props.itemIndex,
-        chartId,
-        "chart"
-      );
-    } else if (displayMode === "video") {
-      handleRowFrameItemAddition(
-        props.rowId,
-        props.itemIndex,
-        videoContent,
-        "video"
-      );
-    } else if (displayMode === "image") {
-      handleRowFrameItemAddition(
-        props.rowId,
-        props.itemIndex,
-        imageContent,
-        "image"
-      );
-    }
-  }, [chartId, displayMode, imageContent, videoContent]);
-
-  React.useEffect(() => {
-    if (props.previewItem) {
-      if (typeof props.previewItem === "string") {
-        setChartId(props.previewItem);
-        setDisplayMode("chart");
-      } else if (get(props.previewItem, "embedUrl", null)) {
-        setVideoContent(props.previewItem);
-        setDisplayMode("video");
-      } else if (get(props.previewItem, "imageUrl", null)) {
-        setImageContent(props.previewItem);
-        setDisplayMode("image");
-      } else {
-        setTextContent(props.previewItem);
-        setDisplayMode("text");
-      }
-    }
-  }, [props.previewItem]);
 
   // Determine border style based on drag state
   let border = "none";
@@ -412,11 +427,11 @@ const Box = (props: BoxProps) => {
     props.tempHeight > 0 ? props.tempHeight : props.initialHeight;
 
   const resolvedHeight =
-    viewOnlyMode && displayMode === "text" && editorHeight
-      ? editorHeight > controlledHeight
-        ? editorHeight
-        : controlledHeight
-      : controlledHeight;
+    viewOnlyMode && smScreen && contentType === "text"
+      ? `${editorHeight ?? props.initialHeight}px`
+      : props.tempHeight > 0
+      ? `${props.tempHeight}px`
+      : `${props.initialHeight}px`;
 
   // Common resizable props
   const getResizableProps = () => ({
@@ -448,7 +463,7 @@ const Box = (props: BoxProps) => {
     return (
       <>
         <IconButton
-          onClick={resetContent}
+          onClick={deleteContent}
           css={`
             top: 12px;
             z-index: 1;
@@ -476,7 +491,7 @@ const Box = (props: BoxProps) => {
           </Tooltip>
         </IconButton>
 
-        {displayMode === "chart" && !chartError && (
+        {contentType === "chart" && !chartError && (
           <IconButton
             onClick={handleEditChart}
             data-cy="edit-chart-button"
@@ -511,7 +526,7 @@ const Box = (props: BoxProps) => {
 
   // Render content based on display mode
   const renderContent = () => {
-    switch (displayMode) {
+    switch (contentType) {
       case "text":
         return (
           <Resizable
@@ -540,7 +555,7 @@ const Box = (props: BoxProps) => {
                 fullWidth
                 editMode={!viewOnlyMode}
                 textContent={textContent}
-                setTextContent={setTextContent}
+                setTextContent={handleTextContentChange}
                 setPluginsState={props.setPluginsState}
                 placeholder={placeholder}
                 setPlaceholderState={setTextPlaceholderState}
@@ -552,8 +567,8 @@ const Box = (props: BoxProps) => {
         );
 
       case "chart":
-        return chartId ? (
-          <Resizable key={chartId} {...getResizableProps()}>
+        return (
+          <Resizable key={boxContent} {...getResizableProps()}>
             <div
               css={`
                 height: 100%;
@@ -573,14 +588,14 @@ const Box = (props: BoxProps) => {
             >
               {renderActionButtons()}
               <StoryChartWrapper
-                id={chartId}
+                id={boxContent}
                 width={width.slice(0, -2)}
                 error={chartError}
                 setError={setChartError}
               />
             </div>
           </Resizable>
-        ) : null;
+        );
 
       case "video":
         return (
@@ -607,7 +622,7 @@ const Box = (props: BoxProps) => {
               {renderActionButtons()}
               <iframe
                 title="Video Content"
-                src={videoContent?.embedUrl}
+                src={boxContent?.embedUrl}
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                 allowFullScreen
                 css={css`
@@ -650,8 +665,8 @@ const Box = (props: BoxProps) => {
             >
               {renderActionButtons()}
               <img
-                src={imageContent?.imageUrl}
-                alt={imageContent?.imageId}
+                src={boxContent?.imageUrl}
+                alt={boxContent?.imageId}
                 css={css`
                   width: 100%;
                   height: 100%;

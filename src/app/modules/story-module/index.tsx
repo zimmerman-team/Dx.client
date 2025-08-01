@@ -260,6 +260,8 @@ export default function StoryModule() {
 
   const [framesArray, updateFramesArray] =
     useImmer<IFramesArray[]>(initialFramesArray);
+  const [undoStack, setUndoStack] = React.useState<IFramesArray[][]>([]);
+  const [redoStack, setRedoStack] = React.useState<IFramesArray[][]>([]);
 
   React.useEffect(() => {
     if (view === "edit" && !rightPanelOpen) {
@@ -404,6 +406,11 @@ export default function StoryModule() {
             setStopInitializeFramesWidth={setStopInitializeFramesWidth}
             isPreviewView={isPreviewView}
             plugins={plugins}
+            updateFramesArray={updateFramesArray}
+            undoStack={undoStack}
+            setUndoStack={setUndoStack}
+            redoStack={redoStack}
+            setRedoStack={setRedoStack}
           />
         )}
       {view && !storyError401 && view === "edit" && canEditDeleteStory && (
@@ -481,6 +488,10 @@ export default function StoryModule() {
               setAutoSave={setAutoSave}
               isSaveEnabled={isSaveEnabled}
               onSave={onSave}
+              redoStack={redoStack}
+              setRedoStack={setRedoStack}
+              undoStack={undoStack}
+              setUndoStack={setUndoStack}
             />
           </section>
         </Route>

@@ -13,6 +13,10 @@ export interface StoryEditViewProps {
   setHasStoryNameFocused: React.Dispatch<React.SetStateAction<boolean>>;
   updateFramesArray: Updater<IFramesArray[]>;
   framesArray: IFramesArray[];
+  undoStack: IFramesArray[][];
+  setUndoStack: React.Dispatch<React.SetStateAction<IFramesArray[][]>>;
+  redoStack: IFramesArray[][];
+  setRedoStack: React.Dispatch<React.SetStateAction<IFramesArray[][]>>;
   setStoryName: React.Dispatch<React.SetStateAction<string>>;
   autoSave: boolean;
   setAutoSave: React.Dispatch<

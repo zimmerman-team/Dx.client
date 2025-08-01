@@ -146,7 +146,6 @@ export function StoryPreviewView(
       </>
     );
   }
-
   return (
     <div
       css={`
@@ -220,21 +219,27 @@ export function StoryPreviewView(
                 type="rowFrame"
                 rowIndex={index}
                 framesArray={[]}
+                redoStack={[]}
+                setRedoStack={() => {}}
+                undoStack={[]}
+                setUndoStack={() => {}}
                 setPluginsState={() => {}}
                 updateFramesArray={() => {}}
                 key={`rowframe${index}`}
                 endStoryTour={() => {}}
                 onSave={async () => {}}
                 forceSelectedType={rowFrame.structure ?? undefined}
-                previewItems={rowFrame.items.map((item, index) => {
-                  return contentTypes[index] === "text"
-                    ? EditorState.createWithContent(
-                        convertFromRaw(item as any),
-                        // linkDecorator
-                        decorators()
-                      )
-                    : item;
-                })}
+                previewItems={{
+                  items: rowFrame.items.map((item, index) => {
+                    return contentTypes[index] === "text"
+                      ? EditorState.createWithContent(
+                          convertFromRaw(item as any),
+                          // linkDecorator
+                          decorators()
+                        )
+                      : item;
+                  }),
+                }}
                 rowContentHeights={
                   rowFrame.contentHeights?.heights ?? rowFrame.contentHeights
                 }
