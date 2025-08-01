@@ -9,6 +9,7 @@ describe("Home page tests", () => {
   });
 
   it("Can go to explore stories page and create story from the about page", () => {
+    cy.get('[data-cy="nav-about-group"]').click();
     cy.get('[data-cy="nav-about"]').click();
     cy.wait(2000);
     cy.location("pathname").should("include", "/about");
@@ -16,6 +17,7 @@ describe("Home page tests", () => {
     cy.get('[data-cy="home-create-story-button"]').click();
     cy.wait(2000);
     cy.location("pathname").should("include", "/");
+    cy.get('[data-cy="nav-about-group"]').click();
     cy.get('[data-cy="nav-about"]').click();
     cy.wait(2000);
 
@@ -34,20 +36,23 @@ describe("Home page tests", () => {
     cy.visit("/");
 
     cy.get('[data-cy="app-bar"]').within(() => {
-      cy.contains("a", "Why Dataxplorer").click();
+      cy.get('[data-cy="nav-about-group"]').click();
+      cy.contains("a", "Why").click();
       cy.location("pathname").should("include", "/why-dataxplorer");
     });
 
     cy.visit("/");
 
     cy.get('[data-cy="app-bar"]').within(() => {
-      cy.contains("a", "About").click();
+      cy.get('[data-cy="nav-about-group"]').click();
+      cy.contains("a", "Who We Are").click();
       cy.location("pathname").should("include", "/about");
     });
 
     cy.visit("/");
 
     cy.get('[data-cy="app-bar"]').within(() => {
+      cy.get('[data-cy="nav-about-group"]').click();
       cy.contains("a", "Partners").click();
       cy.location("pathname").should("include", "/partners");
     });
@@ -55,6 +60,7 @@ describe("Home page tests", () => {
     cy.visit("/");
 
     cy.get('[data-cy="app-bar"]').within(() => {
+      cy.get('[data-cy="nav-about-group"]').click();
       cy.contains("a", "Contact").click();
       cy.location("pathname").should("include", "/contact");
     });
@@ -62,6 +68,7 @@ describe("Home page tests", () => {
     cy.visit("/");
 
     cy.get('[data-cy="app-bar"]').within(() => {
+      cy.get('[data-cy="nav-about-group"]').click();
       cy.contains("a", "Pricing").click();
       cy.location("pathname").should("include", "/pricing");
     });

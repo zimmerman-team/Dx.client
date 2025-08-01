@@ -52,6 +52,7 @@ export const NavList = (props: {
           cy: "nav-partners",
         },
       ],
+      cy: "nav-about-group",
     },
     { name: "Pricing", path: "/pricing", cy: "nav-pricing", class: "pricing" },
     { name: "Contact", path: "/contact", cy: "nav-contact", class: "contact" },

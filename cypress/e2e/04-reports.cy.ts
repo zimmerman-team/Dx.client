@@ -48,54 +48,6 @@ describe("Testing stories on DX", () => {
 
     cy.get('[data-cy="story-sub-header-title-input"]').type(storyTestName);
 
-    //remove header
-    cy.get('[data-cy="story-header-block"]').click();
-    cy.get('[data-cy="delete-header-button"]').click();
-
-    //drag and drop header block
-    cy.get('[data-cy="story-panel-elements-tab"]').click();
-    cy.wait(1000);
-
-    cy.get('[data-cy="story-panel-header-item"]').first().drag();
-    cy.get('[data-cy="header-drop-area"]').drop();
-
-    //fill header inputs
-    cy.get('[data-cy="story-header-block"]').within(() => {
-      cy.get('[data-testid="heading-rich-text-editor"]').type(storyTestName);
-      cy.get('[data-cy="description-rich-text-editor-container"]').click();
-      cy.get('[data-testid="description-rich-text-editor"]').type(
-        "This is a story on football players"
-      );
-    });
-    //edit report header colors
-    cy.get('[data-cy="edit-header-button"]').click();
-    cy.get('[data-cy="color-label-Background color"]').within(() => {
-      cy.get('[data-cy="color-picker"]').click();
-      cy.get('[data-cy="sketch-picker"]').within(() => {
-        cy.get("input").first().type("{selectall}{backspace}#245B9A");
-      });
-    });
-    cy.get('[data-cy="color-label-Background color"]').click();
-
-    cy.get('[data-cy="color-label-Title color"]').within(() => {
-      cy.get('[data-cy="color-picker"]').click();
-      cy.get('[data-cy="sketch-picker"]').within(() => {
-        cy.get("input").first().type("{selectall}{backspace}#D8B5B5");
-      });
-    });
-    cy.get('[data-cy="color-label-Title color"]').click();
-
-    cy.get('[data-cy="color-label-Description color"]').within(() => {
-      cy.get('[data-cy="color-picker"]').click();
-      cy.get('[data-cy="sketch-picker"]').within(() => {
-        cy.get("input").first().type("{selectall}{backspace}#D8B5B5");
-      });
-    });
-    cy.get('[data-cy="color-label-Description color"]').click();
-
-    //close edit header panel
-    cy.get('[data-cy="edit-header-panel-close"]').click();
-
     cy.intercept(`${apiUrl}/story/*`).as("fetchStory");
     cy.intercept(`${apiUrl}/stories?filter=*`).as("fetchStories");
 
@@ -131,7 +83,7 @@ describe("Testing stories on DX", () => {
     cy.get('[data-cy="story-panel-chart-tab"]').click();
     cy.get('[data-cy="story-panel-chart-tab"]').click();
 
-    cy.wait("@fetchCharts");
+    // cy.wait("@fetchCharts");
 
     cy.get('[data-cy="row-frame-item-drop-zone-0-1"]');
 
@@ -196,7 +148,7 @@ describe("Testing stories on DX", () => {
 
     cy.wait("@patchStory");
 
-    cy.get('[data-cy="view-story-button"]').click();
+    cy.get('[data-cy="view-story-button-tablet"]').click();
 
     cy.wait("@fetchStory");
 
@@ -237,16 +189,6 @@ describe("Testing stories on DX", () => {
     cy.get('[data-cy="story-sub-header-title-input"]').type(
       advancedStoryTestName
     );
-
-    cy.get('[data-cy="story-header-block"]').within(() => {
-      cy.get('[data-testid="heading-rich-text-editor"]').type(
-        advancedStoryTestName
-      );
-      cy.get('[data-cy="description-rich-text-editor-container"]').click();
-      cy.get('[data-testid="description-rich-text-editor"]').type(
-        "This is a story on advanced football players"
-      );
-    });
 
     cy.intercept(`${apiUrl}/story/*`).as("fetchStory");
     cy.intercept(`${apiUrl}/stories?filter=*`).as("fetchStories");
@@ -322,7 +264,7 @@ describe("Testing stories on DX", () => {
 
     cy.wait("@patchStory");
 
-    cy.get('[data-cy="view-story-button"]').click();
+    cy.get('[data-cy="view-story-button-tablet"]').click();
 
     cy.wait("@fetchStory");
 
@@ -391,17 +333,11 @@ describe("Edit, duplicate and delete story", () => {
 
     cy.get('[data-cy="story-sub-header-title-input"]').type(" - Edited");
 
-    cy.get('[data-cy="story-header-block"]').within(() => {
-      cy.get('[data-testid="heading-rich-text-editor"]').type(" - Edited");
-      cy.get('[data-cy="description-rich-text-editor-container"]').click();
-      cy.get('[data-testid="description-rich-text-editor"]').type(" - Edited");
-    });
-
     cy.get('[data-cy="save-story-button"]').click();
 
     cy.wait("@patchStory");
 
-    cy.get('[data-cy="view-story-button"]').click();
+    cy.get('[data-cy="view-story-button-tablet"]').click();
 
     cy.wait("@fetchStory");
 

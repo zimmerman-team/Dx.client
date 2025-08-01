@@ -13,15 +13,18 @@ describe("testing footer for valid links", () => {
     cy.contains("Create high impact data driven");
   });
   it("it should go to why dataxplorer page", () => {
-    cy.contains("a", "Why Dataxplorer").scrollIntoView().click();
+    cy.get('[data-cy="nav-about-group"]').click();
+    cy.contains("a", "Why").scrollIntoView().click();
     cy.contains("Unlock the Power of Data with Dataxplorer");
   });
   it("it should go to about page", () => {
-    cy.contains("a", "About").scrollIntoView().click();
+    cy.get('[data-cy="nav-about-group"]').click();
+    cy.contains("a", "Who We Are").scrollIntoView().click();
     cy.contains("Our Story");
   });
   it("it should go to Partners page", () => {
-    cy.contains("a", "Partners").scrollIntoView().click();
+    cy.get('[data-cy="nav-about-group"]').click();
+    cy.contains("a", "Our Partners").scrollIntoView().click();
     cy.contains("The Global Fund to fight AIDS, Tuberculosis and Malaria");
   });
   it("it should go to Pricing page", () => {
@@ -31,7 +34,7 @@ describe("testing footer for valid links", () => {
   it("it should go to Contact page", () => {
     cy.contains("a", "Contact").scrollIntoView().click();
     cy.contains(
-      "Schedule a free demo now or ask us any data related question you may have."
+      "We like to get out and know about you to see our clients – we're more than happy to sit down and discuss a project. If you'd like to meet up, talk through a project, feel free to get in touch."
     );
   });
 });
