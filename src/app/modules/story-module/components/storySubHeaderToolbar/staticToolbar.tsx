@@ -165,7 +165,11 @@ export default function StaticToolbar(props: {
                   </div>
                 </Tooltip>
                 {divider}
-                <FontStyleHandler {...externalProps} />
+                <FontStyleHandler
+                  {...externalProps}
+                  framesArray={props.framesArray}
+                  updateFramesArray={props.updateFramesArray}
+                />
 
                 {divider}
                 <FontFamilyHandler {...externalProps} />

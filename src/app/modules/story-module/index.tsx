@@ -402,11 +402,11 @@ export default function StoryModule() {
             isSaveEnabled={isSaveEnabled}
             name={page !== "new" && !view ? storyGetData.name : storyName}
             framesArray={framesArray}
+            updateFramesArray={updateFramesArray}
             headerDetails={headerDetails}
             setStopInitializeFramesWidth={setStopInitializeFramesWidth}
             isPreviewView={isPreviewView}
             plugins={plugins}
-            updateFramesArray={updateFramesArray}
             undoStack={undoStack}
             setUndoStack={setUndoStack}
             redoStack={redoStack}

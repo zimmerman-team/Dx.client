@@ -1,8 +1,16 @@
 import React, { useRef } from "react";
-import ChevronRightIcon from "@material-ui/icons/ChevronRight";
 import { useOnClickOutside } from "usehooks-ts";
-import { EditorState, RichUtils } from "draft-js";
+import {
+  ContentBlock,
+  ContentState,
+  EditorState,
+  Modifier,
+  RichUtils,
+  SelectionState,
+} from "draft-js";
 import { fontStyles } from "./data";
+import { IFramesArray } from "app/modules/story-module/views/create/data";
+import { Updater } from "use-immer";
 
 type FontStyleType = {
   key: string;
@@ -17,21 +25,24 @@ type FontStyleType = {
 interface Props {
   getEditorState: () => EditorState;
   setEditorState: (editorState: EditorState) => void;
+  framesArray: IFramesArray[];
+  updateFramesArray: Updater<IFramesArray[]>;
 }
 
 export function FontStyleHandler(props: Props) {
+  const ref = useRef(null);
   const [displayModal, setDisplayModal] = React.useState(false);
   const [fontStylesState, setFontStylesState] = React.useState(fontStyles);
   const [showDetail, setShowDetail] = React.useState<Partial<FontStyleType>>(
     {}
   );
 
-  const ref = useRef(null);
   useOnClickOutside(ref, () => {
     if (displayModal) {
       setDisplayModal(false);
     }
   });
+
   const handleShowDetail = (style: FontStyleType, display: boolean) => {
     setFontStylesState((prevStyles) =>
       prevStyles.map((s) =>
@@ -45,12 +56,11 @@ export function FontStyleHandler(props: Props) {
     });
   };
   const activeStyle = `
-     background: #cfd0f4;
-                  border-bottom: 1px solid #8081e3;
-             
-                  width: 100%;
-                  padding: 0 16px;
-                  cursor: pointer;
+    background: #cfd0f4;
+    border-bottom: 1px solid #8081e3;
+    width: 100%;
+    padding: 0 16px;
+    cursor: pointer;
   `;
 
   const promptText = (active: boolean, label: string) => {
@@ -60,19 +70,73 @@ export function FontStyleHandler(props: Props) {
     return active ? `Remove ${label} style` : `Apply ${label} style`;
   };
 
-  const getCurrentBlockType = () => {
+  // Get the current block type and inline styles from selected editor
+  const getCurrentBlockStyleInfo = () => {
     if (!props.getEditorState) {
-      return "unstyled"; // Default block type if editor state is not available
+      return {
+        currentBlockType: "unstyled", // Default block type if editor state is not available
+        inlineStyles: [],
+        hasContent: false,
+      }; // Default block type if editor state is not available
     }
-    const selection = props.getEditorState().getSelection();
-    const currentContent = props.getEditorState().getCurrentContent();
-    const currentBlock = currentContent.getBlockForKey(selection.getStartKey());
-    return currentBlock.getType();
+    const editorState = props.getEditorState();
+    const selection = editorState.getSelection();
+    const contentState = editorState.getCurrentContent();
+    const currentBlock = contentState.getBlockForKey(selection.getStartKey());
+
+    // Get block type
+    const currentBlockType = currentBlock.getType();
+
+    // Get inline styles at current selection
+    const inlineStyles = editorState.getCurrentInlineStyle();
+
+    return {
+      currentBlockType,
+      currentBlock,
+      inlineStyles: inlineStyles.toArray(),
+      hasContent: currentBlock.getText().length > 0,
+    };
   };
-  const currentBlockType = getCurrentBlockType();
+
+  const { currentBlockType } = getCurrentBlockStyleInfo();
   const currentStyle =
     fontStylesState.find((style) => style.blockType === currentBlockType) ||
     fontStyles[0];
+
+  const clearAllInlineStyles = (
+    contentState: ContentState,
+    selection: SelectionState
+  ) => {
+    let clearedContentState = contentState;
+
+    // Get all unique styles in the selection
+    const allStyles = new Set<string>();
+    const startKey = selection.getStartKey();
+    const endKey = selection.getEndKey();
+    const startOffset = selection.getStartOffset();
+    const endOffset = selection.getEndOffset();
+
+    const block = contentState.getBlockForKey(startKey);
+    const characterList = block.getCharacterList();
+
+    for (let i = startOffset; i < endOffset; i++) {
+      const char = characterList.get(i);
+      if (char) {
+        char.getStyle().forEach((style) => allStyles.add(style!));
+      }
+    }
+
+    // Remove each style
+    allStyles.forEach((style) => {
+      clearedContentState = Modifier.removeInlineStyle(
+        clearedContentState,
+        selection,
+        style
+      );
+    });
+
+    return clearedContentState;
+  };
 
   // Handle block type change
   const handleStyleChange = (style: FontStyleType) => {
@@ -85,6 +149,90 @@ export function FontStyleHandler(props: Props) {
     );
     props.setEditorState(newState);
     setDisplayModal(false);
+  };
+
+  const handleMatchingBlocks = (
+    targetEditorState: EditorState,
+    sourceBlock: ContentBlock
+  ): EditorState => {
+    const contentState = targetEditorState.getCurrentContent();
+    const blockMap = contentState.getBlockMap();
+
+    // Collect all inline styles from current block
+    const inlineStyles = new Set<string>();
+    sourceBlock.getCharacterList().forEach((charMeta) => {
+      charMeta?.getStyle().forEach((style) => inlineStyles.add(style!));
+    });
+
+    if (inlineStyles.size === 0) return targetEditorState; // nothing to copy
+
+    let newContentState = contentState;
+
+    // Apply styles to each matching block
+    blockMap
+      .entrySeq()
+      .toArray()
+      .forEach(([blockKey, block]: any) => {
+        if (block.getType() === currentBlockType) {
+          const blockSelection = SelectionState.createEmpty(blockKey).merge({
+            anchorOffset: 0,
+            focusOffset: block.getLength(),
+          }) as SelectionState;
+
+          // Clear all existing styles
+          newContentState = clearAllInlineStyles(
+            newContentState,
+            blockSelection
+          );
+
+          inlineStyles.forEach((style) => {
+            newContentState = Modifier.applyInlineStyle(
+              newContentState,
+              blockSelection,
+              style
+            );
+          });
+          const updatedBlock = newContentState.getBlockForKey(blockKey);
+          const appliedInlineStyles = new Set<string>();
+          updatedBlock.getCharacterList().forEach((charMeta) => {
+            charMeta
+              ?.getStyle()
+              .forEach((style) => appliedInlineStyles.add(style!));
+          });
+        }
+      });
+
+    const newEditorState = EditorState.push(
+      targetEditorState,
+      newContentState,
+      "change-inline-style"
+    );
+
+    return EditorState.acceptSelection(
+      newEditorState,
+      targetEditorState.getSelection()
+    );
+  };
+
+  const handleStylePropagation = (e: React.MouseEvent) => {
+    e.stopPropagation();
+
+    const { currentBlock: sourceBlock } = getCurrentBlockStyleInfo();
+
+    const updatedFrames = props.framesArray.map((frame) => {
+      const newContentList = frame.content.map((content) => {
+        if (content instanceof EditorState && sourceBlock) {
+          const newState = handleMatchingBlocks(content, sourceBlock);
+          // ensure new reference even if unchanged
+          return EditorState.forceSelection(newState, newState.getSelection());
+        }
+        return content;
+      });
+
+      return { ...frame, content: newContentList };
+    });
+
+    props.updateFramesArray(updatedFrames);
   };
 
   return (
@@ -233,7 +381,7 @@ export function FontStyleHandler(props: Props) {
                   <ChevronRightIcon />
                 </button> */}
               </div>
-              {/* <div
+              <div
                 css={`
                   display: ${style.selected ? "flex" : "none"};
                   width: 250px;
@@ -269,7 +417,16 @@ export function FontStyleHandler(props: Props) {
                 >
                   {promptText(style.label === currentStyle.label, style.label)}
                 </div>
-              </div> */}
+
+                <div
+                  onClick={handleStylePropagation}
+                  css={`
+                    border-bottom: 1px solid #cfd4da;
+                  `}
+                >
+                  Apply text to match
+                </div>
+              </div>
             </div>
           ))}
         </div>

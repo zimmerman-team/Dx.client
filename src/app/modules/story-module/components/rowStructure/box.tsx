@@ -392,13 +392,7 @@ const Box = (props: BoxProps) => {
         return;
       }
 
-      if (
-        props.contentType === "text" &&
-        !isEqual(
-          boxContent.getCurrentContent(),
-          textContent.getCurrentContent()
-        )
-      ) {
+      if (props.contentType === "text") {
         // store();
         handleRowFrameItemAddition(
           props.rowId,

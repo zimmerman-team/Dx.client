@@ -43,12 +43,12 @@ export interface StorySubheaderToolbarProps {
   setHasStoryNameBlurred?: (value: boolean) => void;
   plugins: ToolbarPluginsType;
   headerDetails: IHeaderDetails;
-  updateFramesArray: Updater<IFramesArray[]>;
   framesArray: IFramesArray[];
   undoStack: IFramesArray[][];
   setUndoStack: React.Dispatch<React.SetStateAction<IFramesArray[][]>>;
   redoStack: IFramesArray[][];
   setRedoStack: React.Dispatch<React.SetStateAction<IFramesArray[][]>>;
+  updateFramesArray: Updater<IFramesArray[]>;
   setStopInitializeFramesWidth?: (value: boolean) => void;
   handlePersistStoryState?: () => void;
   isPreviewView: boolean;
