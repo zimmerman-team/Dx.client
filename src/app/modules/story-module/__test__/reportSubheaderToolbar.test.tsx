@@ -166,14 +166,14 @@ const appSetup = (params: Params, newProps: Partial<MockProps> = {}) => {
                 node={homeDisplayAtom}
                 onChange={onHomeTabChange}
               />
-              <StorySubheaderToolbar
+              {/* <StorySubheaderToolbar
                 updateFramesArray={function (
                   arg: IFramesArray[] | DraftFunction<IFramesArray[]>
                 ): void {
                   throw new Error("Function not implemented.");
                 }}
                 {...props}
-              />
+              /> */}
             </RecoilRoot>
           </StoreProvider>
         </Auth0Provider>

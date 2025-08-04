@@ -8,9 +8,10 @@ import {
   RichUtils,
   SelectionState,
 } from "draft-js";
-import { fontStyles } from "./data";
+import { fontFamilies, fontStyles } from "./data";
 import { IFramesArray } from "app/modules/story-module/views/create/data";
 import { Updater } from "use-immer";
+import { IUniformBlockTypeStyle } from "app/modules/story-module/data";
 
 type FontStyleType = {
   key: string;
@@ -27,6 +28,10 @@ interface Props {
   setEditorState: (editorState: EditorState) => void;
   framesArray: IFramesArray[];
   updateFramesArray: Updater<IFramesArray[]>;
+  uniformBlockTypeStyle: IUniformBlockTypeStyle;
+  setUniformBlockTypeStyle: React.Dispatch<
+    React.SetStateAction<IUniformBlockTypeStyle>
+  >;
 }
 
 export function FontStyleHandler(props: Props) {
@@ -36,6 +41,7 @@ export function FontStyleHandler(props: Props) {
   const [showDetail, setShowDetail] = React.useState<Partial<FontStyleType>>(
     {}
   );
+  const editorChangeType = "change-inline-style";
 
   useOnClickOutside(ref, () => {
     if (displayModal) {
@@ -70,6 +76,23 @@ export function FontStyleHandler(props: Props) {
     return active ? `Remove ${label} style` : `Apply ${label} style`;
   };
 
+  const getEditorStateProperties = (editorState: EditorState) => {
+    const selection = editorState.getSelection();
+    const contentState = editorState.getCurrentContent();
+    const blockKey = selection.getStartKey();
+    const block = contentState.getBlockForKey(blockKey);
+    const blockType = block.getType();
+    const inlineStyles = editorState.getCurrentInlineStyle();
+    return {
+      selection,
+      contentState,
+      blockKey,
+      block,
+      blockType,
+      inlineStyles,
+    };
+  };
+
   // Get the current block type and inline styles from selected editor
   const getCurrentBlockStyleInfo = () => {
     if (!props.getEditorState) {
@@ -77,29 +100,22 @@ export function FontStyleHandler(props: Props) {
         currentBlockType: "unstyled", // Default block type if editor state is not available
         inlineStyles: [],
         hasContent: false,
-      }; // Default block type if editor state is not available
+      };
     }
     const editorState = props.getEditorState();
-    const selection = editorState.getSelection();
-    const contentState = editorState.getCurrentContent();
-    const currentBlock = contentState.getBlockForKey(selection.getStartKey());
-
-    // Get block type
-    const currentBlockType = currentBlock.getType();
-
-    // Get inline styles at current selection
-    const inlineStyles = editorState.getCurrentInlineStyle();
+    const { block, blockType, inlineStyles } =
+      getEditorStateProperties(editorState);
 
     return {
-      currentBlockType,
-      currentBlock,
+      currentBlockType: blockType,
+      currentBlock: block,
       inlineStyles: inlineStyles.toArray(),
-      hasContent: currentBlock.getText().length > 0,
+      hasContent: block.getText().length > 0,
     };
   };
 
   const { currentBlockType } = getCurrentBlockStyleInfo();
-  const currentStyle =
+  const currentBlockStyle =
     fontStylesState.find((style) => style.blockType === currentBlockType) ||
     fontStyles[0];
 
@@ -112,7 +128,6 @@ export function FontStyleHandler(props: Props) {
     // Get all unique styles in the selection
     const allStyles = new Set<string>();
     const startKey = selection.getStartKey();
-    const endKey = selection.getEndKey();
     const startOffset = selection.getStartOffset();
     const endOffset = selection.getEndOffset();
 
@@ -143,12 +158,104 @@ export function FontStyleHandler(props: Props) {
     if (!props.getEditorState || !props.setEditorState) {
       return;
     }
-    const newState = RichUtils.toggleBlockType(
-      props.getEditorState(),
-      style.blockType
-    );
-    props.setEditorState(newState);
-    setDisplayModal(false);
+    try {
+      let editorState = props.getEditorState();
+
+      // Apply block type change first
+      editorState = RichUtils.toggleBlockType(editorState, style.blockType);
+      // Get fresh selection and content after block type change
+      const { block, blockKey, contentState, selection } =
+        getEditorStateProperties(editorState);
+
+      const inlineStylesToApply =
+        props.uniformBlockTypeStyle[
+          style.blockType as keyof typeof props.uniformBlockTypeStyle
+        ]?.inlineStyles;
+
+      if (inlineStylesToApply) {
+        const clearedContentState = clearAllInlineStyles(
+          contentState,
+          selection
+        );
+        let newContent = clearedContentState;
+        // Create selection for entire block
+        const blockSelection = SelectionState.createEmpty(blockKey).merge({
+          anchorOffset: 0,
+          focusOffset: block.getLength(),
+        }) as SelectionState;
+
+        inlineStylesToApply.forEach((inlineStyle) => {
+          newContent = Modifier.applyInlineStyle(
+            newContent,
+            blockSelection,
+            inlineStyle
+          );
+        });
+        editorState = EditorState.push(
+          editorState,
+          newContent,
+          editorChangeType
+        );
+      } else {
+        // If no inline styles, clear all inline styles in the block
+        const clearedContentState = clearAllInlineStyles(
+          contentState,
+          selection
+        );
+        editorState = EditorState.push(
+          editorState,
+          clearedContentState,
+          editorChangeType
+        );
+      }
+      props.setEditorState(editorState);
+      setDisplayModal(false);
+    } catch (e) {
+      console.error("Error in handleStyleChange:", e);
+      return null;
+    }
+  };
+
+  const updateBlockStyleLabelCss = (stylesArray: string[]) => {
+    let css: string[] = [];
+
+    stylesArray.forEach((value) => {
+      if (value.startsWith("font-size-")) {
+        const size = value.split("font-size-")[1];
+        css.push(`font-size: ${size}px`);
+      } else if (value.startsWith("COLOR-")) {
+        const color = value.split("COLOR-")[1];
+        css.push(`color: ${color}`);
+      } else if (value === "UNDERLINE") {
+        css.push("text-decoration: underline");
+      } else if (value === "ITALIC") {
+        css.push("font-style: italic");
+      } else if (value === "BOLD") {
+        css.push("font-weight: bold");
+      } else if (value.startsWith("FONT_FAMILY_")) {
+        // extract and normalize the label
+        const label = value
+          .replace("FONT_FAMILY_", "")
+          .toLowerCase()
+          .replace(/_/g, " ");
+
+        // find the corresponding fontFamily
+        console.log("FONT_FAMILY_ found", label);
+        const fontObj = fontFamilies.find(
+          (f) => f.label.toLowerCase() === label
+        );
+        if (fontObj) {
+          css.push(`font-family: ${fontObj.fontFamily}`);
+        }
+      } else if (value === "center") {
+        css.push("text-align: center");
+      } else if (value.startsWith("BG-COLOR-")) {
+        const bgColor = value.split("BG-COLOR-")[1];
+        css.push(`background-color: ${bgColor}`);
+      }
+    });
+    console.log(css.join("; ") + ";", "css");
+    return css.join("; ") + ";";
   };
 
   const handleMatchingBlocks = (
@@ -167,6 +274,13 @@ export function FontStyleHandler(props: Props) {
     if (inlineStyles.size === 0) return targetEditorState; // nothing to copy
 
     let newContentState = contentState;
+    props.setUniformBlockTypeStyle((prev) => ({
+      ...prev,
+      [sourceBlock.getType()]: {
+        css: updateBlockStyleLabelCss(Array.from(inlineStyles)),
+        inlineStyles: Array.from(inlineStyles),
+      },
+    }));
 
     // Apply styles to each matching block
     blockMap
@@ -205,7 +319,7 @@ export function FontStyleHandler(props: Props) {
     const newEditorState = EditorState.push(
       targetEditorState,
       newContentState,
-      "change-inline-style"
+      editorChangeType
     );
 
     return EditorState.acceptSelection(
@@ -233,6 +347,7 @@ export function FontStyleHandler(props: Props) {
     });
 
     props.updateFramesArray(updatedFrames);
+    setDisplayModal(false);
   };
 
   return (
@@ -264,7 +379,7 @@ export function FontStyleHandler(props: Props) {
             }
           `}
         >
-          {currentStyle.label}
+          {currentBlockStyle.label}
           <span
             css={`
               display: flex;
@@ -339,6 +454,11 @@ export function FontStyleHandler(props: Props) {
                     font-size: ${style.fontSize};
                     font-family: ${style.fontFamily};
                     text-transform: capitalize;
+                    ${props.uniformBlockTypeStyle
+                      ? props.uniformBlockTypeStyle[
+                          style.blockType as keyof typeof props.uniformBlockTypeStyle
+                        ]?.css
+                      : ""}
                   `}
                 >
                   {style.label}
@@ -358,7 +478,7 @@ export function FontStyleHandler(props: Props) {
                   }
                 `}
               >
-                {style.label === currentStyle.label && (
+                {style.label === currentBlockStyle.label && (
                   <button>
                     <svg
                       width="15"
@@ -370,9 +490,9 @@ export function FontStyleHandler(props: Props) {
                       <path
                         d="M13.292 1.5L5.04199 9.75L1.29199 6"
                         stroke="#70777E"
-                        stroke-width="1.5"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
+                        strokeWidth="1.5"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
                       />
                     </svg>
                   </button>
@@ -415,7 +535,10 @@ export function FontStyleHandler(props: Props) {
                     border-bottom: 1px solid #cfd4da;
                   `}
                 >
-                  {promptText(style.label === currentStyle.label, style.label)}
+                  {promptText(
+                    style.label === currentBlockStyle.label,
+                    style.label
+                  )}
                 </div>
 
                 <div

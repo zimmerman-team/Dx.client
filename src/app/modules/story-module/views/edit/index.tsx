@@ -158,6 +158,10 @@ function StoryEditView(props: Readonly<StoryEditViewProps>) {
     }
   };
 
+  const uniformBlockTypeStyleFromStoryData = (story: StoryModel) => {
+    return story.uniformBlockTypeStyle;
+  };
+
   const framesArrayFromStoryData = (story: StoryModel): IFramesArray[] => {
     return story.rows?.map((rowFrame, index) => {
       const contentTypes = rowFrame.items.map(getContentType);
@@ -267,6 +271,9 @@ function StoryEditView(props: Readonly<StoryEditViewProps>) {
     }
 
     props.updateFramesArray(framesArrayFromStoryData(storyData));
+    props.setUniformBlockTypeStyle(
+      uniformBlockTypeStyleFromStoryData(storyData)
+    );
   };
 
   React.useEffect(() => {
@@ -348,19 +355,15 @@ function StoryEditView(props: Readonly<StoryEditViewProps>) {
           id="content-container"
           css={`
             transition: width 225ms cubic-bezier(0, 0, 0.2, 1) 0ms;
-            width: ${
-              props.rightPanelOpen
-                ? "calc(100vw - ((100vw - 1280px) / 2) - 400px - 50px)"
-                : "100%"
-            };
+            width: ${props.rightPanelOpen
+              ? "calc(100vw - ((100vw - 1280px) / 2) - 400px - 50px)"
+              : "100%"};
             position: relative;
             @media (min-width: ${TABLET_STARTPOINT}) and (max-width: 1260px) {
-             width: ${
-               props.rightPanelOpen
-                 ? `calc(100% - ${RIGHT_PANEL_WIDTH})`
-                 : "100%"
-             }
-
+              width: ${props.rightPanelOpen
+                ? `calc(100% - ${RIGHT_PANEL_WIDTH})`
+                : "100%"};
+            }
           `}
         >
           <Box height={50} />

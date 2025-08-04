@@ -669,6 +669,8 @@ export function StorySubheaderToolbar(
             updateFramesArray={props.updateFramesArray}
             undoStack={props.undoStack}
             setUndoStack={props.setUndoStack}
+            setUniformBlockTypeStyle={props.setUniformBlockTypeStyle}
+            uniformBlockTypeStyle={props.uniformBlockTypeStyle}
           />
         </Container>
       )}
