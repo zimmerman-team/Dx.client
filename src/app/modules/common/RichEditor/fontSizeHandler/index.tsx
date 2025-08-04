@@ -39,6 +39,7 @@ const SizeButton = styled.button`
   outline: none;
   user-select: none;
   width: auto !important;
+  height: 100%;
 `;
 
 const SizeInput = styled.input`

@@ -38,9 +38,7 @@ export function FontStyleHandler(props: Props) {
   const ref = useRef(null);
   const [displayModal, setDisplayModal] = React.useState(false);
   const [fontStylesState, setFontStylesState] = React.useState(fontStyles);
-  const [showDetail, setShowDetail] = React.useState<Partial<FontStyleType>>(
-    {}
-  );
+
   const editorChangeType = "change-inline-style";
 
   useOnClickOutside(ref, () => {
@@ -57,9 +55,6 @@ export function FontStyleHandler(props: Props) {
           : { ...s, selected: false }
       )
     );
-    setShowDetail({
-      ...style,
-    });
   };
   const activeStyle = `
     background: #cfd0f4;
@@ -91,6 +86,16 @@ export function FontStyleHandler(props: Props) {
       blockType,
       inlineStyles,
     };
+  };
+
+  const isNormalBlockType = (sourceBT: string, targetBT: string) => {
+    if (sourceBT !== "unstyled") return false;
+    return (
+      targetBT === "unstyled" ||
+      targetBT === "ordered-list-item" ||
+      targetBT === "unordered-list-item" ||
+      targetBT === "blockquote"
+    );
   };
 
   // Get the current block type and inline styles from selected editor
@@ -287,7 +292,11 @@ export function FontStyleHandler(props: Props) {
       .entrySeq()
       .toArray()
       .forEach(([blockKey, block]: any) => {
-        if (block.getType() === currentBlockType) {
+        // Only apply to blocks of the same
+        if (
+          block.getType() === currentBlockType ||
+          isNormalBlockType(currentBlockType, block.getType())
+        ) {
           const blockSelection = SelectionState.createEmpty(blockKey).merge({
             anchorOffset: 0,
             focusOffset: block.getLength(),
@@ -407,7 +416,7 @@ export function FontStyleHandler(props: Props) {
         </button>
         <div
           css={`
-            width: 200px;
+            min-width: 200px;
             border-radius: 10px;
             box-shadow: 0px 2px 6px 0px rgba(0, 0, 0, 0.3);
             position: absolute;
@@ -434,7 +443,7 @@ export function FontStyleHandler(props: Props) {
               onMouseEnter={() => handleShowDetail(style, true)}
               onMouseLeave={() => handleShowDetail(style, false)}
               css={`
-                height: ${style.height};
+                min-height: ${style.height};
                 display: flex;
                 align-items: center;
                 justify-content: space-between;
@@ -442,7 +451,8 @@ export function FontStyleHandler(props: Props) {
                 fontStylesState[index + 1]?.selected
                   ? ""
                   : "border-bottom: 1px solid #cfd4da;"}
-                width: 168px;
+                min-width: 168px;
+                padding: 10px;
                 position: relative;
                 cursor: pointer;
                 ${style.selected && activeStyle}
@@ -454,6 +464,7 @@ export function FontStyleHandler(props: Props) {
                     font-size: ${style.fontSize};
                     font-family: ${style.fontFamily};
                     text-transform: capitalize;
+                    white-space: nowrap;
                     ${props.uniformBlockTypeStyle
                       ? props.uniformBlockTypeStyle[
                           style.blockType as keyof typeof props.uniformBlockTypeStyle
@@ -468,6 +479,7 @@ export function FontStyleHandler(props: Props) {
                 css={`
                   display: flex;
                   gap: 16px;
+                  flex-shrink: 0;
                   button {
                     background: none;
                     border: none;
