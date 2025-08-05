@@ -18,7 +18,7 @@ export const fontStyles = [
     key: "title",
     label: "Title",
     style: "title",
-    height: "70px",
+    height: "60px",
     fontFamily: DEFAULT_BOLD_FONT_FAMILY,
     fontSize: "40px",
     selected: false,

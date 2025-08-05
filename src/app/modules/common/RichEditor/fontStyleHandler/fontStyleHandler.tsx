@@ -59,7 +59,7 @@ export function FontStyleHandler(props: Props) {
   const activeStyle = `
     background: #cfd0f4;
     border-bottom: 1px solid #8081e3;
-    width: 100%;
+   
     padding: 0 16px;
     cursor: pointer;
   `;
@@ -221,46 +221,49 @@ export function FontStyleHandler(props: Props) {
     }
   };
 
-  const updateBlockStyleLabelCss = (stylesArray: string[]) => {
-    let css: string[] = [];
+  const updateBlockStyleLabelCss = (
+    stylesArray: string[],
+    blockType: string
+  ) => {
+    const css: string[] = [];
 
-    stylesArray.forEach((value) => {
+    const keywordMap: Record<string, string> = {
+      UNDERLINE: "text-decoration: underline",
+      ITALIC: "font-style: italic",
+      BOLD: "font-weight: bold",
+      center: "text-align: center",
+    };
+
+    const maxFontSize = blockType === "title" ? 40 : 28;
+
+    const getFontFamilyCss = (value: string) => {
+      const label = value
+        .replace("FONT_FAMILY_", "")
+        .toLowerCase()
+        .replace(/_/g, " ");
+      const fontObj = fontFamilies.find((f) => f.label.toLowerCase() === label);
+      return fontObj ? `font-family: ${fontObj.fontFamily}` : null;
+    };
+
+    for (const value of stylesArray) {
       if (value.startsWith("font-size-")) {
-        const size = value.split("font-size-")[1];
-        css.push(`font-size: ${size}px`);
+        const size = parseInt(value.split("font-size-")[1]);
+        css.push(`font-size: ${Math.min(size, maxFontSize)}px`);
       } else if (value.startsWith("COLOR-")) {
-        const color = value.split("COLOR-")[1];
-        css.push(`color: ${color}`);
-      } else if (value === "UNDERLINE") {
-        css.push("text-decoration: underline");
-      } else if (value === "ITALIC") {
-        css.push("font-style: italic");
-      } else if (value === "BOLD") {
-        css.push("font-weight: bold");
-      } else if (value.startsWith("FONT_FAMILY_")) {
-        // extract and normalize the label
-        const label = value
-          .replace("FONT_FAMILY_", "")
-          .toLowerCase()
-          .replace(/_/g, " ");
-
-        // find the corresponding fontFamily
-        console.log("FONT_FAMILY_ found", label);
-        const fontObj = fontFamilies.find(
-          (f) => f.label.toLowerCase() === label
-        );
-        if (fontObj) {
-          css.push(`font-family: ${fontObj.fontFamily}`);
-        }
-      } else if (value === "center") {
-        css.push("text-align: center");
+        css.push(`color: ${value.split("COLOR-")[1]}`);
       } else if (value.startsWith("BG-COLOR-")) {
-        const bgColor = value.split("BG-COLOR-")[1];
-        css.push(`background-color: ${bgColor}`);
+        css.push(`background-color: ${value.split("BG-COLOR-")[1]}`);
+      } else if (value.startsWith("FONT_FAMILY_")) {
+        const fontCss = getFontFamilyCss(value);
+        if (fontCss) css.push(fontCss);
+      } else if (keywordMap[value]) {
+        css.push(keywordMap[value]);
       }
-    });
-    console.log(css.join("; ") + ";", "css");
-    return css.join("; ") + ";";
+    }
+
+    const cssString = css.join("; ") + ";";
+    console.log(cssString, "css");
+    return cssString;
   };
 
   const handleMatchingBlocks = (
@@ -282,7 +285,10 @@ export function FontStyleHandler(props: Props) {
     props.setUniformBlockTypeStyle((prev) => ({
       ...prev,
       [sourceBlock.getType()]: {
-        css: updateBlockStyleLabelCss(Array.from(inlineStyles)),
+        css: updateBlockStyleLabelCss(
+          Array.from(inlineStyles),
+          sourceBlock.getType()
+        ),
         inlineStyles: Array.from(inlineStyles),
       },
     }));
@@ -417,6 +423,7 @@ export function FontStyleHandler(props: Props) {
         <div
           css={`
             min-width: 200px;
+
             border-radius: 10px;
             box-shadow: 0px 2px 6px 0px rgba(0, 0, 0, 0.3);
             position: absolute;
@@ -446,19 +453,28 @@ export function FontStyleHandler(props: Props) {
                 min-height: ${style.height};
                 display: flex;
                 align-items: center;
-                justify-content: space-between;
                 ${index === fontStylesState.length - 1 ||
                 fontStylesState[index + 1]?.selected
                   ? ""
                   : "border-bottom: 1px solid #cfd4da;"}
-                min-width: 168px;
-                padding: 10px;
+
+                width: 100%;
+                padding: 0 10px;
+
                 position: relative;
                 cursor: pointer;
                 ${style.selected && activeStyle}
               `}
             >
-              <div css={``}>
+              <div
+                css={`
+                  display: flex;
+                  align-items: center;
+                  justify-content: space-between;
+                  /* width: 90%; */
+                  gap: 8px;
+                `}
+              >
                 <span
                   css={`
                     font-size: ${style.fontSize};
@@ -474,44 +490,45 @@ export function FontStyleHandler(props: Props) {
                 >
                   {style.label}
                 </span>
-              </div>
-              <div
-                css={`
-                  display: flex;
-                  gap: 16px;
-                  flex-shrink: 0;
-                  button {
-                    background: none;
-                    border: none;
-                    outline: none;
-                    cursor: pointer;
-                    padding: 0;
-                    width: max-content;
-                  }
-                `}
-              >
-                {style.label === currentBlockStyle.label && (
-                  <button>
-                    <svg
-                      width="15"
-                      height="11"
-                      viewBox="0 0 15 11"
-                      fill="none"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <path
-                        d="M13.292 1.5L5.04199 9.75L1.29199 6"
-                        stroke="#70777E"
-                        strokeWidth="1.5"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      />
-                    </svg>
-                  </button>
-                )}
-                {/* <button>
+
+                <div
+                  css={`
+                    display: flex;
+                    gap: 16px;
+                    flex-shrink: 0;
+                    button {
+                      background: none;
+                      border: none;
+                      outline: none;
+                      cursor: pointer;
+                      padding: 0;
+                      width: max-content;
+                    }
+                  `}
+                >
+                  {style.label === currentBlockStyle.label && (
+                    <button>
+                      <svg
+                        width="15"
+                        height="11"
+                        viewBox="0 0 15 11"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          d="M13.292 1.5L5.04199 9.75L1.29199 6"
+                          stroke="#70777E"
+                          strokeWidth="1.5"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        />
+                      </svg>
+                    </button>
+                  )}
+                  {/* <button>
                   <ChevronRightIcon />
                 </button> */}
+                </div>
               </div>
               <div
                 css={`
