@@ -31,6 +31,7 @@ import {
 import axios, { AxiosResponse } from "axios";
 import { StorySubheaderToolbar } from "app/modules/story-module/components/storySubHeaderToolbar";
 import { setMediaQueryForTest } from "app/utils/setMediaQueryForTest";
+import { DraftFunction } from "use-immer";
 
 interface MockProps {
   name: string;
@@ -165,7 +166,14 @@ const appSetup = (params: Params, newProps: Partial<MockProps> = {}) => {
                 node={homeDisplayAtom}
                 onChange={onHomeTabChange}
               />
-              {/* <StorySubheaderToolbar {...props} /> */}
+              {/* <StorySubheaderToolbar
+                updateFramesArray={function (
+                  arg: IFramesArray[] | DraftFunction<IFramesArray[]>
+                ): void {
+                  throw new Error("Function not implemented.");
+                }}
+                {...props}
+              /> */}
             </RecoilRoot>
           </StoreProvider>
         </Auth0Provider>

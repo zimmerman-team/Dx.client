@@ -35,6 +35,7 @@ import Tooltip from "@material-ui/core/Tooltip";
 import { useUndoRedo } from "app/hooks/useUndoRedo";
 import { IFramesArray } from "app/modules/story-module/views/create/data";
 import { Updater } from "use-immer";
+import { IUniformBlockTypeStyle } from "app/modules/story-module/data";
 
 type UndoRedoType = {
   UndoButton: React.ComponentType<UndoRedoButtonProps>;
@@ -57,6 +58,10 @@ export default function StaticToolbar(props: {
   setUndoStack: React.Dispatch<React.SetStateAction<IFramesArray[][]>>;
   redoStack: IFramesArray[][];
   setRedoStack: React.Dispatch<React.SetStateAction<IFramesArray[][]>>;
+  uniformBlockTypeStyle: IUniformBlockTypeStyle;
+  setUniformBlockTypeStyle: React.Dispatch<
+    React.SetStateAction<IUniformBlockTypeStyle>
+  >;
 }) {
   const { redo, undo } = useUndoRedo(
     props.framesArray,
@@ -165,7 +170,13 @@ export default function StaticToolbar(props: {
                   </div>
                 </Tooltip>
                 {divider}
-                <FontStyleHandler {...externalProps} />
+                <FontStyleHandler
+                  {...externalProps}
+                  framesArray={props.framesArray}
+                  updateFramesArray={props.updateFramesArray}
+                  setUniformBlockTypeStyle={props.setUniformBlockTypeStyle}
+                  uniformBlockTypeStyle={props.uniformBlockTypeStyle}
+                />
 
                 {divider}
                 <FontFamilyHandler {...externalProps} />

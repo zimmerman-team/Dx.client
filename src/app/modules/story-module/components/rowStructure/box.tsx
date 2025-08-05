@@ -150,10 +150,10 @@ const Box = (props: BoxProps) => {
     setTextContent(value);
   };
   React.useEffect(() => {
-    if (props.contentType === "text" && boxContent) {
+    if (boxContent && boxContent instanceof EditorState) {
       setTextContent(boxContent);
     }
-  }, [boxContent, props.contentType]);
+  }, [boxContent, props.contentType, props.previewItem]);
   const [displayBoxIcons, setDisplayBoxIcons] = useState(false);
 
   const placeholder = "Add your story...";
@@ -392,13 +392,7 @@ const Box = (props: BoxProps) => {
         return;
       }
 
-      if (
-        props.contentType === "text" &&
-        !isEqual(
-          boxContent.getCurrentContent(),
-          textContent.getCurrentContent()
-        )
-      ) {
+      if (props.contentType === "text") {
         // store();
         handleRowFrameItemAddition(
           props.rowId,
@@ -427,11 +421,11 @@ const Box = (props: BoxProps) => {
     props.tempHeight > 0 ? props.tempHeight : props.initialHeight;
 
   const resolvedHeight =
-    viewOnlyMode && smScreen && contentType === "text"
-      ? `${editorHeight ?? props.initialHeight}px`
-      : props.tempHeight > 0
-      ? `${props.tempHeight}px`
-      : `${props.initialHeight}px`;
+    viewOnlyMode && contentType === "text" && editorHeight
+      ? editorHeight > controlledHeight
+        ? editorHeight
+        : controlledHeight
+      : controlledHeight;
 
   // Common resizable props
   const getResizableProps = () => ({

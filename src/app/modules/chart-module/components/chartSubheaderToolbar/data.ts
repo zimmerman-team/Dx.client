@@ -2,6 +2,7 @@ import { IFramesArray } from "app/modules/story-module/views/create/data";
 import { IHeaderDetails } from "app/modules/story-module/components/right-panel/data";
 import { ToolbarPluginsType } from "app/modules/story-module/components/storySubHeaderToolbar/staticToolbar";
 import { Updater } from "use-immer";
+import { IUniformBlockTypeStyle } from "app/modules/story-module/data";
 
 export interface ChartSubheaderToolbarProps {
   name: string;
@@ -43,13 +44,17 @@ export interface StorySubheaderToolbarProps {
   setHasStoryNameBlurred?: (value: boolean) => void;
   plugins: ToolbarPluginsType;
   headerDetails: IHeaderDetails;
-  updateFramesArray: Updater<IFramesArray[]>;
   framesArray: IFramesArray[];
   undoStack: IFramesArray[][];
   setUndoStack: React.Dispatch<React.SetStateAction<IFramesArray[][]>>;
   redoStack: IFramesArray[][];
   setRedoStack: React.Dispatch<React.SetStateAction<IFramesArray[][]>>;
+  updateFramesArray: Updater<IFramesArray[]>;
   setStopInitializeFramesWidth?: (value: boolean) => void;
   handlePersistStoryState?: () => void;
   isPreviewView: boolean;
+  uniformBlockTypeStyle: IUniformBlockTypeStyle;
+  setUniformBlockTypeStyle: React.Dispatch<
+    React.SetStateAction<IUniformBlockTypeStyle>
+  >;
 }
