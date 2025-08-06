@@ -68,9 +68,7 @@ function DatasetUploadSteps(props: Props) {
   const [processingMessage, setProcessingMessage] = React.useState("");
   const [processed, setProcessed] = React.useState(false);
   const [selectedFile, setSelectedFile] = React.useState<File | null>(null);
-  const [searchValue, setSearchValue] = React.useState<string | undefined>("");
   const [openSearch, setOpenSearch] = React.useState(false);
-  const [sources, setSources] = React.useState<string[]>([]);
 
   const [activeTab, setActiveTab] = useRecoilState(dataUploadTabAtom);
   const [activeOption, setActiveOption] = React.useState<string | null>(null);
@@ -345,16 +343,7 @@ function DatasetUploadSteps(props: Props) {
           setActiveStep,
         }}
         externalSearchProps={{
-          setFormDetails,
           handleDownload: handleDownloadExternalDataset,
-          setProcessingError,
-          setActiveStep,
-          searchValue,
-          setSearchValue,
-          openSearch,
-          setOpenSearch,
-          sources,
-          setSources,
         }}
       />
     );

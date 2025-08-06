@@ -20,30 +20,15 @@ export interface IExternalDataset {
   datePublished: string;
 }
 
-export default function ExternalSearch(props: {
-  setFormDetails: React.Dispatch<
-    React.SetStateAction<{
-      name: string;
-      description: string;
-      category: string;
-      public: boolean;
-      source: string;
-      sourceUrl: string;
-    }>
-  >;
+const ExternalSearch = (props: {
   handleDownload: (dataset: IExternalDataset) => void;
-  setProcessingError: React.Dispatch<React.SetStateAction<string | null>>;
-  setActiveStep: React.Dispatch<React.SetStateAction<number>>;
-  searchValue: string | undefined;
-  setSearchValue: React.Dispatch<React.SetStateAction<string | undefined>>;
-  openSearch: boolean;
-  setOpenSearch: React.Dispatch<React.SetStateAction<boolean>>;
-  sources: string[];
-  setSources: React.Dispatch<React.SetStateAction<string[]>>;
-}) {
+}) => {
   const observerTarget = React.useRef(null);
+  const scrollPointRef = React.useRef<HTMLDivElement>(null);
   const [view, setView] = React.useState<"grid" | "table">("table");
-
+  const [searchValue, setSearchValue] = React.useState<string | undefined>("");
+  const [sources, setSources] = React.useState<string[]>([]);
+  const [isSticky, setIsSticky] = React.useState(false);
   // const [sortValue, setSortValue] = React.useState("name");
   const [sortValue, setSortValue] = useRecoilState(externalDataSortByAtom);
   const token = useStoreState((state) => state.AuthToken.value);
@@ -87,12 +72,10 @@ export default function ExternalSearch(props: {
     try {
       setLoading(true);
       const response = await axios.get(
-        `${process.env.REACT_APP_API}/external-sources/search?q=${
-          props.searchValue
-        }&source=${
-          props.sources.length
-            ? props.sources.join(",")
-            : "Kaggle,World Bank,WHO,HDX,TGF"
+        `${
+          process.env.REACT_APP_API
+        }/external-sources/search?q=${searchValue}&source=${
+          sources.length ? sources.join(",") : "Kaggle,World Bank,WHO,HDX,TGF"
         }&offset=${offset}&limit=${limit}&sortBy=${sortValue}`,
         {
           signal: abortControllerRef.current.signal,
@@ -164,7 +147,7 @@ export default function ExternalSearch(props: {
       }
     },
     500,
-    [token, props.sources, props.searchValue, sortValue]
+    [token, sources, searchValue, sortValue]
   );
 
   const onSearch = () => {
@@ -174,43 +157,63 @@ export default function ExternalSearch(props: {
       loadSearch();
     }
   };
-
-  const handleSearch = (value: string) => {
-    terminateSearch();
-    props.setSearchValue?.(value);
+  const handleFocus = () => {
+    scrollPointRef.current?.scrollIntoView({
+      behavior: "smooth",
+      block: "start", // This puts the input at the very top
+    });
+    setIsSticky(true);
   };
 
   return (
     <>
+      <div
+        ref={scrollPointRef}
+        css={`
+          color: #231d2c;
+          ${isSticky
+            ? `
+      position: sticky;
+      top: 0;
+      background: white;
+      z-index: 10;
+      padding: 16px 0 8px 0;
+      border-bottom: 1px solid #eee;
+    `
+            : ""}
+          > h2 {
+            font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
+            font-size: 24px;
+            margin: 0;
+          }
+          > p {
+            font-family: "GothamNarrow-Book", "Helvetica Neue", sans-serif;
+            margin: 0;
+            font-size: 14px;
+          }
+        `}
+      >
+        <h2>Search External Data Sources</h2>
+        <p>
+          External search allows you to search and import data from WHO, World
+          Bank, The Global Fund, Kaggle and the Humanitarian Data exchange.{" "}
+        </p>
+      </div>
+      <div
+        css={`
+          height: 30px;
+        `}
+      />
       <div
         css={`
           height: 16px;
         `}
       />
       <Grid container alignItems="center">
-        {/* <Grid
-          item
-          xs={12}
-          sm={12}
-          md={6}
-          lg={6}
-          css={`
-            @media (max-width: 767px) {
-              display: none;
-            }
-          `}
-        >
-          <SourceCategoryList
-            sources={props.sources}
-            setSources={props.setSources}
-            baseSources={baseSources}
-            terminateSearch={terminateSearch}
-          />
-        </Grid> */}
         <Grid item xs={12} sm={12} md={12} lg={12}>
           <Filter
-            searchValue={props.searchValue as string}
-            setSearchValue={props.setSearchValue}
+            searchValue={searchValue as string}
+            setSearchValue={setSearchValue}
             setSortValue={setSortValue}
             setAssetsView={setView}
             sortValue={sortValue}
@@ -218,7 +221,8 @@ export default function ExternalSearch(props: {
             searchInputWidth="249px"
             searchIconCypressId="open-search-button"
             hasSearch={false}
-            openSearch
+            onFocus={handleFocus}
+            openSearch={true}
             onKeyPress={(e) => {
               if (e.key === "Enter") {
                 onSearch();
@@ -252,7 +256,7 @@ export default function ExternalSearch(props: {
                       url={dataset.url}
                       handleDownload={() => props.handleDownload(dataset)}
                       dataset={dataset}
-                      searchValue={props.searchValue}
+                      searchValue={searchValue}
                     />
                     <Box height={16} />
                   </Grid>
@@ -307,4 +311,6 @@ export default function ExternalSearch(props: {
       </Box>
     </>
   );
-}
+};
+
+export default ExternalSearch;

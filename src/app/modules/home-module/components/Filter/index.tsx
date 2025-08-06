@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef } from "react";
 import {
   iconButtonCss,
   rowFlexCss,
@@ -9,7 +9,6 @@ import { Popover, Tooltip } from "@material-ui/core";
 import { ReactComponent as SortIcon } from "app/modules/home-module/assets/sort-fill.svg";
 import { ReactComponent as GridIcon } from "app/modules/home-module/assets/grid-fill.svg";
 import { ReactComponent as FilterIcon } from "app/modules/home-module/assets/filter-fill.svg";
-import { ReactComponent as CloseIcon } from "app/modules/home-module/assets/close-icon.svg";
 import { ReactComponent as SearchIcon } from "app/modules/home-module/assets/search-fill.svg";
 import { ReactComponent as TableIcon } from "app/modules/home-module/assets/table-icon.svg";
 import { ReactComponent as MenuIcon } from "app/modules/home-module/assets/menu.svg";
@@ -55,6 +54,7 @@ export default function Filter(
     assetsView: "table" | "grid";
     terminateSearch?: () => void;
     searchInputWidth?: string;
+    onFocus?: React.FocusEventHandler<HTMLInputElement>;
     openSearch?: boolean;
     setOpenSearch?: React.Dispatch<React.SetStateAction<boolean>>;
     searchIconCypressId: string;
@@ -138,6 +138,7 @@ export default function Filter(
               placeholder="Search"
               onChange={handleSearch}
               onMouseDown={(e) => e.stopPropagation()}
+              onFocus={props.onFocus}
               onKeyPress={props.onKeyPress}
               data-cy="filter-search-input"
               aria-label="search"
