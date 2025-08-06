@@ -1,6 +1,4 @@
 import React from "react";
-import get from "lodash/get";
-import filter from "lodash/filter";
 import uniqBy from "lodash/uniqBy";
 import sortBy from "lodash/sortBy";
 import * as echarts from "echarts/core";
@@ -119,6 +117,8 @@ export function useDataThemesEchart({
       logarithmicYAxis,
       dataZoomStart,
       dataZoomEnd,
+      customYAxisName,
+      yAxisName,
     } = visualOptions;
 
     const sortedData = sortBy(data, (d) => d.bars);
@@ -159,7 +159,7 @@ export function useDataThemesEchart({
         splitLine: {
           show: splitLineY ?? true,
         },
-        name: mapping?.size?.value?.[0] ?? "",
+        name: customYAxisName ? yAxisName : mapping?.size?.value?.[0] ?? "",
         nameTextStyle: {
           align: "left",
         },
@@ -176,9 +176,6 @@ export function useDataThemesEchart({
             },
           ]
         : null,
-      // xAxis: orientation === "horizontal" ? { type: "value" } : { data: bars },
-      // yAxis: orientation === "vertical" ? { type: "value" } : { data: bars },
-      // backgroundColor: background,
       backgroundColor: "transparent",
       series: [
         {
@@ -228,6 +225,8 @@ export function useDataThemesEchart({
       dataZoomStart,
       dataZoomEnd,
       palette,
+      customYAxisName,
+      yAxisName,
     } = visualOptions;
 
     return {
@@ -247,6 +246,7 @@ export function useDataThemesEchart({
       legend: {
         show: legend,
         data: data.series.map((d: any) => d.name),
+        type: "scroll",
       },
       dataZoom: dataZoom
         ? [
@@ -270,6 +270,10 @@ export function useDataThemesEchart({
       yAxis: [
         {
           type: "value",
+          name: customYAxisName ? yAxisName : mapping?.sizes?.value?.[0] ?? "",
+          nameTextStyle: {
+            align: "left",
+          },
         },
       ],
       series: data.series.map((d: any) => ({
@@ -316,6 +320,8 @@ export function useDataThemesEchart({
       dataZoomStart,
       dataZoomEnd,
       palette,
+      customYAxisName,
+      yAxisName,
     } = visualOptions;
 
     return {
@@ -341,6 +347,7 @@ export function useDataThemesEchart({
       legend: {
         show: legend,
         data: data.series.map((d: any) => d.name),
+        type: "scroll",
       },
       dataZoom: dataZoom
         ? [
@@ -364,6 +371,10 @@ export function useDataThemesEchart({
       yAxis: [
         {
           type: "value",
+          name: customYAxisName ? yAxisName : mapping?.sizes?.value?.[0] ?? "",
+          nameTextStyle: {
+            align: "left",
+          },
         },
       ],
       series: data.series.map((d: any) => ({
@@ -432,9 +443,10 @@ export function useDataThemesEchart({
         formatter: (params: any) => valueFormatter3(params, isMonetaryValue),
       },
       legend: {
-        top: "5%",
         left: "center",
         show: showLegend,
+        type: "scroll",
+        width: "90%",
       },
       series: [
         {
@@ -452,6 +464,7 @@ export function useDataThemesEchart({
             show: showLabel ?? true,
             position: labelPosition ?? "outside",
             fontSize: labelFontSize ?? 12,
+            rotate: labelPosition === "inside" ? true : false,
           },
           emphasis: {
             label: {
@@ -596,10 +609,13 @@ export function useDataThemesEchart({
       dataZoomEnd,
       lineType,
       lineWidth,
+      smoothLine,
       // Tooltip
       showTooltip,
       isMonetaryValue,
       palette,
+      customYAxisName,
+      yAxisName,
     } = visualOptions;
 
     return {
@@ -627,6 +643,7 @@ export function useDataThemesEchart({
         type: "value",
         zlevel: -1,
         z: -1,
+        name: customYAxisName ? yAxisName : mapping?.y?.value?.[0] ?? "",
         nameTextStyle: {
           align: "left",
         },
@@ -646,11 +663,14 @@ export function useDataThemesEchart({
       legend: {
         show: showLegend,
         icon: "roundRect",
+        type: "scroll",
+        width: "90%",
       },
       backgroundColor: "transparent",
 
       series: data.series.map((d: any) => ({
         type: "line",
+        smooth: smoothLine ?? false,
         name: d.name,
         data: data.xAxisValues.map((x: any) => d.values[x] || 0),
         z: -1,
@@ -688,6 +708,8 @@ export function useDataThemesEchart({
       dataZoom,
       dataZoomStart,
       dataZoomEnd,
+      customYAxisName,
+      yAxisName,
     } = visualOptions;
 
     const convertedData = sortBy(data, (d) => d.x).map((d: any) => [
@@ -722,7 +744,7 @@ export function useDataThemesEchart({
       yAxis: {
         type: "value",
         boundaryGap: [0, "100%"],
-        name: mapping?.y?.value?.[0] ?? "",
+        name: customYAxisName ? yAxisName : mapping?.y?.value?.[0] ?? "",
         nameTextStyle: {
           align: "left",
         },
@@ -767,11 +789,14 @@ export function useDataThemesEchart({
       dataZoomStart,
       dataZoomEnd,
       label,
+      smoothLine,
       // Tooltip
       showTooltip,
       isMonetaryValue,
       // Palette
       palette,
+      customYAxisName,
+      yAxisName,
     } = visualOptions;
 
     return {
@@ -800,6 +825,7 @@ export function useDataThemesEchart({
         type: "value",
         zlevel: -1,
         z: -1,
+        name: customYAxisName ? yAxisName : mapping?.y?.value?.[0] ?? "",
         nameTextStyle: {
           align: "left",
         },
@@ -822,6 +848,7 @@ export function useDataThemesEchart({
       legend: {
         show: showLegend,
         icon: "roundRect",
+        type: "scroll",
       },
       // backgroundColor: background,
       backgroundColor: "transparent",
@@ -831,6 +858,7 @@ export function useDataThemesEchart({
         name: d.name,
         data: data.xAxisValues.map((x: any) => d.values[x] || 0),
         stack: "Total",
+        smooth: smoothLine ?? false,
         areaStyle: {},
         lineStyle: {
           type: lineType,
@@ -871,6 +899,8 @@ export function useDataThemesEchart({
       dataZoom,
       dataZoomStart,
       dataZoomEnd,
+      customYAxisName,
+      yAxisName,
     } = visualOptions;
     const groups = Object.keys(data);
 
@@ -913,7 +943,7 @@ export function useDataThemesEchart({
         },
         type: mapping.y.mappedType === "date" ? "category" : "value",
         scale: true,
-        name: mapping?.y?.value?.[0] ?? "",
+        name: customYAxisName ? yAxisName : mapping?.y?.value?.[0] ?? "",
         nameTextStyle: {
           align: "left",
         },
@@ -993,6 +1023,8 @@ export function useDataThemesEchart({
       dataZoomStart,
       dataZoomEnd,
       trendline,
+      customYAxisName,
+      yAxisName,
     } = visualOptions;
 
     const list = checkLists.find((item) => item.label === palette)?.value ?? [];
@@ -1016,7 +1048,7 @@ export function useDataThemesEchart({
       },
       yAxis: {
         type: mapping.y.mappedType === "date" ? "category" : "value",
-        name: mapping?.y?.value?.[0] ?? "",
+        name: customYAxisName ? yAxisName : mapping?.y?.value?.[0] ?? "",
         nameTextStyle: {
           align: "left",
         },
@@ -1088,7 +1120,7 @@ export function useDataThemesEchart({
     };
   }
 
-  function echartsHeatmap(data: any, visualOptions: any) {
+  function echartsHeatmap(data: any, visualOptions: any, mapping: any) {
     const {
       //artboard
       width,
@@ -1106,28 +1138,15 @@ export function useDataThemesEchart({
       labelFontSize,
       // Palette
       palette,
+      customYAxisName,
+      yAxisName,
     } = visualOptions;
 
     const xAxisData = sortBy(data.filter((d: any) => d.x).map((d: any) => d.x));
 
-    const isYear = (d: any) => {
-      if (isNaN(d)) {
-        return false;
-      }
-      return d > 1000 && d <= new Date().getFullYear();
-    };
-
-    const isXAxisYear = xAxisData.every(isYear);
-
     const yAxisData = sortBy(data.filter((d: any) => d.y).map((d: any) => d.y));
 
-    const isYAxisYear = yAxisData.every(isYear);
-
-    const seriesData = data.map((item: any) => [
-      isXAxisYear ? String(item.x) : item.x,
-      isYAxisYear ? String(item.y) : item.y,
-      item.size,
-    ]);
+    const seriesData = data.map((item: any) => [item.x, item.y, item.size]);
 
     return {
       grid: {
@@ -1135,6 +1154,7 @@ export function useDataThemesEchart({
         left: marginLeft,
         right: marginRight,
         bottom: marginBottom,
+        containLabel: true,
       },
       xAxis: {
         type: "category",
@@ -1148,6 +1168,10 @@ export function useDataThemesEchart({
         data: uniqBy(yAxisData, (d: any) => d),
         splitArea: {
           show: true,
+        },
+        name: customYAxisName ? yAxisName : mapping?.y?.value?.[0] ?? "",
+        nameTextStyle: {
+          align: "left",
         },
       },
       tooltip: {
@@ -1434,7 +1458,8 @@ export function useDataThemesEchart({
           data: data.categories?.map(function (a: { name: string }) {
             return a.name;
           }),
-          // show: showLegend,
+          show: showLegend,
+          type: "scroll",
         },
       ],
       tooltip: {
@@ -1521,6 +1546,7 @@ export function useDataThemesEchart({
         {
           align: "left",
           show: showLegend,
+          type: "scroll",
         },
       ],
       tooltip: {
@@ -1730,7 +1756,7 @@ export function useDataThemesEchart({
       color: checkLists.find((item) => item.label === palette)?.value,
       tooltip: {
         trigger: showTooltip ? "item" : "none",
-        formatter: (params: any) => valueFormatter1(params, isMonetaryValue),
+        formatter: (params: any) => valueFormatter3(params, isMonetaryValue),
       },
       series: [
         {
@@ -1879,7 +1905,7 @@ export function useDataThemesEchart({
           echartsBubblechart(data, visualOptions, mapping),
         echartsScatterchart: () =>
           echartsScatterchart(data, visualOptions, mapping),
-        echartsHeatmap: () => echartsHeatmap(data, visualOptions),
+        echartsHeatmap: () => echartsHeatmap(data, visualOptions, mapping),
         echartsGraphgl: () => echartsGraphgl(data, visualOptions),
         echartsRadarchart: () => echartsRadarchart(data, visualOptions),
         echartsCirclepacking: () =>

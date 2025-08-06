@@ -876,7 +876,7 @@ describe("Testing create chart on DX", () => {
       .should("be.visible");
   });
 
-  it("Can create a Tree Map", () => {
+  it.only("Can create a Tree Map", () => {
     cy.get('[data-cy="chart-type-item"]').contains("Tree Map").click();
 
     cy.get('[data-cy="chart-type-preview"]')

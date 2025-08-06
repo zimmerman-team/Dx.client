@@ -17,7 +17,7 @@ const CompleteCheckIcon = (props: React.SVGProps<SVGSVGElement>) => {
           r="15"
           fill="#6061E5"
           stroke="#6061E5"
-          stroke-width="2"
+          strokeWidth="2"
         />
       </g>
       <path

@@ -2,6 +2,7 @@ import { IFramesArray } from "app/modules/story-module/views/create/data";
 import { ToolbarPluginsType } from "app/modules/story-module/components/storySubHeaderToolbar/staticToolbar";
 import { IHeaderDetails } from "app/modules/story-module/components/right-panel/data";
 import { Updater } from "use-immer";
+import { IUniformBlockTypeStyle } from "app/modules/story-module/data";
 
 export interface StoryEditViewProps {
   rightPanelOpen: boolean;
@@ -12,7 +13,14 @@ export interface StoryEditViewProps {
   hasStoryNameFocused: boolean;
   setHasStoryNameFocused: React.Dispatch<React.SetStateAction<boolean>>;
   updateFramesArray: Updater<IFramesArray[]>;
+  setUniformBlockTypeStyle: React.Dispatch<
+    React.SetStateAction<IUniformBlockTypeStyle>
+  >;
   framesArray: IFramesArray[];
+  undoStack: IFramesArray[][];
+  setUndoStack: React.Dispatch<React.SetStateAction<IFramesArray[][]>>;
+  redoStack: IFramesArray[][];
+  setRedoStack: React.Dispatch<React.SetStateAction<IFramesArray[][]>>;
   setStoryName: React.Dispatch<React.SetStateAction<string>>;
   autoSave: boolean;
   setAutoSave: React.Dispatch<

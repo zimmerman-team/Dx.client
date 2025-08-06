@@ -246,9 +246,9 @@ export function FontFamilyHandler(props: Props) {
                       <path
                         d="M13.292 1.5L5.04199 9.75L1.29199 6"
                         stroke="#70777E"
-                        stroke-width="1.5"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
+                        strokeWidth="1.5"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
                       />
                     </svg>
                   </button>

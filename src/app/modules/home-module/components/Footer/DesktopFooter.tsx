@@ -37,10 +37,10 @@ export default function DesktopFooter(props: Props) {
         ${homeFootercss}
         border-top: ${props.mini ? "none" : "1px solid #dadaf8"};
       `}
+      data-cy="home-footer"
     >
       <Container
         maxWidth="lg"
-        data-cy="home-footer"
         css={`
           @media (max-width: ${DESKTOP_BREAKPOINT}) {
             padding: 0 32px !important;
@@ -269,6 +269,7 @@ export default function DesktopFooter(props: Props) {
                     font-family: "GothamNarrow-Bold", sans-serif;
                   }
                 `}
+                data-cy="footer-links"
               >
                 <li>
                   <Link to="/">Dashboard</Link>{" "}
@@ -420,7 +421,6 @@ export default function DesktopFooter(props: Props) {
       >
         <Container
           maxWidth="lg"
-          data-cy="home-footer"
           css={`
             @media (max-width: ${DESKTOP_BREAKPOINT}) {
               padding: 0 32px !important;

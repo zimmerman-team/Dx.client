@@ -661,7 +661,17 @@ export function StorySubheaderToolbar(
       </Container>
       {view === "edit" && (
         <Container maxWidth="lg">
-          <StaticToolbar plugins={props.plugins} />
+          <StaticToolbar
+            plugins={props.plugins}
+            framesArray={props.framesArray}
+            redoStack={props.redoStack}
+            setRedoStack={props.setRedoStack}
+            updateFramesArray={props.updateFramesArray}
+            undoStack={props.undoStack}
+            setUndoStack={props.setUndoStack}
+            setUniformBlockTypeStyle={props.setUniformBlockTypeStyle}
+            uniformBlockTypeStyle={props.uniformBlockTypeStyle}
+          />
         </Container>
       )}
       <>

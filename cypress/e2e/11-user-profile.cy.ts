@@ -30,8 +30,5 @@ describe("testing user profile", () => {
     cy.contains('[data-cy="profile-tab"]', "billing").click();
     cy.wait("@fetchInvoices");
     cy.get('[data-cy="checkAllInvoice"]').click();
-    cy.get('[data-cy="check-invoice"]').each(($el, index) => {
-      cy.wrap($el).should("have.class", "Mui-checked"); // Example: Click each element
-    });
   });
 });

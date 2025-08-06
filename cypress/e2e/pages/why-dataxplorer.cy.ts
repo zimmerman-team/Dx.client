@@ -15,7 +15,8 @@ describe("Testing the Why dataxplorer page logged in", () => {
 
     cy.get('[data-cy="cookie-btn"]').click();
     cy.get('[data-cy="app-bar"]').within(() => {
-      cy.contains("a", "Why Dataxplorer").click();
+      cy.get('[data-cy="nav-about-group"]').click();
+      cy.contains("a", "Why").click();
     });
   });
 
@@ -47,7 +48,8 @@ describe("Testing the Why dataxplorer page logged out", () => {
 
     cy.get('[data-cy="cookie-btn"]').click();
     cy.get('[data-cy="app-bar"]').within(() => {
-      cy.contains("a", "Why Dataxplorer").click();
+      cy.get('[data-cy="nav-about-group"]').click();
+      cy.contains("a", "Why").click();
     });
   });
 
