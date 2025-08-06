@@ -71,9 +71,7 @@ export default function NonAuthUserLibrary() {
             `}
           >
             <div>
-              <h2>
-                See Our Default <Logo /> Assets
-              </h2>
+              <h2>See Our Default DATAXPLORER Assets</h2>
               <p>
                 Explore ready-made assets from DataXplorer. Sign in to create
                 your own data stories.
