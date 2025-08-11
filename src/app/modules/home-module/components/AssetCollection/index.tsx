@@ -23,13 +23,13 @@ import AssetsGrid from "app/modules/home-module/components/AssetCollection/All/a
 import Filter from "app/modules/home-module/components/Filter";
 import {
   DESKTOP_BREAKPOINT,
-  DESKTOP_STARTPOINT,
   MOBILE_BREAKPOINT,
   TABLET_STARTPOINT,
 } from "app/theme";
 import { MultiSwitch } from "app/modules/home-module/components/TabSwitch";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 import get from "lodash/get";
+import MobileControls from "app/modules/home-module/components/MobileAssetsControls";
 
 const ctaCards = [
   {
@@ -201,6 +201,11 @@ function AssetsCollection() {
             display: flex;
             align-items: center;
             gap: 18px;
+            @media (max-width: ${MOBILE_BREAKPOINT}) {
+              flex-direction: column;
+              gap: 10px;
+              padding: 0 16px;
+            }
           `}
         >
           {ctaCards.map((card) => (
@@ -219,13 +224,15 @@ function AssetsCollection() {
                 display: flex;
                 flex-direction: column;
                 cursor: pointer;
+                @media (max-width: ${MOBILE_BREAKPOINT}) {
+                  width: 100%;
+                }
                 h1 {
                   color: #6061e5;
                   font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
                   font-size: 18px;
                   line-height: 24px;
                   margin: 0;
-                  margin-bottom: 13px;
                 }
                 > p:first-of-type {
                   color: #231d2c;
@@ -234,6 +241,7 @@ function AssetsCollection() {
                   font-weight: 325;
                   line-height: normal;
                   margin: 0;
+                  height: 70px;
                 }
               `}
             >
@@ -292,8 +300,8 @@ function AssetsCollection() {
             display: flex;
             gap: 10px;
             align-items: center;
-            @media (max-width: 599px) {
-              flex-flow: wrap-reverse;
+            @media (max-width: ${MOBILE_BREAKPOINT}) {
+              display: none;
             }
           `}
         >
@@ -338,10 +346,10 @@ function AssetsCollection() {
 
           <div
             css={`
-              display: none;
+              display: block;
               flex-basis: 56%;
-              @media (min-width: ${DESKTOP_STARTPOINT}) {
-                display: block;
+              @media (max-width: ${DESKTOP_BREAKPOINT}) {
+                display: none;
               }
             `}
           >
@@ -357,7 +365,7 @@ function AssetsCollection() {
               searchIconCypressId="home-search-button"
               filterValue={filterValue}
               setFilterValue={setFilterValue}
-              hasSearch
+              hasSearchButton
             />
           </div>
         </div>
@@ -370,9 +378,6 @@ function AssetsCollection() {
                 padding-top: 16px;
                 display: block;
               }
-            }
-            @media (max-width: ${MOBILE_BREAKPOINT}) {
-              display: none;
             }
           `}
         >
@@ -388,7 +393,46 @@ function AssetsCollection() {
             searchIconCypressId="home-search-button"
             filterValue={filterValue}
             setFilterValue={setFilterValue}
-            hasSearch
+            hasSearchButton
+          />
+        </div>
+        <div
+          css={`
+            display: none;
+
+            @media (max-width: ${MOBILE_BREAKPOINT}) {
+              display: block;
+            }
+          `}
+        >
+          <MobileControls
+            assetsControlsProps={{
+              datasetCount,
+              chartCount: chartsCount,
+              storyCount: storiesCount,
+              allCount: assetsCount,
+            }}
+            searchInputProps={{
+              searchValue: searchValue as string,
+              onSearchChange: (e) => setSearchValue(e.target.value),
+              onFocus: () => setOpenSearch(true),
+              openSearch,
+              setOpenSearch,
+              hasSearchButton: true,
+              searchIconCypressId: "home-search-button",
+              onKeyPress: (e) => {
+                if (e.key === "Enter") {
+                  e.preventDefault();
+                }
+              },
+            }}
+            terminateSearch={() => setOpenSearch(false)}
+            setSortValue={setSortValue}
+            setFilterValue={setFilterValue}
+            setAssetsView={setAssetsView}
+            assetsView={assetsView}
+            sortValue={sortValue}
+            filterValue={filterValue}
           />
         </div>
         {display === "data" ? (
@@ -409,8 +453,11 @@ function AssetsCollection() {
             width: 0px;
             background: transparent;
           }
-          @media (max-width: 960px) {
-            padding: 0 32px;
+          @media (max-width: ${DESKTOP_BREAKPOINT}) {
+            padding: 0 35px;
+          }
+          @media (max-width: ${MOBILE_BREAKPOINT}) {
+            padding: 0 16px;
           }
         `}
       >

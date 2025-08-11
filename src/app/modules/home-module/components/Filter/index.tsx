@@ -2,21 +2,20 @@ import React, { useRef } from "react";
 import {
   iconButtonCss,
   rowFlexCss,
-  searchInputCss,
   sortByItemCss,
 } from "app/modules/home-module/style";
 import { Popover, Tooltip } from "@material-ui/core";
 import { ReactComponent as SortIcon } from "app/modules/home-module/assets/sort-fill.svg";
 import { ReactComponent as GridIcon } from "app/modules/home-module/assets/grid-fill.svg";
 import { ReactComponent as FilterIcon } from "app/modules/home-module/assets/filter-fill.svg";
-import { ReactComponent as SearchIcon } from "app/modules/home-module/assets/search-fill.svg";
 import { ReactComponent as TableIcon } from "app/modules/home-module/assets/table-icon.svg";
 import { ReactComponent as MenuIcon } from "app/modules/home-module/assets/menu.svg";
 import AddAssetDropdown from "app/modules/home-module/components/AddAssetDropdown";
 import { MultiSwitch } from "app/modules/home-module/components/TabSwitch";
 import { useOnClickOutside } from "usehooks-ts";
+import { SearchInput } from "./SearchInput";
 
-const CustomGridIcon = ({ isActive }: { isActive?: boolean }) => (
+export const CustomGridIcon = ({ isActive }: { isActive?: boolean }) => (
   <Tooltip title="List View" placement="bottom">
     <GridIcon
       css={`
@@ -58,7 +57,7 @@ export default function Filter(
     openSearch?: boolean;
     setOpenSearch?: React.Dispatch<React.SetStateAction<boolean>>;
     searchIconCypressId: string;
-    hasSearch: boolean;
+    hasSearchButton: boolean;
     onKeyPress?: (e: React.KeyboardEvent<HTMLInputElement>) => void;
   }>
 ) {
@@ -121,49 +120,17 @@ export default function Filter(
           width: 100%;
         `}
       >
-        <div
-          ref={inputRef}
-          css={`
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            width: 100%;
-          `}
-        >
-          <div css={searchInputCss(!!props.openSearch)}>
-            <SearchIcon />
-            <input
-              type="text"
-              value={props.searchValue}
-              placeholder="Search"
-              onChange={handleSearch}
-              onMouseDown={(e) => e.stopPropagation()}
-              onFocus={props.onFocus}
-              onKeyPress={props.onKeyPress}
-              data-cy="filter-search-input"
-              aria-label="search"
-              name="search"
-              autoComplete="search"
-            />
-          </div>{" "}
-          {props.hasSearch && !props.openSearch && (
-            <Tooltip title="Search" placement="bottom">
-              <button
-                data-cy={props.searchIconCypressId}
-                onClick={() => {
-                  props.setOpenSearch?.(true);
-                  inputRef.current?.focus();
-                }}
-                css={`
-                  ${iconButtonCss(props.openSearch)}
-                `}
-                aria-label="search-button"
-              >
-                <SearchIcon />
-              </button>
-            </Tooltip>
-          )}
-        </div>
+        <SearchInput
+          searchValue={props.searchValue || ""}
+          onSearchChange={handleSearch}
+          onFocus={props.onFocus}
+          onKeyPress={props.onKeyPress}
+          hasSearchButton={props.hasSearchButton}
+          openSearch={props.openSearch}
+          setOpenSearch={props.setOpenSearch}
+          searchIconCypressId={props.searchIconCypressId}
+          inputRef={inputRef}
+        />
         <div
           css={`
             height: 40px;

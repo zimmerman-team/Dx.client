@@ -220,7 +220,7 @@ const ExternalSearch = (props: {
             assetsView={view}
             searchInputWidth="249px"
             searchIconCypressId="open-search-button"
-            hasSearch={false}
+            hasSearchButton={false}
             onFocus={handleFocus}
             openSearch={true}
             onKeyPress={(e) => {

@@ -127,10 +127,21 @@ export default function Card() {
               margin-top: 16px;
               align-items: center;
               width: 100%;
+              max-width: 305px;
               justify-content: flex-start;
               button {
                 height: 41px;
-                gap: 28px;
+                justify-content: space-between;
+                padding: 0 16px;
+                :nth-child(2) {
+                  flex: 1;
+                }
+                @media (max-width: ${DESKTOP_BREAKPOINT}) {
+                  font-size: 16px;
+                }
+                @media (max-width: ${MOBILE_BREAKPOINT}) {
+                  font-size: 14px;
+                }
               }
             `}
           >

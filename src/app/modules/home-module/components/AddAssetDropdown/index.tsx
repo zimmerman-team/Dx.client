@@ -88,9 +88,6 @@ export default function AddAssetDropdown() {
               fill: #fff;
             }
           }
-          @media (max-width: ${MOBILE_BREAKPOINT}) {
-            display: none;
-          }
         `}
         aria-label="sort-button"
       >

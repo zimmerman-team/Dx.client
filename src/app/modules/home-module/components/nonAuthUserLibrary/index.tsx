@@ -83,6 +83,12 @@ export default function NonAuthUserLibrary() {
                 button {
                   height: 41px;
                   gap: 28px;
+                  @media (max-width: ${DESKTOP_BREAKPOINT}) {
+                    font-size: 16px;
+                  }
+                  @media (max-width: ${MOBILE_BREAKPOINT}) {
+                    font-size: 14px;
+                  }
                 }
               `}
             >

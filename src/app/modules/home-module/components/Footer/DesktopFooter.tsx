@@ -356,7 +356,12 @@ export default function DesktopFooter(props: Props) {
                   width: 100%;
                   display: flex;
                   gap: 16px;
-
+                  form {
+                    height: 40px;
+                    @media (max-width: ${MOBILE_BREAKPOINT}) {
+                      height: 32px;
+                    }
+                  }
                   input {
                     outline: none;
                     border: none;
@@ -365,7 +370,7 @@ export default function DesktopFooter(props: Props) {
                     font-size: 16px;
                     padding: 11px 16px;
                     border-bottom: 1px solid #98a1aa;
-                    background: #f1f3f5;
+                    background: transparent;
                     font-family: "GothamNarrow-Book", "Helvetica Neue",
                       sans-serif;
                     font-weight: 325;
@@ -385,7 +390,8 @@ export default function DesktopFooter(props: Props) {
                     font-family: "GothamNarrow-Bold", "Helvetica Neue",
                       sans-serif;
                     font-size: 16px;
-                    height: 41px;
+                    display: flex;
+                    align-items: center;
                     padding: 10px 16px;
                     font-weight: 400;
                     cursor: pointer;

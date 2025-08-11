@@ -50,8 +50,6 @@ export default function Hero({ title, children }: HeroProps) {
             line-height: normal;
             margin: 0px;
             @media (max-width: ${DESKTOP_BREAKPOINT}) {
-            }
-            ) {
               font-size: 64px;
             }
 
@@ -69,8 +67,6 @@ export default function Hero({ title, children }: HeroProps) {
             margin: 0;
             line-height: normal;
             @media (max-width: ${DESKTOP_BREAKPOINT}) {
-            }
-            ) {
               font-size: 18px;
               line-height: normal;
             }
