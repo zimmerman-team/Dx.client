@@ -2,6 +2,7 @@ import React from "react";
 import { ReactComponent as InProgressIcon } from "app/modules/dataset-module/routes/upload-module/assets/upload-options-icons/in-progress-icon.svg";
 import { ReactComponent as IdleIcon } from "app/modules/dataset-module/routes/upload-module/assets/upload-options-icons/idle-icon.svg";
 import { ReactComponent as CompletedIcon } from "app/modules/dataset-module/routes/upload-module/assets/upload-options-icons/completed-icon.svg";
+import { MOBILE_BREAKPOINT } from "app/theme";
 
 export default function Stepper(
   props: Readonly<{
@@ -38,6 +39,9 @@ export default function Stepper(
           margin: 0;
           margin-top: 2px;
           line-height: normal;
+          @media (max-width: ${MOBILE_BREAKPOINT}) {
+            font-size: 12px;
+          }
         }
       `}
     >

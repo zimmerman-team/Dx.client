@@ -12,6 +12,7 @@ import { useCookie } from "react-use";
 import useGoogleDrivePicker from "app/hooks/useGoogleDrivePicker";
 import { useOneDrivePicker } from "app/hooks/useOneDrivePicker";
 import { useCheckUserPlan } from "app/hooks/useCheckUserPlan";
+import { DESKTOP_BREAKPOINT, TABLET_STARTPOINT } from "app/theme";
 
 interface Props {
   disabled: boolean;
@@ -56,6 +57,24 @@ export default function AddDatasetFragment(props: Props) {
       props.onFileSubmit(acceptedFiles[0]);
     }
   }, []);
+
+  const renderUploadOptionsList = () => {
+    return uploadOptions.map((option) => (
+      <UploadOption
+        key={option.name}
+        name={option.name}
+        type={option.type}
+        formats={option.formats}
+        icon={option.icon}
+        onClick={option.onClick}
+        setActiveOption={props.setActiveOption}
+        canConnect={option.canConnect}
+        connected={option.connected}
+        onLogout={option.onLogout}
+        upgradeRequired={option.upgradeRequired}
+      />
+    ));
+  };
 
   const databaseConnection = "DataBase Connection";
   const comingSoon = "Coming Soon";
@@ -199,21 +218,7 @@ export default function AddDatasetFragment(props: Props) {
                 flex: 1;
               `}
             >
-              {uploadOptions.slice(1).map((option) => (
-                <UploadOption
-                  key={option.name}
-                  name={option.name}
-                  type={option.type}
-                  formats={option.formats}
-                  icon={option.icon}
-                  onClick={option.onClick}
-                  setActiveOption={props.setActiveOption}
-                  canConnect={option.canConnect}
-                  connected={option.connected}
-                  onLogout={option.onLogout}
-                  upgradeRequired={option.upgradeRequired}
-                />
-              ))}
+              {renderUploadOptionsList()}
             </div>
           </div>
         ) : (
@@ -222,23 +227,14 @@ export default function AddDatasetFragment(props: Props) {
               display: grid;
               grid-template-columns: repeat(3, minmax(0, 1fr));
               gap: 10px;
+              @media (min-width: ${TABLET_STARTPOINT}) {
+                @media (max-width: ${DESKTOP_BREAKPOINT}) {
+                  grid-template-columns: repeat(1, minmax(0, 1fr));
+                }
+              }
             `}
           >
-            {uploadOptions.map((option) => (
-              <UploadOption
-                key={option.name}
-                name={option.name}
-                type={option.type}
-                formats={option.formats}
-                icon={option.icon}
-                onClick={option.onClick}
-                setActiveOption={props.setActiveOption}
-                canConnect={option.canConnect}
-                connected={option.connected}
-                onLogout={option.onLogout}
-                upgradeRequired={option.upgradeRequired}
-              />
-            ))}
+            {renderUploadOptionsList()}
           </div>
         )}
       </div>

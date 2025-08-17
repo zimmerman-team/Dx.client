@@ -1,4 +1,4 @@
-export default function TableSkeleton() {
+export default function TableSkeleton(props: { rowLength?: number }) {
   return (
     <div
       css={`
@@ -89,7 +89,7 @@ export default function TableSkeleton() {
         ))}
       </div>
       {/* rows */}
-      {Array.from({ length: 10 }).map((_, index) => (
+      {Array.from({ length: props.rowLength ?? 10 }).map((_, index) => (
         <div
           key={index}
           css={`

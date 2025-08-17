@@ -44,6 +44,9 @@ export const stepcss = css`
   display: flex;
   align-items: center;
   justify-content: flex-start;
+  @media (max-width: ${MOBILE_BREAKPOINT}) {
+    height: 100%;
+  }
 `;
 const gothamNarrowBold = "'GothamNarrow-Book', 'Helvetica Neue', sans-serif";
 

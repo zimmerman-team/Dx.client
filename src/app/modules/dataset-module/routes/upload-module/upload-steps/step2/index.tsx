@@ -4,6 +4,7 @@ import Processing, { ProcessingMetaDataProps } from "./processing";
 import TableSkeleton from "./tableSkeleton";
 import { FinishedFragmentProps } from "app/modules/dataset-module/routes/upload-module/upload-steps/step2/TablePreview";
 import TablePreview from "app/modules/dataset-module/routes/upload-module/upload-steps/step2/TablePreview";
+import { TABLET_STARTPOINT, DESKTOP_BREAKPOINT } from "app/theme";
 
 export default function PrepareForUse(props: {
   processing: ProcessingMetaDataProps;
@@ -54,6 +55,11 @@ export default function PrepareForUse(props: {
           display: flex;
           justify-content: space-between;
           align-items: flex-end;
+          @media (min-width: ${TABLET_STARTPOINT}) {
+            @media (max-width: ${DESKTOP_BREAKPOINT}) {
+              align-items: center;
+            }
+          }
         `}
       >
         <div
@@ -68,6 +74,11 @@ export default function PrepareForUse(props: {
               font-family: "GothamNarrow-Book", "Helvetica Neue", sans-serif;
               margin: 0;
               font-size: 14px;
+            }
+            @media (min-width: ${TABLET_STARTPOINT}) {
+              @media (max-width: ${DESKTOP_BREAKPOINT}) {
+                flex-basis: 50%;
+              }
             }
           `}
         >

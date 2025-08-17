@@ -7,9 +7,6 @@ import { useAuth0 } from "@auth0/auth0-react";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 import { useChartsRawData } from "app/hooks/useChartsRawData";
 import { stepcss } from "app/modules/dataset-module/routes/upload-module/style";
-import MetaData from "app/modules/dataset-module/routes/upload-module/upload-steps/step3/metaData";
-import FinishedFragment from "app/modules/dataset-module/routes/upload-module/upload-steps/step2/TablePreview";
-import AddDatasetFragment from "app/modules/dataset-module/routes/upload-module/upload-steps/step1/addDatasetFragment";
 import ObjectId from "app/utils/ObjectId";
 import { useUploadProgress } from "app/hooks/useOnUploadProgress";
 import { IExternalDataset } from "app/modules/dataset-module/routes/upload-module/upload-steps/step1/externalSearch";
@@ -26,6 +23,8 @@ import UploadYourData from "./step1";
 import useBackgroundColor from "app/hooks/useBackgroundColor";
 import PrepareForUse from "./step2";
 import DescribeAndSave from "./step3";
+import { MOBILE_BREAKPOINT } from "app/theme";
+import NoMobileInfoScreen from "./NoMobileInfoScreen";
 
 interface Props {
   datasetId: string;
@@ -426,13 +425,7 @@ function DatasetUploadSteps(props: Props) {
           display: flex;
           flex-direction: column;
           justify-content: space-between;
-          h1 {
-            color: #231d2c;
-            font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
-            font-size: 40px;
-            font-style: normal;
-            margin: 0;
-          }
+
           @media (max-width: 881px) {
             min-height: calc(100vh - 66px);
             margin-top: 66px;
@@ -445,7 +438,17 @@ function DatasetUploadSteps(props: Props) {
               height: 60px;
             `}
           />
-          <h1>Conect a Dataset</h1>
+          <h1
+            css={`
+              color: #231d2c;
+              font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
+              font-size: 40px;
+              font-style: normal;
+              margin: 0;
+            `}
+          >
+            Conect a Dataset
+          </h1>
           <div
             css={`
               height: 30px;
@@ -471,7 +474,25 @@ function DatasetUploadSteps(props: Props) {
           />
 
           <>
-            <div>{currentStep()}</div>
+            <div
+              css={`
+                @media (max-width: ${MOBILE_BREAKPOINT}) {
+                  display: none;
+                }
+              `}
+            >
+              {currentStep()}
+            </div>
+            <div
+              css={`
+                display: none;
+                @media (max-width: ${MOBILE_BREAKPOINT}) {
+                  display: block;
+                }
+              `}
+            >
+              <NoMobileInfoScreen />
+            </div>
           </>
         </Container>
         <HomeFooter mini />

@@ -11,6 +11,7 @@ import { useRecoilState, useSetRecoilState } from "recoil";
 import { externalDataSortByAtom, planDialogAtom } from "app/state/recoil/atoms";
 import ExternalSearchTable from "app/modules/dataset-module/routes/upload-module/component/table/externalSearchTable";
 import { useCheckUserPlan } from "app/hooks/useCheckUserPlan";
+import TableSkeleton from "app/modules/dataset-module/routes/upload-module/upload-steps/step2/tableSkeleton";
 
 export interface IExternalDataset {
   name: string;
@@ -28,7 +29,6 @@ const ExternalSearch = (props: {
   const [view, setView] = React.useState<"grid" | "table">("table");
   const [searchValue, setSearchValue] = React.useState<string | undefined>("");
   const [sources, setSources] = React.useState<string[]>([]);
-  const [isSticky, setIsSticky] = React.useState(false);
   // const [sortValue, setSortValue] = React.useState("name");
   const [sortValue, setSortValue] = useRecoilState(externalDataSortByAtom);
   const token = useStoreState((state) => state.AuthToken.value);
@@ -37,6 +37,7 @@ const ExternalSearch = (props: {
   const limit = 20;
   const [datasets, setDatasets] = React.useState<IExternalDataset[]>([]);
   const [planWarning, setPlanWarning] = React.useState<string | null>(null);
+  const [isSearching, setIsSearching] = React.useState(false);
   const setPlanDialog = useSetRecoilState(planDialogAtom);
 
   const baseSources = [
@@ -84,6 +85,7 @@ const ExternalSearch = (props: {
           },
         }
       );
+      setIsSearching(false);
       setLoading(false);
       if (response.data.error) {
         console.log(response.data.error);
@@ -100,6 +102,7 @@ const ExternalSearch = (props: {
         setOffset(limit);
       }
     } catch (e) {
+      setIsSearching(false);
       setLoading(false);
       console.log(e);
     }
@@ -153,6 +156,7 @@ const ExternalSearch = (props: {
   const onSearch = () => {
     setView("table");
     if (token) {
+      setIsSearching(true);
       setDatasets([]);
       loadSearch();
     }
@@ -162,7 +166,85 @@ const ExternalSearch = (props: {
       behavior: "smooth",
       block: "start", // This puts the input at the very top
     });
-    setIsSticky(true);
+  };
+
+  const viewToDisplay = () => {
+    switch (view) {
+      case "grid":
+        return (
+          <Grid container spacing={2}>
+            {datasets &&
+              datasets?.map((dataset, index) => (
+                <Grid
+                  item
+                  lg={3}
+                  md={4}
+                  sm={6}
+                  xs={12}
+                  key={`${dataset.name}-${index}`}
+                >
+                  <ExternalDatasetCard
+                    description={dataset.description}
+                    name={dataset.name}
+                    publishedDate={dataset.datePublished}
+                    source={dataset.source}
+                    url={dataset.url}
+                    handleDownload={() => props.handleDownload(dataset)}
+                    dataset={dataset}
+                    searchValue={searchValue}
+                  />
+                  <Box height={16} />
+                </Grid>
+              ))}
+          </Grid>
+        );
+      case "table":
+        return (
+          <ExternalSearchTable
+            onItemClick={props.handleDownload}
+            tableData={{
+              columns: [
+                { key: "name", label: "Dataset Title" },
+                { key: "source", label: "Source" },
+                { key: "description", label: "Description" },
+                { key: "datePublished", label: "Date" },
+              ],
+              data: datasets,
+            }}
+          />
+        );
+      default:
+        return null;
+    }
+  };
+
+  const renderExtDatasets = () => {
+    if (isSearching) {
+      return <TableSkeleton rowLength={20} />;
+    } else if (datasets.length === 0 && !loading) {
+      return (
+        <div
+          css={`
+            text-align: center;
+            height: 221px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 14px;
+            font-style: normal;
+            font-weight: 325;
+            line-height: normal;
+            letter-spacing: 0.5px;
+            font-family: "GothamNarrow-Book", "Helvetica Neue", sans-serif;
+          `}
+        >
+          No datasets were found using external search. Please consider trying a
+          different search description.
+        </div>
+      );
+    } else {
+      return viewToDisplay();
+    }
   };
 
   return (
@@ -171,16 +253,7 @@ const ExternalSearch = (props: {
         ref={scrollPointRef}
         css={`
           color: #231d2c;
-          ${isSticky
-            ? `
-      position: sticky;
-      top: 0;
-      background: white;
-      z-index: 10;
-      padding: 16px 0 8px 0;
-      border-bottom: 1px solid #eee;
-    `
-            : ""}
+
           > h2 {
             font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
             font-size: 24px;
@@ -234,70 +307,8 @@ const ExternalSearch = (props: {
       </Grid>
 
       <Box height={25} />
-      {datasets?.length ? (
-        <>
-          {view === "grid" && (
-            <Grid container spacing={2}>
-              {datasets &&
-                datasets?.map((dataset, index) => (
-                  <Grid
-                    item
-                    lg={3}
-                    md={4}
-                    sm={6}
-                    xs={12}
-                    key={`${dataset.name}-${index}`}
-                  >
-                    <ExternalDatasetCard
-                      description={dataset.description}
-                      name={dataset.name}
-                      publishedDate={dataset.datePublished}
-                      source={dataset.source}
-                      url={dataset.url}
-                      handleDownload={() => props.handleDownload(dataset)}
-                      dataset={dataset}
-                      searchValue={searchValue}
-                    />
-                    <Box height={16} />
-                  </Grid>
-                ))}
-            </Grid>
-          )}
-          {view === "table" && (
-            <ExternalSearchTable
-              onItemClick={props.handleDownload}
-              tableData={{
-                columns: [
-                  { key: "name", label: "Dataset Title" },
-                  { key: "source", label: "Source" },
-                  { key: "description", label: "Description" },
-                  { key: "datePublished", label: "Date" },
-                ],
-                data: datasets,
-              }}
-            />
-          )}
-        </>
-      ) : !loading ? (
-        <div
-          css={`
-            text-align: center;
-            height: 221px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-size: 14px;
-            font-style: normal;
-            font-weight: 325;
-            line-height: normal;
-            letter-spacing: 0.5px;
-            font-family: "GothamNarrow-Book", "Helvetica Neue", sans-serif;
-          `}
-        >
-          No datasets were found using external search. Please consider trying a
-          different search description.
-        </div>
-      ) : null}
+
+      {renderExtDatasets()}
 
       <div
         ref={observerTarget}
