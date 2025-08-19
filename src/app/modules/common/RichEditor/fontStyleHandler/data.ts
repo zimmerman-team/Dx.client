@@ -138,16 +138,20 @@ export const fontFamilyStyleMap = fontFamilies.reduce(
   },
   {}
 );
-
 export const blockStyleFn = (block: any) => {
+  let classes: string[] = [];
   const blockType = block.getType();
-
   // Find the font style that matches this block type
   const fontStyle = fontStyles.find((style) => style.blockType === blockType);
 
   if (fontStyle) {
-    return `font-style-${fontStyle.key}`;
+    classes.push(`font-style-${fontStyle.key}`);
   }
 
-  return "";
+  const color = block.getData().get("color");
+  if (color) {
+    classes.push(`COLOR-${color.replace("#", "")}`);
+  }
+
+  return classes.join(" ");
 };

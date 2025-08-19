@@ -56,7 +56,6 @@ export const RichEditor = (props: {
   const editor = useRef<Editor | null>(null);
   const [_elementId, setElementId] = useRecoilState(textEditorElementIdAtom);
   const { plugins: localPlugins } = useEditorPlugins();
-
   const focus = (): void => {
     setElementId(props.elementId as textEditorElementIdAtomType);
     editor.current?.focus();
