@@ -95,13 +95,12 @@ export default function ColorModal(props: Props) {
         colorStyleName
       );
 
-      const modifiedEditorState = setBlockData(
+      newEditorState = setBlockData(
         editorState,
         newEditorState,
         "color",
         color.hex
       );
-      newEditorState = modifiedEditorState.newEditorState;
 
       registerDynamicStyle(
         `COLOR-${color.hex.replace("#", "")}`,

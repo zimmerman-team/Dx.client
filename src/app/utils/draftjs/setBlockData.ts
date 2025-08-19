@@ -2,21 +2,12 @@ import { ContentState, EditorState, Modifier } from "draft-js";
 
 export function setBlockData(
   currentEditorState: EditorState,
-  newEditorState: EditorState | null,
+  newEditorState: EditorState,
   fieldToChange: string,
-  newValue: string,
-  newContentState?: ContentState
+  newValue: string
 ) {
   const selection = currentEditorState.getSelection();
-  let modifiedContentState;
-
-  if (newEditorState) {
-    modifiedContentState = newEditorState.getCurrentContent();
-  } else if (newContentState) {
-    modifiedContentState = newContentState;
-  } else {
-    modifiedContentState = newEditorState!.getCurrentContent();
-  }
+  const modifiedContentState = newEditorState.getCurrentContent();
 
   const modifiedContent = Modifier.setBlockData(
     modifiedContentState,
@@ -27,17 +18,10 @@ export function setBlockData(
       .set(fieldToChange, newValue)
   );
 
-  if (newEditorState) {
-    newEditorState = EditorState.push(
-      newEditorState as EditorState,
-      modifiedContent,
-      "change-block-data"
-    );
-  } else {
-    newEditorState = currentEditorState;
-  }
-  return {
-    newEditorState,
-    contentState: modifiedContent,
-  };
+  newEditorState = EditorState.push(
+    newEditorState as EditorState,
+    modifiedContent,
+    "change-block-data"
+  );
+  return newEditorState;
 }

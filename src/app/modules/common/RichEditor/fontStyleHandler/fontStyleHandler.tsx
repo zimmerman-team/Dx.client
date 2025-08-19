@@ -100,9 +100,9 @@ export function FontStyleHandler(props: Props) {
       const hex = style.replace("COLOR-", "");
       return {
         field: "color",
-        value: `#${hex}`,
+        value: `${hex}`,
         className: `COLOR-${hex}`,
-        cssRule: `color: #${hex};`,
+        cssRule: `color: ${hex};`,
       };
     }
 
@@ -117,7 +117,7 @@ export function FontStyleHandler(props: Props) {
 
     if (style === "ITALIC") {
       return {
-        field: "fontStyle",
+        field: "italic",
         value: "italic",
         className: "ITALIC",
         cssRule: "font-style: italic;",
@@ -339,9 +339,19 @@ export function FontStyleHandler(props: Props) {
 
     let newContentState = contentState;
     let newEditorState;
+    const normalBlockTypes = {
+      unstyled: "unstyled",
+      "ordered-list-item": "unstyled",
+      "unordered-list-item": "unstyled",
+      blockquote: "unstyled",
+    };
+    const sourceBlockType =
+      normalBlockTypes[
+        sourceBlock.getType() as keyof typeof normalBlockTypes
+      ] ?? sourceBlock.getType();
     props.setUniformBlockTypeStyle((prev) => ({
       ...prev,
-      [sourceBlock.getType()]: {
+      [sourceBlockType]: {
         css: updateBlockStyleLabelCss(
           Array.from(inlineStyles),
           sourceBlock.getType()
@@ -377,16 +387,21 @@ export function FontStyleHandler(props: Props) {
               blockSelection,
               style
             );
+            // Map inline style to CSS and apply block data
             const mapped = mapInlineStyleToCss(style);
             if (mapped) {
-              const modifiedEditorState = setBlockData(
-                targetEditorState,
-                null,
-                mapped.field,
-                mapped.value,
-                newContentState
-              );
-              newContentState = modifiedEditorState.contentState;
+              const updatedBlock = newContentState.getBlockForKey(blockKey);
+              const blockData = updatedBlock
+                .getData()
+                .set(mapped.field, mapped.value);
+
+              const newBlock = updatedBlock.merge({
+                data: blockData,
+              }) as ContentBlock;
+
+              newContentState = newContentState.merge({
+                blockMap: newContentState.getBlockMap().set(blockKey, newBlock),
+              }) as typeof newContentState;
 
               registerDynamicStyle(mapped.className, mapped.cssRule);
             }

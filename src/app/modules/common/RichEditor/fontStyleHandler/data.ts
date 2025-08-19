@@ -149,8 +149,22 @@ export const blockStyleFn = (block: any) => {
   }
 
   const color = block.getData().get("color");
+  const fontWeight = block.getData().get("fontWeight");
+  const fontFamily = block.getData().get("fontFamily");
+  const italic = block.getData().get("italic");
+
   if (color) {
     classes.push(`COLOR-${color.replace("#", "")}`);
+  }
+  if (fontWeight) {
+    classes.push(`FONT_WEIGHT-${fontWeight}`);
+  }
+  if (fontFamily) {
+    console.log(fontFamily, "fontFamily");
+    classes.push(`FONT_FAMILY-${fontFamily.replace(/\s/g, "_").toUpperCase()}`);
+  }
+  if (italic) {
+    classes.push("ITALIC");
   }
 
   return classes.join(" ");
