@@ -74,7 +74,7 @@ function ChartModuleDataView(
         onItemClick={handleItemClick}
         md={props.toolboxOpen ? 4 : 6}
         lg={props.toolboxOpen ? 4 : 3}
-        userOnly
+        filterValue="myAssets"
       />
     </div>
   );
