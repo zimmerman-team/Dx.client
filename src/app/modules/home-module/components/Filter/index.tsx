@@ -12,7 +12,6 @@ import { ReactComponent as FilterIcon } from "app/modules/home-module/assets/fil
 import { ReactComponent as CloseIcon } from "app/modules/home-module/assets/close-icon.svg";
 import { ReactComponent as SearchIcon } from "app/modules/home-module/assets/search-fill.svg";
 import { ReactComponent as TableIcon } from "app/modules/home-module/assets/table-icon.svg";
-import { ReactComponent as MenuIcon } from "app/modules/home-module/assets/menu.svg";
 
 export default function Filter(
   props: Readonly<{
@@ -20,7 +19,9 @@ export default function Filter(
     setSearchValue?: (value: React.SetStateAction<string | undefined>) => void;
     setSortValue: (value: "updatedDate" | "createdDate" | "name") => void;
     sortValue: string;
-    setFilterValue?: (value: "allAssets" | "myAssets") => void;
+    setFilterValue?: (
+      value: "allAssets" | "myAssets" | "dataxplorerAssets"
+    ) => void;
     filterValue?: string;
     setAssetsView: (value: "grid" | "table") => void;
     assetsView: "table" | "grid";
@@ -56,6 +57,7 @@ export default function Filter(
   const filterOptions = [
     { label: "All Assets", value: "allAssets" },
     { label: "My Assets", value: "myAssets" },
+    { label: "Dataxplorer Assets", value: "dataxplorerAssets" },
   ];
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     props.terminateSearch && props.terminateSearch();
@@ -189,7 +191,10 @@ export default function Filter(
                   onClick={() => {
                     props.terminateSearch && props.terminateSearch();
                     props.setFilterValue?.(
-                      option.value as "allAssets" | "myAssets"
+                      option.value as
+                        | "allAssets"
+                        | "myAssets"
+                        | "dataxplorerAssets"
                     );
                     handleCloseSortPopover();
                   }}
