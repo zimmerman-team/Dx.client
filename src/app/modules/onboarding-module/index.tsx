@@ -101,7 +101,7 @@ export default function Onboarding() {
                 }
               `}
             >
-              Welcome to <InlineLogo width={"239.968px"} height={"25.669px"} />
+              Welcome to Dataxplorer
             </h1>
 
             <h2
@@ -175,7 +175,7 @@ export default function Onboarding() {
                 margin-top: 104px;
               `}
             >
-              Welcome to <InlineLogo width={"239.968px"} height={"25.669px"} />
+              Welcome to Dataxplorer
             </h1>
             <p
               css={`

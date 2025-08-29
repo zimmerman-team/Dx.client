@@ -241,7 +241,7 @@ export default function PartnersModule() {
                   Collaboration is at the heart of everything we do — meet the
                   partners driving change with us.
                   <br />
-                  Sign in to get the most out of <InlineLogo /> and keep things
+                  Sign in to get the most out of Dataxplorer and keep things
                   connected.
                 </p>
                 <Box height={"40px"} />
