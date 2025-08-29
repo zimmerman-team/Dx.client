@@ -1,7 +1,17 @@
 import React from "react";
 import { ReactComponent as PlugIcon } from "app/modules/dataset-module/routes/upload-module/assets/plug.svg";
+import { copyTextToClipboard } from "app/utils/copyToClipboard";
+import { Snackbar } from "@material-ui/core";
 
 export default function NoMobileInfoScreen() {
+  const [copyAlert, setCopyAlert] = React.useState<boolean>(false);
+  const handleCopyToClipboard = async () => {
+    copyTextToClipboard(window.location.href).then(() => {
+      setCopyAlert(true);
+    });
+  };
+
+  console.log("rendering", window.location.href);
   return (
     <div
       css={`
@@ -73,9 +83,20 @@ export default function NoMobileInfoScreen() {
       >
         <a href="/why-dataxplorer">Learn more about DataXplorer</a>
 
-        <button>Try a demo on desktop</button>
+        <button onClick={handleCopyToClipboard}>Try a demo on desktop</button>
         <a href="/contact">Contact us</a>
       </div>
+      <Snackbar
+        anchorOrigin={{
+          vertical: "bottom",
+          horizontal: "left",
+        }}
+        open={copyAlert}
+        autoHideDuration={5000}
+        onClose={() => setCopyAlert(false)}
+        message="copied to clipboard"
+        data-testid="copied-link-snackbar"
+      />
     </div>
   );
 }
