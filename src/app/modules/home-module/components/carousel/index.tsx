@@ -95,7 +95,7 @@ export default function Card() {
       >
         <div>
           <h2>
-            Meet <Logo />, all-in-one workspace for{" "}
+            Meet Dataxplorer, all-in-one workspace for{" "}
             <span>data storytelling</span>{" "}
           </h2>
           <div

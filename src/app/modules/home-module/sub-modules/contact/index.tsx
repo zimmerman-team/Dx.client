@@ -184,7 +184,7 @@ export default function ContactModule() {
                 Questions, inquiries, feedback, or future requests. — Have
                 something to share? We're listening.
                 <br />
-                Sign in to get the most out of <InlineLogo /> and keep things
+                Sign in to get the most out of Dataxplorer and keep things
                 connected.
               </p>
               <Box height={"40px"} />
@@ -481,13 +481,6 @@ export default function ContactModule() {
                       flex-wrap: wrap;
                     `}
                   >
-                    <InlineLogo
-                      width={"309px"}
-                      height={"50px"}
-                      css={`
-                        flex-shrink: 0;
-                      `}
-                    />
                     <h3
                       css={`
                         font-size: 48px;
@@ -499,7 +492,7 @@ export default function ContactModule() {
                         margin: 0;
                       `}
                     >
-                      Headquarters
+                      Dataxplorer Headquarters
                     </h3>
                   </div>
                   <p>Feel free to contact us for any question you may have</p>

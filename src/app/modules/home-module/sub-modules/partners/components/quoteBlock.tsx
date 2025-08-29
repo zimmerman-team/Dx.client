@@ -39,24 +39,7 @@ export default function QuoteBlock() {
           `}
         />{" "}
         There are multiple facets of data that we needed to be able to splice
-        and dice. <br />{" "}
-        <InlineLogo
-          css={`
-            width: 226.447px;
-            height: 24.223px;
-            margin-top: 2px;
-            @media (max-width: 1439px) {
-              width: 171.224px;
-              height: 18.316px;
-              margin-top: 6px;
-            }
-            @media (max-width: 743px) {
-              width: 107.306px;
-              height: 11.478px;
-            }
-          `}
-        />{" "}
-        is allowing us to do that!
+        and dice. <br /> Dataxplorer is allowing us to do that!
         <img
           src={Quote}
           alt="quote_icon"
