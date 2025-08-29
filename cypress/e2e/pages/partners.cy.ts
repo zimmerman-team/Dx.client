@@ -5,12 +5,21 @@ describe("Testing the Partners page logged in", () => {
 
   beforeEach(() => {
     cy.visit("/");
-
+    cy.injectAxe();
     cy.get('[data-cy="cookie-btn"]').click();
     cy.get('[data-cy="app-bar"]').within(() => {
       cy.get('[data-cy="nav-about-group"]').click();
       cy.contains("a", "Partners").click();
     });
+  });
+  it("Logs A11y violations to the terminal", () => {
+    cy.checkA11y(
+      "",
+      {
+        retries: 3,
+      },
+      (violations) => cy.printA11yViolations(violations)
+    );
   });
 
   it("Can switch between the different tabs", () => {

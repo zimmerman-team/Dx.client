@@ -9,9 +9,19 @@ describe("Login for a test user on Dataxplorer", () => {
     );
     cy.saveLocalStorageCache();
     cy.visit("/");
+    cy.injectAxe();
+
     cy.get('[data-cy="cookie-btn"]').click();
   });
-
+  it("Logs A11y violations to the terminal", () => {
+    cy.checkA11y(
+      "",
+      {
+        retries: 3,
+      },
+      (violations) => cy.printA11yViolations(violations)
+    );
+  });
   it("Is Logged in", function () {
     cy.contains("Welcome").should("be.visible");
   });

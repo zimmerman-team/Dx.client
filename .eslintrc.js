@@ -16,8 +16,9 @@ module.exports = {
     "eslint-config-react-app",
     "react-app",
     "plugin:sonarjs/recommended",
+    "plugin:jsx-a11y/recommended",
   ],
-  plugins: ["sonarjs", "no-relative-import-paths"],
+  plugins: ["sonarjs", "no-relative-import-paths", "jsx-a11y"],
   rules: {
     "@typescript-eslint/explicit-function-return-type": "off",
     "react/no-array-index-key": 0,
