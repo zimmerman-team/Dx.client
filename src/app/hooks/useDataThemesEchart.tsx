@@ -1066,7 +1066,7 @@ export function useDataThemesEchart({
           ]
         : null,
       tooltip: {
-        trigger: "axis",
+        trigger: showTooltip ? "item" : "none",
         axisPointer: {
           type: "cross",
         },
