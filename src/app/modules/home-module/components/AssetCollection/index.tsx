@@ -63,7 +63,7 @@ function AssetsCollection() {
             searchStr={searchStr}
             view={assetsView}
             categories={categories}
-            userOnly={filterValue === "myAssets"}
+            filterValue={filterValue}
           />
         );
       case "charts":
@@ -72,7 +72,7 @@ function AssetsCollection() {
             sortBy={sortByStr}
             searchStr={searchStr}
             view={assetsView}
-            userOnly={filterValue === "myAssets"}
+            filterValue={filterValue}
           />
         );
       case "stories":
@@ -81,7 +81,7 @@ function AssetsCollection() {
             sortBy={sortByStr}
             searchStr={searchStr}
             view={assetsView}
-            userOnly={filterValue === "myAssets"}
+            filterValue={filterValue}
           />
         );
       case "all":
@@ -90,7 +90,7 @@ function AssetsCollection() {
             sortBy={sortByStr}
             searchStr={searchStr}
             view={assetsView}
-            userOnly={filterValue === "myAssets"}
+            filterValue={filterValue}
           />
         );
       default:

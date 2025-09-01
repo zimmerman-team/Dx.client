@@ -29,9 +29,9 @@ import { ReactComponent as DeleteIcon } from "app/modules/story-module/asset/del
 import { decorators } from "app/modules/common/RichEditor/decorators";
 import { MIN_BOX_WIDTH } from "./data";
 import { useUndoRedo } from "app/hooks/useUndoRedo";
-import isEqual from "lodash/isEqual";
 import { compareEditorStates } from "app/modules/story-module/views/edit/compareStates";
 import { MOBILE_BREAKPOINT } from "app/theme";
+import { updateDynamicStylesOnRender } from "app/utils/draftjs/getStyleEl";
 
 // Types
 interface BoxProps {
@@ -144,6 +144,11 @@ const Box = (props: BoxProps) => {
     }, 500),
     [boxContent]
   );
+  React.useEffect(() => {
+    if (contentType === "text") {
+      updateDynamicStylesOnRender(boxContent);
+    }
+  }, []);
 
   const handleTextContentChange = (value: EditorState) => {
     debouncedStore(value);
