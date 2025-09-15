@@ -3,15 +3,15 @@ import {
   iconButtonCss,
   rowFlexCss,
   searchInputCss,
-  sortByItemCss,
 } from "app/modules/home-module/style";
-import { IconButton, Popover, Tooltip } from "@material-ui/core";
-import { ReactComponent as SortIcon } from "app/modules/home-module/assets/sort-fill.svg";
+import { IconButton, Tooltip } from "@material-ui/core";
 import { ReactComponent as GridIcon } from "app/modules/home-module/assets/grid-fill.svg";
-import { ReactComponent as FilterIcon } from "app/modules/home-module/assets/filter-fill.svg";
 import { ReactComponent as CloseIcon } from "app/modules/home-module/assets/close-icon.svg";
 import { ReactComponent as SearchIcon } from "app/modules/home-module/assets/search-fill.svg";
 import { ReactComponent as TableIcon } from "app/modules/home-module/assets/table-icon.svg";
+import { FOCUS_VISIBLE_STYLE_LIGHT } from "app/theme";
+import FilterPopover from "./FilterPopover";
+import SortPopover from "./SortPopover";
 
 export default function Filter(
   props: Readonly<{
@@ -54,11 +54,6 @@ export default function Filter(
     { label: "Name", value: "name" },
   ];
 
-  const filterOptions = [
-    { label: "All Assets", value: "allAssets" },
-    { label: "My Assets", value: "myAssets" },
-    { label: "Dataxplorer Assets", value: "dataxplorerAssets" },
-  ];
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     props.terminateSearch && props.terminateSearch();
     props.setSearchValue?.(e.target.value);
@@ -101,9 +96,13 @@ export default function Filter(
               aria-label="search"
               name="search"
               autoComplete="search"
+              aria-hidden={!props.openSearch}
+              tabIndex={props.openSearch ? 0 : -1}
             />
 
             <IconButton
+              aria-hidden={!props.openSearch}
+              tabIndex={props.openSearch ? 0 : -1}
               onClick={() => {
                 props.setSearchValue?.("");
                 props.terminateSearch && props.terminateSearch();
@@ -140,130 +139,18 @@ export default function Filter(
           )}
         </div>
         {props.filterValue && (
-          <>
-            {" "}
-            <Tooltip title="Filter" placement="bottom">
-              <IconButton
-                onClick={(event: React.MouseEvent<HTMLButtonElement>) => {
-                  setFilterPopoverAnchorEl(
-                    filterPopoverAnchorEl ? null : event.currentTarget
-                  );
-                }}
-                css={iconButtonCss(openFilterPopover)}
-                aria-label="filter-button"
-              >
-                <FilterIcon />
-              </IconButton>
-            </Tooltip>
-            <Popover
-              open={openFilterPopover}
-              anchorEl={filterPopoverAnchorEl}
-              onClose={handleCloseFilterPopover}
-              anchorOrigin={{
-                vertical: "bottom",
-                horizontal: "left",
-              }}
-              transformOrigin={{
-                vertical: "top",
-                horizontal: "left",
-              }}
-              css={`
-                .MuiPaper-root {
-                  border-radius: 16px;
-                }
-              `}
-            >
-              <div
-                css={`
-                  color: #fff;
-                  font-size: 12px;
-                  padding: 8px 22px;
-                  background: #231d2c;
-                  font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
-                `}
-              >
-                Filter
-              </div>
-              {filterOptions.map((option) => (
-                <div
-                  key={option.label}
-                  css={sortByItemCss(props.filterValue === option.value)}
-                  onClick={() => {
-                    props.terminateSearch && props.terminateSearch();
-                    props.setFilterValue?.(
-                      option.value as
-                        | "allAssets"
-                        | "myAssets"
-                        | "dataxplorerAssets"
-                    );
-                    handleCloseSortPopover();
-                  }}
-                >
-                  {option.label}
-                </div>
-              ))}
-            </Popover>
-          </>
+          <FilterPopover
+            setFilterValue={props.setFilterValue!}
+            filterValue={props.filterValue}
+            terminateSearch={props.terminateSearch!}
+          />
         )}
 
-        <Tooltip title="Sort By" placement="bottom">
-          <IconButton
-            onClick={(event: React.MouseEvent<HTMLButtonElement>) => {
-              setSortPopoverAnchorEl(
-                sortPopoverAnchorEl ? null : event.currentTarget
-              );
-            }}
-            css={iconButtonCss(openSortPopover)}
-            aria-label="sort-button"
-          >
-            <SortIcon />
-          </IconButton>
-        </Tooltip>
-        <Popover
-          open={openSortPopover}
-          anchorEl={sortPopoverAnchorEl}
-          onClose={handleCloseSortPopover}
-          anchorOrigin={{
-            vertical: "bottom",
-            horizontal: "left",
-          }}
-          transformOrigin={{
-            vertical: "top",
-            horizontal: "left",
-          }}
-          css={`
-            .MuiPaper-root {
-              border-radius: 16px;
-            }
-          `}
-        >
-          <div
-            css={`
-              color: #fff;
-              font-size: 12px;
-              padding: 8px 22px;
-              background: #231d2c;
-              font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
-            `}
-          >
-            Sort by
-          </div>
-          {sortOptions.map((option) => (
-            <div
-              key={option.label}
-              css={sortByItemCss(props.sortValue === option.value)}
-              onClick={() => {
-                props.terminateSearch && props.terminateSearch();
-                props.setSortValue(
-                  option.value as "name" | "createdDate" | "updatedDate"
-                );
-                handleCloseSortPopover();
-              }}
-            >
-              {option.label}
-            </div>
-          ))}
-        </Popover>
+        <SortPopover
+          setSortValue={props.setSortValue}
+          sortValue={props.sortValue}
+          terminateSearch={props.terminateSearch!}
+        />
         <Tooltip title="Card/List View" placement="bottom">
           <IconButton
             data-cy="home-table-view-button"
@@ -274,6 +161,9 @@ export default function Filter(
             }}
             css={`
               padding: 3px;
+              :focus-visible {
+                ${FOCUS_VISIBLE_STYLE_LIGHT}
+              }
               &:hover {
                 background: transparent;
                 padding: none;

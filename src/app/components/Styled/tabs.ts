@@ -1,3 +1,4 @@
+import { FOCUS_VISIBLE_STYLE_LIGHT } from "app/theme";
 import styled from "styled-components/macro";
 
 interface ITab {
@@ -19,13 +20,18 @@ export const Tab = {
     cursor: pointer;
     position: relative;
   `,
-  Left: styled.div<ITab>`
+  Left: styled.button<ITab>`
     text-align: center;
     position: relative;
     color: ${(props) => (props.active ? "#6061E5" : "#231D2C")};
     font-family: "GothamNarrow-Book", "Helvetica Neue", sans-serif;
     font-size: 18px;
-
+    background: none;
+    border: none;
+    outline: none;
+    :focus-visible {
+      ${FOCUS_VISIBLE_STYLE_LIGHT}
+    }
     ::after {
       content: "";
       position: absolute;
@@ -39,13 +45,18 @@ export const Tab = {
       transition: transform 0.3s linear;
     }
   `,
-  Center: styled.div<ITab>`
+  Center: styled.button<ITab>`
     text-align: center;
     position: relative;
     color: ${(props) => (props.active ? "#6061E5" : "#231D2C")};
     font-family: "GothamNarrow-Book", "Helvetica Neue", sans-serif;
     font-size: 18px;
-
+    background: none;
+    border: none;
+    outline: none;
+    :focus-visible {
+      ${FOCUS_VISIBLE_STYLE_LIGHT}
+    }
     ::after {
       content: "";
       position: absolute;
@@ -62,14 +73,19 @@ export const Tab = {
     }
   `,
 
-  Right: styled.div<ITab>`
+  Right: styled.button<ITab>`
     text-align: center;
     position: relative;
     color: ${(props) => (props.active ? "#6061E5" : "#231D2C")};
     font-weight: ${(props) => (props.active ? "700" : "normal")};
     font-family: "GothamNarrow-Book", "Helvetica Neue", sans-serif;
     font-size: 18px;
-
+    background: none;
+    border: none;
+    outline: none;
+    :focus-visible {
+      ${FOCUS_VISIBLE_STYLE_LIGHT}
+    }
     ::after {
       content: "";
       position: absolute;

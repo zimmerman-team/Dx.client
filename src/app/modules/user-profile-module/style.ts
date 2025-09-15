@@ -1,5 +1,5 @@
 import { css } from "styled-components";
-import { MOBILE_BREAKPOINT } from "app/theme";
+import { FOCUS_VISIBLE_STYLE_LIGHT, MOBILE_BREAKPOINT } from "app/theme";
 export const layoutcss = css`
   margin-top: 50px;
   display: flex;
@@ -23,6 +23,10 @@ export const tabcss = (active: boolean, disabled: boolean) => css`
   opacity: ${disabled ? "0.25" : "1"};
   background-color: ${active ? "#231D2C" : "transparent"};
   cursor: pointer;
+  outline: none;
+  :focus-visible {
+    ${FOCUS_VISIBLE_STYLE_LIGHT}
+  }
   p {
     font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
     text-transform: capitalize;
@@ -36,7 +40,7 @@ export const tabcss = (active: boolean, disabled: boolean) => css`
 export const profilecss = css`
   font-style: normal;
   width: 500px;
-  h4 {
+  h1 {
     font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
     font-weight: 700;
     font-size: 36px;
@@ -44,7 +48,7 @@ export const profilecss = css`
     margin: 0;
     margin-bottom: 24px;
   }
-  p {
+  label {
     font-weight: 400;
     font-family: "GothamNarrow-Book", "Helvetica Neue", sans-serif;
     font-size: 18px;
@@ -181,6 +185,9 @@ export const inputcss = css`
   font-size: 16px;
   :focus {
     border: 1px solid #231d2c;
+  }
+  :focus-visible {
+    ${FOCUS_VISIBLE_STYLE_LIGHT}
   }
   @media (max-width: ${MOBILE_BREAKPOINT}) {
     width: 100%;

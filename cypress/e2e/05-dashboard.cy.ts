@@ -12,8 +12,19 @@ describe("Dashboard", () => {
     cy.intercept(`${apiUrl}/stories?filter=*`).as("fetchStories");
 
     cy.visit("/");
+    cy.injectAxe();
 
     cy.get('[data-cy="cookie-btn"]').click();
+  });
+
+  it("Logs A11y violations to the terminal", () => {
+    cy.checkA11y(
+      "",
+      {
+        retries: 3,
+      },
+      (violations) => cy.printA11yViolations(violations)
+    );
   });
 
   it("Can view all asset types on the dashboard", () => {

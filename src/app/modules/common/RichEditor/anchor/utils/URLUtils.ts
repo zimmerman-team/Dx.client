@@ -1,6 +1,6 @@
 import prependHttp from "prepend-http";
 import urlRegex from "./urlRegex";
-import mailRegex from "./mailRegex";
+import { mailRegex } from "./mailRegex";
 
 const URLUtils = {
   isUrl(text: string): boolean {

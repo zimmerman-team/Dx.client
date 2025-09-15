@@ -1,3 +1,4 @@
+import { FOCUS_VISIBLE_STYLE_LIGHT } from "app/theme";
 import React from "react";
 
 export interface Plan {
@@ -191,6 +192,9 @@ export default function PlanCard({
               color: #ffffff;  
               border: none;
               `}
+            }
+            :focus-visible {
+              ${FOCUS_VISIBLE_STYLE_LIGHT}
             }
             @media (max-width: 1300px) {
               width: 77.4%;
