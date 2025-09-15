@@ -5,7 +5,11 @@ import {
   GrantsTabCard,
   PerformanceTabCard,
 } from "app/modules/home-module/sub-modules/partners/components/tabCard";
-import { DESKTOP_BREAKPOINT, MOBILE_BREAKPOINT } from "app/theme";
+import {
+  DESKTOP_BREAKPOINT,
+  FOCUS_VISIBLE_STYLE_LIGHT,
+  MOBILE_BREAKPOINT,
+} from "app/theme";
 import { ChevronLeft, ChevronRight } from "@material-ui/icons";
 import { StyledTab, StyledTabs } from "./style";
 import SwipeableViews from "react-swipeable-views";
@@ -39,6 +43,8 @@ export const Pagination = (props: {
         aria-label={`Go to slide ${i + 1} of ${props.dots}`}
         aria-current={props.index === i ? "true" : "false"}
         css={`
+          padding: 0;
+          margin: 0;
           width: 8px;
           height: 8px;
           border-radius: 50%;
@@ -46,9 +52,11 @@ export const Pagination = (props: {
           outline: none;
           background: ${props.index === i ? props.color : "#fff"};
           cursor: pointer;
-
           /* Tooltip */
           box-shadow: 0px 0px 10px 0px rgba(152, 161, 170, 0.6);
+          :focus-visible {
+            ${FOCUS_VISIBLE_STYLE_LIGHT}
+          }
         `}
         onClick={() => props.onChangeIndex(i)}
       />

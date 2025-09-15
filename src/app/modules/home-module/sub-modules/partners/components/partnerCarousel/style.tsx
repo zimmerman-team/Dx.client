@@ -33,11 +33,6 @@ export const StyledTab = withStyles(() => ({
       },
     },
     // ✅ Focus-visible styles
-    "&.Mui-focusVisible, &:focus-visible": {
-      outline: `2px solid green`,
-      outlineOffset: "2px",
-      borderRadius: "4px", // optional: makes outline look cleaner
-    },
   },
 }))(Tab);
 
