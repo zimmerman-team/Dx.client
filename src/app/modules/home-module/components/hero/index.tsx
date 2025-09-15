@@ -50,7 +50,9 @@ export default function Hero({ title, children }: HeroProps) {
             text-transform: capitalize;
             line-height: normal;
             margin: 0px;
-
+            @media (max-width: ${DESKTOP_BREAKPOINT}) {
+              font-size: 64px;
+            }
             @media (max-width: ${MOBILE_BREAKPOINT}) {
               font-size: 48px;
             }
@@ -92,7 +94,14 @@ export default function Hero({ title, children }: HeroProps) {
           `}
         >
           <h1>{title}</h1>
-          <Box height={"40px"} />
+          <div
+            css={`
+              height: 40px;
+              @media (max-width: ${MOBILE_BREAKPOINT}) {
+                height: 30px;
+              }
+            `}
+          />
           {children}
         </div>
       </Container>

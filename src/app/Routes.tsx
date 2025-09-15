@@ -53,6 +53,10 @@ const EmbedChartModule = lazy(
   () => import("app/modules/embed-module/embedChart")
 );
 
+const WebinarModule = lazy(
+  () => import("app/modules/home-module/sub-modules/webinar")
+);
+
 const ChartModule = lazy(() => import("app/modules/chart-module"));
 const StoryModule = lazy(() => import("app/modules/story-module"));
 
@@ -296,6 +300,9 @@ export function MainRoutes() {
           </RouteWithAppBar>
           <RouteWithAppBar exact path="/about">
             <AboutModule />
+          </RouteWithAppBar>
+          <RouteWithAppBar exact path="/webinar">
+            <WebinarModule />
           </RouteWithAppBar>
           <RouteWithAppBar exact path="/pricing">
             <PricingModule />

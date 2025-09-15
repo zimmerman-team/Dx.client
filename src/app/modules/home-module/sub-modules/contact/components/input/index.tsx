@@ -5,7 +5,7 @@ const InputField: React.FC<
   React.DetailedHTMLProps<
     React.InputHTMLAttributes<HTMLInputElement>,
     HTMLInputElement
-  > & { label?: string }
+  > & { label?: string; darkBackground?: boolean }
 > = (props) => {
   return (
     <div
@@ -38,14 +38,16 @@ const InputField: React.FC<
           {props.label}
           {props.required ? "*" : ""}
         </span>
-        <span
-          css={`
-            font-size: 14px;
-            color: #525252;
-          `}
-        >
-          {props?.value?.toString()?.length ?? 0}/{props.maxLength ?? 0}
-        </span>
+        {props.maxLength ? (
+          <span
+            css={`
+              font-size: 14px;
+              color: #525252;
+            `}
+          >
+            {props?.value?.toString()?.length ?? 0}/{props.maxLength ?? 0}
+          </span>
+        ) : null}
       </label>
       <input
         type="text"
@@ -60,7 +62,7 @@ const InputField: React.FC<
           font-weight: 325;
           font-family: "GothamNarrow-Book", sans-serif;
           border-bottom: 1px solid #6061e5;
-          background: #ffffff;
+          background: ${props.darkBackground ? "#F1F3F5" : "#ffffff"};
           ::placeholder {
             color: #98a1aa;
           }
