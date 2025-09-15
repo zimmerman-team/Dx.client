@@ -8,6 +8,7 @@ const BackupIcon = () => {
       height="30"
       viewBox="0 0 30 30"
       fill="none"
+      role="presentation"
     >
       <mask
         id="mask0_14952_614"

@@ -22,6 +22,9 @@ export const TABLET_STARTPOINT = "744px";
 export const DESKTOP_BREAKPOINT = "1439px";
 export const DESKTOP_STARTPOINT = "1440px";
 
+export const FOCUS_VISIBLE_STYLE_LIGHT = `box-shadow: 0 0 0 3px #fff, 0 0 0 6px #000;`;
+export const FOCUS_VISIBLE_STYLE_DARK = `   box-shadow: 0 0 0 3px #fff, 0 0 0 6px #00b5d8; border-radius: 12px;`;
+
 const TextStyle: FontStyle = {
   fontFamily: '"GothamNarrow-Book", "Helvetica", "Arial", sans-serif',
   fontSize: 14,

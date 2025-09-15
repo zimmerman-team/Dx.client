@@ -12,7 +12,7 @@ export default function NonAuthUserLibrary() {
 
   return (
     <React.Fragment>
-      <div
+      <main
         css={`
           box-shadow: 0px 0px 10px 0px rgba(152, 161, 170, 0.1);
         `}
@@ -97,7 +97,7 @@ export default function NonAuthUserLibrary() {
           </div>
           <AssetsList />
         </Container>
-      </div>
+      </main>
     </React.Fragment>
   );
 }

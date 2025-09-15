@@ -277,7 +277,7 @@ export default function ContactModule() {
                   `}
                   data-cy="contact-form-alert"
                 >
-                  <SuccessIcon />
+                  <SuccessIcon role="presentation" />
                   <p
                     css={`
                       font-size: 18px;

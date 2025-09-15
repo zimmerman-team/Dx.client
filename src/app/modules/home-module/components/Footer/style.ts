@@ -1,3 +1,4 @@
+import { FOCUS_VISIBLE_STYLE_LIGHT } from "app/theme";
 import { css } from "styled-components/macro";
 
 export const homeFootercss = css`
@@ -20,6 +21,9 @@ export const homeFootercss = css`
     a {
       color: #000;
       text-decoration: none;
+      :focus-visible {
+        ${FOCUS_VISIBLE_STYLE_LIGHT}
+      }
     }
   }
 `;

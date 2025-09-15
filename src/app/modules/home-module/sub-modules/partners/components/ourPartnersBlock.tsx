@@ -48,11 +48,11 @@ export default function OurPartnersBlock() {
             }
           `}
         >
-          <MFALogo />
+          <MFALogo aria-label="Ministry of foreign affairs" />
 
-          <GFLogo />
+          <GFLogo aria-label="The Global Fund" />
 
-          <img src={IatiLogo} alt="iati-logo" />
+          <img src={IatiLogo} alt="International Aid Transparency Initiative" />
         </div>
       </Container>
     </div>

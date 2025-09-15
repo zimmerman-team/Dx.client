@@ -16,7 +16,8 @@ interface HeroProps {
 
 export default function Hero({ title, children }: HeroProps) {
   return (
-    <div
+    <section
+      aria-label="hero-section"
       css={`
         position: relative;
         background: url(${HeroEllipses}),
@@ -49,11 +50,6 @@ export default function Hero({ title, children }: HeroProps) {
             text-transform: capitalize;
             line-height: normal;
             margin: 0px;
-            @media (max-width: ${DESKTOP_BREAKPOINT}) {
-            }
-            ) {
-              font-size: 64px;
-            }
 
             @media (max-width: ${MOBILE_BREAKPOINT}) {
               font-size: 48px;
@@ -68,12 +64,6 @@ export default function Hero({ title, children }: HeroProps) {
             text-align: center;
             margin: 0;
             line-height: normal;
-            @media (max-width: ${DESKTOP_BREAKPOINT}) {
-            }
-            ) {
-              font-size: 18px;
-              line-height: normal;
-            }
           }
         }
       `}
@@ -106,6 +96,6 @@ export default function Hero({ title, children }: HeroProps) {
           {children}
         </div>
       </Container>
-    </div>
+    </section>
   );
 }
