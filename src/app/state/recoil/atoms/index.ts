@@ -42,7 +42,9 @@ export const allAssetsSortBy = atom<"name" | "updatedDate" | "createdDate">({
   effects_UNSTABLE: [persistAtom],
 });
 
-export const allAssetsFilterBy = atom<"allAssets" | "myAssets">({
+export const allAssetsFilterBy = atom<
+  "allAssets" | "myAssets" | "dataxplorerAssets"
+>({
   key: "allAssetsFilterBy",
   default: "allAssets",
   effects_UNSTABLE: [persistAtom],

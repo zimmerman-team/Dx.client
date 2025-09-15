@@ -8,7 +8,19 @@ export default defineConfig({
   projectId: process.env.CYPRESS_PROJECT_ID,
   e2e: {
     setupNodeEvents(on, config) {
-      // implement node event listeners here
+      on("task", {
+        log(message) {
+          console.log(message, "message logged from cypress task");
+          console.log(config, "config logged from cypress task");
+
+          return null;
+        },
+        table(message) {
+          console.table(message);
+
+          return null;
+        },
+      });
     },
     env: {
       auth0_username: process.env.AUTH0_USERNAME,

@@ -3,10 +3,19 @@ describe("General tests", () => {
 
   beforeEach(() => {
     cy.visit("/landing");
-
+    cy.injectAxe();
     cy.get('[data-cy="cookie-btn"]').click();
   });
 
+  it("Logs A11y violations to the terminal", () => {
+    cy.checkA11y(
+      "",
+      {
+        retries: 3,
+      },
+      (violations) => cy.printA11yViolations(violations)
+    );
+  });
   it("Can view the landing story", () => {
     cy.intercept(`${apiUrl}/story/public/*`).as("fetchStory");
     cy.get('[data-cy="landing-story-link"]').click();

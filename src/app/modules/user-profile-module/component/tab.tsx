@@ -4,17 +4,18 @@ import { tabcss } from "app/modules/user-profile-module/style";
 interface TabProps {
   title: string;
   active: boolean;
-  handleClick?: React.MouseEventHandler<HTMLDivElement> | undefined;
+  handleClick?: React.MouseEventHandler<HTMLButtonElement> | undefined;
   component: () => JSX.Element;
   disabled: boolean;
+  dataCy?: string;
 }
 
 export default function Tab(props: TabProps) {
   return (
-    <div
+    <button
       onClick={props.handleClick}
       css={tabcss(props.active, props.disabled)}
-      data-cy="profile-tab"
+      data-cy={props.dataCy}
     >
       <p>{props.title}</p>
       <div
@@ -24,6 +25,6 @@ export default function Tab(props: TabProps) {
       >
         {props.component()}
       </div>
-    </div>
+    </button>
   );
 }

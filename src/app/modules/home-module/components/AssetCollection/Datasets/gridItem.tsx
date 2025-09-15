@@ -7,13 +7,12 @@ import { ReactComponent as MenuIcon } from "app/modules/home-module/assets/menu.
 import { ReactComponent as DataCardImg } from "app/modules/home-module/assets/data-card-img.svg";
 import { ReactComponent as InfoIcon } from "app/modules/home-module/assets/info-icon.svg";
 import { Link, useLocation } from "react-router-dom";
-import { useMediaQuery } from "@material-ui/core";
 import { useAuth0 } from "@auth0/auth0-react";
 import { useStoreActions } from "app/state/store/hooks";
 import { isChartAIAgentActive } from "app/state/recoil/atoms";
 import { useRecoilState } from "recoil";
 import MenuItems from "app/modules/home-module/components/AssetCollection/Datasets/menuItems";
-import { MOBILE_BREAKPOINT } from "app/theme";
+import { FOCUS_VISIBLE_STYLE_LIGHT, MOBILE_BREAKPOINT } from "app/theme";
 
 interface Props {
   path: string;
@@ -71,108 +70,108 @@ export default function GridItem(props: Readonly<Props>) {
         to={destinationPath}
         css={`
           text-decoration: none;
+          width: 100%;
+          height: 162px;
+          display: flex;
+          color: #262c34;
+          background: #fff;
+
+          flex-direction: column;
+          padding: 12px 8px 4px 12px;
+          justify-content: space-between;
+          box-shadow: 0px 4px 16px 0px rgba(0, 0, 0, 0.05);
+
+          &:hover {
+            box-shadow: 0px 7px 22px 0px rgba(0, 0, 0, 0.1);
+          }
+
+          overflow: hidden;
+          &:focus-visible {
+            ${FOCUS_VISIBLE_STYLE_LIGHT}
+          }
         `}
       >
         <div
           css={`
-            width: 100%;
-            height: 162px;
             display: flex;
-            color: #262c34;
-            background: #fff;
-
-            flex-direction: column;
-            padding: 12px 8px 4px 12px;
+            align-items: flex-start;
             justify-content: space-between;
-            box-shadow: 0px 4px 16px 0px rgba(0, 0, 0, 0.05);
-
-            &:hover {
-              box-shadow: 0px 7px 22px 0px rgba(0, 0, 0, 0.1);
-            }
-            overflow: hidden;
           `}
         >
           <div
             css={`
-              display: flex;
-              align-items: flex-start;
-              justify-content: space-between;
+              width: 90%;
+              height: 50px;
+              word-wrap: break-word;
             `}
           >
-            <div
+            <p
+              title={props.title}
               css={`
-                width: 90%;
-                height: 50px;
-                word-wrap: break-word;
+                margin-top: -5px;
+                font-size: 14px;
+                line-height: 22px;
+                font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
+                overflow: hidden;
+                margin-bottom: 2px;
+                white-space: nowrap;
+                text-overflow: ellipsis;
               `}
             >
-              <p
-                title={props.title}
-                css={`
-                  margin-top: -5px;
-                  font-size: 14px;
-                  line-height: 22px;
-                  font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
-                  overflow: hidden;
-                  margin-bottom: 2px;
-                  white-space: nowrap;
-                  text-overflow: ellipsis;
-                `}
-              >
-                <b>{props.title}</b>
-              </p>
-              <p
-                title={props.descr}
-                css={`
-                  font-size: 10px;
-                  line-height: 14px;
-                  margin-top: 1px;
-                  color: #495057;
-                  text-overflow: ellipsis;
-                  overflow: hidden;
-                  white-space: nowrap;
-                `}
-              >
-                {props.descr}
-              </p>
-            </div>
-            {props.showMenu && (
-              <IconButton
-                css={`
-                  position: absolute;
-                  right: -2px;
-                  top: 0px;
-                  cursor: pointer;
-
-                  &:hover {
-                    background: transparent;
-                  }
-                `}
-                onClick={showMenuOptions}
-                data-cy="dataset-grid-item-menu-btn"
-              >
-                <MenuIcon />
-              </IconButton>
-            )}
+              <b>{props.title}</b>
+            </p>
+            <p
+              title={props.descr}
+              css={`
+                font-size: 10px;
+                line-height: 14px;
+                margin-top: 1px;
+                color: #495057;
+                text-overflow: ellipsis;
+                overflow: hidden;
+                white-space: nowrap;
+              `}
+            >
+              {props.descr}
+            </p>
           </div>
-          <div
-            css={`
-              display: flex;
-              position: relative;
-            `}
-          >
-            <div
+          {props.showMenu && (
+            <IconButton
               css={`
                 position: absolute;
-                bottom: -14px;
-                svg {
-                  width: 119.084px;
-                  height: 69.761px;
+                right: -2px;
+                top: 0px;
+                cursor: pointer;
+
+                &:hover {
+                  background: transparent;
                 }
               `}
+              onClick={showMenuOptions}
+              aria-label="data menu-button"
+              data-cy="dataset-grid-item-menu-btn"
             >
-              <DataCardImg />
-            </div>
+              <MenuIcon />
+            </IconButton>
+          )}
+        </div>
+        <div
+          css={`
+            display: flex;
+            position: relative;
+          `}
+        >
+          <div
+            css={`
+              position: absolute;
+              bottom: -14px;
+              svg {
+                width: 119.084px;
+                height: 69.761px;
+              }
+            `}
+          >
+            <DataCardImg />
           </div>
         </div>
       </Link>
@@ -250,7 +249,7 @@ export default function GridItem(props: Readonly<Props>) {
             gap: 3px;
           `}
         >
-          <OwnerIcon />
+          <OwnerIcon aria-label="owner" />
           <p>{props.ownerName?.split(" ")?.[0]}</p>
         </div>
         <div
@@ -260,7 +259,7 @@ export default function GridItem(props: Readonly<Props>) {
             gap: 3px;
           `}
         >
-          <ClockIcon width={12} height={12} />
+          <ClockIcon width={12} height={12} aria-label="date" />
           <p>{moment(props.date).format("MMMM YYYY")}</p>
         </div>
       </div>

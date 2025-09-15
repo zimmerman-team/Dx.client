@@ -1,5 +1,4 @@
 import React from "react";
-import Grid from "@material-ui/core/Grid";
 import Container from "@material-ui/core/Container";
 import { homeFootercss } from "app/modules/home-module/components/Footer/style";
 import { ReactComponent as CopyIcon } from "app/modules/home-module/components/Footer/asset/copy.svg";
@@ -9,7 +8,11 @@ import NewsletterForm from "app/modules/common/newsletterForm";
 import { FieldErrors } from "react-hook-form";
 import moment from "moment";
 import InlineLogo from "app/modules/home-module/assets/inline-logo";
-import { DESKTOP_BREAKPOINT, MOBILE_BREAKPOINT } from "app/theme";
+import {
+  DESKTOP_BREAKPOINT,
+  FOCUS_VISIBLE_STYLE_LIGHT,
+  MOBILE_BREAKPOINT,
+} from "app/theme";
 import { useMediaQuery } from "usehooks-ts";
 import {
   PRIVACY_POLICY_LINK,
@@ -32,7 +35,7 @@ export default function DesktopFooter(props: Props) {
   const mobile = useMediaQuery(`(max-width:${MOBILE_BREAKPOINT})`);
   const tablet = useMediaQuery(`(max-width:${DESKTOP_BREAKPOINT})`);
   return (
-    <div
+    <footer
       css={`
         ${homeFootercss}
         border-top: ${props.mini ? "none" : "1px solid #dadaf8"};
@@ -84,11 +87,15 @@ export default function DesktopFooter(props: Props) {
               >
                 <Link
                   to="/"
+                  aria-label="Go to homepage"
                   css={`
                     text-decoration: none;
                     display: flex;
                     align-items: center;
                     gap: 8px;
+                    :focus-visible {
+                      ${FOCUS_VISIBLE_STYLE_LIGHT}
+                    }
                   `}
                 >
                   <LogoIcon />
@@ -108,84 +115,90 @@ export default function DesktopFooter(props: Props) {
                   </div>
                 </Link>
               </p>
-              <ul
-                css={`
-                  margin: 0;
-                  display: flex;
-                  flex-direction: column;
-                  gap: 16px;
-                  color: #000;
-                  font-weight: 325;
-                  font-family: "GothamNarrow-Medium", sans-serif;
-                  @media (max-width: ${DESKTOP_BREAKPOINT}) {
-                    flex-direction: row-reverse;
-                    justify-content: space-between;
-                  }
-                  a {
-                    text-decoration: none;
+              <nav aria-label="Contact information">
+                <ul
+                  css={`
+                    margin: 0;
+                    display: flex;
+                    flex-direction: column;
+                    gap: 16px;
                     color: #000;
-                  }
-                  li {
-                    font-size: 14px;
-                    p {
-                      margin: 0px;
-                      line-height: normal;
-                    }
-                  }
-                `}
-              >
-                <li
-                  css={`
+                    font-weight: 325;
+                    font-family: "GothamNarrow-Medium", sans-serif;
                     @media (max-width: ${DESKTOP_BREAKPOINT}) {
-                      display: none;
+                      flex-direction: row-reverse;
+                      justify-content: space-between;
+                    }
+                    a {
+                      text-decoration: none;
+                      color: #000;
+                    }
+                    li {
+                      font-size: 14px;
+                      p {
+                        margin: 0px;
+                        line-height: normal;
+                      }
                     }
                   `}
                 >
-                  Tel: {TELEPHONE_NUMBER}
-                </li>
+                  <li
+                    css={`
+                      @media (max-width: ${DESKTOP_BREAKPOINT}) {
+                        display: none;
+                      }
+                    `}
+                  >
+                    <a href={`tel:${TELEPHONE_NUMBER}`}>
+                      Tel: {TELEPHONE_NUMBER}
+                    </a>
+                  </li>
 
-                <li
-                  css={`
-                    @media (max-width: ${MOBILE_BREAKPOINT}) {
-                      display: none;
-                    }
-                  `}
-                >
-                  {" "}
-                  <a href="mailto:contact@dataxplorer.org">
-                    Email: contact@dataxplorer.org
-                  </a>{" "}
-                </li>
+                  <li
+                    css={`
+                      @media (max-width: ${MOBILE_BREAKPOINT}) {
+                        display: none;
+                      }
+                    `}
+                  >
+                    {" "}
+                    <a href="mailto:contact@dataxplorer.org">
+                      Email: contact@dataxplorer.org
+                    </a>{" "}
+                  </li>
 
-                <li
-                  css={`
-                    display: none;
-                    @media (max-width: ${DESKTOP_BREAKPOINT}) {
-                      display: block;
-                    }
-                  `}
-                >
-                  Tel: {TELEPHONE_NUMBER}
-                  <a
+                  <li
                     css={`
                       display: none;
-                      @media (max-width: ${MOBILE_BREAKPOINT}) {
+                      @media (max-width: ${DESKTOP_BREAKPOINT}) {
                         display: block;
                       }
                     `}
-                    href="mailto:contact@dataxplorer.org"
                   >
-                    Email: contact@dataxplorer.org
-                  </a>{" "}
-                </li>
-                <li>
-                  <p>
-                    Keizersgracht 520H
-                    {mobile ? <br /> : tablet ? ", " : <br />}
-                    1017 EK Amsterdam <br /> The Netherlands
-                  </p>
-                </li>
-              </ul>
+                    <a href={`tel:${TELEPHONE_NUMBER}`}>
+                      Tel: {TELEPHONE_NUMBER}
+                    </a>
+                    <a
+                      css={`
+                        display: none;
+                        @media (max-width: ${MOBILE_BREAKPOINT}) {
+                          display: block;
+                        }
+                      `}
+                      href="mailto:contact@dataxplorer.org"
+                    >
+                      Email: contact@dataxplorer.org
+                    </a>{" "}
+                  </li>
+                  <li>
+                    <p>
+                      Keizersgracht 520H
+                      {mobile ? <br /> : tablet ? ", " : <br />}
+                      1017 EK Amsterdam <br /> The Netherlands
+                    </p>
+                  </li>
+                </ul>
+              </nav>
             </div>
 
             <div
@@ -197,7 +210,7 @@ export default function DesktopFooter(props: Props) {
                 }
               `}
             />
-            <div>
+            <nav aria-label="Footer routes">
               <ul
                 css={`
                   display: none;
@@ -235,13 +248,7 @@ export default function DesktopFooter(props: Props) {
                       align-items: center;
                     `}
                   >
-                    Why
-                    <InlineLogo
-                      css={`
-                        width: 103px;
-                        height: 12px;
-                      `}
-                    />
+                    Why DATAXPLORER
                   </Link>
                 </li>
                 <li>
@@ -286,13 +293,7 @@ export default function DesktopFooter(props: Props) {
                       align-items: center;
                     `}
                   >
-                    Why
-                    <InlineLogo
-                      css={`
-                        width: 103px;
-                        height: 12px;
-                      `}
-                    />
+                    Why DATAXPLORER
                   </Link>
                 </li>
 
@@ -306,7 +307,7 @@ export default function DesktopFooter(props: Props) {
                   <Link to="/contact">Contact Us</Link>
                 </li>
               </ul>
-            </div>
+            </nav>
             <div
               css={`
                 display: none;
@@ -375,6 +376,9 @@ export default function DesktopFooter(props: Props) {
                       font-weight: 325;
                       color: #98a1aa;
                     }
+                    :focus-visible {
+                      ${FOCUS_VISIBLE_STYLE_LIGHT}
+                    }
                   }
                   button {
                     border: none;
@@ -389,6 +393,9 @@ export default function DesktopFooter(props: Props) {
                     padding: 10px 16px;
                     font-weight: 400;
                     cursor: pointer;
+                    :focus-visible {
+                      ${FOCUS_VISIBLE_STYLE_LIGHT}
+                    }
                   }
                 `}
               >
@@ -431,7 +438,8 @@ export default function DesktopFooter(props: Props) {
             }
           `}
         >
-          <div
+          <nav
+            aria-label="Copyright and legal information"
             css={`
               display: flex;
               gap: 20px;
@@ -450,6 +458,9 @@ export default function DesktopFooter(props: Props) {
               a {
                 text-decoration: none;
                 color: #000;
+                :focus-visible {
+                  ${FOCUS_VISIBLE_STYLE_LIGHT}
+                }
               }
               p {
                 margin: 0;
@@ -513,9 +524,9 @@ export default function DesktopFooter(props: Props) {
                 Terms and conditions
               </a>{" "}
             </p>
-          </div>
+          </nav>
         </Container>
       </div>
-    </div>
+    </footer>
   );
 }

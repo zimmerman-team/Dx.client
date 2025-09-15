@@ -24,6 +24,7 @@ describe("Testing create chart on DX", () => {
     cy.intercept("GET", `${apiUrl}/users/plan-data`).as("planData");
 
     cy.visit("/");
+    cy.injectAxe();
 
     cy.wait("@planData");
 
@@ -58,6 +59,16 @@ describe("Testing create chart on DX", () => {
     cy.get('[data-cy="ai-agent-switch"]').click();
     cy.wait(4000);
     cy.get('[data-cy="ai-agent-switch"]').should("not.be.checked");
+  });
+
+  it("Logs A11y violations to the terminal", () => {
+    cy.checkA11y(
+      "",
+      {
+        retries: 3,
+      },
+      (violations) => cy.printA11yViolations(violations)
+    );
   });
 
   it("Can create a bar chart", () => {
@@ -1904,6 +1915,7 @@ describe("Testing Ai chart creation", () => {
     cy.intercept("GET", `${apiUrl}/users/plan-data`).as("planData");
 
     cy.visit("/");
+    cy.injectAxe();
 
     cy.wait("@planData");
 
@@ -1933,7 +1945,15 @@ describe("Testing Ai chart creation", () => {
 
     cy.get('[data-cy="toolbox-chart-next"]').click();
   });
-
+  it("Logs A11y violations to the terminal", () => {
+    cy.checkA11y(
+      "",
+      {
+        retries: 3,
+      },
+      (violations) => cy.printA11yViolations(violations)
+    );
+  });
   it("Can create a chart with AI", () => {
     cy.wait("@aiSuggestion");
 
@@ -1994,6 +2014,7 @@ describe("Edit, duplicate and delete chart", () => {
     cy.intercept("GET", `${apiUrl}/users/plan-data`).as("planData");
 
     cy.visit("/");
+    cy.injectAxe();
 
     cy.wait("@planData");
 
@@ -2004,6 +2025,15 @@ describe("Edit, duplicate and delete chart", () => {
     cy.get('[data-cy="home-charts-tab"]').scrollIntoView().click();
 
     cy.wait("@fetchCharts");
+  });
+  it("Logs A11y violations to the terminal", () => {
+    cy.checkA11y(
+      "",
+      {
+        retries: 3,
+      },
+      (violations) => cy.printA11yViolations(violations)
+    );
   });
 
   it("Can Edit a chart", () => {

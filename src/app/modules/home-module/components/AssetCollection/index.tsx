@@ -63,7 +63,7 @@ function AssetsCollection() {
             searchStr={searchStr}
             view={assetsView}
             categories={categories}
-            userOnly={filterValue === "myAssets"}
+            filterValue={filterValue}
           />
         );
       case "charts":
@@ -72,7 +72,7 @@ function AssetsCollection() {
             sortBy={sortByStr}
             searchStr={searchStr}
             view={assetsView}
-            userOnly={filterValue === "myAssets"}
+            filterValue={filterValue}
           />
         );
       case "stories":
@@ -81,7 +81,7 @@ function AssetsCollection() {
             sortBy={sortByStr}
             searchStr={searchStr}
             view={assetsView}
-            userOnly={filterValue === "myAssets"}
+            filterValue={filterValue}
           />
         );
       case "all":
@@ -90,7 +90,7 @@ function AssetsCollection() {
             sortBy={sortByStr}
             searchStr={searchStr}
             view={assetsView}
-            userOnly={filterValue === "myAssets"}
+            filterValue={filterValue}
           />
         );
       default:
@@ -129,48 +129,44 @@ function AssetsCollection() {
       `}
     >
       <div css={turnsDataCss}>
-        {isAuthenticated ? (
-          <Grid container alignItems="center">
-            <Grid item lg={5} md={5} sm={7} xs={11}>
-              <h4
-                css={`
-                  font-size: 18px;
-                `}
-              >
-                Library
-              </h4>
-              <h2>Welcome {user?.given_name ?? user?.name?.split(" ")[0]}</h2>
-            </Grid>
-            <Grid
-              item
-              lg={7}
-              md={7}
-              sm={5}
-              xs={1}
+        <Grid container alignItems="center">
+          <Grid item lg={5} md={5} sm={7} xs={11}>
+            <h4
               css={`
-                display: block;
-
-                @media (max-width: 965px) {
-                  margin-top: 16px;
-                  @media (max-width: ${MOBILE_BREAKPOINT}) {
-                    display: none;
-                  }
-                }
+                font-size: 18px;
               `}
             >
-              <div
-                css={`
-                  display: flex;
-                  justify-self: flex-end;
-                `}
-              >
-                <AddAssetDropdown />
-              </div>
-            </Grid>
+              Library
+            </h4>
+            <h2>Welcome {user?.given_name ?? user?.name?.split(" ")[0]}</h2>
           </Grid>
-        ) : (
-          <div />
-        )}
+          <Grid
+            item
+            lg={7}
+            md={7}
+            sm={5}
+            xs={1}
+            css={`
+              display: block;
+
+              @media (max-width: 965px) {
+                margin-top: 16px;
+                @media (max-width: ${MOBILE_BREAKPOINT}) {
+                  display: none;
+                }
+              }
+            `}
+          >
+            <div
+              css={`
+                display: flex;
+                justify-self: flex-end;
+              `}
+            >
+              <AddAssetDropdown />
+            </div>
+          </Grid>
+        </Grid>
       </div>
       <Box height={32} />
       <Box css={featuredAssetsCss}>
@@ -186,8 +182,11 @@ function AssetsCollection() {
           `}
         >
           <Grid item lg={6} md={6} sm={6} xs={12}>
-            <Tab.Container>
+            <Tab.Container role="tablist" aria-label="Content type">
               <Tab.Left
+                role="tab"
+                aria-selected={display === "all"}
+                id="tab-all"
                 active={display === "all"}
                 onClick={() => handleChange("all")}
                 data-cy="home-all-tab"
@@ -195,6 +194,9 @@ function AssetsCollection() {
                 All
               </Tab.Left>
               <Tab.Center
+                role="tab"
+                aria-selected={display === "data"}
+                id="tab-data"
                 active={display === "data"}
                 onClick={() => handleChange("data")}
                 position={tabPrevPosition}
@@ -203,6 +205,9 @@ function AssetsCollection() {
                 Data
               </Tab.Center>
               <Tab.Center
+                role="tab"
+                aria-selected={display === "charts"}
+                id="tab-charts"
                 active={display === "charts"}
                 onClick={() => handleChange("charts")}
                 position={tabPrevPosition}
@@ -212,6 +217,9 @@ function AssetsCollection() {
               </Tab.Center>
 
               <Tab.Right
+                role="tab"
+                aria-selected={display === "stories"}
+                id="tab-stories"
                 active={display === "stories"}
                 onClick={() => handleChange("stories")}
                 data-cy="home-stories-tab"

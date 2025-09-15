@@ -1,13 +1,13 @@
 import React from "react";
 import moment from "moment";
 import { Link } from "react-router-dom";
-import { useAuth0 } from "@auth0/auth0-react";
-import { IconButton, useMediaQuery } from "@material-ui/core";
+import { IconButton } from "@material-ui/core";
 import { ReactComponent as MenuIcon } from "app/modules/home-module/assets/menu.svg";
 import { ReactComponent as ClockIcon } from "app/modules/home-module/assets/clock-icon.svg";
 import { ReactComponent as OwnerIcon } from "app/modules/home-module/assets/owner-icon.svg";
 import MenuItems from "app/modules/home-module/components/AssetCollection/Datasets/menuItems";
 import AIIcon from "app/assets/icons/AIIcon";
+import { FOCUS_VISIBLE_STYLE_LIGHT } from "app/theme";
 
 interface Props {
   id: string;
@@ -56,6 +56,9 @@ export default function GridItem(props: Props) {
 
           &:hover {
             box-shadow: 0px 7px 22px 0px rgba(0, 0, 0, 0.1);
+          }
+          &:focus-visible {
+            ${FOCUS_VISIBLE_STYLE_LIGHT}
           }
         `}
         data-cy={`chart-grid-item`}
@@ -108,6 +111,7 @@ export default function GridItem(props: Props) {
             onClick={showMenuOptions}
             data-cy="chart-grid-item-menu-btn"
             data-testid="chart-grid-item-menu-btn"
+            aria-label={"chart menu-button"}
           >
             <MenuIcon />
           </IconButton>
@@ -169,7 +173,7 @@ export default function GridItem(props: Props) {
             gap: 3px;
           `}
         >
-          <OwnerIcon />
+          <OwnerIcon aria-label="owner" />
           <p>{props.ownerName?.split(" ")?.[0]}</p>
         </div>
         <div
@@ -179,7 +183,7 @@ export default function GridItem(props: Props) {
             gap: 3px;
           `}
         >
-          <ClockIcon width={12} height={12} />
+          <ClockIcon width={12} height={12} aria-label="date" />
           <p>{moment(props.date).format("MMMM YYYY")}</p>
         </div>
       </div>

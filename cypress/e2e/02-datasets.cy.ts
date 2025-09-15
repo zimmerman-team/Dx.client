@@ -29,6 +29,7 @@ describe("Testing connecting data on DX", () => {
     cy.intercept("GET", `${apiUrl}/users/plan-data`).as("planData");
 
     cy.visit("/");
+    cy.injectAxe();
 
     cy.wait("@planData");
 
@@ -37,6 +38,15 @@ describe("Testing connecting data on DX", () => {
     cy.get('[data-cy="home-asset-dropdown-button"]').click();
     cy.get('[data-cy="home-connect-dataset-button"]').click();
     cy.wait(2000);
+  });
+  it("Logs A11y violations to the terminal", () => {
+    cy.checkA11y(
+      "",
+      {
+        retries: 3,
+      },
+      (violations) => cy.printA11yViolations(violations)
+    );
   });
 
   it("Can filter results by source in the external search", () => {
@@ -448,6 +458,7 @@ describe("Edit, Delete and Duplicate Dataset", () => {
     cy.intercept("GET", `${apiUrl}/users/plan-data`).as("planData");
 
     cy.visit("/");
+    cy.injectAxe();
 
     cy.wait("@planData");
     cy.get('[data-cy="cookie-btn"]').click();
@@ -458,7 +469,15 @@ describe("Edit, Delete and Duplicate Dataset", () => {
 
     cy.wait("@fetchDatasets");
   });
-
+  it("Logs A11y violations to the terminal", () => {
+    cy.checkA11y(
+      "",
+      {
+        retries: 3,
+      },
+      (violations) => cy.printA11yViolations(violations)
+    );
+  });
   it.only("Can Edit a Dataset", () => {
     cy.contains('[data-cy="dataset-grid-item"]', "Football Players")
       .first()

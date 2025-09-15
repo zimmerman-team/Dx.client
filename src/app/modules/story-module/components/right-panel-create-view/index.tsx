@@ -162,10 +162,10 @@ export const StoryElementsType = {
 };
 
 const sortByOptions = [
-  { value: "createdDate desc", label: "Recent" },
-  { value: "createdDate asc", label: "Recent" },
-  { value: "name desc", label: "Name" },
-  { value: "name asc", label: "Name" },
+  { value: "createdDate desc", label: "Recent Descending" },
+  { value: "createdDate asc", label: "Recent Ascending" },
+  { value: "name desc", label: "Name Descending" },
+  { value: "name asc", label: "Name Ascending" },
 ];
 
 const videoSources = [

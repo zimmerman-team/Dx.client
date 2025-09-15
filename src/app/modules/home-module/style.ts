@@ -1,3 +1,4 @@
+import { FOCUS_VISIBLE_STYLE_LIGHT } from "app/theme";
 import { css } from "styled-components/macro";
 
 export const turnsDataCss = css`
@@ -144,7 +145,9 @@ export const iconButtonCss = (active?: boolean) => css`
       fill: #fff;
     }`
     : ""}
-
+  :focus-visible {
+    ${FOCUS_VISIBLE_STYLE_LIGHT}
+  }
   &:hover {
     background: transparent;
     padding: none;
@@ -167,7 +170,7 @@ export const sortByItemCss = (active: boolean) => css`
   padding: 8px 22px;
   font-family: "GothamNarrow-Book", "Helvetica Neue", sans-serif;
   background: ${active ? "#DFE3E5" : "transparent"};
-
+  white-space: nowrap;
   &:hover {
     cursor: pointer;
     background: #dfe3e5;

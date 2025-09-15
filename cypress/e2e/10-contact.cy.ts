@@ -4,7 +4,17 @@ describe("testing contact form", () => {
   const apiUrl = Cypress.env("api_url");
   beforeEach(() => {
     cy.visit("/contact");
+    cy.injectAxe();
     cy.get('[data-cy="cookie-btn"]').click();
+  });
+  it("Logs A11y violations to the terminal", () => {
+    cy.checkA11y(
+      "",
+      {
+        retries: 3,
+      },
+      (violations) => cy.printA11yViolations(violations)
+    );
   });
   it("should submit contact form", () => {
     cy.intercept(`${apiUrl}/users/send-contact-form-to-intercom`).as(

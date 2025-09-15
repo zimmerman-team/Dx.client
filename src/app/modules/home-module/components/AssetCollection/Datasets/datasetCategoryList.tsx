@@ -45,6 +45,20 @@ export default function DatasetCategoryList(props: Readonly<Props>) {
           border-radius: 12px;
           border: 1px solid #231d2c;
           font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
+          &:focus-visible {
+            border: 3px solid #00b5d8; /* non-selected focus */
+          }
+
+          &.selected {
+            background: #6061e5;
+            color: #fff;
+            border: 1px solid #6061e5;
+            font-weight: bold;
+
+            &:focus-visible {
+              border: 3px solid #231d2c; /* selected focus */
+            }
+          }
         }
       `}
     >
@@ -59,17 +73,9 @@ export default function DatasetCategoryList(props: Readonly<Props>) {
               props.setCategories(fCategory);
             }
           }}
+          className={props.categories.includes(c) ? "selected" : ""}
+          aria-pressed={props.categories.includes(c)}
           data-cy="dataset-category-button"
-          style={
-            props.categories.includes(c)
-              ? {
-                  color: "#fff",
-                  background: "#6061E5",
-                  border: "1px solid #6061E5",
-                  fontWeight: "bold",
-                }
-              : { color: "#231D2C" }
-          }
         >
           {c}
         </button>

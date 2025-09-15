@@ -1,3 +1,4 @@
+import { FOCUS_VISIBLE_STYLE_LIGHT } from "app/theme";
 import React from "react";
 
 const InputField: React.FC<
@@ -64,6 +65,9 @@ const InputField: React.FC<
           background: ${props.darkBackground ? "#F1F3F5" : "#ffffff"};
           ::placeholder {
             color: #98a1aa;
+          }
+          :focus-visible {
+            ${FOCUS_VISIBLE_STYLE_LIGHT}
           }
         `}
         {...props}
@@ -136,6 +140,9 @@ export const TextField: React.FC<
           background: #ffffff;
           ::placeholder {
             color: #98a1aa;
+          }
+          :focus-visible {
+            ${FOCUS_VISIBLE_STYLE_LIGHT}
           }
         `}
         {...props}

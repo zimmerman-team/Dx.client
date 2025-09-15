@@ -10,6 +10,7 @@ describe("Testing the Why dataxplorer page logged in", () => {
     cy.intercept("GET", `${apiUrl}/users/plan-data`).as("planData");
 
     cy.visit("/");
+    cy.injectAxe();
 
     cy.wait("@planData");
 
@@ -18,6 +19,16 @@ describe("Testing the Why dataxplorer page logged in", () => {
       cy.get('[data-cy="nav-about-group"]').click();
       cy.contains("a", "Why").click();
     });
+  });
+
+  it("Logs A11y violations to the terminal", () => {
+    cy.checkA11y(
+      "",
+      {
+        retries: 3,
+      },
+      (violations) => cy.printA11yViolations(violations)
+    );
   });
 
   it("Displays the buttons that link to the correct pages", () => {

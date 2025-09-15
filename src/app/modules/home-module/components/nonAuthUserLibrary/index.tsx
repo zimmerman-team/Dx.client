@@ -12,7 +12,7 @@ export default function NonAuthUserLibrary() {
 
   return (
     <React.Fragment>
-      <div
+      <main
         css={`
           box-shadow: 0px 0px 10px 0px rgba(152, 161, 170, 0.1);
         `}
@@ -71,9 +71,7 @@ export default function NonAuthUserLibrary() {
             `}
           >
             <div>
-              <h2>
-                See Our Default <Logo /> Assets
-              </h2>
+              <h2>See Our Default Dataxplorer Assets</h2>
               <p>
                 Explore ready-made assets from DataXplorer. Sign in to create
                 your own data stories.
@@ -99,7 +97,7 @@ export default function NonAuthUserLibrary() {
           </div>
           <AssetsList />
         </Container>
-      </div>
+      </main>
     </React.Fragment>
   );
 }
