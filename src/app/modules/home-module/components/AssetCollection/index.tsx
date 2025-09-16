@@ -137,7 +137,7 @@ function AssetsCollection() {
             searchStr={searchStr}
             view={assetsView}
             categories={categories}
-            userOnly={filterValue === "myAssets"}
+            filterValue={filterValue}
           />
         );
       case "charts":
@@ -146,7 +146,7 @@ function AssetsCollection() {
             sortBy={sortByStr}
             searchStr={searchStr}
             view={assetsView}
-            userOnly={filterValue === "myAssets"}
+            filterValue={filterValue}
           />
         );
       case "stories":
@@ -155,7 +155,7 @@ function AssetsCollection() {
             sortBy={sortByStr}
             searchStr={searchStr}
             view={assetsView}
-            userOnly={filterValue === "myAssets"}
+            filterValue={filterValue}
           />
         );
       case "all":
@@ -164,7 +164,7 @@ function AssetsCollection() {
             sortBy={sortByStr}
             searchStr={searchStr}
             view={assetsView}
-            userOnly={filterValue === "myAssets"}
+            filterValue={filterValue}
           />
         );
       default:
@@ -209,12 +209,22 @@ function AssetsCollection() {
           `}
         >
           {ctaCards.map((card) => (
-            <div
+            <button
               onClick={() => {
                 history.push(card.link);
               }}
               key={card.type}
               css={`
+                background: none;
+                border: none;
+                padding: 0;
+                margin: 0;
+                font: inherit;
+                color: inherit;
+                text-align: inherit;
+                appearance: none; /* removes native OS/browser styles */
+                -webkit-appearance: none;
+                user-select: text;
                 border-radius: 10px;
                 padding: 16px;
                 background: #f1f3f5;
@@ -287,7 +297,7 @@ function AssetsCollection() {
                   </svg>
                 </div>
               </div>
-            </div>
+            </button>
           ))}
         </div>
       </div>
@@ -324,21 +334,25 @@ function AssetsCollection() {
                   value: "all",
                   label: `All (${assetsCount})`,
                   testId: "home-all-tab",
+                  id: "tab-all",
                 },
                 {
                   value: "data",
                   label: `Data (${datasetCount})`,
                   testId: "home-data-tab",
+                  id: "tab-data",
                 },
                 {
                   value: "charts",
                   label: `Charts (${chartsCount})`,
                   testId: "home-charts-tab",
+                  id: "tab-charts",
                 },
                 {
                   value: "stories",
                   label: `Stories (${storiesCount})`,
                   testId: "home-stories-tab",
+                  id: "tab-stories",
                 },
               ]}
             />

@@ -4,7 +4,18 @@ describe("testing footer for valid links", () => {
   const apiUrl = Cypress.env("api_url");
   beforeEach(() => {
     cy.visit("/");
+    cy.injectAxe();
     cy.get('[data-cy="cookie-btn"]').click();
+  });
+
+  it("Logs A11y violations to the terminal", () => {
+    cy.checkA11y(
+      "",
+      {
+        retries: 3,
+      },
+      (violations) => cy.printA11yViolations(violations)
+    );
   });
   it("it should verify footer copies", () => {
     cy.get('[data-cy="home-footer"]')

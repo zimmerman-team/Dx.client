@@ -1,6 +1,7 @@
 import React from "react";
 import moment from "moment";
 import { Link } from "react-router-dom";
+import { IconButton } from "@material-ui/core";
 import { ReactComponent as MenuIcon } from "app/modules/home-module/assets/menu.svg";
 import { ReactComponent as ClockIcon } from "app/modules/home-module/assets/clock-icon.svg";
 import { ReactComponent as OwnerIcon } from "app/modules/home-module/assets/owner-icon.svg";
@@ -8,6 +9,7 @@ import MenuItems from "app/modules/home-module/components/AssetCollection/All/me
 import { ReactComponent as Logo } from "app/modules/home-module/assets/logo.svg";
 import AIIcon from "app/assets/icons/AIIcon";
 import { useAuth0 } from "@auth0/auth0-react";
+import { FOCUS_VISIBLE_STYLE_LIGHT } from "app/theme";
 
 interface Props {
   id: string;
@@ -60,6 +62,9 @@ export default function GridItem(props: Props) {
           &:hover {
             box-shadow: 0px 7px 22px 0px rgba(0, 0, 0, 0.1);
           }
+          &:focus-visible {
+            ${FOCUS_VISIBLE_STYLE_LIGHT}
+          }
         `}
         data-cy={`chart-grid-item`}
       >
@@ -110,6 +115,9 @@ export default function GridItem(props: Props) {
               }
               &:hover {
                 background: transparent;
+              }
+              :focus-visible {
+                ${FOCUS_VISIBLE_STYLE_LIGHT}
               }
             `}
             onClick={showMenuOptions}

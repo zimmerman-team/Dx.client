@@ -53,6 +53,8 @@ export const SearchInput: React.FC<SearchInputProps> = ({
           aria-label="search"
           name="search"
           autoComplete="search"
+          aria-hidden={!openSearch}
+          tabIndex={openSearch ? 0 : -1}
         />
       </div>
 

@@ -1,6 +1,7 @@
 import Popover from "@material-ui/core/Popover";
 import { useCheckUserPlan } from "app/hooks/useCheckUserPlan";
-import { MOBILE_BREAKPOINT } from "app/theme";
+import { useMenuNavigation } from "app/hooks/useMenuNavigation";
+import { FOCUS_VISIBLE_STYLE_DARK, MOBILE_BREAKPOINT } from "app/theme";
 import React from "react";
 import { useHistory } from "react-router-dom";
 
@@ -21,15 +22,49 @@ const AddIcon = (
 
 export default function AddAssetDropdown() {
   const history = useHistory();
-  const [sortPopoverAnchorEl, setSortPopoverAnchorEl] =
-    React.useState<HTMLButtonElement | null>(null);
-  const handleCloseSortPopover = () => {
-    setSortPopoverAnchorEl(null);
+  const connectDataset = () => {
+    handleClick("dataset", () =>
+      history.push(
+        `/dataset/new/upload${
+          window.location.pathname === "/" ? "?fromHome=true" : ""
+        }`
+      )
+    );
+  };
+  const items = [
+    {
+      label: "Connect Dataset",
+      action: () => connectDataset(),
+    },
+    {
+      label: "Create Chart",
+      action: () => handleClick("chart", () => history.push("/chart/new/data")),
+    },
+    {
+      label: "Create Story",
+      action: () =>
+        handleClick("story", () => history.push("/story/new/initial")),
+    },
+  ];
+  const {
+    openState,
+    setOpenState,
+    triggerRef,
+    itemRefs,
+    handleTriggerKeyDown,
+    handleMenuKeyDown,
+    activeIndex,
+  } = useMenuNavigation({
+    items,
+    onSelect: (item) => item.action(),
+  });
+
+  const handleClosePopover = () => {
+    setOpenState(null);
   };
   const togglePopover = (event: React.MouseEvent<HTMLButtonElement>) => {
-    setSortPopoverAnchorEl(sortPopoverAnchorEl ? null : event.currentTarget);
+    setOpenState(openState ? null : event.currentTarget);
   };
-  const openSortPopover = Boolean(sortPopoverAnchorEl);
   const { handleClick } = useCheckUserPlan();
   const chartPath = "/chart/new/data";
   const storyPath = "/story/new/initial";
@@ -38,14 +73,7 @@ export default function AddAssetDropdown() {
       title: "Add Dataset",
       link: "/dataset/new/upload",
       cypressId: "home-create-dataset-button",
-      action: () =>
-        handleClick("dataset", () =>
-          history.push(
-            `/dataset/new/upload${
-              window.location.pathname === "/" ? "?fromHome=true" : ""
-            }`
-          )
-        ),
+      action: () => connectDataset(),
     },
     {
       title: " Create a Chart",
@@ -63,8 +91,12 @@ export default function AddAssetDropdown() {
   return (
     <>
       <button
+        ref={triggerRef}
         data-cy="home-asset-dropdown-button"
         onClick={togglePopover}
+        onKeyDown={(e) => handleTriggerKeyDown(e, e.currentTarget)}
+        aria-haspopup="menu"
+        aria-expanded={!!openState}
         css={`
           width: 145px;
           display: flex;
@@ -73,7 +105,7 @@ export default function AddAssetDropdown() {
           justify-content: space-between;
           border-radius: 12px;
           padding: 0 16px;
-          background: ${openSortPopover ? "#002D9C" : "#6061E5"};
+          background: ${openState ? "#6061E5" : "#231d2c"};
           color: #fff;
           height: 40px;
           outline: none;
@@ -88,15 +120,22 @@ export default function AddAssetDropdown() {
               fill: #fff;
             }
           }
+          :focus-visible {
+            ${FOCUS_VISIBLE_STYLE_DARK}
+          }
+          @media (max-width: ${MOBILE_BREAKPOINT}) {
+            display: none;
+          }
         `}
         aria-label="sort-button"
       >
         Add New {AddIcon}
       </button>
+
       <Popover
-        open={openSortPopover}
-        anchorEl={sortPopoverAnchorEl}
-        onClose={handleCloseSortPopover}
+        open={!!openState}
+        anchorEl={openState}
+        onClose={handleClosePopover}
         anchorOrigin={{
           vertical: "bottom",
           horizontal: "center",
@@ -112,6 +151,8 @@ export default function AddAssetDropdown() {
         `}
       >
         <div
+          role="menu"
+          onKeyDown={handleMenuKeyDown}
           css={`
             display: flex;
             width: 164px;
@@ -120,6 +161,7 @@ export default function AddAssetDropdown() {
             border-radius: 10px;
             background: #f1f3f5;
             box-shadow: 0px 0px 10px 0px rgba(152, 161, 170, 0.6);
+
             button {
               outline: none;
               width: 90%;
@@ -132,6 +174,11 @@ export default function AddAssetDropdown() {
               color: #231d2c;
               background: transparent;
               cursor: pointer;
+              &:focus-visible {
+                ${FOCUS_VISIBLE_STYLE_DARK}
+                margin: 4px 3px;
+                width: calc(100% - 6px);
+              }
             }
           `}
         >
@@ -162,6 +209,9 @@ export default function AddAssetDropdown() {
                   padding: 0 14px;
                 }
               `}
+              ref={(el) => (itemRefs.current[index] = el)}
+              role="menuitem"
+              tabIndex={activeIndex === index ? 0 : -1}
             >
               {card.title} {AddIcon}
             </button>

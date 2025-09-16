@@ -47,7 +47,9 @@ export default function Filter(
     setSearchValue?: (value: string | undefined) => void;
     setSortValue: (value: "updatedDate" | "createdDate" | "name") => void;
     sortValue: string;
-    setFilterValue?: (value: "allAssets" | "myAssets") => void;
+    setFilterValue?: (
+      value: "allAssets" | "myAssets" | "dataxplorerAssets"
+    ) => void;
     filterValue?: string;
     setAssetsView: (value: "grid" | "table") => void;
     assetsView: "table" | "grid";
@@ -90,7 +92,9 @@ export default function Filter(
   const filterOptions = [
     { label: "All Assets", value: "allAssets" },
     { label: "My Assets", value: "myAssets" },
+    { label: "Dataxplorer Assets", value: "dataxplorerAssets" },
   ];
+
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     props.terminateSearch && props.terminateSearch();
     props.setSearchValue?.(e.target.value);
@@ -153,12 +157,14 @@ export default function Filter(
                 label: CustomGridIcon({
                   isActive: props.assetsView === "grid",
                 }),
+                testId: "home-grid-view-button",
               },
               {
                 value: "table",
                 label: CustomTableIcon({
                   isActive: props.assetsView === "table",
                 }),
+                testId: "home-table-view-button",
               },
             ]}
           />

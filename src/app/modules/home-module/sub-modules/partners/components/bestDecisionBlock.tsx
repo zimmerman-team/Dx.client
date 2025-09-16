@@ -7,6 +7,7 @@ import { bestDecisioncss } from "app/modules/home-module/sub-modules/partners/st
 import { ReactComponent as GoogleIcon } from "app/modules/onboarding-module/asset/google-img.svg";
 import { ReactComponent as LinkedInIcon } from "app/modules/onboarding-module/asset/linkedIn-img.svg";
 import { ReactComponent as MicrosoftIcon } from "app/modules/onboarding-module/asset/microsoft-img.svg";
+import { FOCUS_VISIBLE_STYLE_DARK, FOCUS_VISIBLE_STYLE_LIGHT } from "app/theme";
 
 export default function BestDecisionBlock() {
   const { isAuthenticated } = useAuth0();
@@ -109,6 +110,9 @@ export default function BestDecisionBlock() {
                 cursor: pointer;
                 :hover {
                   opacity: 0.9;
+                }
+                :focus-visible {
+                  ${FOCUS_VISIBLE_STYLE_DARK}
                 }
               }
 

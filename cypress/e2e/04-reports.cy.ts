@@ -25,10 +25,19 @@ describe("Testing stories on DX", () => {
     cy.intercept("GET", `${apiUrl}/users/plan-data`).as("planData");
 
     cy.visit("/");
-
+    cy.injectAxe();
     cy.wait("@planData");
 
     cy.get('[data-cy="cookie-btn"]').click();
+  });
+  it("Logs A11y violations to the terminal", () => {
+    cy.checkA11y(
+      "",
+      {
+        retries: 3,
+      },
+      (violations) => cy.printA11yViolations(violations)
+    );
   });
 
   it("Can Create story", () => {
@@ -296,7 +305,7 @@ describe("Edit, duplicate and delete story", () => {
     cy.intercept("GET", `${apiUrl}/users/plan-data`).as("planData");
 
     cy.visit("/");
-
+    cy.injectAxe();
     cy.wait("@planData");
 
     cy.get('[data-cy="cookie-btn"]').click();
@@ -307,6 +316,15 @@ describe("Edit, duplicate and delete story", () => {
     cy.get('[data-cy="home-stories-tab"]').scrollIntoView().click();
 
     cy.wait("@fetchStories");
+  });
+  it("Logs A11y violations to the terminal", () => {
+    cy.checkA11y(
+      "",
+      {
+        retries: 3,
+      },
+      (violations) => cy.printA11yViolations(violations)
+    );
   });
 
   it("Can Edit a story", () => {

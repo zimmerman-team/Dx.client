@@ -33,10 +33,10 @@ export default function DXBlock() {
           }
         `}
       >
-        <InlineGFLogo /> Case Study
+        <InlineGFLogo aria-label="The Global Fund" /> Case Study
       </p>
 
-      <h3
+      <h2
         css={`
           font-size: 34px;
           line-height: 29px;
@@ -55,7 +55,7 @@ export default function DXBlock() {
         `}
       >
         The Global Fund to fight AIDS, Tuberculosis and Malaria
-      </h3>
+      </h2>
       <p
         css={`
           font-size: 18px;

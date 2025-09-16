@@ -18,6 +18,7 @@ import { PageLoader } from "app/modules/common/page-loader";
 import { useCheckPricingActive } from "app/hooks/useCheckPricingActive";
 import { DESKTOP_BREAKPOINT } from "app/theme";
 import useBackgroundColor from "app/hooks/useBackgroundColor";
+import SubscriptionToggle from "./components/subscription-toggle";
 
 const VIEWS = [
   {
@@ -222,7 +223,7 @@ export default function PricingModule() {
   }, [isAuthenticated]);
 
   return (
-    <section
+    <main
       css={`
         display: flex;
         flex-direction: column;
@@ -320,47 +321,11 @@ export default function PricingModule() {
               Save 20% for annual plans
             </p>
           </div>
-          <div
-            css={`
-              border-radius: 51px;
-              background: #f1f1f1;
-              padding: 5px 8px;
-              display: flex;
-              align-items: center;
-              button {
-                font-size: 12px;
-                font-style: normal;
-                font-weight: 400;
-                line-height: normal;
-                font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
-                display: flex;
-                width: 99px;
-                height: 32px;
-                justify-content: center;
-                align-items: center;
-                cursor: pointer;
-              }
-            `}
-          >
-            {VIEWS.map((view) => (
-              <button
-                key={view.key}
-                css={`
-                  ${subscriptionPlan === view.key
-                    ? `
-                border-radius: 51px;
-             
-                background: #FFF;
-                box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.05);`
-                    : ""}
-                  border: none;
-                `}
-                onClick={() => setSubscriptionPlan(view.key)}
-              >
-                {view.name}
-              </button>
-            ))}
-          </div>
+          <SubscriptionToggle
+            VIEWS={VIEWS}
+            subscriptionPlan={subscriptionPlan}
+            setSubscriptionPlan={setSubscriptionPlan}
+          />
         </div>
         <Box height={65} />
         {isMobile ? (
@@ -379,6 +344,7 @@ export default function PricingModule() {
                 justify-content: flex-end;
                 column-gap: 24px;
               `}
+              aria-label="Subscription Plans"
             >
               {plans.map((plan) => (
                 <PlanCard
@@ -437,6 +403,6 @@ export default function PricingModule() {
         <Box height={100} />
       </Container>
       <HomeFooter />
-    </section>
+    </main>
   );
 }

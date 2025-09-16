@@ -4,7 +4,6 @@ import { ReactComponent as ClockIcon } from "app/modules/home-module/assets/cloc
 import { ReactComponent as OwnerIcon } from "app/modules/home-module/assets/owner-icon.svg";
 import { ReactComponent as MenuIcon } from "app/modules/home-module/assets/menu.svg";
 import { ReactComponent as Logo } from "app/modules/home-module/assets/logo.svg";
-
 import { useHistory, useLocation } from "react-router-dom";
 import { useAuth0 } from "@auth0/auth0-react";
 import { isChartAIAgentActive } from "app/state/recoil/atoms";
@@ -12,6 +11,7 @@ import { useRecoilState } from "recoil";
 import MenuItems from "app/modules/home-module/components/AssetCollection/All/menuItems";
 import SourceLink from "./sourceLink";
 import { Tooltip } from "react-tooltip";
+import { FOCUS_VISIBLE_STYLE_LIGHT, MOBILE_BREAKPOINT } from "app/theme";
 
 interface Props {
   editPath: string;
@@ -100,7 +100,7 @@ export default function GridItem(props: Readonly<Props>) {
       >
         Your Dataset is here!
       </Tooltip>
-      <div
+      <button
         onClick={(e) => {
           e.preventDefault();
           e.stopPropagation();
@@ -111,6 +111,17 @@ export default function GridItem(props: Readonly<Props>) {
           }
         }}
         css={`
+          background: none;
+          border: none;
+          padding: 0;
+          margin: 0;
+          font: inherit;
+          color: inherit;
+          text-align: inherit;
+          appearance: none; /* removes native OS/browser styles */
+          -webkit-appearance: none;
+          user-select: text;
+          cursor: pointer; /* so it behaves like a button */
           width: 100%;
           height: 162px;
           display: flex;
@@ -129,6 +140,9 @@ export default function GridItem(props: Readonly<Props>) {
           &:hover {
             box-shadow: 0px 7px 22px 0px rgba(0, 0, 0, 0.1);
             cursor: pointer;
+          }
+          &:focus-visible {
+            ${FOCUS_VISIBLE_STYLE_LIGHT}
           }
         `}
       >
@@ -184,6 +198,7 @@ export default function GridItem(props: Readonly<Props>) {
               `}
               onClick={showMenuOptions}
               data-cy="dataset-grid-item-menu-btn"
+              aria-label="data menu-button"
             >
               <MenuIcon />
             </button>
@@ -261,7 +276,7 @@ export default function GridItem(props: Readonly<Props>) {
                 }
               `}
             >
-              <OwnerIcon />
+              <OwnerIcon aria-label="owner" />
               {isAuthenticated ? (
                 <p>{props.ownerName?.split(" ")?.[0]}</p>
               ) : (
@@ -275,12 +290,12 @@ export default function GridItem(props: Readonly<Props>) {
                 gap: 3px;
               `}
             >
-              <ClockIcon width={12} height={12} />
+              <ClockIcon width={12} height={12} aria-label="date" />
               <p>{moment(props.date).format("MMMM YYYY")}</p>
             </div>
           </div>
         </div>
-      </div>
+      </button>
 
       <MenuItems
         handleClose={() => setMenuOptionsDisplay(false)}

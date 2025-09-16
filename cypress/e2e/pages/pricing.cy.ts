@@ -10,6 +10,7 @@ describe("Testing the Pricing page", () => {
     cy.intercept("GET", `${apiUrl}/users/plan-data`).as("planData");
 
     cy.visit("/");
+    cy.injectAxe();
 
     cy.wait("@planData");
 
@@ -17,6 +18,16 @@ describe("Testing the Pricing page", () => {
     cy.get('[data-cy="app-bar"]').within(() => {
       cy.contains("a", "Pricing").click();
     });
+  });
+
+  it("Logs A11y violations to the terminal", () => {
+    cy.checkA11y(
+      "",
+      {
+        retries: 3,
+      },
+      (violations) => cy.printA11yViolations(violations)
+    );
   });
 
   it("Displays the displaysthe current plan", () => {

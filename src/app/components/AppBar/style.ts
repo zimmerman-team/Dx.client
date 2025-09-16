@@ -1,3 +1,4 @@
+import { FOCUS_VISIBLE_STYLE_LIGHT } from "app/theme";
 import { css } from "styled-components/macro";
 
 export const headercss = css`
@@ -21,10 +22,16 @@ export const logocss = css`
   justify-content: center;
   gap: 6px;
   text-decoration: none;
+  :focus-visible {
+    ${FOCUS_VISIBLE_STYLE_LIGHT}
+  }
 `;
 
 export const navLinkcss = (display: string, location: string) => css`
   a {
     color: ${display === location ? "#6061E5 !important" : "#231D2C"};
+    :focus-visible {
+      ${FOCUS_VISIBLE_STYLE_LIGHT}
+    }
   }
 `;

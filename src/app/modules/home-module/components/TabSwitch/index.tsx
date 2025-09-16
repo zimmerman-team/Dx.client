@@ -1,5 +1,6 @@
 import React from "react";
 import { HeadlessSwitch, Tab } from "app/components/Switch/headless";
+import { FOCUS_VISIBLE_STYLE_LIGHT } from "app/theme";
 
 interface StyledSwitchProps {
   tabs: Tab[];
@@ -51,14 +52,22 @@ export function MultiSwitch({
               box-sizing: border-box;
 
               height: 100%;
+              :focus-visible {
+                ${FOCUS_VISIBLE_STYLE_LIGHT}
+              }
             }
           `}
+          role="tablist"
+          aria-label="Content type"
         >
           {tabs.map((tab, index) => (
             <button
               key={tab.value}
               onClick={() => onTabClick(tab.value, index)}
               data-cy={tab.testId}
+              id={tab.id}
+              role="tab"
+              aria-label={`${tab.value}-view-button`}
               css={`
                 font-family: ${activeTab === tab.value
                     ? "GothamNarrow-Bold"

@@ -1,5 +1,6 @@
 import React from "react";
 export interface Tab {
+  id?: string;
   value: string;
   label: string | React.ReactNode;
   icon?: React.ReactNode;

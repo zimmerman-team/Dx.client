@@ -21,7 +21,7 @@ import { getLimit } from "app/modules/home-module/components/AssetCollection/Dat
 interface Props {
   sortBy: string;
   searchStr: string;
-  userOnly?: boolean;
+  filterValue?: "allAssets" | "myAssets" | "dataxplorerAssets";
   view: "grid" | "table";
   showMenuButton?: boolean;
   addCard?: boolean;
@@ -65,7 +65,7 @@ export default function StoriesGrid(props: Readonly<Props>) {
         ? `"where":{"name":{"like":"${props.searchStr}.*","options":"i"}},`
         : "";
 
-    return `${props.userOnly ? "userOnly=true&" : ""}filter={${value}"order":"${
+    return `filterValue=${props.filterValue}&filter={${value}"order":"${
       props.sortBy
     } ${props.sortBy === "name" ? "asc" : "desc"}","limit":${limit},"offset":${
       fromZeroOffset ? 0 : offset
@@ -77,7 +77,7 @@ export default function StoriesGrid(props: Readonly<Props>) {
       props.searchStr?.length > 0
         ? `where={"name":{"like":"${props.searchStr}.*","options":"i"}}`
         : "";
-    return `${props.userOnly ? "userOnly=true&" : ""}${value}`;
+    return `filterValue=${props.filterValue}&${value}`;
   };
 
   const loadData = (fromZeroOffset?: boolean) => {
@@ -205,7 +205,7 @@ export default function StoriesGrid(props: Readonly<Props>) {
 
   React.useEffect(() => {
     reloadData();
-  }, [props.sortBy, token, props.userOnly]);
+  }, [props.sortBy, token, props.filterValue]);
 
   const [,] = useDebounce(
     () => {

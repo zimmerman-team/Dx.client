@@ -1,3 +1,4 @@
+import { FOCUS_VISIBLE_STYLE_LIGHT } from "app/theme";
 import styled from "styled-components/macro";
 
 interface ITab {
@@ -18,7 +19,7 @@ export const Tab = {
     position: relative;
     background-color: #f1f3f5;
   `,
-  Left: styled.div<ITab>`
+  Left: styled.button<ITab>`
     text-align: center;
     position: relative;
     color: ${(props) => (props.active ? "#6061E5" : "#231D2C")};
@@ -28,6 +29,12 @@ export const Tab = {
     display: flex;
     align-items: center;
     justify-content: center;
+    background: none;
+    border: none;
+    outline: none;
+    :focus-visible {
+      ${FOCUS_VISIBLE_STYLE_LIGHT}
+    }
     ::after {
       content: "";
       position: absolute;
@@ -42,7 +49,7 @@ export const Tab = {
       transition: transform 0.3s linear;
     }
   `,
-  Center: styled.div<ITab>`
+  Center: styled.button<ITab>`
     text-align: center;
     position: relative;
     color: ${(props) => (props.active ? "#FFF" : "#231D2C")};
@@ -55,6 +62,11 @@ export const Tab = {
     align-items: center;
     justify-content: center;
 
+    background: none;
+    outline: none;
+    :focus-visible {
+      ${FOCUS_VISIBLE_STYLE_LIGHT}
+    }
     ::after {
       content: "";
       position: absolute;
@@ -69,7 +81,7 @@ export const Tab = {
     }
   `,
 
-  Right: styled.div<ITab>`
+  Right: styled.button<ITab>`
     text-align: center;
     position: relative;
     color: ${(props) => (props.active ? "#fff" : "#231D2C")};
@@ -80,6 +92,12 @@ export const Tab = {
     display: flex;
     align-items: center;
     justify-content: center;
+    background: none;
+    border: none;
+    outline: none;
+    :focus-visible {
+      ${FOCUS_VISIBLE_STYLE_LIGHT}
+    }
     ::after {
       content: "Story";
       position: absolute;

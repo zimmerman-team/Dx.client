@@ -20,7 +20,7 @@ export const NavList = (props: {
             gap: 6px;
           `}
         >
-          About <InlineLogo width={103} />
+          About DATAXPLORER
         </b>
       ),
       path: ".",
@@ -40,7 +40,7 @@ export const NavList = (props: {
                 gap: 6px;
               `}
             >
-              Why <InlineLogo width={103} />
+              Why DATAXPLORER
             </b>
           ),
           path: "/why-dataxplorer",

@@ -8,6 +8,7 @@ const GoodIcon = () => {
       height="19"
       viewBox="0 0 18 19"
       fill="none"
+      aria-label="available"
     >
       <mask
         id="mask0_14963_659"

@@ -12,6 +12,8 @@ import { fontFamilies, fontStyles } from "./data";
 import { IFramesArray } from "app/modules/story-module/views/create/data";
 import { Updater } from "use-immer";
 import { IUniformBlockTypeStyle } from "app/modules/story-module/data";
+import { setBlockData } from "app/utils/draftjs/setBlockData";
+import { registerDynamicStyle } from "app/utils/draftjs/getStyleEl";
 
 type FontStyleType = {
   key: string;
@@ -88,8 +90,62 @@ export function FontStyleHandler(props: Props) {
     };
   };
 
+  function mapInlineStyleToCss(style: string): {
+    field: string;
+    value: string;
+    className: string;
+    cssRule: string;
+  } | null {
+    if (style.startsWith("COLOR-#")) {
+      const hex = style.replace("COLOR-", "");
+      return {
+        field: "color",
+        value: `${hex}`,
+        className: `COLOR-${hex}`,
+        cssRule: `color: ${hex};`,
+      };
+    }
+
+    if (style === "BOLD") {
+      return {
+        field: "fontWeight",
+        value: "bold",
+        className: "BOLD",
+        cssRule: "font-weight: bold;",
+      };
+    }
+
+    if (style === "ITALIC") {
+      return {
+        field: "italic",
+        value: "italic",
+        className: "ITALIC",
+        cssRule: "font-style: italic;",
+      };
+    }
+
+    if (style.startsWith("FONT_FAMILY_")) {
+      const font = style.replace("FONT_FAMILY_", "");
+      return {
+        field: "fontFamily",
+        value: font,
+        className: style,
+        cssRule: `font-family: ${font};`,
+      };
+    }
+
+    return null;
+  }
+
   const isNormalBlockType = (sourceBT: string, targetBT: string) => {
-    if (sourceBT !== "unstyled") return false;
+    if (
+      sourceBT !== "unstyled" &&
+      sourceBT !== "ordered-list-item" &&
+      sourceBT !== "unordered-list-item" &&
+      sourceBT !== "blockquote"
+    ) {
+      return false;
+    }
     return (
       targetBT === "unstyled" ||
       targetBT === "ordered-list-item" ||
@@ -282,9 +338,20 @@ export function FontStyleHandler(props: Props) {
     if (inlineStyles.size === 0) return targetEditorState; // nothing to copy
 
     let newContentState = contentState;
+    let newEditorState;
+    const normalBlockTypes = {
+      unstyled: "unstyled",
+      "ordered-list-item": "unstyled",
+      "unordered-list-item": "unstyled",
+      blockquote: "unstyled",
+    };
+    const sourceBlockType =
+      normalBlockTypes[
+        sourceBlock.getType() as keyof typeof normalBlockTypes
+      ] ?? sourceBlock.getType();
     props.setUniformBlockTypeStyle((prev) => ({
       ...prev,
-      [sourceBlock.getType()]: {
+      [sourceBlockType]: {
         css: updateBlockStyleLabelCss(
           Array.from(inlineStyles),
           sourceBlock.getType()
@@ -313,13 +380,31 @@ export function FontStyleHandler(props: Props) {
             newContentState,
             blockSelection
           );
-
+          // Apply each inline style
           inlineStyles.forEach((style) => {
             newContentState = Modifier.applyInlineStyle(
               newContentState,
               blockSelection,
               style
             );
+            // Map inline style to CSS and apply block data
+            const mapped = mapInlineStyleToCss(style);
+            if (mapped) {
+              const updatedBlock = newContentState.getBlockForKey(blockKey);
+              const blockData = updatedBlock
+                .getData()
+                .set(mapped.field, mapped.value);
+
+              const newBlock = updatedBlock.merge({
+                data: blockData,
+              }) as ContentBlock;
+
+              newContentState = newContentState.merge({
+                blockMap: newContentState.getBlockMap().set(blockKey, newBlock),
+              }) as typeof newContentState;
+
+              registerDynamicStyle(mapped.className, mapped.cssRule);
+            }
           });
           const updatedBlock = newContentState.getBlockForKey(blockKey);
           const appliedInlineStyles = new Set<string>();
@@ -331,7 +416,7 @@ export function FontStyleHandler(props: Props) {
         }
       });
 
-    const newEditorState = EditorState.push(
+    newEditorState = EditorState.push(
       targetEditorState,
       newContentState,
       editorChangeType
@@ -525,9 +610,6 @@ export function FontStyleHandler(props: Props) {
                       </svg>
                     </button>
                   )}
-                  {/* <button>
-                  <ChevronRightIcon />
-                </button> */}
                 </div>
               </div>
               <div
