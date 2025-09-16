@@ -66,6 +66,10 @@ export default function Hero({ title, children }: HeroProps) {
             text-align: center;
             margin: 0;
             line-height: normal;
+            @media (max-width: ${DESKTOP_BREAKPOINT}) {
+              font-size: 18px;
+              line-height: normal;
+            }
           }
         }
       `}

@@ -1,25 +1,40 @@
 import Popover from "@material-ui/core/Popover";
-import AddIcon from "@material-ui/icons/Add";
-import { PrimaryButton } from "app/components/Styled/button";
 import { useCheckUserPlan } from "app/hooks/useCheckUserPlan";
 import { useMenuNavigation } from "app/hooks/useMenuNavigation";
 import { FOCUS_VISIBLE_STYLE_DARK, MOBILE_BREAKPOINT } from "app/theme";
 import React from "react";
 import { useHistory } from "react-router-dom";
 
+const AddIcon = (
+  <svg
+    width="12"
+    height="12"
+    viewBox="0 0 12 12"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <path
+      d="M5.25 6.75H0.75V5.25H5.25V0.75H6.75V5.25H11.25V6.75H6.75V11.25H5.25V6.75Z"
+      fill="#231D2C"
+    />
+  </svg>
+);
+
 export default function AddAssetDropdown() {
   const history = useHistory();
+  const connectDataset = () => {
+    handleClick("dataset", () =>
+      history.push(
+        `/dataset/new/upload${
+          window.location.pathname === "/" ? "?fromHome=true" : ""
+        }`
+      )
+    );
+  };
   const items = [
     {
       label: "Connect Dataset",
-      action: () =>
-        handleClick("dataset", () =>
-          history.push(
-            `/dataset/new/upload${
-              window.location.pathname === "/" ? "?fromHome=true" : ""
-            }`
-          )
-        ),
+      action: () => connectDataset(),
     },
     {
       label: "Create Chart",
@@ -51,7 +66,28 @@ export default function AddAssetDropdown() {
     setOpenState(openState ? null : event.currentTarget);
   };
   const { handleClick } = useCheckUserPlan();
-
+  const chartPath = "/chart/new/data";
+  const storyPath = "/story/new/initial";
+  const ctaCards = [
+    {
+      title: "Add Dataset",
+      link: "/dataset/new/upload",
+      cypressId: "home-create-dataset-button",
+      action: () => connectDataset(),
+    },
+    {
+      title: " Create a Chart",
+      link: chartPath,
+      cypressId: "home-create-chart-button",
+      action: () => handleClick("chart", () => history.push(chartPath)),
+    },
+    {
+      title: "Build a Story",
+      link: storyPath,
+      cypressId: "home-create-story-button",
+      action: () => handleClick("story", () => history.push(storyPath)),
+    },
+  ];
   return (
     <>
       <button
@@ -62,15 +98,16 @@ export default function AddAssetDropdown() {
         aria-haspopup="menu"
         aria-expanded={!!openState}
         css={`
-          width: 173px;
+          width: 145px;
           display: flex;
+          flex-shrink: 0;
           align-items: center;
-          justify-content: center;
+          justify-content: space-between;
           border-radius: 12px;
-          gap: 8px;
+          padding: 0 16px;
           background: ${openState ? "#6061E5" : "#231d2c"};
           color: #fff;
-          height: 48px;
+          height: 40px;
           outline: none;
           border: none;
           font-family: "GothamNarrow-Bold", sans-serif;
@@ -78,6 +115,11 @@ export default function AddAssetDropdown() {
           font-size: 14px;
           text-transform: capitalize;
           cursor: pointer;
+          svg {
+            path {
+              fill: #fff;
+            }
+          }
           :focus-visible {
             ${FOCUS_VISIBLE_STYLE_DARK}
           }
@@ -87,7 +129,7 @@ export default function AddAssetDropdown() {
         `}
         aria-label="sort-button"
       >
-        Add an Asset <AddIcon />
+        Add New {AddIcon}
       </button>
 
       <Popover
@@ -113,17 +155,25 @@ export default function AddAssetDropdown() {
           onKeyDown={handleMenuKeyDown}
           css={`
             display: flex;
-            width: 175px;
-            padding: 4px;
+            width: 164px;
             flex-direction: column;
-            align-items: flex-start;
-            gap: 4px;
-            border-radius: 12px;
-            background: #f4f4f4;
+            align-items: center;
+            border-radius: 10px;
+            background: #f1f3f5;
             box-shadow: 0px 0px 10px 0px rgba(152, 161, 170, 0.6);
 
             button {
-              width: 100%;
+              outline: none;
+              width: 90%;
+              height: 40px;
+              display: flex;
+              align-items: center;
+              justify-content: space-between;
+              font-family: "GothamNarrow-Book", sans-serif;
+              font-size: 14px;
+              color: #231d2c;
+              background: transparent;
+              cursor: pointer;
               &:focus-visible {
                 ${FOCUS_VISIBLE_STYLE_DARK}
                 margin: 4px 3px;
@@ -132,19 +182,39 @@ export default function AddAssetDropdown() {
             }
           `}
         >
-          {items.map((item, i) => (
-            <PrimaryButton
-              size="big"
-              bg="dark"
+          {ctaCards.map((card, index) => (
+            <button
+              key={card.title}
               type="button"
-              key={item.label}
-              ref={(el) => (itemRefs.current[i] = el)}
+              data-cy={card.cypressId}
+              onClick={card.action}
+              css={`
+                border-radius: ${index === 0
+                  ? "10px 10px 0 0"
+                  : index === ctaCards.length - 1
+                  ? "0 0 10px 10px"
+                  : "0"};
+                border-bottom: ${index !== ctaCards.length - 1
+                  ? "1px solid #cfd4da"
+                  : "none"};
+                border: none;
+                border-bottom: ${index !== ctaCards.length - 1
+                  ? "1px solid #cfd4da"
+                  : "none"};
+                &:hover {
+                  background: #dfe3e5;
+
+                  ${index - 1 > 0 ? "width: 100%;" : ""}
+                  width: 100%;
+                  padding: 0 14px;
+                }
+              `}
+              ref={(el) => (itemRefs.current[index] = el)}
               role="menuitem"
-              tabIndex={activeIndex === i ? 0 : -1}
-              onClick={item.action}
+              tabIndex={activeIndex === index ? 0 : -1}
             >
-              {item.label}
-            </PrimaryButton>
+              {card.title} {AddIcon}
+            </button>
           ))}
         </div>
       </Popover>

@@ -5,16 +5,13 @@ import {
   mobileDescriptioncss,
 } from "app/modules/dataset-module/routes/upload-module/style";
 import { useStoreActions } from "app/state/store/hooks";
-import { DatasetDataTable } from "app/modules/dataset-module/routes/upload-module/component/table/data-table";
-import { CssSnackbar, ISnackbarState } from "./previewFragment";
-import { ReactComponent as FullScreenIcon } from "app/modules/dataset-module/routes/upload-module/assets/full-screen.svg";
-import { ReactComponent as CloseFullScreenIcon } from "app/modules/dataset-module/routes/upload-module/assets/close-full-screen.svg";
 import { useMediaQuery } from "usehooks-ts";
 import { DatasetListItemAPIModel } from "app/modules/dataset-module/data";
 import moment from "moment";
 import { useAuth0 } from "@auth0/auth0-react";
 import { PrimaryButton } from "app/components/Styled/button";
 import { MOBILE_BREAKPOINT } from "app/theme";
+import TablePreview from "app/modules/dataset-module/routes/upload-module/upload-steps/step2/TablePreview";
 
 interface Props {
   data: any[];
@@ -43,76 +40,9 @@ export default function FinishedFragment(props: Props) {
     (actions) => actions.charts.dataset.setValue
   );
 
-  const [snackbarState, setSnackbarState] = React.useState<ISnackbarState>({
-    open: false,
-    vertical: "bottom",
-    horizontal: "center",
-    message: "",
-  });
-
-  const [openFullScreenTooltip, setOpenFullScreenTooltip] =
-    React.useState(false);
-
-  const [closeFullScreenTooltip, setCloseFullScreenTooltip] =
-    React.useState(false);
-
-  const [openFullScreen, setOpenFullScreen] = React.useState(false);
-
-  React.useEffect(() => {
-    if (
-      props.dataTotalCount > 0 &&
-      location.pathname === "/dataset/new/upload"
-    ) {
-      setSnackbarState((prev) => ({
-        ...prev,
-        open: true,
-        message: `${props.dataTotalCount} rows have been successfully processed!`,
-      }));
-    }
-  }, [props.dataTotalCount]);
-
   function handleCreateNewChart() {
     setDatasetId(props.datasetId);
   }
-
-  const handleFullScreenDisplay = () => {
-    setOpenFullScreen(true);
-    setSnackbarState((prev) => ({
-      ...prev,
-      open: true,
-      message: "Press ESC to exit Full Screen",
-    }));
-  };
-
-  React.useEffect(() => {
-    if (snackbarState.open) {
-      if (snackbarState.message.includes("Press ESC to exit Full Screen")) {
-        const timer = setTimeout(() => {
-          setSnackbarState((prev) => ({ ...prev, open: false }));
-        }, 30000);
-        return () => clearTimeout(timer);
-      } else {
-        const timer = setTimeout(() => {
-          setSnackbarState((prev) => ({ ...prev, open: false }));
-        }, 3000);
-        return () => clearTimeout(timer);
-      }
-    }
-  }, [snackbarState.open]);
-
-  React.useEffect(() => {
-    const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.key === "Escape") {
-        setOpenFullScreen(false);
-        setSnackbarState((prev) => ({ ...prev, open: false }));
-      }
-    };
-
-    window.addEventListener("keydown", handleKeyDown);
-    return () => {
-      window.removeEventListener("keydown", handleKeyDown);
-    };
-  }, []);
 
   const modifiedSourceUrl = () => {
     const url = props.datasetDetails?.sourceUrl;
@@ -157,64 +87,10 @@ export default function FinishedFragment(props: Props) {
             width: 100%;
             display: flex;
             margin-bottom: 12px;
-            justify-content: space-between;
+            justify-content: flex-end;
             margin-top: 10px;
           `}
         >
-          <div
-            css={`
-              display: flex;
-              column-gap: 13px;
-              align-items: center;
-            `}
-          >
-            <div
-              css={`
-                width: 32px;
-                height: 32px;
-                cursor: pointer;
-                position: relative;
-              `}
-              onMouseOver={() => setOpenFullScreenTooltip(true)}
-              onMouseLeave={() => setOpenFullScreenTooltip(false)}
-              onClick={handleFullScreenDisplay}
-              data-cy="dataset-full-screen-btn"
-            >
-              <FullScreenIcon width={32} height={32} />
-              <div
-                css={`
-                  background: #626262;
-                  color: #fff;
-                  font-size: 12px;
-                  position: absolute;
-                  top: 60%;
-                  left: 110%;
-                  width: max-content;
-                  padding: 1px 8px;
-                  border-radius: 4px;
-                  user-select: none;
-                `}
-                hidden={!openFullScreenTooltip}
-              >
-                Full Screen
-              </div>
-            </div>
-
-            <p
-              css={`
-                font-size: 14px;
-                font-family: "GothamNarrow-Book", "Helvetica Neue", sans-serif;
-                padding: 0;
-                margin: 0;
-                @media (max-width: 450px) {
-                  font-size: 12px;
-                }
-              `}
-            >
-              {props.dataTotalCount} rows &{" "}
-              {Object.keys(props.data[0] || {}).length} columns
-            </p>
-          </div>
           {isSmallScreen ? (
             <></>
           ) : (
@@ -265,79 +141,15 @@ export default function FinishedFragment(props: Props) {
             </>
           )}
         </div>
-        <DatasetDataTable
+        <TablePreview
           data={props.data}
           stats={props.stats}
           dataTypes={props.dataTypes}
           datasetId={props.datasetId}
+          dataTotalCount={props.dataTotalCount}
+          canDatasetEditDelete={props.canDatasetEditDelete}
+          datasetDetails={props.datasetDetails}
         />
-
-        <div
-          css={`
-            background: rgba(0, 0, 0, 0.75);
-            position: fixed;
-            top: 0;
-            left: 0;
-            z-index: 1101;
-            width: 100vw;
-            height: 100vh;
-            padding: 26px 100px 26px 108px;
-            @media (max-width: 450px) {
-              padding: 26px;
-            }
-          `}
-          hidden={!openFullScreen}
-          data-cy="dataset-full-screen-view"
-        >
-          <div
-            css={`
-              display: flex;
-              column-gap: 13px;
-              align-items: center;
-            `}
-          >
-            <div
-              css={`
-                width: 32px;
-                height: 32px;
-                cursor: pointer;
-                margin-bottom: 15px;
-                position: relative;
-              `}
-              onMouseOver={() => setCloseFullScreenTooltip(true)}
-              onMouseLeave={() => setCloseFullScreenTooltip(false)}
-              onClick={() => setOpenFullScreen(false)}
-              data-cy="dataset-close-full-screen-btn"
-            >
-              <CloseFullScreenIcon width={32} height={32} />
-
-              <div
-                css={`
-                  background: #626262;
-                  color: #fff;
-                  font-size: 12px;
-                  position: absolute;
-                  top: 60%;
-                  left: 110%;
-                  width: max-content;
-                  padding: 1px 8px;
-                  border-radius: 4px;
-                  user-select: none;
-                `}
-                hidden={!closeFullScreenTooltip}
-              >
-                Close Full Screen
-              </div>
-            </div>
-          </div>
-          <DatasetDataTable
-            data={props.data}
-            stats={props.stats}
-            dataTypes={props.dataTypes}
-            datasetId={props.datasetId}
-            fullScreen
-          />
-        </div>
       </div>
       <div
         css={`
@@ -435,24 +247,6 @@ export default function FinishedFragment(props: Props) {
           <p>{moment(props.datasetDetails.createdDate).format("MMMM YYYY")}</p>
         </div>
       </div>
-
-      <div
-        css={`
-          height: 32px;
-        `}
-      />
-      <CssSnackbar
-        anchorOrigin={{
-          vertical: snackbarState.vertical,
-          horizontal: snackbarState.horizontal,
-        }}
-        open={snackbarState.open}
-        onClose={() =>
-          setSnackbarState((prev) => ({ ...prev, open: false, message: "" }))
-        }
-        message={snackbarState.message}
-        key={snackbarState.vertical + snackbarState.horizontal}
-      />
     </div>
   );
 }

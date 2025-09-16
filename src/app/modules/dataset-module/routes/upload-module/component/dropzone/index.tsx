@@ -1,11 +1,4 @@
-import { Box } from "@material-ui/core";
-import SearchIcon from "@material-ui/icons/Search";
-import {
-  DropzoneRootProps,
-  DropzoneInputProps,
-  FileRejection,
-  useDropzone,
-} from "react-dropzone";
+import { FileRejection, useDropzone } from "react-dropzone";
 import { uploadAreacss } from "app/modules/dataset-module/routes/upload-module/style";
 import { ReactComponent as UploadIcon } from "app/modules/dataset-module/routes/upload-module/assets/upload.svg";
 import { formatBytes } from "app/utils/formatBytes";
@@ -52,6 +45,11 @@ export const DropZone = (props: DropzoneProps) => {
     <>
       <div
         css={`
+          flex-basis: 70%;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
           border: 1px dashed var(--Dark-01, #13183f);
           border-radius: 24px;
           cursor: pointer;
@@ -66,7 +64,6 @@ export const DropZone = (props: DropzoneProps) => {
         `}
         {...getRootProps()}
       >
-        <Box height={112} />
         <div css={uploadAreacss(isDragActive)}>
           <input
             {...getInputProps()}
@@ -107,9 +104,7 @@ export const DropZone = (props: DropzoneProps) => {
             </>
           )}
         </div>
-        <Box height={131} />
       </div>
-      <Box height={40} />
       {fileRejections.length > 0 && fileRejectionItems}
     </>
   );

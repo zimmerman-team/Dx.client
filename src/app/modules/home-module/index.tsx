@@ -10,11 +10,13 @@ import NonAuthUserLibrary from "./components/nonAuthUserLibrary";
 import { Box } from "@material-ui/core";
 import SignInButtons from "./components/SignInButtons";
 import Card from "./components/carousel";
+import useBackgroundColor from "app/hooks/useBackgroundColor";
 
 export default function HomeModule() {
   useTitle("Dataxplorer");
 
   const { isAuthenticated } = useAuth0();
+  useBackgroundColor(isAuthenticated ? "#FFF" : "#f2f7fd", [isAuthenticated]);
 
   return (
     <div
@@ -24,9 +26,6 @@ export default function HomeModule() {
         display: flex;
         flex-direction: column;
         justify-content: space-between;
-        background-color: ${isAuthenticated
-          ? "linear-gradient(180deg, #FFF 0%, #F2F7FD 100%)"
-          : "#f2f7fd"};
         @media (max-width: 881px) {
           margin-top: 66px;
           min-height: calc(100vh - 66px);

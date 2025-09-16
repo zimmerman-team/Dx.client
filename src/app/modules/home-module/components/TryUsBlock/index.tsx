@@ -83,9 +83,6 @@ export default function TryUsBlock(props: TryUsBlockProps) {
                 text-align: ${props.center ? "center" : "left"};
                 font-size: 36px;
               }
-              @media (max-width: ${MOBILE_BREAKPOINT}) {
-                font-size: 24px;
-              }
             `}
           >
             {props.title}

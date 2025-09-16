@@ -1,10 +1,10 @@
 /* third-party */
 import React from "react";
 import useTitle from "react-use/lib/useTitle";
-import { useStoreActions } from "app/state/store/hooks";
+import { useStoreActions, useStoreState } from "app/state/store/hooks";
 import { useParams, useHistory } from "react-router-dom";
 /* project */
-import { datasetCategories } from "app/modules/dataset-module/routes/upload-module/upload-steps/metaData";
+import { datasetCategories } from "app/modules/dataset-module/routes/upload-module/upload-steps/step3/metaData";
 import DatasetsGrid from "app/modules/home-module/components/AssetCollection/Datasets/datasetsGrid";
 import { styles as commonStyles } from "app/modules/chart-module/routes/common/styles";
 import DatasetCategoryList from "app/modules/home-module/components/AssetCollection/Datasets/datasetCategoryList";
@@ -36,11 +36,15 @@ function ChartModuleDataView(
   const setDataset = useStoreActions(
     (actions) => actions.charts.dataset.setValue
   );
+  const token = useStoreState((state) => state.AuthToken.value);
 
   const handleItemClick = (id: string) => {
+    const loadDatasetAPI = `${process.env.REACT_APP_API}/chart/sample-data${
+      token ? "" : "/public"
+    }/${id}`;
     setDataset(id);
     props.setChartFromAPI(null);
-    props.loadDataset(id).then(() => {
+    props.loadDataset(loadDatasetAPI).then(() => {
       history.push(`/chart/${page}/preview-data`);
     });
   };
@@ -57,7 +61,7 @@ function ChartModuleDataView(
         openSearch={openSearch}
         setOpenSearch={setOpenSearch}
         searchIconCypressId="open-search-button"
-        hasSearch
+        hasSearchButton
       />
       <DatasetCategoryList
         categories={categories}

@@ -43,7 +43,8 @@ export function AppBar() {
           color={location.pathname !== "/" ? "secondary" : "transparent"}
           css={`
             display: flex;
-            background-color: #f2f7fd;
+            background-color: #fff;
+            border-bottom: 1px solid #dadaf8;
           `}
           data-cy="app-bar"
         >

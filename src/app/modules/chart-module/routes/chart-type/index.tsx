@@ -74,7 +74,11 @@ function ChartBuilderChartType(props: Readonly<ChartBuilderChartTypeProps>) {
     } else if (loadDatasetParamValue) {
       //when landing in chart type step from outside the chart module,
       //load the sample data as data step is skipped
-      props.loadDataset(datasetId!);
+      props.loadDataset(
+        `${process.env.REACT_APP_API}/chart/sample-data${
+          token ? "" : "/public"
+        }/${datasetId}`
+      );
       if (isAiActive) {
         loadChartTypesSuggestions({
           token,

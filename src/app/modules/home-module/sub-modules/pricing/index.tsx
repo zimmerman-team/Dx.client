@@ -17,6 +17,7 @@ import { APPLICATION_JSON } from "app/state/api";
 import { PageLoader } from "app/modules/common/page-loader";
 import { useCheckPricingActive } from "app/hooks/useCheckPricingActive";
 import { DESKTOP_BREAKPOINT } from "app/theme";
+import useBackgroundColor from "app/hooks/useBackgroundColor";
 import SubscriptionToggle from "./components/subscription-toggle";
 
 const VIEWS = [
@@ -85,6 +86,8 @@ export default function PricingModule() {
   useTitle("Dataxplorer - Pricing");
 
   const { user, isAuthenticated } = useAuth0();
+  useBackgroundColor("#FFF", []);
+
   const isMobile = useMediaQuery(`(max-width: ${DESKTOP_BREAKPOINT})`);
   const location = useLocation();
 
@@ -222,7 +225,6 @@ export default function PricingModule() {
   return (
     <main
       css={`
-        background: linear-gradient(180deg, #fff 0%, #f2f7fd 100%);
         display: flex;
         flex-direction: column;
         justify-content: space-between;

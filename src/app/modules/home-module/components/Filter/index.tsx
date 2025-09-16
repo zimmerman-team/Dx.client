@@ -1,22 +1,50 @@
-import React from "react";
+import React, { useRef } from "react";
 import {
   iconButtonCss,
   rowFlexCss,
-  searchInputCss,
+  sortByItemCss,
 } from "app/modules/home-module/style";
-import { IconButton, Tooltip } from "@material-ui/core";
+import { Popover, Tooltip } from "@material-ui/core";
+import { ReactComponent as SortIcon } from "app/modules/home-module/assets/sort-fill.svg";
 import { ReactComponent as GridIcon } from "app/modules/home-module/assets/grid-fill.svg";
-import { ReactComponent as CloseIcon } from "app/modules/home-module/assets/close-icon.svg";
-import { ReactComponent as SearchIcon } from "app/modules/home-module/assets/search-fill.svg";
+import { ReactComponent as FilterIcon } from "app/modules/home-module/assets/filter-fill.svg";
 import { ReactComponent as TableIcon } from "app/modules/home-module/assets/table-icon.svg";
-import { FOCUS_VISIBLE_STYLE_LIGHT } from "app/theme";
-import FilterPopover from "./FilterPopover";
-import SortPopover from "./SortPopover";
+import { ReactComponent as MenuIcon } from "app/modules/home-module/assets/menu.svg";
+import AddAssetDropdown from "app/modules/home-module/components/AddAssetDropdown";
+import { MultiSwitch } from "app/modules/home-module/components/TabSwitch";
+import { useOnClickOutside } from "usehooks-ts";
+import { SearchInput } from "./SearchInput";
+
+export const CustomGridIcon = ({ isActive }: { isActive?: boolean }) => (
+  <Tooltip title="List View" placement="bottom">
+    <GridIcon
+      css={`
+        path {
+          fill: ${isActive ? "#fff" : "#231d2c"};
+        }
+      `}
+    />
+  </Tooltip>
+);
+
+const CustomTableIcon = ({ isActive }: { isActive?: boolean }) => (
+  <Tooltip title="Table View" placement="bottom">
+    <TableIcon
+      css={`
+        g {
+          path {
+            fill: ${isActive ? "#fff" : "#231d2c"};
+          }
+        }
+      `}
+    />
+  </Tooltip>
+);
 
 export default function Filter(
   props: Readonly<{
     searchValue?: string;
-    setSearchValue?: (value: React.SetStateAction<string | undefined>) => void;
+    setSearchValue?: (value: string | undefined) => void;
     setSortValue: (value: "updatedDate" | "createdDate" | "name") => void;
     sortValue: string;
     setFilterValue?: (
@@ -27,18 +55,25 @@ export default function Filter(
     assetsView: "table" | "grid";
     terminateSearch?: () => void;
     searchInputWidth?: string;
+    onFocus?: React.FocusEventHandler<HTMLInputElement>;
     openSearch?: boolean;
     setOpenSearch?: React.Dispatch<React.SetStateAction<boolean>>;
     searchIconCypressId: string;
-    hasSearch: boolean;
+    hasSearchButton: boolean;
+    onKeyPress?: (e: React.KeyboardEvent<HTMLInputElement>) => void;
   }>
 ) {
-  const inputRef = React.useRef<HTMLInputElement>(null);
+  const inputRef = React.useRef<HTMLDivElement>(null);
   const [displayIcons, setDisplayIcons] = React.useState(true);
   const [sortPopoverAnchorEl, setSortPopoverAnchorEl] =
     React.useState<HTMLButtonElement | null>(null);
   const [filterPopoverAnchorEl, setFilterPopoverAnchorEl] =
     React.useState<HTMLButtonElement | null>(null);
+
+  useOnClickOutside(inputRef, () => {
+    props.terminateSearch && props.terminateSearch();
+    props.setOpenSearch?.(false);
+  });
   const handleCloseSortPopover = () => {
     setSortPopoverAnchorEl(null);
   };
@@ -54,12 +89,21 @@ export default function Filter(
     { label: "Name", value: "name" },
   ];
 
+  const filterOptions = [
+    { label: "All Assets", value: "allAssets" },
+    { label: "My Assets", value: "myAssets" },
+    { label: "Dataxplorer Assets", value: "dataxplorerAssets" },
+  ];
+
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     props.terminateSearch && props.terminateSearch();
     props.setSearchValue?.(e.target.value);
   };
   const handleIconsDisplay = () => {
     setDisplayIcons(!displayIcons);
+  };
+  const handleTabSwitch = (tab: string) => {
+    props.setAssetsView(tab as "grid" | "table");
   };
 
   return (
@@ -69,6 +113,7 @@ export default function Filter(
         justify-content: flex-start;
         flex-direction: row-reverse;
         gap: 8px;
+        width: 100%;
       `}
     >
       <div
@@ -76,116 +121,193 @@ export default function Filter(
           ${rowFlexCss}
           justify-content: flex-end;
           gap: 8px;
+          width: 100%;
         `}
       >
+        <SearchInput
+          searchValue={props.searchValue || ""}
+          onSearchChange={handleSearch}
+          onFocus={props.onFocus}
+          onKeyPress={props.onKeyPress}
+          hasSearchButton={props.hasSearchButton}
+          openSearch={props.openSearch}
+          setOpenSearch={props.setOpenSearch}
+          searchIconCypressId={props.searchIconCypressId}
+          inputRef={inputRef}
+        />
         <div
           css={`
-            display: flex;
-            align-items: center;
-            gap: 8px;
+            height: 40px;
+            width: 100px;
+            svg {
+            }
           `}
         >
-          <div css={searchInputCss(!!props.openSearch, props.searchInputWidth)}>
-            <input
-              type="text"
-              ref={inputRef}
-              value={props.searchValue}
-              placeholder="eg. Kenya"
-              onChange={handleSearch}
-              data-cy="filter-search-input"
-              aria-label="search"
-              name="search"
-              autoComplete="search"
-              aria-hidden={!props.openSearch}
-              tabIndex={props.openSearch ? 0 : -1}
-            />
+          <MultiSwitch
+            activeTab={props.assetsView}
+            onTabChange={handleTabSwitch}
+            style={{
+              radius: 10,
+              paddingX: 4,
+              backgroundActive: "#6061E5",
+            }}
+            tabs={[
+              {
+                value: "grid",
+                label: CustomGridIcon({
+                  isActive: props.assetsView === "grid",
+                }),
+                testId: "home-grid-view-button",
+              },
+              {
+                value: "table",
+                label: CustomTableIcon({
+                  isActive: props.assetsView === "table",
+                }),
+                testId: "home-table-view-button",
+              },
+            ]}
+          />
+        </div>
 
-            <IconButton
-              aria-hidden={!props.openSearch}
-              tabIndex={props.openSearch ? 0 : -1}
-              onClick={() => {
-                props.setSearchValue?.("");
-                props.terminateSearch && props.terminateSearch();
-                props.setOpenSearch?.(false);
+        {props.filterValue && (
+          <>
+            {" "}
+            <Tooltip title="Filter" placement="bottom">
+              <button
+                onClick={(event: React.MouseEvent<HTMLButtonElement>) => {
+                  setFilterPopoverAnchorEl(
+                    filterPopoverAnchorEl ? null : event.currentTarget
+                  );
+                }}
+                css={iconButtonCss(openFilterPopover)}
+                aria-label="filter-button"
+              >
+                <FilterIcon />
+              </button>
+            </Tooltip>
+            <Popover
+              open={openFilterPopover}
+              anchorEl={filterPopoverAnchorEl}
+              onClose={handleCloseFilterPopover}
+              anchorOrigin={{
+                vertical: "bottom",
+                horizontal: "left",
               }}
-              aria-label="close-search"
+              transformOrigin={{
+                vertical: "top",
+                horizontal: "left",
+              }}
               css={`
-                &:hover {
-                  background: transparent;
+                .MuiPaper-root {
+                  border-radius: 16px;
                 }
               `}
             >
-              <CloseIcon
+              <div
                 css={`
-                  margin-top: 1px;
+                  color: #fff;
+                  font-size: 12px;
+                  padding: 8px 22px;
+                  background: #231d2c;
+                  font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
                 `}
-              />
-            </IconButton>
-          </div>{" "}
-          {props.hasSearch && (
-            <Tooltip title="Search" placement="bottom">
-              <IconButton
-                data-cy={props.searchIconCypressId}
-                onClick={() => {
-                  props.setOpenSearch?.(true);
-                  inputRef.current?.focus();
-                }}
-                css={iconButtonCss(props.openSearch)}
-                aria-label="search-button"
               >
-                <SearchIcon />
-              </IconButton>
-            </Tooltip>
-          )}
-        </div>
-        {props.filterValue && (
-          <FilterPopover
-            setFilterValue={props.setFilterValue!}
-            filterValue={props.filterValue}
-            terminateSearch={props.terminateSearch!}
-          />
+                Filter
+              </div>
+              {filterOptions.map((option) => (
+                <div
+                  key={option.label}
+                  css={sortByItemCss(props.filterValue === option.value)}
+                  onClick={() => {
+                    props.terminateSearch && props.terminateSearch();
+                    props.setFilterValue?.(
+                      option.value as "allAssets" | "myAssets"
+                    );
+                    handleCloseSortPopover();
+                  }}
+                >
+                  {option.label}
+                </div>
+              ))}
+            </Popover>
+          </>
         )}
 
-        <SortPopover
-          setSortValue={props.setSortValue}
-          sortValue={props.sortValue}
-          terminateSearch={props.terminateSearch!}
-        />
-        <Tooltip title="Card/List View" placement="bottom">
-          <IconButton
-            data-cy="home-table-view-button"
-            onClick={() => {
-              props.setAssetsView(
-                props.assetsView === "table" ? "grid" : "table"
+        <Tooltip title="Sort By" placement="bottom">
+          <button
+            onClick={(event: React.MouseEvent<HTMLButtonElement>) => {
+              setSortPopoverAnchorEl(
+                sortPopoverAnchorEl ? null : event.currentTarget
               );
             }}
-            css={`
-              padding: 3px;
-              :focus-visible {
-                ${FOCUS_VISIBLE_STYLE_LIGHT}
-              }
-              &:hover {
-                background: transparent;
-                padding: none;
-
-                svg > circle,
-                rect {
-                  fill: #231d2c;
-                }
-                svg > path,
-                svg > g > path,
-                svg > g > rect {
-                  fill: #fff;
-                }
-              }
-            `}
-            aria-label={`${
-              props.assetsView === "table" ? "grid" : "table"
-            }-view-button`}
+            css={iconButtonCss(openSortPopover)}
+            aria-label="sort-button"
           >
-            {props.assetsView === "table" ? <TableIcon /> : <GridIcon />}
-          </IconButton>
+            <SortIcon />
+          </button>
         </Tooltip>
+        <Popover
+          open={openSortPopover}
+          anchorEl={sortPopoverAnchorEl}
+          onClose={handleCloseSortPopover}
+          anchorOrigin={{
+            vertical: "bottom",
+            horizontal: "left",
+          }}
+          transformOrigin={{
+            vertical: "top",
+            horizontal: "left",
+          }}
+          css={`
+            .MuiPaper-root {
+              border-radius: 16px;
+            }
+          `}
+        >
+          <div
+            css={`
+              color: #fff;
+              font-size: 12px;
+              padding: 8px 22px;
+              background: #231d2c;
+              font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
+            `}
+          >
+            Sort by
+          </div>
+          {sortOptions.map((option) => (
+            <div
+              key={option.label}
+              css={sortByItemCss(props.sortValue === option.value)}
+              onClick={() => {
+                props.terminateSearch && props.terminateSearch();
+                props.setSortValue(
+                  option.value as "name" | "createdDate" | "updatedDate"
+                );
+                handleCloseSortPopover();
+              }}
+            >
+              {option.label}
+            </div>
+          ))}
+        </Popover>
+        <AddAssetDropdown />
+        <div
+          css={`
+            display: flex;
+            flex-shrink: 0;
+            width: 40px;
+            height: 40px;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            border-radius: 10px;
+            background: #f1f3f5;
+          `}
+        >
+          <MenuIcon />
+        </div>
       </div>
     </div>
   );
