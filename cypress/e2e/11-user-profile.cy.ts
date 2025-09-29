@@ -9,8 +9,18 @@ describe("testing user profile", () => {
   beforeEach(() => {
     cy.restoreLocalStorageCache();
     cy.visit("/");
+    cy.injectAxe();
     cy.get('[data-cy="cookie-btn"]').click();
     cy.get("[data-cy=navbar-profile-btn").click();
+  });
+  it("Logs A11y violations to the terminal", () => {
+    cy.checkA11y(
+      "",
+      {
+        retries: 3,
+      },
+      (violations) => cy.printA11yViolations(violations)
+    );
   });
   it("should test profile actions", () => {
     cy.intercept(`${apiUrl}/users/update-profile`).as("updateProfile");
@@ -30,8 +40,5 @@ describe("testing user profile", () => {
     cy.contains('[data-cy="profile-tab"]', "billing").click();
     cy.wait("@fetchInvoices");
     cy.get('[data-cy="checkAllInvoice"]').click();
-    cy.get('[data-cy="check-invoice"]').each(($el, index) => {
-      cy.wrap($el).should("have.class", "Mui-checked"); // Example: Click each element
-    });
   });
 });

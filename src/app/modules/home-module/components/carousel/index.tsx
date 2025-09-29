@@ -95,8 +95,8 @@ export default function Card() {
       >
         <div>
           <h2>
-            Meet <Logo />, all-in-one workspace for{" "}
-            <span>data storytelling</span>{" "}
+            Meet Dataxplorer, all-in-one workspace for
+            <span> data storytelling</span>
           </h2>
           <div
             css={`
@@ -127,17 +127,28 @@ export default function Card() {
               margin-top: 16px;
               align-items: center;
               width: 100%;
+              max-width: 305px;
               justify-content: flex-start;
               button {
                 height: 41px;
-                gap: 28px;
+                justify-content: space-between;
+                padding: 0 16px;
+                :nth-child(2) {
+                  flex: 1;
+                }
+                @media (max-width: ${DESKTOP_BREAKPOINT}) {
+                  font-size: 16px;
+                }
+                @media (max-width: ${MOBILE_BREAKPOINT}) {
+                  font-size: 14px;
+                }
               }
             `}
           >
             <PrimaryButton
               bg="light"
               size="small"
-              onClick={() => history.push("/about")}
+              onClick={() => history.push("/why-da")}
             >
               Learn More
             </PrimaryButton>

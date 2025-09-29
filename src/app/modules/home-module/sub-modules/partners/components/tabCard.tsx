@@ -3,6 +3,7 @@ import AboutCard from "app/modules/home-module/assets/about-card.png";
 import GrantsCard from "app/modules/home-module/assets/grants-card.png";
 import BudgetsCard from "app/modules/home-module/assets/budgets-card.png";
 import PerfomanceCard from "app/modules/home-module/assets/targets-result.png";
+import { FOCUS_VISIBLE_STYLE_LIGHT } from "app/theme";
 
 function TabCard(props: {
   src: string;
@@ -32,6 +33,9 @@ function TabCard(props: {
           color: #ffffff;
           border-bottom: 1px solid #ffffff;
           cursor: pointer;
+          :focus-visible {
+            ${FOCUS_VISIBLE_STYLE_LIGHT}
+          }
         }
 
         img {

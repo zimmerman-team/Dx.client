@@ -45,12 +45,22 @@ const AboutModule = lazy(
 const WhyDXModule = lazy(
   () => import("app/modules/home-module/sub-modules/why-dx")
 );
+const PrivacyPolicyModule = lazy(
+  () => import("app/modules/home-module/sub-modules/privacy-policy")
+);
+const TermsAndConditionsModule = lazy(
+  () => import("app/modules/home-module/sub-modules/terms-and-conditions")
+);
 
 const PricingModule = lazy(
   () => import("app/modules/home-module/sub-modules/pricing")
 );
 const EmbedChartModule = lazy(
   () => import("app/modules/embed-module/embedChart")
+);
+
+const WebinarModule = lazy(
+  () => import("app/modules/home-module/sub-modules/webinar")
 );
 
 const ChartModule = lazy(() => import("app/modules/chart-module"));
@@ -297,6 +307,9 @@ export function MainRoutes() {
           <RouteWithAppBar exact path="/about">
             <AboutModule />
           </RouteWithAppBar>
+          <RouteWithAppBar exact path="/webinar">
+            <WebinarModule />
+          </RouteWithAppBar>
           <RouteWithAppBar exact path="/pricing">
             <PricingModule />
           </RouteWithAppBar>
@@ -307,6 +320,12 @@ export function MainRoutes() {
             <AuthProtectedRoute>
               <ChartModule />
             </AuthProtectedRoute>
+          </RouteWithAppBar>
+          <RouteWithAppBar exact path="/privacy-policy">
+            <PrivacyPolicyModule />
+          </RouteWithAppBar>
+          <RouteWithAppBar exact path="/terms-and-conditions">
+            <TermsAndConditionsModule />
           </RouteWithAppBar>
 
           <Route exact path="/chart-embed/:chartId/:datasetId">

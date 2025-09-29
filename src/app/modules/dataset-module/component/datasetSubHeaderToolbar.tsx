@@ -23,7 +23,6 @@ import { LinkIcon } from "app/assets/icons/Link";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 import { styles } from "app/modules/dataset-module/component/styles";
 import DeleteDatasetDialog from "app/components/Dialogs/deleteDatasetDialog";
-import { ISnackbarState } from "app/modules/dataset-module/routes/upload-module/upload-steps/previewFragment";
 import { InfoSnackbar } from "app/modules/story-module/components/storySubHeaderToolbar/infosnackbar";
 import { DatasetListItemAPIModel } from "app/modules/dataset-module/data";
 import { useRecoilState, useSetRecoilState } from "recoil";
@@ -33,11 +32,8 @@ import DuplicateMessage from "app/modules/common/mobile-duplicate-message";
 import { PrimaryButton } from "app/components/Styled/button";
 import { ArrowBack } from "@material-ui/icons";
 import ArrowBackIosIcon from "@material-ui/icons/ArrowBackIos";
-import {
-  DESKTOP_BREAKPOINT,
-  MOBILE_BREAKPOINT,
-  TABLET_STARTPOINT,
-} from "app/theme";
+import { MOBILE_BREAKPOINT } from "app/theme";
+import { ISnackbarState } from "app/modules/dataset-module/routes/upload-module/style";
 
 export default function DatasetSubHeaderToolbar(
   props: Readonly<{ name: string }>

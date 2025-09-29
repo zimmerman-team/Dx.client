@@ -5,20 +5,28 @@ export const getColumns = () => {
       label: "Name",
     },
     {
+      key: "description",
+      label: "Description",
+    },
+    {
       key: "type",
-      label: "Type",
+      label: "File Type",
     },
     {
       key: "vizType",
       label: "Chart Type",
     },
     {
-      key: "description",
-      label: "Description",
-    },
-    {
       key: "updatedDate",
       label: "Last modified",
+    },
+    {
+      key: "createdDate",
+      label: "Date Created",
+    },
+    {
+      key: "ownerName",
+      label: "Creator",
     },
   ];
 };

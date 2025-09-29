@@ -3,6 +3,7 @@ import { ReactComponent as GoogleIcon } from "./assets/google-icon.svg";
 import { ReactComponent as LinkedInIcon } from "./assets/linkedin-icon.svg";
 import { ReactComponent as MicrosoftIcon } from "./assets/microsoft-icon.svg";
 import { socialAuth } from "app/utils/socialAuth";
+import { FOCUS_VISIBLE_STYLE_LIGHT } from "app/theme";
 
 const SignInButtons = () => {
   return (
@@ -37,6 +38,9 @@ const SignInButtons = () => {
           :hover {
             opacity: 0.8;
             cursor: pointer;
+          }
+          :focus-visible {
+            ${FOCUS_VISIBLE_STYLE_LIGHT}
           }
         }
       `}

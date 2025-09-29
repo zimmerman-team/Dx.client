@@ -34,13 +34,18 @@ export function ChartBuilderPreview(props: ChartBuilderPreviewProps) {
   const history = useHistory();
   const { page } = useParams<{ page: string }>();
   const datasetId = useStoreState((state) => state.charts.dataset.value);
+  const token = useStoreState((state) => state.AuthToken.value);
 
   React.useEffect(() => {
     if (datasetId === null && !props.loading && page === "new") {
       history.push(`/chart/${page}/data`);
     } else {
       //loads table data
-      props.loadDataset(datasetId!);
+      props.loadDataset(
+        `${process.env.REACT_APP_API}/chart/sample-data${
+          token ? "" : "/public"
+        }/${datasetId}`
+      );
     }
   }, [datasetId]);
 

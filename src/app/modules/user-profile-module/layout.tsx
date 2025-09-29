@@ -76,14 +76,15 @@ export default function UserProfileLayout() {
             `}
           >
             <Box height={20} />
-            <div css={bigAvicss}>
+            <div css={bigAvicss} aria-label={"user initials avatar"}>
               <p>
                 {user?.given_name?.slice(0, 1)}
                 {user?.family_name?.slice(0, 1)}
               </p>
             </div>
             <Box height={64} />
-            <div
+            <aside
+              aria-label="user management tabs"
               css={`
                 @media (max-width: 960px) {
                   width: 100%;
@@ -91,8 +92,10 @@ export default function UserProfileLayout() {
               `}
             >
               {tabList.map((tab, index) => (
-                <div key={tab.title} data-cy={tab.testId}>
+                <div key={tab.title}>
                   <Tab
+                    key={tab.title}
+                    dataCy={tab.testId}
                     title={tab.title}
                     active={tab.title === activeTab}
                     handleClick={() => handleTabClick(index, tab.title)}
@@ -102,9 +105,9 @@ export default function UserProfileLayout() {
                   <Box height={10} />
                 </div>
               ))}
-            </div>
+            </aside>
           </div>
-          <div
+          <main
             css={`
               flex: 1;
             `}
@@ -117,7 +120,7 @@ export default function UserProfileLayout() {
                 <Billing />
               </Route>
             </Switch>
-          </div>
+          </main>
         </div>
         <LogOutDialog
           modalDisplay={logoutModalDisplay}

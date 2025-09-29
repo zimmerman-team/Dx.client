@@ -16,11 +16,11 @@ export default function DatasetDetailModule() {
   const [datasetId, setDatasetId] = React.useState("");
   const isSmallScreen = useMediaQuery(`(max-width:${MOBILE_BREAKPOINT})`); //at this breakpoint, we limit user creation abilities
   const history = useHistory();
-  React.useEffect(() => {
-    if (isSmallScreen && view !== undefined) {
-      history.push(`/dataset/${page}/not-available`);
-    }
-  }, [isSmallScreen]);
+  // React.useEffect(() => {
+  //   if (isSmallScreen && view !== undefined) {
+  //     history.push(`/dataset/${page}/not-available`);
+  //   }
+  // }, [isSmallScreen]);
   return (
     <Switch>
       <Route exact path="/dataset/:page">

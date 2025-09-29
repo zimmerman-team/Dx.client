@@ -6,9 +6,14 @@ import { ReactComponent as PlusIcon } from "app/modules/story-module/asset/addBu
 import { IRowFrameStructure } from "app/state/recoil/atoms";
 import { Updater } from "use-immer";
 import { TABLET_STARTPOINT } from "app/theme";
+import { useUndoRedo } from "app/hooks/useUndoRedo";
 interface Props {
   updateFramesArray: Updater<IFramesArray[]>;
   framesArray: IFramesArray[];
+  undoStack: IFramesArray[][];
+  setUndoStack: React.Dispatch<React.SetStateAction<IFramesArray[][]>>;
+  redoStack: IFramesArray[][];
+  setRedoStack: React.Dispatch<React.SetStateAction<IFramesArray[][]>>;
   rowStructureType: IRowFrameStructure;
   setRowStructureType: React.Dispatch<React.SetStateAction<IRowFrameStructure>>;
   endTour: () => void;
@@ -16,10 +21,19 @@ interface Props {
 }
 
 export default function AddRowFrameButton(props: Props) {
+  const { store } = useUndoRedo(
+    props.framesArray,
+    props.updateFramesArray,
+    props.undoStack,
+    props.setUndoStack,
+    props.redoStack,
+    props.setRedoStack
+  );
   const [displayTooltip, setDisplayTooltip] = React.useState<boolean>(false);
   const handleAddrowStructureBlock = () => {
     props.endTour();
     const id = v4();
+    store();
     props.updateFramesArray((draft) => {
       const newRowFrame = {
         id,

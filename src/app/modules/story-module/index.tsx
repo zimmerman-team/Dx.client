@@ -12,7 +12,11 @@ import StoryEditView from "app/modules/story-module/views/edit";
 import AITemplate from "app/modules/story-module/views/ai-template";
 import { EditorState, convertToRaw } from "draft-js";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
-import { StoryModel, emptyStory } from "app/modules/story-module/data";
+import {
+  IUniformBlockTypeStyle,
+  StoryModel,
+  emptyStory,
+} from "app/modules/story-module/data";
 import { StoryPreviewView } from "app/modules/story-module/views/preview";
 import StoryInitialView from "app/modules/story-module/views/initial";
 import { IFramesArray } from "app/modules/story-module/views/create/data";
@@ -117,6 +121,33 @@ export default function StoryModule() {
   const storyCreateData = useStoreState(
     (state) => state.stories.StoryCreate.crudData as any
   );
+  const [uniformBlockTypeStyle, setUniformBlockTypeStyle] =
+    React.useState<IUniformBlockTypeStyle>({
+      unstyled: {
+        css: null,
+        inlineStyles: [],
+      },
+      title: {
+        css: null,
+        inlineStyles: [],
+      },
+      "header-one": {
+        css: null,
+        inlineStyles: [],
+      },
+      "header-two": {
+        css: null,
+        inlineStyles: [],
+      },
+      "header-three": {
+        css: null,
+        inlineStyles: [],
+      },
+      "header-five": {
+        css: null,
+        inlineStyles: [],
+      },
+    });
 
   const { plugins: localPlugins } = useEditorPlugins();
 
@@ -260,6 +291,8 @@ export default function StoryModule() {
 
   const [framesArray, updateFramesArray] =
     useImmer<IFramesArray[]>(initialFramesArray);
+  const [undoStack, setUndoStack] = React.useState<IFramesArray[][]>([]);
+  const [redoStack, setRedoStack] = React.useState<IFramesArray[][]>([]);
 
   React.useEffect(() => {
     if (view === "edit" && !rightPanelOpen) {
@@ -338,6 +371,9 @@ export default function StoryModule() {
         titleColor: headerDetails.titleColor,
         descriptionColor: headerDetails.descriptionColor,
         dateColor: headerDetails.dateColor,
+        uniformBlockTypeStyle: {
+          ...uniformBlockTypeStyle,
+        },
       },
     });
     fetchStoryData({ token, getId: page, silent: true });
@@ -400,10 +436,17 @@ export default function StoryModule() {
             isSaveEnabled={isSaveEnabled}
             name={page !== "new" && !view ? storyGetData.name : storyName}
             framesArray={framesArray}
+            updateFramesArray={updateFramesArray}
             headerDetails={headerDetails}
             setStopInitializeFramesWidth={setStopInitializeFramesWidth}
             isPreviewView={isPreviewView}
             plugins={plugins}
+            undoStack={undoStack}
+            setUndoStack={setUndoStack}
+            redoStack={redoStack}
+            setRedoStack={setRedoStack}
+            setUniformBlockTypeStyle={setUniformBlockTypeStyle}
+            uniformBlockTypeStyle={uniformBlockTypeStyle}
           />
         )}
       {view && !storyError401 && view === "edit" && canEditDeleteStory && (
@@ -481,6 +524,11 @@ export default function StoryModule() {
               setAutoSave={setAutoSave}
               isSaveEnabled={isSaveEnabled}
               onSave={onSave}
+              redoStack={redoStack}
+              setRedoStack={setRedoStack}
+              undoStack={undoStack}
+              setUndoStack={setUndoStack}
+              setUniformBlockTypeStyle={setUniformBlockTypeStyle}
             />
           </section>
         </Route>

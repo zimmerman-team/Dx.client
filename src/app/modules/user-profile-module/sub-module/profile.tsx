@@ -64,19 +64,19 @@ export default function Profile() {
     if (user?.sub?.includes("google")) {
       return {
         type: "google",
-        icon: <GoogleIcon />,
+        icon: <GoogleIcon role="presentation" />,
         name: "Google",
       };
     } else if (user?.sub?.includes("windows")) {
       return {
         type: "windows",
-        icon: <MicrosoftIcon />,
+        icon: <MicrosoftIcon role="presentation" />,
         name: "Microsoft",
       };
     } else if (user?.sub?.includes("linkedin")) {
       return {
         type: "linkedin",
-        icon: <LinkedInIcon />,
+        icon: <LinkedInIcon role="presentation" />,
         name: "LinkedIn",
       };
     } else {
@@ -140,11 +140,12 @@ export default function Profile() {
     >
       {loading && <PageLoader />}
       <div css={profilecss}>
-        <h4>Profile</h4>
+        <h1>Profile</h1>
         <form onSubmit={handleSubmit}>
           <div css={flexContainercss}>
-            <p>Name</p>
+            <label htmlFor="name">Name</label>
             <input
+              id="name"
               type="text"
               name="name"
               css={inputcss}
@@ -153,11 +154,12 @@ export default function Profile() {
             />
           </div>
           <div css={flexContainercss}>
-            <p>Email</p>
+            <label htmlFor="email">Email</label>
 
             <input
               type="text"
               name="email"
+              id="email"
               css={inputcss}
               value={user?.email}
               disabled

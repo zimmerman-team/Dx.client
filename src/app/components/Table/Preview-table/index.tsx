@@ -58,6 +58,7 @@ export default function PreviewTable(props: PreviewTableProps) {
   } else {
     tableData = props.tableData;
   }
+  const borderStyle = "0.5px solid #868e96";
 
   return (
     <>
@@ -65,7 +66,7 @@ export default function PreviewTable(props: PreviewTableProps) {
         css={`
           padding-bottom: 10px;
           padding-right: 10px;
-          height: ${props.fullScreen ? "90vh" : "593px"};
+          height: ${props.fullScreen ? "90vh" : "800px"};
           &::-webkit-scrollbar {
             height: 12px;
             border-radius: 23px;
@@ -74,11 +75,6 @@ export default function PreviewTable(props: PreviewTableProps) {
           &::-webkit-scrollbar-track {
             background: ${props.fullScreen ? "#262C34" : "#f9f9f9"};
             border-radius: 23px;
-
-            /* padding: 0 0.5rem; */
-          }
-          &::-webkit-scrollbar-track:horizontal {
-            /* border-right: none; */
           }
           &::-webkit-scrollbar-thumb {
             background: ${props.fullScreen ? "#f9f9f9" : "#231d2c"};
@@ -92,7 +88,6 @@ export default function PreviewTable(props: PreviewTableProps) {
 
           > div {
             border-style: none;
-
             * {
               outline: none !important;
             }
@@ -104,17 +99,37 @@ export default function PreviewTable(props: PreviewTableProps) {
             css={`
               top: 0;
               position: sticky;
-              background: #dadaf8;
+              background: #f1f3f5;
+              border-color: #868e96;
+
+              > tr > th {
+                font-size: 14px;
+                font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
+                height: 34px;
+                padding: 0 16px;
+              }
             `}
           >
-            <TableRow
-              css={`
-                padding: 0rem 0.4rem;
-              `}
-            >
+            <TableRow>
+              <TableCell
+                style={{
+                  border: borderStyle,
+                  borderRight: "none",
+                  borderTopLeftRadius: "19px",
+                }}
+              ></TableCell>
               {columns.map((val, index) => {
                 return (
-                  <TableCell key={val + `${index}`}>
+                  <TableCell
+                    key={val + `${index}`}
+                    style={{
+                      borderLeft: borderStyle,
+                      borderTop: borderStyle,
+                      borderBottom: borderStyle,
+                      borderRight:
+                        index === columns.length - 1 ? borderStyle : "none",
+                    }}
+                  >
                     <div
                       title={val}
                       css={`
@@ -122,18 +137,16 @@ export default function PreviewTable(props: PreviewTableProps) {
                         justify-content: space-between;
                         align-items: center;
                         gap: 1rem;
-                        width: ${val ? "auto" : "192px"};
+                        width: ${val ? "auto" : "193px"};
                       `}
                     >
                       <div
                         css={`
                           width: 25px;
                           height: 25px;
-                          border-radius: 50%;
                           padding: 3px;
                           justify-content: center;
                           align-items: center;
-                          background: #ffffff;
                           display: ${val ? "flex" : "none"};
                         `}
                       >
@@ -163,19 +176,42 @@ export default function PreviewTable(props: PreviewTableProps) {
               })}
             </TableRow>
             <TableRow>
-              {dataStats?.map((val, i) => (
+              <TableCell
+                style={{
+                  borderLeft: borderStyle,
+                  borderTop: "none",
+                  borderBottom: borderStyle,
+                  background: "#fff",
+                }}
+              >
+                <p
+                  css={`
+                    font-family: "GothamNarrow-book";
+                  `}
+                >
+                  1
+                </p>
+              </TableCell>
+              {dataStats?.map((val, index) => (
                 <TableCell
-                  key={val.name + `${i}`}
+                  key={val.name + `${index}`}
+                  style={{
+                    borderLeft: borderStyle,
+                    borderTop: "none",
+                    borderBottom: borderStyle,
+                    borderRight:
+                      index === columns.length - 1 ? borderStyle : "none",
+                  }}
                   css={`
                     color: #000;
                     font-size: 12px;
-                    background: #f4f4f4;
+                    background: #fff;
                   `}
                 >
                   {val.name !== "ID" && (
                     <div
                       css={`
-                        background: #f4f4f4;
+                        background: #fff;
                       `}
                     >
                       <StatisticDisplay type={val.type} data={val.data} />
@@ -191,10 +227,38 @@ export default function PreviewTable(props: PreviewTableProps) {
                 key={Object.values(data).join("-") + `${rowIndex}`}
                 css={`
                   background: #fff;
+                  td {
+                    padding: 0 16px;
+                    height: 34px;
+                  }
                 `}
               >
+                <TableCell
+                  style={{
+                    borderLeft: borderStyle,
+                    borderTop: "none",
+                    borderBottom: borderStyle,
+                  }}
+                >
+                  <p
+                    css={`
+                      margin: 0px;
+                    `}
+                  >
+                    {rowIndex + 2}
+                  </p>
+                </TableCell>
                 {columns.map((val, cellIndex) => (
-                  <TableCell key={val + `${cellIndex}`}>
+                  <TableCell
+                    key={val + `${cellIndex}`}
+                    style={{
+                      borderLeft: borderStyle,
+                      borderTop: "none",
+                      borderBottom: borderStyle,
+                      borderRight:
+                        cellIndex === columns.length - 1 ? borderStyle : "none",
+                    }}
+                  >
                     <p
                       title={data?.[val] as string}
                       css={`

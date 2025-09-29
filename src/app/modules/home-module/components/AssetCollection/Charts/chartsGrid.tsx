@@ -27,7 +27,7 @@ import { getLimit } from "app/modules/home-module/components/AssetCollection/Dat
 interface Props {
   sortBy: string;
   searchStr: string;
-  userOnly?: boolean;
+  filterValue?: "allAssets" | "myAssets" | "dataxplorerAssets";
   view: "grid" | "table";
   addCard?: boolean;
 }
@@ -84,7 +84,7 @@ export default function ChartsGrid(props: Props) {
         ? `"where":{"name":{"like":"${props.searchStr}.*","options":"i"}},`
         : "";
 
-    return `${props.userOnly ? "userOnly=true&" : ""}filter={${value}"order":"${
+    return `filterValue=${props.filterValue}&filter={${value}"order":"${
       props.sortBy
     } ${props.sortBy === "name" ? "asc" : "desc"}","limit":${limit},"offset":${
       fromZeroOffset ? 0 : offset
@@ -96,7 +96,7 @@ export default function ChartsGrid(props: Props) {
       props.searchStr?.length > 0
         ? `where={"name":{"like":"${props.searchStr}.*","options":"i"}}`
         : "";
-    return `${props.userOnly ? "userOnly=true&" : ""}${value}`;
+    return `filterValue=${props.filterValue}&${value}`;
   };
 
   const loadData = (fromZeroOffset?: boolean) => {
@@ -233,7 +233,7 @@ export default function ChartsGrid(props: Props) {
 
   React.useEffect(() => {
     reloadData();
-  }, [props.sortBy, token, props.userOnly]);
+  }, [props.sortBy, token, props.filterValue]);
 
   const [,] = useDebounce(
     () => {
@@ -283,11 +283,17 @@ export default function ChartsGrid(props: Props) {
         <HomepageTable
           handleDelete={handleModal}
           handleDuplicate={handleDuplicate}
+          cellWidths={[50, 450, 142, 142, 142, 142, 200, 50]}
           tableData={{
             columns: [
-              { key: "name", label: "Name" },
+              { key: "name", label: "File Name" },
+
+              { key: "type", label: "File Type" },
               { key: "vizType", label: "Chart Type" },
+
               { key: "updatedDate", label: "Last modified" },
+              { key: "createdDate", label: "Date Created" },
+              { key: "ownerName", label: "Creator" },
             ],
             data: loadedCharts.map((data) => ({
               ...data,

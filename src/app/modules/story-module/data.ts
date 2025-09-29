@@ -36,6 +36,7 @@ export interface StoryModel {
   dateColor: string;
   isUpdated: boolean;
   ownerName?: string;
+  uniformBlockTypeStyle: IUniformBlockTypeStyle;
 }
 
 export const emptyStory: StoryModel = {
@@ -55,4 +56,57 @@ export const emptyStory: StoryModel = {
   owner: "",
   dateColor: "#ffffff",
   isUpdated: false,
+  uniformBlockTypeStyle: {
+    unstyled: {
+      css: null,
+      inlineStyles: [],
+    },
+    title: {
+      css: null,
+      inlineStyles: [],
+    },
+    "header-one": {
+      css: null,
+      inlineStyles: [],
+    },
+    "header-two": {
+      css: null,
+      inlineStyles: [],
+    },
+    "header-three": {
+      css: null,
+      inlineStyles: [],
+    },
+    "header-five": {
+      css: null,
+      inlineStyles: [],
+    },
+  },
 };
+
+export interface IUniformBlockTypeStyle {
+  unstyled: {
+    css: null;
+    inlineStyles: string[];
+  };
+  title: {
+    css: null;
+    inlineStyles: string[];
+  };
+  "header-one": {
+    css: null;
+    inlineStyles: string[];
+  };
+  "header-two": {
+    css: null;
+    inlineStyles: string[];
+  };
+  "header-three": {
+    css: null;
+    inlineStyles: string[];
+  };
+  "header-five": {
+    css: null;
+    inlineStyles: string[];
+  };
+}

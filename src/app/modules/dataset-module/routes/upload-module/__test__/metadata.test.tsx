@@ -1,6 +1,6 @@
 import { fireEvent, render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import MetaData from "app/modules/dataset-module/routes/upload-module/upload-steps/metaData";
+import MetaData from "app/modules/dataset-module/routes/upload-module/upload-steps/step3/metaData";
 import { DatasetGet } from "app/state/api/action-reducers/data-themes";
 import { StoreProvider, createStore } from "easy-peasy";
 import { Router, Switch } from "react-router-dom";
@@ -19,6 +19,15 @@ interface MockProps {
   setFormDetails: jest.Mock<any, any>;
   onSubmit: jest.Mock<any, any>;
   handleBack: jest.Mock<any, any>;
+  errorState: {
+    name: { state: boolean; message: string };
+    description: { state: boolean; message: string };
+    category: { state: boolean; message: string };
+    source: { state: boolean; message: string };
+    sourceUrl: { state: boolean; message: string };
+  };
+  setErrorState: jest.Mock<any, any>;
+  handleSubmit: (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
 }
 const formResponse = {
   formDetails: mockFormDetails,
@@ -31,6 +40,16 @@ const defaultProps = (props: Partial<MockProps> = {}): MockProps => {
     }),
     onSubmit: jest.fn(),
     handleBack: jest.fn(),
+    errorState: {
+      name: { state: false, message: "" },
+      description: { state: false, message: "" },
+      category: { state: false, message: "" },
+      source: { state: false, message: "" },
+      sourceUrl: { state: false, message: "" },
+      ...props.errorState,
+    },
+    setErrorState: jest.fn(),
+    handleSubmit: jest.fn(),
     ...props,
   };
 };

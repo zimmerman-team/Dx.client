@@ -16,6 +16,7 @@ import DatasetAddnewCard from "app/modules/home-module/components/AssetCollectio
 import CircleLoader from "app/modules/home-module/components/Loader";
 import { loadedDatasetsAtom, planDialogAtom } from "app/state/recoil/atoms";
 import { DatasetListItemAPIModel } from "app/modules/dataset-module/data";
+import { useHistory, useLocation } from "react-router-dom";
 
 interface Props {
   sortBy: string;
@@ -27,7 +28,7 @@ interface Props {
   onItemClick?: (v: string) => void;
   md?: GridSize;
   lg?: GridSize;
-  userOnly?: boolean;
+  filterValue?: "allAssets" | "myAssets" | "dataxplorerAssets";
 }
 
 export const getLimit = () => {
@@ -81,7 +82,7 @@ export default function DatasetsGrid(props: Readonly<Props>) {
         ? `"where":{"name":{"like":"${props.searchStr}.*","options":"i"}},`
         : "";
 
-    return `${props.userOnly ? "userOnly=true&" : ""}filter={${value}"order":"${
+    return `filterValue=${props.filterValue}&filter={${value}"order":"${
       props.sortBy
     } ${props.sortBy === "name" ? "asc" : "desc"}","limit":${limit},"offset":${
       fromZeroOffset ? 0 : offset
@@ -93,7 +94,7 @@ export default function DatasetsGrid(props: Readonly<Props>) {
       props.searchStr?.length > 0
         ? `where={"name":{"like":"${props.searchStr}.*","options":"i"}}`
         : "";
-    return `${props.userOnly ? "userOnly=true&" : ""}${value}`;
+    return `filterValue=${props.filterValue}&${value}`;
   };
 
   const loadData = (fromZeroOffset?: boolean) => {
@@ -223,7 +224,7 @@ export default function DatasetsGrid(props: Readonly<Props>) {
 
   React.useEffect(() => {
     reloadData();
-  }, [props.sortBy, token, props.categories, props.userOnly]);
+  }, [props.sortBy, token, props.categories, props.filterValue]);
 
   const [,] = useDebounce(
     () => {
@@ -238,6 +239,7 @@ export default function DatasetsGrid(props: Readonly<Props>) {
     500,
     [props.searchStr]
   );
+
   const md = props.md ?? 4;
   const lg = props.lg ?? 3;
   return (
@@ -245,7 +247,7 @@ export default function DatasetsGrid(props: Readonly<Props>) {
       {props.view === "grid" && (
         <Grid container spacing={!props.inChartBuilder ? 2 : 1}>
           {props.addCard ? <DatasetAddnewCard /> : null}
-          {loadedDatasets?.map((data, index) => (
+          {loadedDatasets?.map((data) => (
             <Grid
               item
               key={data.id}
@@ -253,13 +255,6 @@ export default function DatasetsGrid(props: Readonly<Props>) {
               sm={6}
               md={md}
               lg={lg}
-              onClick={(e) => {
-                e.preventDefault();
-                e.stopPropagation();
-                if (props.onItemClick) {
-                  props.onItemClick(data.id);
-                }
-              }}
               css={
                 props.inChartBuilder
                   ? `
@@ -272,7 +267,7 @@ export default function DatasetsGrid(props: Readonly<Props>) {
               }
             >
               <GridItem
-                path={`/dataset/${data.id}/edit`}
+                editPath={`/dataset/${data.id}/edit`}
                 title={data.name}
                 date={data.updatedDate}
                 handleDelete={() => {
@@ -282,11 +277,14 @@ export default function DatasetsGrid(props: Readonly<Props>) {
                   handleDuplicate(data.id);
                 }}
                 descr={data.description}
+                onItemClick={props.onItemClick}
                 showMenu={!props.inChartBuilder}
                 id={data.id}
                 owner={data.owner}
                 inChartBuilder={props.inChartBuilder as boolean}
                 ownerName={data.ownerName ?? ""}
+                source={data.source}
+                sourceURL={data.sourceUrl}
               />
 
               {!props.inChartBuilder && <Box height={{ xs: 0, lg: 8 }} />}
@@ -301,15 +299,27 @@ export default function DatasetsGrid(props: Readonly<Props>) {
           inChartBuilder={props.inChartBuilder}
           handleDelete={handleModal}
           handleDuplicate={handleDuplicate}
+          cellWidths={[50, 300, 350, 142, 142, 142, 138, 50]}
           tableData={{
             columns: [
-              { key: "name", label: "Name" },
-              { key: "description", label: "Description" },
+              { key: "name", label: "File Name" },
+              {
+                key: "description",
+                label: "Description",
+              },
+              { key: "type", label: "File Type" },
               { key: "updatedDate", label: "Last modified" },
+              { key: "createdDate", label: "Date Created" },
+              { key: "ownerName", label: "Creator" },
             ],
             data: loadedDatasets.map((data) => ({
               ...data,
               type: "dataset",
+              ownerName: data.ownerName
+                ? `${data.ownerName.split(" ")[0][0]}. ${
+                    data.ownerName.split(" ")[1]
+                  }`
+                : "",
             })),
           }}
         />

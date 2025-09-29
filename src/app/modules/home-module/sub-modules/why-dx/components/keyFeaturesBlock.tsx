@@ -1,5 +1,5 @@
 import React from "react";
-import Grid, { GridSpacing } from "@material-ui/core/Grid";
+import { GridSpacing } from "@material-ui/core/Grid";
 import { ReactComponent as AIPoweredImg } from "app/modules/home-module/assets/whydx-ai-powered-illustration.svg";
 import { ReactComponent as CharVizImg } from "app/modules/home-module/assets/whydx-chartviz-illustration.svg";
 import { ReactComponent as OpenSourceImg } from "app/modules/home-module/assets/whydx-opensource-illustration.svg";
@@ -7,11 +7,7 @@ import { ReactComponent as StoriesImg } from "app/modules/home-module/assets/why
 import { ReactComponent as SearchImg } from "app/modules/home-module/assets/whydx-search-illustration.svg";
 import { keyfeaturescss } from "app/modules/home-module/sub-modules/why-dx/style";
 import { useMediaQuery } from "@material-ui/core";
-import {
-  DESKTOP_BREAKPOINT,
-  MOBILE_BREAKPOINT,
-  TABLET_STARTPOINT,
-} from "app/theme";
+import { MOBILE_BREAKPOINT } from "app/theme";
 
 export default function KeyFeaturesBlock() {
   const isTablet = useMediaQuery("(max-width:1024px)");
@@ -25,8 +21,11 @@ export default function KeyFeaturesBlock() {
     spacing = 2;
   }
   return (
-    <div css={keyfeaturescss.container}>
-      <h3>Unlock the Power of Data with Dataxplorer</h3>
+    <section
+      aria-label="Key Features of dataxplorer"
+      css={keyfeaturescss.container}
+    >
+      <h2>Unlock the Power of Data with Dataxplorer</h2>
       <div css={keyfeaturescss.flexContainer(false)}>
         <div
           css={`
@@ -34,6 +33,7 @@ export default function KeyFeaturesBlock() {
           `}
         >
           <SearchImg
+            role="presentation"
             css={`
               border-radius: 16px;
               box-shadow: 0px 13.449px 20.173px 0px rgba(0, 0, 0, 0.05),
@@ -49,7 +49,7 @@ export default function KeyFeaturesBlock() {
           `}
         >
           <div css={keyfeaturescss.text}>
-            <p>All-in-One Stack</p>
+            <h3>All-in-One Stack</h3>
             <p>
               Dataxplorer consolidates all your data management needs into a
               single, integrated stack. Whether it's data integration,
@@ -84,7 +84,7 @@ export default function KeyFeaturesBlock() {
           `}
         >
           <div css={keyfeaturescss.text}>
-            <p>Connect Data with Ease</p>
+            <h3>Connect Data with Ease</h3>
             <p>
               Dataxplorer simplifies the complex task of data integration,
               enabling you to seamlessly centralize your crucial datasets. Gone
@@ -101,6 +101,7 @@ export default function KeyFeaturesBlock() {
           `}
         >
           <AIPoweredImg
+            role="presentation"
             css={`
               box-shadow: 0px 14.97px 22.455px 0px rgba(0, 0, 0, 0.05),
                 0px 4.491px 7.485px 0px rgba(0, 0, 0, 0.05),
@@ -128,6 +129,7 @@ export default function KeyFeaturesBlock() {
           `}
         >
           <CharVizImg
+            role="presentation"
             css={`
               border-radius: 16px;
               background: #fbfbfb;
@@ -143,7 +145,7 @@ export default function KeyFeaturesBlock() {
           `}
         >
           <div css={keyfeaturescss.text}>
-            <p>Visualize Your Impact</p>
+            <h3>Visualize Your Impact</h3>
             <p>
               Your data is a valuable resource, and Dataxplorer empowers you to
               make the most of it. Our AI-driven agents are at your disposal,
@@ -173,7 +175,7 @@ export default function KeyFeaturesBlock() {
           `}
         >
           <div css={keyfeaturescss.text}>
-            <p>Interactive Stories </p>
+            <h3>Interactive Stories </h3>
             <p>
               Transform your data-driven insights into engaging narratives that
               captivate and inform your stakeholders. Dataxplorer allows you to
@@ -191,6 +193,7 @@ export default function KeyFeaturesBlock() {
           `}
         >
           <OpenSourceImg
+            role="presentation"
             css={`
               border-radius: 16px;
               background: #fbfbfb;
@@ -217,6 +220,7 @@ export default function KeyFeaturesBlock() {
           `}
         >
           <StoriesImg
+            role="presentation"
             css={`
               border-radius: 16px;
               background: #fbfbfb;
@@ -232,7 +236,7 @@ export default function KeyFeaturesBlock() {
           `}
         >
           <div css={keyfeaturescss.text}>
-            <p>Join The Data Revolution</p>
+            <h3>Join The Data Revolution</h3>
             <p>
               Become a pioneer in the realm of data-driven decision-making.
               Embrace the future with Dataxplorer and experience the
@@ -245,6 +249,6 @@ export default function KeyFeaturesBlock() {
           </div>
         </div>
       </div>
-    </div>
+    </section>
   );
 }

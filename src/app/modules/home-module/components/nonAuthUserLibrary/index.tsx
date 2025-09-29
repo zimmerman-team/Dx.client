@@ -6,13 +6,14 @@ import { ReactComponent as Logo } from "app/modules/home-module/assets/logo.svg"
 import { ReactComponent as RightArrow } from "app/modules/home-module/assets/right-arr.svg";
 import { DESKTOP_BREAKPOINT, MOBILE_BREAKPOINT } from "app/theme";
 import { useHistory } from "react-router-dom";
+import TryUsBlock from "app/modules/home-module/components/TryUsBlock";
 
 export default function NonAuthUserLibrary() {
   const history = useHistory();
 
   return (
     <React.Fragment>
-      <div
+      <main
         css={`
           box-shadow: 0px 0px 10px 0px rgba(152, 161, 170, 0.1);
         `}
@@ -71,9 +72,7 @@ export default function NonAuthUserLibrary() {
             `}
           >
             <div>
-              <h2>
-                See Our Default <Logo /> Assets
-              </h2>
+              <h2>See Our Default Dataxplorer Assets</h2>
               <p>
                 Explore ready-made assets from DataXplorer. Sign in to create
                 your own data stories.
@@ -84,6 +83,12 @@ export default function NonAuthUserLibrary() {
                 button {
                   height: 41px;
                   gap: 28px;
+                  @media (max-width: ${DESKTOP_BREAKPOINT}) {
+                    font-size: 16px;
+                  }
+                  @media (max-width: ${MOBILE_BREAKPOINT}) {
+                    font-size: 14px;
+                  }
                 }
               `}
             >
@@ -98,8 +103,13 @@ export default function NonAuthUserLibrary() {
             </div>
           </div>
           <AssetsList />
+          <TryUsBlock
+            title="Give Dataxplorer a try, on us"
+            subtitle="Dataxplorer turns data into impact in minutes"
+            signInWith
+          />
         </Container>
-      </div>
+      </main>
     </React.Fragment>
   );
 }

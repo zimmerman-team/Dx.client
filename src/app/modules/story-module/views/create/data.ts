@@ -39,11 +39,19 @@ export interface StoryCreateViewProps {
   setHeaderDetails: React.Dispatch<React.SetStateAction<IHeaderDetails>>;
   onSave: (type: "create" | "edit") => Promise<void>;
   setPluginsState: React.Dispatch<React.SetStateAction<ToolbarPluginsType>>;
+  undoStack: IFramesArray[][];
+  setUndoStack: React.Dispatch<React.SetStateAction<IFramesArray[][]>>;
+  redoStack: IFramesArray[][];
+  setRedoStack: React.Dispatch<React.SetStateAction<IFramesArray[][]>>;
 }
 
 export interface PlaceholderProps {
   updateFramesArray: Updater<IFramesArray[]>;
   framesArray: IFramesArray[];
+  undoStack: IFramesArray[][];
+  setUndoStack: React.Dispatch<React.SetStateAction<IFramesArray[][]>>;
+  redoStack: IFramesArray[][];
+  setRedoStack: React.Dispatch<React.SetStateAction<IFramesArray[][]>>;
   index?: number;
   disableAddrowStructureButton?: boolean;
   deleteFrame: (id: string) => void;
