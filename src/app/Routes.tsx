@@ -45,6 +45,12 @@ const AboutModule = lazy(
 const WhyDXModule = lazy(
   () => import("app/modules/home-module/sub-modules/why-dx")
 );
+const PrivacyPolicyModule = lazy(
+  () => import("app/modules/home-module/sub-modules/privacy-policy")
+);
+const TermsAndConditionsModule = lazy(
+  () => import("app/modules/home-module/sub-modules/terms-and-conditions")
+);
 
 const PricingModule = lazy(
   () => import("app/modules/home-module/sub-modules/pricing")
@@ -314,6 +320,12 @@ export function MainRoutes() {
             <AuthProtectedRoute>
               <ChartModule />
             </AuthProtectedRoute>
+          </RouteWithAppBar>
+          <RouteWithAppBar exact path="/privacy-policy">
+            <PrivacyPolicyModule />
+          </RouteWithAppBar>
+          <RouteWithAppBar exact path="/terms-and-conditions">
+            <TermsAndConditionsModule />
           </RouteWithAppBar>
 
           <Route exact path="/chart-embed/:chartId/:datasetId">

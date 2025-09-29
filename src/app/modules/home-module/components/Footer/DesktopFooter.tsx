@@ -510,25 +510,15 @@ export default function DesktopFooter(props: Props) {
             />
             <p>
               {" "}
-              <a
-                href={PRIVACY_POLICY_LINK}
-                className="privacy-link"
-                target="_blank"
-                rel="noreferrer"
-              >
+              <Link to={PRIVACY_POLICY_LINK} className="privacy-link">
                 Privacy
-              </a>{" "}
+              </Link>{" "}
             </p>
             <p>
               {" "}
-              <a
-                href={TERMS_AND_CONDITION_LINK}
-                className="privacy-link"
-                target="_blank"
-                rel="noreferrer"
-              >
+              <Link to={TERMS_AND_CONDITION_LINK} className="privacy-link">
                 Terms and conditions
-              </a>{" "}
+              </Link>
             </p>
           </nav>
         </Container>
