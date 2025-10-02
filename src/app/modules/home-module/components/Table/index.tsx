@@ -8,12 +8,11 @@ import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
 import TableContainer from "@material-ui/core/TableContainer";
 import { isValidDate } from "app/utils/isValidDate";
-import MoreHorizIcon from "@material-ui/icons/MoreHoriz";
-import MenuItems from "app/modules/home-module/components/AssetCollection/All/menuItems";
-import { IconButton } from "@material-ui/core";
+import MenuPopover from "app/modules/home-module/components/AssetCollection/All/menuPopover";
 import { AssetType } from "app/modules/home-module/components/AssetCollection/All/assetsGrid";
 import { ReactComponent as AddIcon } from "app/modules/home-module/assets/add-icon.svg";
 import { ReactComponent as RemoveIcon } from "app/modules/home-module/assets/remove-icon.svg";
+import { FOCUS_VISIBLE_STYLE_DARK, FOCUS_VISIBLE_STYLE_LIGHT } from "app/theme";
 
 interface IData {
   id: string;
@@ -55,11 +54,10 @@ interface TableComponentProps {
 
 interface ActionsCellProps {
   data: any;
-  onMenuClick: (id: string) => void;
+
   handleDelete: (id: string) => void;
   handleDuplicate: (id: string, type: AssetType) => void;
   getEditDetailPath: (data: any) => string;
-  showMenu: boolean;
   setActiveAssetType?: (type: AssetType | null) => void;
 }
 
@@ -117,6 +115,9 @@ const DescriptionCell: React.FC<DescriptionCellProps> = ({
             stroke: #231d2c;
           }
         }
+        :focus-visible {
+          ${FOCUS_VISIBLE_STYLE_LIGHT}
+        }
       }
     `}
   >
@@ -137,11 +138,9 @@ const RegularCell: React.FC<RegularCellProps> = ({ value, isFirstColumn }) => (
 
 const ActionsCell: React.FC<ActionsCellProps> = ({
   data,
-  onMenuClick,
   handleDelete,
   handleDuplicate,
   getEditDetailPath,
-  showMenu,
   setActiveAssetType,
 }) => (
   <TableCell
@@ -151,27 +150,8 @@ const ActionsCell: React.FC<ActionsCellProps> = ({
       padding: 0 5px !important;
     `}
   >
-    <IconButton
-      onClick={(e) => {
-        e.stopPropagation();
-        onMenuClick(data.id);
-      }}
-      css={`
-        width: 10px;
-        height: 10px;
-        :hover {
-          background: none;
-        }
-        svg {
-          transform: rotate(90deg);
-        }
-      `}
-    >
-      <MoreHorizIcon htmlColor="#231D2C" />
-    </IconButton>
-    <MenuItems
+    <MenuPopover
       type={data.type}
-      handleClose={() => onMenuClick(data.id)}
       handleDelete={() => {
         setActiveAssetType?.(data.type);
         handleDelete?.(data.id as string);
@@ -180,11 +160,10 @@ const ActionsCell: React.FC<ActionsCellProps> = ({
       id={data.id}
       owner={data.owner}
       path={getEditDetailPath(data)}
-      top="40px"
-      right="none"
       left="0%"
-      alignLeft
-      display={showMenu}
+      dataCy=""
+      dataTestId=""
+      menuId="table-menu"
     />
   </TableCell>
 );
@@ -216,24 +195,6 @@ export function HomepageTable(props: Readonly<TableComponentProps>) {
     return editDetailPath;
   };
 
-  const [tableData, setTableData] = React.useState<any>([]);
-
-  React.useEffect(() => {
-    setTableData(
-      props.tableData.data.map((data) => ({ ...data, isModalOpen: false }))
-    );
-  }, [props.tableData.data]);
-  const handleCloseModal = (id: string) => {
-    setTableData((prev: any) => {
-      return prev.map((item: any) => {
-        if (item.id === id) {
-          return { ...item, isModalOpen: !item.isModalOpen };
-        }
-        return item;
-      });
-    });
-  };
-
   const handleRowClick = (
     e: React.MouseEvent<HTMLTableRowElement, MouseEvent>,
     data: any
@@ -258,9 +219,6 @@ export function HomepageTable(props: Readonly<TableComponentProps>) {
       [key]: !prev[key],
     }));
   };
-  const isMenuOpen = (data: any): boolean => {
-    return tableData.some((d: any) => d.isModalOpen && d.id === data.id);
-  };
 
   return (
     <TableContainer
@@ -272,6 +230,7 @@ export function HomepageTable(props: Readonly<TableComponentProps>) {
       `}
     >
       <Table
+        id="assets-table"
         css={`
           border-spacing: 0;
           border-style: hidden;
@@ -315,7 +274,7 @@ export function HomepageTable(props: Readonly<TableComponentProps>) {
             background: #fff;
           `}
         >
-          {tableData.map((data: any, rowIndex: any) => (
+          {props.tableData.data.map((data: any, rowIndex: any) => (
             <TableRow
               key={data.id}
               onClick={(e) => handleRowClick(e, data)}
@@ -323,6 +282,7 @@ export function HomepageTable(props: Readonly<TableComponentProps>) {
                 &:hover {
                   cursor: pointer;
                 }
+
                 td {
                   padding: 0 16px;
                   height: 51px;
@@ -366,11 +326,9 @@ export function HomepageTable(props: Readonly<TableComponentProps>) {
               {/* Actions cell */}
               <ActionsCell
                 data={data}
-                onMenuClick={handleCloseModal}
                 handleDelete={props.handleDelete || (() => {})}
                 handleDuplicate={props.handleDuplicate || (() => {})}
                 getEditDetailPath={getEditDetailPath}
-                showMenu={isMenuOpen(data)}
                 setActiveAssetType={props.setActiveAssetType}
               />
             </TableRow>

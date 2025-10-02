@@ -1,3 +1,4 @@
+import { FOCUS_VISIBLE_STYLE_LIGHT } from "app/theme";
 import { isEmpty } from "lodash";
 import React from "react";
 
@@ -45,6 +46,9 @@ export default function SourceLink(props: SourceLinkProps) {
               overflow: hidden;
               text-overflow: ellipsis;
               white-space: nowrap;
+              &:focus-visible {
+                ${FOCUS_VISIBLE_STYLE_LIGHT}
+              }
             }
           `}
         >

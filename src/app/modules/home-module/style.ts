@@ -138,6 +138,9 @@ export const iconButtonCss = (active?: boolean) => css`
   outline: none;
   cursor: pointer;
   padding: 0;
+  :focus-visible {
+    ${FOCUS_VISIBLE_STYLE_LIGHT}
+  }
 `;
 
 export const sortByItemCss = (active: boolean) => css`

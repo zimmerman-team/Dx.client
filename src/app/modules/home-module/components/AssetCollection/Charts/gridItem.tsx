@@ -1,15 +1,13 @@
 import React from "react";
 import moment from "moment";
 import { Link } from "react-router-dom";
-import { IconButton } from "@material-ui/core";
-import { ReactComponent as MenuIcon } from "app/modules/home-module/assets/menu.svg";
 import { ReactComponent as ClockIcon } from "app/modules/home-module/assets/clock-icon.svg";
 import { ReactComponent as OwnerIcon } from "app/modules/home-module/assets/owner-icon.svg";
-import MenuItems from "app/modules/home-module/components/AssetCollection/All/menuItems";
-import { ReactComponent as Logo } from "app/modules/home-module/assets/logo.svg";
+import MenuPopover from "app/modules/home-module/components/AssetCollection/All/menuPopover";
 import AIIcon from "app/assets/icons/AIIcon";
 import { useAuth0 } from "@auth0/auth0-react";
 import { FOCUS_VISIBLE_STYLE_LIGHT } from "app/theme";
+import Logo from "app/assets/icons/Logo";
 
 interface Props {
   id: string;
@@ -26,14 +24,7 @@ interface Props {
 }
 
 export default function GridItem(props: Props) {
-  const [menuOptionsDisplay, setMenuOptionsDisplay] = React.useState(false);
   const { isAuthenticated } = useAuth0();
-
-  const showMenuOptions = (e: React.MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault();
-    e.stopPropagation();
-    setMenuOptionsDisplay(!menuOptionsDisplay);
-  };
 
   return (
     <div
@@ -94,38 +85,21 @@ export default function GridItem(props: Props) {
           `}
         >
           <p>chart</p>
-          <button
-            css={`
-              border: none;
-              background: ${menuOptionsDisplay ? "#CFD0F4" : "transparent"};
-              outline: none;
-              display: flex;
-              align-items: center;
-              justify-content: center;
-              position: absolute;
-              height: 19px;
-              width: 19px;
-              border-radius: 5px;
-              right: 5px;
-              top: 12px;
-              cursor: pointer;
-
-              svg {
-                flex-shrink: 0;
-              }
-              &:hover {
-                background: transparent;
-              }
-              :focus-visible {
-                ${FOCUS_VISIBLE_STYLE_LIGHT}
-              }
-            `}
-            onClick={showMenuOptions}
-            data-cy="chart-grid-item-menu-btn"
-            data-testid="chart-grid-item-menu-btn"
-          >
-            <MenuIcon />
-          </button>
+          <MenuPopover
+            handleDelete={() => props.handleDelete?.(props.id as string)}
+            handleDuplicate={() => props.handleDuplicate?.(props.id as string)}
+            id={props.id as string}
+            owner={props.owner}
+            path={
+              props.isMappingValid
+                ? `/chart/${props.id}/customize`
+                : `/chart/${props.id}/mapping`
+            }
+            type="chart"
+            dataCy="chart-grid-item-menu-btn"
+            dataTestId="chart-grid-item-menu-btn"
+            menuId="chart-grid-item-menu"
+          />
         </div>
         <div
           css={`
@@ -212,7 +186,7 @@ export default function GridItem(props: Props) {
               {isAuthenticated ? (
                 <p>{props.ownerName?.split(" ")?.[0]}</p>
               ) : (
-                <Logo />
+                <Logo main />
               )}
             </div>
             <div
@@ -228,21 +202,6 @@ export default function GridItem(props: Props) {
           </div>
         </div>
       </Link>
-
-      <MenuItems
-        handleClose={() => setMenuOptionsDisplay(false)}
-        handleDelete={() => props.handleDelete?.(props.id as string)}
-        handleDuplicate={() => props.handleDuplicate?.(props.id as string)}
-        id={props.id as string}
-        owner={props.owner}
-        path={
-          props.isMappingValid
-            ? `/chart/${props.id}/customize`
-            : `/chart/${props.id}/mapping`
-        }
-        type="chart"
-        display={menuOptionsDisplay}
-      />
     </div>
   );
 }

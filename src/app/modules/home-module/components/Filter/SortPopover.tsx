@@ -1,4 +1,4 @@
-import { IconButton, Popover, Tooltip } from "@material-ui/core";
+import { Popover, Tooltip } from "@material-ui/core";
 import { ReactComponent as SortIcon } from "app/modules/home-module/assets/sort-fill.svg";
 
 import { iconButtonCss, sortByItemCss } from "app/modules/home-module/style";
@@ -39,7 +39,7 @@ export default function SortPopover(
   return (
     <>
       <Tooltip title="Sort By" placement="bottom">
-        <IconButton
+        <button
           ref={triggerRef}
           onClick={togglePopover}
           onKeyDown={(e) => handleTriggerKeyDown(e, e.currentTarget)}
@@ -49,7 +49,7 @@ export default function SortPopover(
           aria-label="sort-button"
         >
           <SortIcon />
-        </IconButton>
+        </button>
       </Tooltip>
       <Popover
         open={!!openState}

@@ -1,7 +1,11 @@
 import Popover from "@material-ui/core/Popover";
 import { useCheckUserPlan } from "app/hooks/useCheckUserPlan";
 import { useMenuNavigation } from "app/hooks/useMenuNavigation";
-import { FOCUS_VISIBLE_STYLE_DARK, MOBILE_BREAKPOINT } from "app/theme";
+import {
+  FOCUS_VISIBLE_STYLE_DARK,
+  FOCUS_VISIBLE_STYLE_LIGHT,
+  MOBILE_BREAKPOINT,
+} from "app/theme";
 import React from "react";
 import { useHistory } from "react-router-dom";
 
@@ -175,7 +179,7 @@ export default function AddAssetDropdown() {
               background: transparent;
               cursor: pointer;
               &:focus-visible {
-                ${FOCUS_VISIBLE_STYLE_DARK}
+                ${FOCUS_VISIBLE_STYLE_LIGHT}
                 margin: 4px 3px;
                 width: calc(100% - 6px);
               }

@@ -43,7 +43,7 @@ export default function FilterPopover(
     <>
       {" "}
       <Tooltip title="Filter" placement="bottom">
-        <IconButton
+        <button
           ref={triggerRef}
           onClick={togglePopover}
           onKeyDown={(e) => handleTriggerKeyDown(e, e.currentTarget)}
@@ -53,7 +53,7 @@ export default function FilterPopover(
           aria-label="filter-button"
         >
           <FilterIcon />
-        </IconButton>
+        </button>
       </Tooltip>
       <Popover
         open={!!openState}

@@ -4,7 +4,6 @@ import React from "react";
 import { useHistory } from "react-router-dom";
 import { useRecoilState } from "recoil";
 import Box from "@material-ui/core/Box";
-import Grid from "@material-ui/core/Grid";
 import Container from "@material-ui/core/Container";
 /* project */
 import ChartsGrid from "app/modules/home-module/components/AssetCollection/Charts/chartsGrid";
@@ -23,6 +22,7 @@ import AssetsGrid from "app/modules/home-module/components/AssetCollection/All/a
 import Filter from "app/modules/home-module/components/Filter";
 import {
   DESKTOP_BREAKPOINT,
+  FOCUS_VISIBLE_STYLE_LIGHT,
   MOBILE_BREAKPOINT,
   TABLET_STARTPOINT,
 } from "app/theme";
@@ -80,6 +80,7 @@ function AssetsCollection() {
   const token = useStoreState((state) => state.AuthToken.value);
 
   const userOnlyFilter = filterValue === "myAssets";
+  const gridId = "assets-grid";
 
   const loadChartsCount = useStoreActions(
     (actions) => actions.charts.ChartsCount.fetch
@@ -138,6 +139,7 @@ function AssetsCollection() {
             view={assetsView}
             categories={categories}
             filterValue={filterValue}
+            gridId={gridId}
           />
         );
       case "charts":
@@ -147,6 +149,7 @@ function AssetsCollection() {
             searchStr={searchStr}
             view={assetsView}
             filterValue={filterValue}
+            gridId={gridId}
           />
         );
       case "stories":
@@ -156,6 +159,7 @@ function AssetsCollection() {
             searchStr={searchStr}
             view={assetsView}
             filterValue={filterValue}
+            gridId={gridId}
           />
         );
       case "all":
@@ -165,6 +169,7 @@ function AssetsCollection() {
             searchStr={searchStr}
             view={assetsView}
             filterValue={filterValue}
+            gridId={gridId}
           />
         );
       default:
@@ -234,6 +239,9 @@ function AssetsCollection() {
                 display: flex;
                 flex-direction: column;
                 cursor: pointer;
+                :focus-visible {
+                  ${FOCUS_VISIBLE_STYLE_LIGHT}
+                }
                 @media (max-width: ${MOBILE_BREAKPOINT}) {
                   width: 100%;
                 }
@@ -329,6 +337,7 @@ function AssetsCollection() {
                 paddingX: 4,
                 backgroundActive: "#6061E5",
               }}
+              ariaControls={display + "-assets"}
               tabs={[
                 {
                   value: "all",
@@ -380,6 +389,7 @@ function AssetsCollection() {
               filterValue={filterValue}
               setFilterValue={setFilterValue}
               hasSearchButton
+              terminateSearch={() => {}}
             />
           </div>
         </div>
@@ -408,6 +418,7 @@ function AssetsCollection() {
             filterValue={filterValue}
             setFilterValue={setFilterValue}
             hasSearchButton
+            terminateSearch={() => {}}
           />
         </div>
         <div
