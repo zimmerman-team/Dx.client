@@ -8,7 +8,7 @@ export default function Logo(props: {
   main?: boolean;
 }) {
   return (
-    <picture
+    <div
       css={`
         display: flex;
       `}
@@ -16,18 +16,18 @@ export default function Logo(props: {
       {props.main ? (
         <img
           src={LogoMain}
-          alt="DX Logo"
+          aria-label="DX Logo"
           width={props.width}
           height={props.height}
         />
       ) : (
         <img
           src={LogoDark}
-          alt="DX Logo"
+          aria-label="DX Logo"
           width={props.width}
           height={props.height}
         />
       )}
-    </picture>
+    </div>
   );
 }

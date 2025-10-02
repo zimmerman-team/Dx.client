@@ -44,7 +44,7 @@ const ctaCards = [
   {
     title: "Create Charts",
     description:
-      "Once you have dataset(s) connected, you can use them to build charts and visualisations, all assited and eased by DataXplorer.",
+      "Once you have dataset(s) connected, you can use them to build charts and visualisations, all assisted and eased by DataXplorer.",
     type: "chart",
     link: "/chart/new/data",
     cypressId: "create-chart-cta",
@@ -218,6 +218,7 @@ function AssetsCollection() {
               onClick={() => {
                 history.push(card.link);
               }}
+              aria-label={`Call to Action to ${card.title}`}
               key={card.type}
               css={`
                 background: none;
@@ -245,14 +246,14 @@ function AssetsCollection() {
                 @media (max-width: ${MOBILE_BREAKPOINT}) {
                   width: 100%;
                 }
-                h1 {
+                p:first-of-type {
                   color: #6061e5;
                   font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
                   font-size: 18px;
                   line-height: 24px;
                   margin: 0;
                 }
-                > p:first-of-type {
+                > p:nth-of-type(2) {
                   color: #231d2c;
                   font-family: "GothamNarrow-Book", "Helvetica Neue", sans-serif;
                   font-size: 12px;
@@ -263,7 +264,7 @@ function AssetsCollection() {
                 }
               `}
             >
-              <h1>{card.title}</h1>
+              <p>{card.title}</p>
               <p>{card.description}</p>
               <div
                 css={`
@@ -297,6 +298,7 @@ function AssetsCollection() {
                     viewBox="0 0 15 13"
                     fill="none"
                     xmlns="http://www.w3.org/2000/svg"
+                    role="presentation"
                   >
                     <path
                       d="M8.75 0.25L7.85625 1.12063L12.5938 5.875H0V7.125H12.5938L7.85625 11.8581L8.75 12.75L15 6.5L8.75 0.25Z"

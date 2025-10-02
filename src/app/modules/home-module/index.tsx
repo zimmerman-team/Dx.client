@@ -60,8 +60,9 @@ export default function HomeModule() {
         ) : (
           <Box height={40} />
         )}
-
-        {!isAuthenticated ? <NonAuthUserLibrary /> : <AssetsCollection />}
+        <main>
+          {!isAuthenticated ? <NonAuthUserLibrary /> : <AssetsCollection />}
+        </main>
       </div>
       <HomeFooter mini={isAuthenticated} />
     </div>

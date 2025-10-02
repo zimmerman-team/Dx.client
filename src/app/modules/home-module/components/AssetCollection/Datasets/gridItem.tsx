@@ -93,6 +93,7 @@ export default function GridItem(props: Readonly<Props>) {
         Your Dataset is here!
       </Tooltip>
       <button
+        aria-label={`data-card`}
         onClick={(e) => {
           e.preventDefault();
           e.stopPropagation();

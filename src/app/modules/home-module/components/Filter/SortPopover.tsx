@@ -48,7 +48,7 @@ export default function SortPopover(
           css={iconButtonCss(!!openState)}
           aria-label="sort-button"
         >
-          <SortIcon />
+          <SortIcon role="presentation" />
         </button>
       </Tooltip>
       <Popover

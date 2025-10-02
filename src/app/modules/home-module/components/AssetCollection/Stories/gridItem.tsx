@@ -59,6 +59,7 @@ export default function GridItem(props: Readonly<Props>) {
           }
         `}
         data-cy="story-grid-item"
+        aria-label={`story-card`}
       >
         <div
           css={`

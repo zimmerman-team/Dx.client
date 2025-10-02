@@ -124,8 +124,15 @@ const DescriptionCell: React.FC<DescriptionCellProps> = ({
     <p title={value} css={getTextStyles(isExpanded, true, false)}>
       {formatCellValue(value)}
     </p>
-    <button onClick={onToggleExpand}>
-      {isExpanded ? <RemoveIcon /> : <AddIcon />}
+    <button
+      onClick={onToggleExpand}
+      aria-label={isExpanded ? "Collapse description" : "Expand description"}
+    >
+      {isExpanded ? (
+        <RemoveIcon role="presentation" />
+      ) : (
+        <AddIcon role="presentation" />
+      )}
     </button>
   </div>
 );

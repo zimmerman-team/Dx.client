@@ -49,16 +49,16 @@ const SignInButtons = () => {
         data-cy="google-button"
         onClick={() => socialAuth("google-oauth2")}
       >
-        <GoogleIcon /> Google
+        <GoogleIcon role="presentation" /> Google
       </button>
       <button data-cy="linkedin-button" onClick={() => socialAuth("linkedin")}>
-        <LinkedInIcon /> LinkedIn
+        <LinkedInIcon role="presentation" /> LinkedIn
       </button>
       <button
         data-cy="microsoft-button"
         onClick={() => socialAuth("windowslive")}
       >
-        <MicrosoftIcon /> Microsoft
+        <MicrosoftIcon role="presentation" /> Microsoft
       </button>
     </div>
   );

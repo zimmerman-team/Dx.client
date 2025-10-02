@@ -14,6 +14,7 @@ import SortPopover from "./SortPopover";
 export const CustomGridIcon = ({ isActive }: { isActive?: boolean }) => (
   <Tooltip title="List View" placement="bottom">
     <GridIcon
+      role="presentation"
       css={`
         path {
           fill: ${isActive ? "#fff" : "#231d2c"};
@@ -26,6 +27,7 @@ export const CustomGridIcon = ({ isActive }: { isActive?: boolean }) => (
 const CustomTableIcon = ({ isActive }: { isActive?: boolean }) => (
   <Tooltip title="Table View" placement="bottom">
     <TableIcon
+      role="presentation"
       css={`
         g {
           path {
@@ -172,7 +174,7 @@ export default function Filter(
             background: #f1f3f5;
           `}
         >
-          <MenuIcon />
+          <MenuIcon role="presentation" />
         </div>
       </div>
     </div>

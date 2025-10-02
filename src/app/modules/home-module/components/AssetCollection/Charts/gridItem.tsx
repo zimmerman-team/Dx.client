@@ -58,6 +58,7 @@ export default function GridItem(props: Props) {
           }
         `}
         data-cy={`chart-grid-item`}
+        aria-label={`chart-card`}
       >
         <div
           css={`
@@ -182,7 +183,7 @@ export default function GridItem(props: Props) {
                 }
               `}
             >
-              <OwnerIcon />
+              <OwnerIcon role="presentation" />
               {isAuthenticated ? (
                 <p>{props.ownerName?.split(" ")?.[0]}</p>
               ) : (
@@ -196,7 +197,7 @@ export default function GridItem(props: Props) {
                 gap: 3px;
               `}
             >
-              <ClockIcon width={12} height={12} />
+              <ClockIcon width={12} height={12} role="presentation" />
               <p>{moment(props.date).format("MMMM YYYY")}</p>
             </div>
           </div>

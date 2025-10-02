@@ -1,5 +1,5 @@
 import React from "react";
-import { IconButton, Popover, Tooltip } from "@material-ui/core";
+import { Popover, Tooltip } from "@material-ui/core";
 import { ReactComponent as FilterIcon } from "app/modules/home-module/assets/filter-fill.svg";
 
 import { iconButtonCss, sortByItemCss } from "app/modules/home-module/style";
@@ -52,7 +52,7 @@ export default function FilterPopover(
           css={iconButtonCss(!!openState)}
           aria-label="filter-button"
         >
-          <FilterIcon />
+          <FilterIcon role="presentation" />
         </button>
       </Tooltip>
       <Popover

@@ -7,14 +7,11 @@ import { ReactComponent as DeleteIcon } from "app/modules/home-module/assets/del
 import { ReactComponent as ShareIcon } from "app/modules/home-module/assets/share-icon.svg";
 import { ReactComponent as MenuIcon } from "app/modules/home-module/assets/menu.svg";
 import { useAuth0 } from "@auth0/auth0-react";
-import {
-  FOCUS_VISIBLE_STYLE_DARK,
-  FOCUS_VISIBLE_STYLE_LIGHT,
-  MOBILE_BREAKPOINT,
-} from "app/theme";
+import { FOCUS_VISIBLE_STYLE_LIGHT, MOBILE_BREAKPOINT } from "app/theme";
 import ShareModal from "./shareModal";
 import { useMenuNavigation } from "app/hooks/useMenuNavigation";
 
+type Position = "top" | "bottom" | "center";
 export default function MenuPopover(props: {
   owner: string;
   id: string;
@@ -34,22 +31,35 @@ export default function MenuPopover(props: {
   }, [user, isAuthenticated]);
   const menuRef = useRef<HTMLDivElement>(null);
   const [displayShareModal, setDisplayShareModal] = React.useState(false);
-  const disabledStyle = "opacity: 0.5;pointer-events: none;";
 
-  function getButtonStyles(item: any) {
+  function getButtonStyles(item: any, position: Position) {
     const styles = [];
-    if (item.label === "Duplicate")
-      styles.push("border-radius: 10px 10px 0 0;");
-    if (item.label === "Share") {
-      styles.push("border-radius:0 0 10px 10px;");
-      styles.push("border-bottom: none !important;");
+    if (item.disabled)
       styles.push(`
-        :focus-visible {
-          ${FOCUS_VISIBLE_STYLE_DARK}
-        }
-      `);
+      opacity: 0.5;pointer-events: none;
+      &:focus-visible {
+                      border: 2px solid #00b5d8;}
+    `);
+    if (position === "top") {
+      styles.push(`border-radius: 16px 16px 0 0;  &:focus-visible {
+                      border: 2px solid #00b5d8;
+                           border-top-left-radius: 16px;
+                  border-top-right-radius: 16px;}
+                    
+    `);
+    } else if (position === "center") {
+      styles.push(`&:focus-visible {
+                      border: 2px solid #00b5d8;
+                  }`);
+    } else {
+      styles.push(
+        `border-radius:0 0 16px 16px; border-bottom: none !important; &:focus-visible {
+                      border: 2px solid #00b5d8 !important;
+                           border-bottom-left-radius: 16px;
+                  border-bottom-right-radius: 16px;}`
+      );
     }
-    if (item.disabled) styles.push(disabledStyle);
+
     return styles.join("\n");
   }
 
@@ -74,6 +84,15 @@ export default function MenuPopover(props: {
         data-cy={`${type}-grid-item-${item.label.toLowerCase()}-btn`}
         css={`
           ${index === menuItems.length - 1 ? "border-bottom: none;" : ""}
+          :focus-visible {
+            border: 2px solid #00b5d8;
+            ${index === 0
+              ? "border-top-left-radius: 16px; border-top-right-radius: 16px;"
+              : ""}
+            ${index === menuItems.length - 1
+              ? "border-bottom-left-radius: 16px; border-bottom-right-radius: 16px;"
+              : ""}
+          }
         `}
       >
         <EditIcon
@@ -89,11 +108,14 @@ export default function MenuPopover(props: {
   function renderButtonItem(
     item: any,
     index: number,
+    itemsLength: number,
     activeIndex: number | null,
     itemRefs: React.MutableRefObject<(HTMLElement | null)[]>,
     type: string,
     closeMenu: () => void
   ) {
+    const position =
+      index === 0 ? "top" : index === itemsLength - 1 ? "bottom" : "center";
     return (
       <button
         ref={(el) => (itemRefs.current[index] = el)}
@@ -109,7 +131,7 @@ export default function MenuPopover(props: {
         data-cy={`${type}-grid-item-${item.label.toLowerCase()}-btn`}
         aria-label={`${type}-${item.label.toLowerCase()}-button`}
         css={`
-          ${getButtonStyles(item)}
+          ${getButtonStyles(item, position)}
         `}
       >
         {item.icon}
@@ -287,9 +309,7 @@ export default function MenuPopover(props: {
                     background: #dfe3e5;
                     cursor: pointer;
                   }
-                  :focus-visible {
-                    border: 1.5px solid #231d2c;
-                  }
+
                   svg {
                     flex-shrink: 0;
                   }
@@ -309,6 +329,7 @@ export default function MenuPopover(props: {
                   : renderButtonItem(
                       item,
                       index,
+                      menuItems.length,
                       activeIndex,
                       itemRefs,
                       props.type,
