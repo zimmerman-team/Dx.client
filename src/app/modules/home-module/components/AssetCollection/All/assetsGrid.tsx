@@ -292,11 +292,7 @@ export default function AssetsGrid(props: Props) {
                     data.assetType.charAt(0).toUpperCase() +
                     data.assetType.slice(1),
 
-                  ownerName: data.ownerName
-                    ? `${data.ownerName.split(" ")[0][0]}. ${
-                        data.ownerName.split(" ")[1]
-                      }`
-                    : "",
+                  ownerName: data.ownerName.split(" ")[0],
                   vizType: echartTypes(false).find((e) => e.id === data.vizType)
                     ?.label,
                 };
@@ -310,11 +306,7 @@ export default function AssetsGrid(props: Props) {
                   type:
                     data.assetType.charAt(0).toUpperCase() +
                     data.assetType.slice(1),
-                  ownerName: data.ownerName
-                    ? `${data.ownerName.split(" ")[0][0]}. ${
-                        data.ownerName.split(" ")[1]
-                      }`
-                    : "",
+                  ownerName: data.ownerName.split(" ")[0],
                 };
               }
               return {
@@ -333,11 +325,7 @@ export default function AssetsGrid(props: Props) {
                   data.assetType.charAt(0).toUpperCase() +
                   data.assetType.slice(1),
 
-                ownerName: data.ownerName
-                  ? `${data.ownerName.split(" ")[0][0]}. ${
-                      data.ownerName.split(" ")[1]
-                    }`
-                  : "",
+                ownerName: data.ownerName.split(" ")[0],
               };
             }),
           }}
@@ -365,7 +353,7 @@ export default function AssetsGrid(props: Props) {
                       }
                       owner={d.owner}
                       isAIAssisted={d.isAIAssisted}
-                      ownerName={d.ownerName ?? ""}
+                      ownerName={d.ownerName.split(" ")[0]}
                     />
                   ),
                   dataset: (
@@ -385,7 +373,7 @@ export default function AssetsGrid(props: Props) {
                       id={d.id}
                       owner={d.owner}
                       inChartBuilder={props.inChartBuilder as boolean}
-                      ownerName={d.ownerName ?? ""}
+                      ownerName={d.ownerName.split(" ")[0]}
                       source={d.source}
                       sourceURL={d.sourceUrl}
                     />
@@ -413,7 +401,7 @@ export default function AssetsGrid(props: Props) {
                           : EditorState.createEmpty()
                       }
                       owner={d.owner}
-                      ownerName={d.ownerName ?? ""}
+                      ownerName={d.ownerName.split(" ")[0]}
                     />
                   ),
                 }[d.assetType as AssetType]

@@ -244,7 +244,7 @@ export default function StoriesGrid(props: Readonly<Props>) {
                     : EditorState.createEmpty()
                 }
                 owner={data.owner}
-                ownerName={data.ownerName ?? ""}
+                ownerName={data.ownerName.split(" ")[0]}
               />
               <Box height={16} />
             </Grid>
@@ -271,6 +271,7 @@ export default function StoriesGrid(props: Readonly<Props>) {
             ],
             data: loadedStories.map((data) => ({
               ...data,
+              ownerName: data.ownerName.split(" ")[0],
               description: data.heading
                 ? EditorState.createWithContent(convertFromRaw(data.heading))
                     .getCurrentContent()

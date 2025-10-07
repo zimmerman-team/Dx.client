@@ -4,14 +4,15 @@ import { ReactComponent as ClockIcon } from "app/modules/home-module/assets/cloc
 import { ReactComponent as OwnerIcon } from "app/modules/home-module/assets/owner-icon.svg";
 import { ReactComponent as MenuIcon } from "app/modules/home-module/assets/menu.svg";
 import { ReactComponent as Logo } from "app/modules/home-module/assets/logo.svg";
+import { ReactComponent as ChevronRight } from "app/modules/home-module/assets/chevron-right.svg";
 import { useHistory, useLocation } from "react-router-dom";
 import { useAuth0 } from "@auth0/auth0-react";
-import { isChartAIAgentActive } from "app/state/recoil/atoms";
-import { useRecoilState } from "recoil";
 import MenuItems from "app/modules/home-module/components/AssetCollection/All/menuItems";
 import SourceLink from "./sourceLink";
-import { Tooltip } from "react-tooltip";
-import { FOCUS_VISIBLE_STYLE_LIGHT, MOBILE_BREAKPOINT } from "app/theme";
+import { Tooltip as ReactTooltip } from "react-tooltip";
+import { FOCUS_VISIBLE_STYLE_LIGHT } from "app/theme";
+import { useStoreActions } from "app/state/store/hooks";
+import Tooltip from "@material-ui/core/Tooltip";
 
 interface Props {
   editPath: string;
@@ -34,9 +35,21 @@ export default function GridItem(props: Readonly<Props>) {
   const location = useLocation();
   const history = useHistory();
   const [menuOptionsDisplay, setMenuOptionsDisplay] = React.useState(false);
-  const setIsAiSwitchActive = useRecoilState(isChartAIAgentActive)[1];
-  const { isAuthenticated } = useAuth0();
-
+  const setDataset = useStoreActions(
+    (actions) => actions.charts.dataset.setValue
+  );
+  const [displayCreateChartButton, setDisplayCreateChartButton] =
+    React.useState(false);
+  const { user, isAuthenticated } = useAuth0();
+  const canEditDelete = React.useMemo(() => {
+    return isAuthenticated && props.owner === user?.sub;
+  }, [user, isAuthenticated]);
+  const handleCreateNewChart = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setDataset(props.id ?? null);
+    history.push(`/chart/new/chart-type?loadataset=true`);
+  };
   const showMenuOptions = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     e.stopPropagation();
@@ -77,8 +90,10 @@ export default function GridItem(props: Readonly<Props>) {
       `}
       data-cy="dataset-grid-item"
       className="asset-indicator"
+      onMouseEnter={() => setDisplayCreateChartButton(true)}
+      onMouseLeave={() => setDisplayCreateChartButton(false)}
     >
-      <Tooltip
+      <ReactTooltip
         anchorSelect=".asset-indicator"
         place="right"
         defaultIsOpen
@@ -99,7 +114,7 @@ export default function GridItem(props: Readonly<Props>) {
         }}
       >
         Your Dataset is here!
-      </Tooltip>
+      </ReactTooltip>
       <button
         onClick={(e) => {
           e.preventDefault();
@@ -256,44 +271,105 @@ export default function GridItem(props: Readonly<Props>) {
             }
           `}
         >
-          <SourceLink source={props.source} sourceURL={props.sourceURL} />
-
-          <div
-            css={`
-              display: flex;
-              align-items: flex-end;
-              gap: 5px;
-            `}
-          >
+          <div>
+            <SourceLink source={props.source} sourceURL={props.sourceURL} />
             <div
               css={`
                 display: flex;
-                align-items: center;
-                gap: 3px;
-                > svg:nth-child(2) {
-                  height: 8px;
-                  width: 72px;
-                }
+                align-items: flex-end;
+                gap: 5px;
               `}
             >
-              <OwnerIcon aria-label="owner" />
-              {isAuthenticated ? (
-                <p>{props.ownerName?.split(" ")?.[0]}</p>
-              ) : (
-                <Logo />
-              )}
-            </div>
-            <div
-              css={`
-                display: flex;
-                align-items: center;
-                gap: 3px;
-              `}
-            >
-              <ClockIcon width={12} height={12} aria-label="date" />
-              <p>{moment(props.date).format("MMMM YYYY")}</p>
+              <div
+                css={`
+                  display: flex;
+                  align-items: center;
+                  gap: 3px;
+                  > svg:nth-child(2) {
+                    height: 8px;
+                    width: 72px;
+                  }
+                `}
+              >
+                <OwnerIcon aria-label="owner" />
+                {isAuthenticated ? <p>{props.ownerName}</p> : <Logo />}
+              </div>
+              <div
+                css={`
+                  display: flex;
+                  align-items: center;
+                  gap: 3px;
+                `}
+              >
+                <ClockIcon width={12} height={12} aria-label="date" />
+                <p>{moment(props.date).format("DD-MM-YYYY")}</p>
+              </div>
             </div>
           </div>
+          <ReactTooltip
+            anchorSelect=".asset-indicator"
+            place="right"
+            defaultIsOpen
+            style={{
+              background: "#231D2C",
+              borderRadius: "10px",
+              padding: "16px",
+              whiteSpace: "nowrap",
+              color: "#fff",
+              fontSize: "14px",
+              fontFamily: "GothamNarrow-Book, 'Helvetica Neue', sans-serif",
+              width: "156px",
+              height: "52px",
+              lineHeight: "16px",
+              textAlign: "center",
+              zIndex: 1,
+              display: highlightedId !== props.id ? "none" : "block",
+            }}
+          >
+            Your Dataset is here!
+          </ReactTooltip>
+          {displayCreateChartButton && (
+            <Tooltip
+              title={
+                canEditDelete
+                  ? ""
+                  : "You do not have permission to create a chart from this dataset"
+              }
+            >
+              <span>
+                <button
+                  id="create-chart-from-dataset"
+                  disabled={!canEditDelete}
+                  onClick={handleCreateNewChart}
+                  css={`
+                    cursor: ${canEditDelete ? "pointer" : "not-allowed"};
+                    color: #fff;
+                    font-family: "GothamNarrow-Bold", "Helvetica Neue",
+                      sans-serif;
+                    font-size: 12px;
+                    font-style: normal;
+                    font-weight: 400;
+                    line-height: normal;
+                    border-radius: 10px;
+                    background: ${canEditDelete ? "#6061e5" : "#A1A4B2"};
+                    height: 28px;
+                    width: 118px;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    gap: 12px;
+                    border: none;
+                    outline: none;
+                    :focus-visible {
+                      ${FOCUS_VISIBLE_STYLE_LIGHT}
+                    }
+                  `}
+                >
+                  Create Chart <ChevronRight role="presentation" />
+                </button>
+              </span>
+            </Tooltip>
+          )}
         </div>
       </button>
 

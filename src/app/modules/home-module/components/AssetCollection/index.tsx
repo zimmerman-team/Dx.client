@@ -61,12 +61,12 @@ const ctaCards = [
   },
 ];
 
-const getWhereString = (searchStr: string, userOnly: boolean) => {
+const getWhereString = (searchStr: string, filterValue: string) => {
   const value =
     searchStr?.length > 0
       ? `where={"name":{"like":"${searchStr}.*","options":"i"}}`
       : "";
-  return `${userOnly ? "userOnly=true&" : ""}${value}`;
+  return `filterValue=${filterValue}&${value}`;
 };
 function AssetsCollection() {
   const history = useHistory();
@@ -78,8 +78,6 @@ function AssetsCollection() {
   const [filterValue, setFilterValue] = useRecoilState(allAssetsFilterBy);
   const [display, setDisplay] = useRecoilState(homeDisplayAtom);
   const token = useStoreState((state) => state.AuthToken.value);
-
-  const userOnlyFilter = filterValue === "myAssets";
 
   const loadChartsCount = useStoreActions(
     (actions) => actions.charts.ChartsCount.fetch
@@ -110,23 +108,31 @@ function AssetsCollection() {
     if (token) {
       loadAssetsCount({
         token,
-        filterString: getWhereString(searchValue as string, userOnlyFilter),
+        filterString: getWhereString(searchValue as string, filterValue),
       });
 
       loadDatasetCount({
         token,
-        filterString: getWhereString(searchValue as string, userOnlyFilter),
+        filterString: getWhereString(searchValue as string, filterValue),
       });
       loadChartsCount({
         token,
-        filterString: getWhereString(searchValue as string, userOnlyFilter),
+        filterString: getWhereString(searchValue as string, filterValue),
       });
       loadStoriesCount({
         token,
-        filterString: getWhereString(searchValue as string, userOnlyFilter),
+        filterString: getWhereString(searchValue as string, filterValue),
       });
     }
-  }, [loadChartsCount, loadDatasetCount, loadStoriesCount, token]);
+  }, [
+    loadChartsCount,
+    loadDatasetCount,
+    loadStoriesCount,
+    token,
+    filterValue,
+    searchValue,
+    loadAssetsCount,
+  ]);
 
   const displayGrid = (searchStr: string, sortByStr: string) => {
     switch (display) {

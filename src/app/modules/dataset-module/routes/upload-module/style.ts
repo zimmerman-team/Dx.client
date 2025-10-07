@@ -1,7 +1,6 @@
 import { Select, TextField, withStyles, InputLabel } from "@material-ui/core";
 import { MOBILE_BREAKPOINT } from "app/theme";
 import Snackbar from "@material-ui/core/Snackbar";
-import { pad } from "lodash";
 import { css } from "styled-components/macro";
 
 export interface ISnackbarState {
@@ -98,6 +97,14 @@ export const uploadAreacss = (isDragActive: boolean, disabled?: boolean) => css`
 
 export const metaDatacss = css`
   width: 100%;
+  input,
+  textarea {
+    font-family: "GothamNarrow-Book", "Helvetica Neue", sans-serif;
+    font-size: 16px;
+    &:focus {
+      border-bottom: 1px solid #6061e5;
+    }
+  }
   h1 {
     font-weight: 400;
     font-size: 48px;

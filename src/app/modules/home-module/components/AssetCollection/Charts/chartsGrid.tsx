@@ -234,7 +234,6 @@ export default function ChartsGrid(props: Props) {
   React.useEffect(() => {
     reloadData();
   }, [props.sortBy, token, props.filterValue]);
-
   const [,] = useDebounce(
     () => {
       if (initialRender.current) {
@@ -265,7 +264,7 @@ export default function ChartsGrid(props: Props) {
                 handleDuplicate={() => handleDuplicate(c.id)}
                 owner={c.owner}
                 isAIAssisted={c.isAIAssisted}
-                ownerName={c.ownerName}
+                ownerName={c.ownerName.split(" ")[0]}
               />
               <div
                 css={`
@@ -298,6 +297,7 @@ export default function ChartsGrid(props: Props) {
             data: loadedCharts.map((data) => ({
               ...data,
               type: "chart",
+              ownerName: data.ownerName.split(" ")[0],
               vizType: echartTypes(false).find((e) => e.id === data.vizType)
                 ?.label,
             })),

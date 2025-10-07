@@ -172,6 +172,7 @@ export default function MetaData(props: Readonly<MetadataProps>) {
                       sans-serif;
                     line-height: normal;
                     margin: 0;
+                    font-size: 16px;
                   }
                 `}
               >
@@ -202,20 +203,6 @@ export default function MetaData(props: Readonly<MetadataProps>) {
                 `}
               />
             </div>
-            {/* <CssTextField
-              id="outlined-basic"
-              label="Data title*"
-              variant="standard"
-              helperText="Title must be between 6 and 50 characters in length."
-              onChange={handleChange}
-              name="name"
-              value={props.formDetails.name}
-              fullWidth
-              data-cy="dataset-metadata-title"
-              inputRef={(input) =>
-                input && props.errorState.name.state && input.focus()
-              }
-            /> */}
           </Grid>
           <div
             css={`
@@ -242,6 +229,7 @@ export default function MetaData(props: Readonly<MetadataProps>) {
                       sans-serif;
                     line-height: normal;
                     margin: 0;
+                    font-size: 16px;
                   }
                 `}
               >
@@ -273,38 +261,6 @@ export default function MetaData(props: Readonly<MetadataProps>) {
                   `}
                 />
               </div>
-
-              {/* <CssTextField
-                id="outlined-basic"
-                label="Brief description of your dataset*  "
-                variant="filled"
-                fullWidth
-                data-cy="dataset-metadata-description"
-                multiline
-                minRows={3}
-                inputProps={{
-                  maxLength: 150,
-                  "data-testid": "description",
-                }}
-                onChange={handleChange}
-                name="description"
-                value={props.formDetails.description}
-                inputRef={(input) =>
-                  input && props.errorState.description.state && input.focus()
-                }
-              />
-              <p
-                css={`
-                  position: absolute;
-                  bottom: -12px;
-                  right: 20px;
-                  font-weight: 325;
-                  font-size: 12px;
-                  color: #231d2c;
-                `}
-              >
-                {characterCount}/150
-              </p> */}
             </div>
           </Grid>
           <div
@@ -321,7 +277,38 @@ export default function MetaData(props: Readonly<MetadataProps>) {
             />
           </Grid>
           <Grid lg={7} xs={12} md={7} item>
-            <CssTextField
+            <p
+              css={`
+                color: #231d2c;
+                font-family: "GothamNarrow-Book", "Helvetica Neue", sans-serif;
+                line-height: normal;
+                margin: 0;
+                margin-bottom: 9px;
+
+                font-size: 16px;
+              `}
+            >
+              Source of Your Data
+            </p>
+            <input
+              type="text"
+              onChange={handleChange}
+              name="source"
+              value={props.formDetails.source}
+              data-cy="dataset-metadata-source"
+              data-testid="Source-of-the-data"
+              // ref={}
+              css={`
+                border-radius: 10px;
+                border: none;
+                border-bottom: 1px solid #98a1aa;
+                background: #f1f3f5;
+                outline: none;
+                padding: 14px 16px;
+                width: 100%;
+              `}
+            />
+            {/* <CssTextField
               id="outlined-basic"
               label="Source of the data*"
               variant="filled"
@@ -336,10 +323,40 @@ export default function MetaData(props: Readonly<MetadataProps>) {
                 input && props.errorState.source.state && input.focus()
               }
               value={props.formDetails.source}
-            />
+            /> */}
           </Grid>
           <Grid lg={12} xs={12} md={12} item>
-            <CssTextField
+            <p
+              css={`
+                color: #231d2c;
+                font-family: "GothamNarrow-Book", "Helvetica Neue", sans-serif;
+                line-height: normal;
+                margin: 0;
+                font-size: 16px;
+                margin-bottom: 9px;
+              `}
+            >
+              Source Link*
+            </p>
+            <input
+              type="text"
+              onChange={handleChange}
+              name="sourceUrl"
+              data-cy="dataset-metadata-link"
+              data-testid="Link-to-data-source"
+              value={props.formDetails.sourceUrl}
+              // ref={}
+              css={`
+                border-radius: 10px;
+                border: none;
+                border-bottom: 1px solid #98a1aa;
+                background: #f1f3f5;
+                outline: none;
+                padding: 14px 16px;
+                width: 100%;
+              `}
+            />
+            {/* <CssTextField
               id="outlined-basic"
               label="Link to data source"
               variant="filled"
@@ -355,7 +372,7 @@ export default function MetaData(props: Readonly<MetadataProps>) {
                 input && props.errorState.sourceUrl.state && input.focus()
               }
               value={props.formDetails.sourceUrl}
-            />
+            /> */}
           </Grid>
         </Grid>
       </div>

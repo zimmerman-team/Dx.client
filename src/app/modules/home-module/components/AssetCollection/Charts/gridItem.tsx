@@ -93,7 +93,16 @@ export default function GridItem(props: Props) {
             }
           `}
         >
-          <p>chart</p>
+          <div
+            css={`
+              display: flex;
+              align-items: center;
+              gap: 5px;
+            `}
+          >
+            <p>chart</p>
+            {props.isAIAssisted ? <AIIcon /> : null}
+          </div>
           <button
             css={`
               border: none;
@@ -161,7 +170,6 @@ export default function GridItem(props: Props) {
               {props.title}
             </p>
           </div>
-          {props.isAIAssisted ? <AIIcon /> : null}
         </div>
 
         <div
@@ -209,11 +217,7 @@ export default function GridItem(props: Props) {
               `}
             >
               <OwnerIcon />
-              {isAuthenticated ? (
-                <p>{props.ownerName?.split(" ")?.[0]}</p>
-              ) : (
-                <Logo />
-              )}
+              {isAuthenticated ? <p>{props.ownerName}</p> : <Logo />}
             </div>
             <div
               css={`

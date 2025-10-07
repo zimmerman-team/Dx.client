@@ -35,7 +35,7 @@ export interface StoryModel {
   owner: string;
   dateColor: string;
   isUpdated: boolean;
-  ownerName?: string;
+  ownerName: string;
   uniformBlockTypeStyle: IUniformBlockTypeStyle;
 }
 
@@ -54,6 +54,7 @@ export const emptyStory: StoryModel = {
   titleColor: "#ffffff",
   descriptionColor: "#ffffff",
   owner: "",
+  ownerName: "",
   dateColor: "#ffffff",
   isUpdated: false,
   uniformBlockTypeStyle: {

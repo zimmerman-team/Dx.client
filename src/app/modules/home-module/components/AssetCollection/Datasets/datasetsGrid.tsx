@@ -282,7 +282,7 @@ export default function DatasetsGrid(props: Readonly<Props>) {
                 id={data.id}
                 owner={data.owner}
                 inChartBuilder={props.inChartBuilder as boolean}
-                ownerName={data.ownerName ?? ""}
+                ownerName={data.ownerName.split(" ")[0]}
                 source={data.source}
                 sourceURL={data.sourceUrl}
               />
@@ -315,11 +315,7 @@ export default function DatasetsGrid(props: Readonly<Props>) {
             data: loadedDatasets.map((data) => ({
               ...data,
               type: "dataset",
-              ownerName: data.ownerName
-                ? `${data.ownerName.split(" ")[0][0]}. ${
-                    data.ownerName.split(" ")[1]
-                  }`
-                : "",
+              ownerName: data.ownerName.split(" ")[0],
             })),
           }}
         />

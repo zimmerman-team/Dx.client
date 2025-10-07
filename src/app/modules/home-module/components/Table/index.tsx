@@ -197,9 +197,9 @@ export function HomepageTable(props: Readonly<TableComponentProps>) {
   >({});
 
   const getDestinationPath = (data: IData) => {
-    let destinationPath = `/${data.type}/${data.id}`;
+    let destinationPath = `/${data.type.toLowerCase()}/${data.id}`;
     if (data.type === "dataset") {
-      destinationPath = `/${data.type}/${data.id}?${
+      destinationPath = `/${data.type.toLowerCase()}/${data.id}?${
         location.pathname === "/" ? "fromHome=true" : ""
       }`;
     }
