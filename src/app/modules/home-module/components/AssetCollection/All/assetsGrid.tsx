@@ -33,6 +33,7 @@ interface Props {
   sortBy: string;
   searchStr: string;
   filterValue?: "allAssets" | "myAssets" | "dataxplorerAssets";
+  gridId: string;
   view: "grid" | "table";
   inChartBuilder?: boolean;
   category?: string;
@@ -331,86 +332,88 @@ export default function AssetsGrid(props: Props) {
           }}
         />
       ) : (
-        <Grid container spacing={2}>
-          {loadedAssets.map((d, index) => (
-            <Grid item key={d.id} xs={12} sm={6} md={4} lg={3}>
-              {
+        <div id={props.gridId}>
+          <Grid container spacing={2}>
+            {loadedAssets.map((d, index) => (
+              <Grid item key={d.id} xs={12} sm={6} md={4} lg={3}>
                 {
-                  chart: (
-                    <ChartGridItem
-                      id={d.id}
-                      title={d.name}
-                      date={d.updatedDate}
-                      viz={getIcon(d.vizType)}
-                      vizType={d.vizType}
-                      isMappingValid={d.isMappingValid}
-                      handleDelete={() => {
-                        setActiveAssetType(d.assetType as AssetType);
-                        handleModal(d.id);
-                      }}
-                      handleDuplicate={() =>
-                        handleDuplicate(d.id, d.assetType as AssetType)
-                      }
-                      owner={d.owner}
-                      isAIAssisted={d.isAIAssisted}
-                      ownerName={d.ownerName.split(" ")[0]}
-                    />
-                  ),
-                  dataset: (
-                    <DatasetGridItem
-                      editPath={`/dataset/${d.id}/edit`}
-                      title={d.name}
-                      date={d.updatedDate}
-                      handleDelete={() => {
-                        setActiveAssetType(d.assetType as AssetType);
-                        handleModal(d.id);
-                      }}
-                      descr={d.description}
-                      handleDuplicate={() => {
-                        handleDuplicate(d.id, d.assetType as AssetType);
-                      }}
-                      showMenu={!props.inChartBuilder}
-                      id={d.id}
-                      owner={d.owner}
-                      inChartBuilder={props.inChartBuilder as boolean}
-                      ownerName={d.ownerName.split(" ")[0]}
-                      source={d.source}
-                      sourceURL={d.sourceUrl}
-                    />
-                  ),
-                  story: (
-                    <StoryGridItem
-                      id={d.id}
-                      key={d.id}
-                      name={d.name}
-                      date={d.updatedDate}
-                      viz={<ColoredStoryIcon />}
-                      color={d.backgroundColor}
-                      handleDelete={() => {
-                        setActiveAssetType(d.assetType as AssetType);
-                        handleModal(d.id);
-                      }}
-                      handleDuplicate={() =>
-                        handleDuplicate(d.id, d.assetType as AssetType)
-                      }
-                      heading={
-                        d.heading
-                          ? EditorState.createWithContent(
-                              convertFromRaw(d.heading)
-                            )
-                          : EditorState.createEmpty()
-                      }
-                      owner={d.owner}
-                      ownerName={d.ownerName.split(" ")[0]}
-                    />
-                  ),
-                }[d.assetType as AssetType]
-              }
+                  {
+                    chart: (
+                      <ChartGridItem
+                        id={d.id}
+                        title={d.name}
+                        date={d.updatedDate}
+                        viz={getIcon(d.vizType)}
+                        vizType={d.vizType}
+                        isMappingValid={d.isMappingValid}
+                        handleDelete={() => {
+                          setActiveAssetType(d.assetType as AssetType);
+                          handleModal(d.id);
+                        }}
+                        handleDuplicate={() =>
+                          handleDuplicate(d.id, d.assetType as AssetType)
+                        }
+                        owner={d.owner}
+                        isAIAssisted={d.isAIAssisted}
+                        ownerName={d.ownerName.split(" ")[0]}
+                      />
+                    ),
+                    dataset: (
+                      <DatasetGridItem
+                        editPath={`/dataset/${d.id}/edit`}
+                        title={d.name}
+                        date={d.updatedDate}
+                        handleDelete={() => {
+                          setActiveAssetType(d.assetType as AssetType);
+                          handleModal(d.id);
+                        }}
+                        descr={d.description}
+                        handleDuplicate={() => {
+                          handleDuplicate(d.id, d.assetType as AssetType);
+                        }}
+                        showMenu={!props.inChartBuilder}
+                        id={d.id}
+                        owner={d.owner}
+                        inChartBuilder={props.inChartBuilder as boolean}
+                        ownerName={d.ownerName.split(" ")[0]}
+                        source={d.source}
+                        sourceURL={d.sourceUrl}
+                      />
+                    ),
+                    story: (
+                      <StoryGridItem
+                        id={d.id}
+                        key={d.id}
+                        name={d.name}
+                        date={d.updatedDate}
+                        viz={<ColoredStoryIcon />}
+                        color={d.backgroundColor}
+                        handleDelete={() => {
+                          setActiveAssetType(d.assetType as AssetType);
+                          handleModal(d.id);
+                        }}
+                        handleDuplicate={() =>
+                          handleDuplicate(d.id, d.assetType as AssetType)
+                        }
+                        heading={
+                          d.heading
+                            ? EditorState.createWithContent(
+                                convertFromRaw(d.heading)
+                              )
+                            : EditorState.createEmpty()
+                        }
+                        owner={d.owner}
+                        ownerName={d.ownerName.split(" ")[0]}
+                      />
+                    ),
+                  }[d.assetType as AssetType]
+                }
 
-              <Box height={16} />
-            </Grid>
-          ))}
-        </Grid>
+                <Box height={16} />
+              </Grid>
+            ))}
+          </Grid>
+        </div>
       )}
 
       <Box height={80} />

@@ -1,7 +1,11 @@
 import Popover from "@material-ui/core/Popover";
 import { useCheckUserPlan } from "app/hooks/useCheckUserPlan";
 import { useMenuNavigation } from "app/hooks/useMenuNavigation";
-import { FOCUS_VISIBLE_STYLE_DARK, MOBILE_BREAKPOINT } from "app/theme";
+import {
+  FOCUS_VISIBLE_STYLE_DARK,
+  FOCUS_VISIBLE_STYLE_LIGHT,
+  MOBILE_BREAKPOINT,
+} from "app/theme";
 import React from "react";
 import { useHistory } from "react-router-dom";
 
@@ -12,6 +16,7 @@ const AddIcon = (
     viewBox="0 0 12 12"
     fill="none"
     xmlns="http://www.w3.org/2000/svg"
+    role="presentation"
   >
     <path
       d="M5.25 6.75H0.75V5.25H5.25V0.75H6.75V5.25H11.25V6.75H6.75V11.25H5.25V6.75Z"
@@ -127,7 +132,7 @@ export default function AddAssetDropdown() {
             display: none;
           }
         `}
-        aria-label="sort-button"
+        aria-label="Add new asset"
       >
         Add New {AddIcon}
       </button>
@@ -175,7 +180,7 @@ export default function AddAssetDropdown() {
               background: transparent;
               cursor: pointer;
               &:focus-visible {
-                ${FOCUS_VISIBLE_STYLE_DARK}
+                ${FOCUS_VISIBLE_STYLE_LIGHT}
                 margin: 4px 3px;
                 width: calc(100% - 6px);
               }

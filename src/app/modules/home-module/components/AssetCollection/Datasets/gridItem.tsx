@@ -3,16 +3,21 @@ import moment from "moment";
 import { ReactComponent as ClockIcon } from "app/modules/home-module/assets/clock-icon.svg";
 import { ReactComponent as OwnerIcon } from "app/modules/home-module/assets/owner-icon.svg";
 import { ReactComponent as MenuIcon } from "app/modules/home-module/assets/menu.svg";
-import { ReactComponent as Logo } from "app/modules/home-module/assets/logo.svg";
 import { ReactComponent as ChevronRight } from "app/modules/home-module/assets/chevron-right.svg";
 import { useHistory, useLocation } from "react-router-dom";
 import { useAuth0 } from "@auth0/auth0-react";
-import MenuItems from "app/modules/home-module/components/AssetCollection/All/menuItems";
 import SourceLink from "./sourceLink";
 import { Tooltip as ReactTooltip } from "react-tooltip";
-import { FOCUS_VISIBLE_STYLE_LIGHT } from "app/theme";
+
 import { useStoreActions } from "app/state/store/hooks";
 import Tooltip from "@material-ui/core/Tooltip";
+
+import { isChartAIAgentActive } from "app/state/recoil/atoms";
+import { useRecoilState } from "recoil";
+import MenuPopover from "app/modules/home-module/components/AssetCollection/All/menuPopover";
+
+import { FOCUS_VISIBLE_STYLE_LIGHT } from "app/theme";
+import Logo from "app/assets/icons/Logo";
 
 interface Props {
   editPath: string;
@@ -116,6 +121,7 @@ export default function GridItem(props: Readonly<Props>) {
         Your Dataset is here!
       </ReactTooltip>
       <button
+        aria-label={`data-card`}
         onClick={(e) => {
           e.preventDefault();
           e.stopPropagation();
@@ -188,35 +194,19 @@ export default function GridItem(props: Readonly<Props>) {
         >
           <p>Dataset</p>
           {props.showMenu && (
-            <button
-              css={`
-                border: none;
-                background: ${menuOptionsDisplay ? "#CFD0F4" : "transparent"};
-                outline: none;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                position: absolute;
-                height: 19px;
-                width: 19px;
-                border-radius: 5px;
-                right: 5px;
-                top: 12px;
-                cursor: pointer;
-
-                svg {
-                  flex-shrink: 0;
-                }
-                &:hover {
-                  background: transparent;
-                }
-              `}
-              onClick={showMenuOptions}
-              data-cy="dataset-grid-item-menu-btn"
-              aria-label="data menu-button"
-            >
-              <MenuIcon />
-            </button>
+            <MenuPopover
+              handleDelete={() => props.handleDelete?.(props.id as string)}
+              handleDuplicate={() =>
+                props.handleDuplicate?.(props.id as string)
+              }
+              id={props.id as string}
+              menuId="dataset-grid-item-menu"
+              owner={props.owner}
+              path={props.editPath}
+              type="dataset"
+              dataCy="dataset-grid-item-menu-btn"
+              dataTestId=""
+            />
           )}
         </div>
 
@@ -301,7 +291,7 @@ export default function GridItem(props: Readonly<Props>) {
                   gap: 3px;
                 `}
               >
-                <ClockIcon width={12} height={12} aria-label="date" />
+                <ClockIcon width={12} height={12} role="presentation" />
                 <p>{moment(props.date).format("DD-MM-YYYY")}</p>
               </div>
             </div>
@@ -372,17 +362,6 @@ export default function GridItem(props: Readonly<Props>) {
           )}
         </div>
       </button>
-
-      <MenuItems
-        handleClose={() => setMenuOptionsDisplay(false)}
-        handleDelete={() => props.handleDelete?.(props.id as string)}
-        handleDuplicate={() => props.handleDuplicate?.(props.id as string)}
-        id={props.id as string}
-        owner={props.owner}
-        path={props.editPath}
-        type="dataset"
-        display={menuOptionsDisplay}
-      />
     </div>
   );
 }

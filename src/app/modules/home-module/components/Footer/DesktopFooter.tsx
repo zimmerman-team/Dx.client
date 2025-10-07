@@ -2,7 +2,6 @@ import React from "react";
 import Container from "@material-ui/core/Container";
 import { homeFootercss } from "app/modules/home-module/components/Footer/style";
 import { ReactComponent as CopyIcon } from "app/modules/home-module/components/Footer/asset/copy.svg";
-import { ReactComponent as LogoIcon } from "app/modules/home-module/components/Footer/asset/logo.svg";
 import { Link } from "react-router-dom";
 import NewsletterForm from "app/modules/common/newsletterForm";
 import { FieldErrors } from "react-hook-form";
@@ -19,6 +18,7 @@ import {
   TELEPHONE_NUMBER,
   TERMS_AND_CONDITION_LINK,
 } from "app/modules/chart-module/util/constants";
+import Logo from "app/assets/icons/Logo";
 
 interface Props {
   mini?: boolean;
@@ -98,21 +98,7 @@ export default function DesktopFooter(props: Props) {
                     }
                   `}
                 >
-                  <LogoIcon />
-                  <div
-                    css={`
-                      font-family: "Inter", sans-serif;
-                      color: #e75656;
-                      font-size: 14.978px;
-                      font-weight: 500;
-                      line-height: 14.978px;
-                      padding: 3.329px 10.922px;
-                      border-radius: 20.803px;
-                      border: 0.993px solid #e75656;
-                    `}
-                  >
-                    beta
-                  </div>
+                  <Logo height="22.2px" />
                 </Link>
               </p>
               <nav aria-label="Contact information">

@@ -16,7 +16,6 @@ import DatasetAddnewCard from "app/modules/home-module/components/AssetCollectio
 import CircleLoader from "app/modules/home-module/components/Loader";
 import { loadedDatasetsAtom, planDialogAtom } from "app/state/recoil/atoms";
 import { DatasetListItemAPIModel } from "app/modules/dataset-module/data";
-import { useHistory, useLocation } from "react-router-dom";
 
 interface Props {
   sortBy: string;
@@ -28,6 +27,7 @@ interface Props {
   onItemClick?: (v: string) => void;
   md?: GridSize;
   lg?: GridSize;
+  gridId: string;
   filterValue?: "allAssets" | "myAssets" | "dataxplorerAssets";
 }
 
@@ -245,52 +245,54 @@ export default function DatasetsGrid(props: Readonly<Props>) {
   return (
     <>
       {props.view === "grid" && (
-        <Grid container spacing={!props.inChartBuilder ? 2 : 1}>
-          {props.addCard ? <DatasetAddnewCard /> : null}
-          {loadedDatasets?.map((data) => (
-            <Grid
-              item
-              key={data.id}
-              xs={12}
-              sm={6}
-              md={md}
-              lg={lg}
-              css={
-                props.inChartBuilder
-                  ? `
+        <div id={props.gridId}>
+          <Grid container spacing={!props.inChartBuilder ? 2 : 1}>
+            {props.addCard ? <DatasetAddnewCard /> : null}
+            {loadedDatasets?.map((data) => (
+              <Grid
+                item
+                key={data.id}
+                xs={12}
+                sm={6}
+                md={md}
+                lg={lg}
+                css={
+                  props.inChartBuilder
+                    ? `
                   cursor: pointer;
                   a{
                     pointer-events: none;
                   }
               `
-                  : ""
-              }
-            >
-              <GridItem
-                editPath={`/dataset/${data.id}/edit`}
-                title={data.name}
-                date={data.updatedDate}
-                handleDelete={() => {
-                  handleModal(data.id);
-                }}
-                handleDuplicate={() => {
-                  handleDuplicate(data.id);
-                }}
-                descr={data.description}
-                onItemClick={props.onItemClick}
-                showMenu={!props.inChartBuilder}
-                id={data.id}
-                owner={data.owner}
-                inChartBuilder={props.inChartBuilder as boolean}
-                ownerName={data.ownerName.split(" ")[0]}
-                source={data.source}
-                sourceURL={data.sourceUrl}
-              />
+                    : ""
+                }
+              >
+                <GridItem
+                  editPath={`/dataset/${data.id}/edit`}
+                  title={data.name}
+                  date={data.updatedDate}
+                  handleDelete={() => {
+                    handleModal(data.id);
+                  }}
+                  handleDuplicate={() => {
+                    handleDuplicate(data.id);
+                  }}
+                  descr={data.description}
+                  onItemClick={props.onItemClick}
+                  showMenu={!props.inChartBuilder}
+                  id={data.id}
+                  owner={data.owner}
+                  inChartBuilder={props.inChartBuilder as boolean}
+                  ownerName={data.ownerName.split(" ")[0]}
+                  source={data.source}
+                  sourceURL={data.sourceUrl}
+                />
 
-              {!props.inChartBuilder && <Box height={{ xs: 0, lg: 8 }} />}
-            </Grid>
-          ))}
-        </Grid>
+                {!props.inChartBuilder && <Box height={{ xs: 0, lg: 8 }} />}
+              </Grid>
+            ))}
+          </Grid>
+        </div>
       )}
 
       {props.view === "table" && (

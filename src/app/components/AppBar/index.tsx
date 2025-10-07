@@ -10,6 +10,7 @@ import { headercss, logocss } from "app/components/AppBar/style";
 import { MobileHeader } from "./components/mobile-nav";
 import { NavList } from "./components/nav-list";
 import { FOCUS_VISIBLE_STYLE_LIGHT } from "app/theme";
+import Logo from "app/assets/icons/Logo";
 
 export function AppBar() {
   const location = useLocation();
@@ -83,21 +84,7 @@ export function AppBar() {
                       data-cy="header-logo"
                     >
                       <NavLink to="/" css={logocss} aria-label="Go to homepage">
-                        <img src="/logo.svg" alt="" />
-                        <div
-                          css={`
-                            font-family: "Inter", sans-serif;
-                            color: #e75656;
-                            font-size: 11.095px;
-                            font-weight: 500;
-                            line-height: 11.095px;
-                            padding: 2.466px 8.09px;
-                            border: 0.736px solid #e75656;
-                            border-radius: 15.41px;
-                          `}
-                        >
-                          beta
-                        </div>
+                        <Logo />
                       </NavLink>
                     </Grid>
                     <Grid

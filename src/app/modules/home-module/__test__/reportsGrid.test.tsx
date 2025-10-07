@@ -24,6 +24,7 @@ interface MockProps {
   view: "grid" | "table";
   showMenuButton?: boolean;
   addCard?: boolean;
+  gridId: string;
 }
 
 setupIntersectionObserverMock();
@@ -51,6 +52,7 @@ const defaultProps = (newProps: Partial<MockProps> = {}): MockProps => {
     view: "grid",
     showMenuButton: true,
     addCard: true,
+    gridId: "assets-grid",
     ...newProps,
   } as MockProps;
 };

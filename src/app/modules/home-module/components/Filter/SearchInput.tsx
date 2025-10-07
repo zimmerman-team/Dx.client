@@ -46,7 +46,7 @@ export const SearchInput: React.FC<SearchInputProps> = ({
       ref={ContainerRef}
     >
       <div css={searchInputCss(!!openSearch)}>
-        <SearchIcon />
+        <SearchIcon role="presentation" />
         <input
           ref={inputRef}
           type="text"
@@ -76,7 +76,7 @@ export const SearchInput: React.FC<SearchInputProps> = ({
             css={iconButtonCss(openSearch)}
             aria-label="search-button"
           >
-            <SearchIcon />
+            <SearchIcon role="presentation" />
           </button>
         </Tooltip>
       )}

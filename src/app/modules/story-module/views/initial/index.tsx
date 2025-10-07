@@ -147,6 +147,7 @@ function StoryInitialView(props: Readonly<StoryInitialViewProps>) {
             filterValue={filterValue}
             setFilterValue={setFilterValue}
             hasSearchButton
+            terminateSearch={() => {}}
           />
         </Grid>
       </Grid>
@@ -155,6 +156,7 @@ function StoryInitialView(props: Readonly<StoryInitialViewProps>) {
         searchStr={searchValue as string}
         view={storiesView}
         showMenuButton
+        gridId="stories-grid"
       />
     </Container>
   );
