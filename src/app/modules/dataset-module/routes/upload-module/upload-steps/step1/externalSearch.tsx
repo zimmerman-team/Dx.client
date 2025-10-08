@@ -302,6 +302,8 @@ const ExternalSearch = (props: {
               }
             }}
             terminateSearch={terminateSearch}
+            setFilterValue={() => {}}
+            filterValue={null as unknown as string}
           />
         </Grid>
       </Grid>

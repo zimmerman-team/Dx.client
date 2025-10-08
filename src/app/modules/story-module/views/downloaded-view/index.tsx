@@ -1,6 +1,5 @@
 import React from "react";
 import { StoryPreviewView } from "app/modules/story-module/views/preview/";
-import { ReactComponent as LogoIcon } from "app/modules/home-module/components/Footer/asset/logo.svg";
 import { exportPage } from "app/utils/exportPage";
 import { Link, useLocation } from "react-router-dom";
 import { useStoreState } from "app/state/store/hooks";
@@ -10,6 +9,7 @@ import {
   chartsRenderedAtom,
   loadedChartsInStoryAtom,
 } from "app/state/recoil/atoms";
+import Logo from "app/assets/icons/Logo";
 
 export default function DownloadedView(props: {
   setIsPreviewView: React.Dispatch<React.SetStateAction<boolean>>;
@@ -104,7 +104,7 @@ export default function DownloadedView(props: {
           text-decoration: none;
         `}
       >
-        <LogoIcon width={224} height={24} />
+        <Logo width={"224px"} height={"24px"} />
       </Link>
       <StoryPreviewView
         setIsPreviewView={props.setIsPreviewView}

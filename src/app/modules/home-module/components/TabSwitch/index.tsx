@@ -6,6 +6,7 @@ interface StyledSwitchProps {
   tabs: Tab[];
   activeTab: string;
   onTabChange: (value: string) => void;
+  ariaControls: string;
   style: {
     paddingX: number;
     radius: number;
@@ -19,11 +20,12 @@ export function MultiSwitch({
   tabs,
   activeTab,
   onTabChange,
+  ariaControls,
   style,
 }: StyledSwitchProps) {
   return (
     <HeadlessSwitch tabs={tabs} activeTab={activeTab} onTabChange={onTabChange}>
-      {({ tabs, activeTab, activeIndex, onTabClick }) => (
+      {({ tabs, activeTab, activeIndex, focusIndex, getTabProps }) => (
         <div
           css={`
             display: flex;
@@ -52,9 +54,6 @@ export function MultiSwitch({
               box-sizing: border-box;
 
               height: 100%;
-              :focus-visible {
-                ${FOCUS_VISIBLE_STYLE_LIGHT}
-              }
             }
           `}
           role="tablist"
@@ -63,17 +62,15 @@ export function MultiSwitch({
           {tabs.map((tab, index) => (
             <button
               key={tab.value}
-              onClick={() => onTabClick(tab.value, index)}
-              data-cy={tab.testId}
-              id={tab.id}
-              role="tab"
+              {...getTabProps(tab, index)}
               aria-label={`${tab.value}-view-button`}
+              aria-controls={ariaControls}
+              tabIndex={activeTab === tab.value ? 0 : -1}
               css={`
                 font-family: ${activeTab === tab.value
                     ? "GothamNarrow-Bold"
                     : "GothamNarrow-Book"},
                   "Helvetica Neue", sans-serif;
-
                 color: ${activeTab === tab.value ? "white" : "#231D2C"};
                 border: none;
                 border-right: ${index !== tabs.length - 1 &&
@@ -81,6 +78,9 @@ export function MultiSwitch({
                 activeTab !== tabs[index + 1]?.value
                   ? "1px solid #ADB5BD"
                   : "none"};
+                :focus-visible {
+                  ${focusIndex === index && FOCUS_VISIBLE_STYLE_LIGHT}
+                }
               `}
             >
               {tab.icon ? tab.icon : null} {tab.label}
@@ -88,6 +88,7 @@ export function MultiSwitch({
           ))}
 
           <div
+            aria-hidden="true"
             css={`
               position: absolute;
               background: ${style.backgroundActive};

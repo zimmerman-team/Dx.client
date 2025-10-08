@@ -62,6 +62,9 @@ function ChartModuleDataView(
         setOpenSearch={setOpenSearch}
         searchIconCypressId="open-search-button"
         hasSearchButton
+        setFilterValue={() => {}}
+        filterValue={null as unknown as string}
+        terminateSearch={() => {}}
       />
       <DatasetCategoryList
         categories={categories}
@@ -79,6 +82,7 @@ function ChartModuleDataView(
         md={props.toolboxOpen ? 4 : 6}
         lg={props.toolboxOpen ? 4 : 3}
         filterValue="myAssets"
+        gridId="datasets-grid"
       />
     </div>
   );

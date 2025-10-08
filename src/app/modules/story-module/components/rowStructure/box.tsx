@@ -126,8 +126,6 @@ const Box = (props: BoxProps) => {
     );
   }, [props.previewItem, props.framesArray, props.rowIndex, props.itemIndex]);
 
-  const [chartId, setChartId] = useState<string | null>(null);
-
   const [maxWidth, setMaxWidth] = useState(props.initialWidth);
   const [textContent, setTextContent] = useState<EditorState>(
     EditorState.createEmpty(decorators())
@@ -204,6 +202,7 @@ const Box = (props: BoxProps) => {
 
   // Functions
   const handleEditChart = () => {
+    if (contentType !== "chart") return;
     setChartFromStory({
       state: true,
       view,
@@ -220,7 +219,7 @@ const Box = (props: BoxProps) => {
 
     // Save story before exiting
     props.onSave("edit");
-    history.push(`/chart/${chartId}/mapping`);
+    history.push(`/chart/${boxContent}/mapping`);
   };
 
   const handleRowFrameItemAddition = (
@@ -256,7 +255,6 @@ const Box = (props: BoxProps) => {
   };
 
   const deleteContent = () => {
-    setChartId(null);
     setTextContent(EditorState.createEmpty(decorators()));
     handleRowFrameItemRemoval(props.rowId, props.itemIndex);
   };
@@ -356,7 +354,6 @@ const Box = (props: BoxProps) => {
             item.value,
             "chart"
           );
-          setChartId(item.value);
           monitor.getDropResult();
         } else if (item.type === StoryElementsType.VIDEO) {
           handleRowFrameItemAddition(

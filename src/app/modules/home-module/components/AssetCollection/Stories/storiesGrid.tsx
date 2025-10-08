@@ -25,6 +25,7 @@ interface Props {
   view: "grid" | "table";
   showMenuButton?: boolean;
   addCard?: boolean;
+  gridId: string;
 }
 
 export default function StoriesGrid(props: Readonly<Props>) {
@@ -222,34 +223,36 @@ export default function StoriesGrid(props: Readonly<Props>) {
   return (
     <>
       {props.view === "grid" && (
-        <Grid container spacing={2}>
-          {props.addCard ? <StoryAddnewCard /> : null}
-          {loadedStories.map((data, index) => (
-            <Grid item key={data.id} xs={12} sm={6} md={4} lg={3}>
-              <ReformedGridItem
-                id={data.id}
-                key={data.id}
-                name={data.name}
-                date={data.updatedDate}
-                viz={<ColoredStoryIcon />}
-                color={data.backgroundColor}
-                showMenuButton={props.showMenuButton}
-                handleDelete={() => handleModal(data.id)}
-                handleDuplicate={() => handleDuplicate(data.id)}
-                heading={
-                  data.heading
-                    ? EditorState.createWithContent(
-                        convertFromRaw(data.heading)
-                      )
-                    : EditorState.createEmpty()
-                }
-                owner={data.owner}
-                ownerName={data.ownerName ?? ""}
-              />
-              <Box height={16} />
-            </Grid>
-          ))}
-        </Grid>
+        <div id={props.gridId}>
+          <Grid container spacing={2}>
+            {props.addCard ? <StoryAddnewCard /> : null}
+            {loadedStories.map((data, index) => (
+              <Grid item key={data.id} xs={12} sm={6} md={4} lg={3}>
+                <ReformedGridItem
+                  id={data.id}
+                  key={data.id}
+                  name={data.name}
+                  date={data.updatedDate}
+                  viz={<ColoredStoryIcon />}
+                  color={data.backgroundColor}
+                  showMenuButton={props.showMenuButton}
+                  handleDelete={() => handleModal(data.id)}
+                  handleDuplicate={() => handleDuplicate(data.id)}
+                  heading={
+                    data.heading
+                      ? EditorState.createWithContent(
+                          convertFromRaw(data.heading)
+                        )
+                      : EditorState.createEmpty()
+                  }
+                  owner={data.owner}
+                  ownerName={data.ownerName.split(" ")[0]}
+                />
+                <Box height={16} />
+              </Grid>
+            ))}
+          </Grid>
+        </div>
       )}
       {props.view === "table" && (
         <HomepageTable
@@ -271,6 +274,7 @@ export default function StoriesGrid(props: Readonly<Props>) {
             ],
             data: loadedStories.map((data) => ({
               ...data,
+              ownerName: data.ownerName.split(" ")[0],
               description: data.heading
                 ? EditorState.createWithContent(convertFromRaw(data.heading))
                     .getCurrentContent()

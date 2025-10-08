@@ -4,7 +4,6 @@ import React from "react";
 import { useHistory } from "react-router-dom";
 import { useRecoilState } from "recoil";
 import Box from "@material-ui/core/Box";
-import Grid from "@material-ui/core/Grid";
 import Container from "@material-ui/core/Container";
 /* project */
 import ChartsGrid from "app/modules/home-module/components/AssetCollection/Charts/chartsGrid";
@@ -23,6 +22,7 @@ import AssetsGrid from "app/modules/home-module/components/AssetCollection/All/a
 import Filter from "app/modules/home-module/components/Filter";
 import {
   DESKTOP_BREAKPOINT,
+  FOCUS_VISIBLE_STYLE_LIGHT,
   MOBILE_BREAKPOINT,
   TABLET_STARTPOINT,
 } from "app/theme";
@@ -44,7 +44,7 @@ const ctaCards = [
   {
     title: "Create Charts",
     description:
-      "Once you have dataset(s) connected, you can use them to build charts and visualisations, all assited and eased by DataXplorer.",
+      "Once you have dataset(s) connected, you can use them to build charts and visualisations, all assisted and eased by DataXplorer.",
     type: "chart",
     link: "/chart/new/data",
     cypressId: "create-chart-cta",
@@ -61,12 +61,12 @@ const ctaCards = [
   },
 ];
 
-const getWhereString = (searchStr: string, userOnly: boolean) => {
+const getWhereString = (searchStr: string, filterValue: string) => {
   const value =
     searchStr?.length > 0
       ? `where={"name":{"like":"${searchStr}.*","options":"i"}}`
       : "";
-  return `${userOnly ? "userOnly=true&" : ""}${value}`;
+  return `filterValue=${filterValue}&${value}`;
 };
 function AssetsCollection() {
   const history = useHistory();
@@ -78,9 +78,7 @@ function AssetsCollection() {
   const [filterValue, setFilterValue] = useRecoilState(allAssetsFilterBy);
   const [display, setDisplay] = useRecoilState(homeDisplayAtom);
   const token = useStoreState((state) => state.AuthToken.value);
-
-  const userOnlyFilter = filterValue === "myAssets";
-
+  const gridId = "assets-grid";
   const loadChartsCount = useStoreActions(
     (actions) => actions.charts.ChartsCount.fetch
   );
@@ -110,23 +108,31 @@ function AssetsCollection() {
     if (token) {
       loadAssetsCount({
         token,
-        filterString: getWhereString(searchValue as string, userOnlyFilter),
+        filterString: getWhereString(searchValue as string, filterValue),
       });
 
       loadDatasetCount({
         token,
-        filterString: getWhereString(searchValue as string, userOnlyFilter),
+        filterString: getWhereString(searchValue as string, filterValue),
       });
       loadChartsCount({
         token,
-        filterString: getWhereString(searchValue as string, userOnlyFilter),
+        filterString: getWhereString(searchValue as string, filterValue),
       });
       loadStoriesCount({
         token,
-        filterString: getWhereString(searchValue as string, userOnlyFilter),
+        filterString: getWhereString(searchValue as string, filterValue),
       });
     }
-  }, [loadChartsCount, loadDatasetCount, loadStoriesCount, token]);
+  }, [
+    loadChartsCount,
+    loadDatasetCount,
+    loadStoriesCount,
+    token,
+    filterValue,
+    searchValue,
+    loadAssetsCount,
+  ]);
 
   const displayGrid = (searchStr: string, sortByStr: string) => {
     switch (display) {
@@ -138,6 +144,7 @@ function AssetsCollection() {
             view={assetsView}
             categories={categories}
             filterValue={filterValue}
+            gridId={gridId}
           />
         );
       case "charts":
@@ -147,6 +154,7 @@ function AssetsCollection() {
             searchStr={searchStr}
             view={assetsView}
             filterValue={filterValue}
+            gridId={gridId}
           />
         );
       case "stories":
@@ -156,6 +164,7 @@ function AssetsCollection() {
             searchStr={searchStr}
             view={assetsView}
             filterValue={filterValue}
+            gridId={gridId}
           />
         );
       case "all":
@@ -165,6 +174,7 @@ function AssetsCollection() {
             searchStr={searchStr}
             view={assetsView}
             filterValue={filterValue}
+            gridId={gridId}
           />
         );
       default:
@@ -213,6 +223,7 @@ function AssetsCollection() {
               onClick={() => {
                 history.push(card.link);
               }}
+              aria-label={`Call to Action to ${card.title}`}
               key={card.type}
               css={`
                 background: none;
@@ -234,17 +245,20 @@ function AssetsCollection() {
                 display: flex;
                 flex-direction: column;
                 cursor: pointer;
+                :focus-visible {
+                  ${FOCUS_VISIBLE_STYLE_LIGHT}
+                }
                 @media (max-width: ${MOBILE_BREAKPOINT}) {
                   width: 100%;
                 }
-                h1 {
+                p:first-of-type {
                   color: #6061e5;
                   font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
                   font-size: 18px;
                   line-height: 24px;
                   margin: 0;
                 }
-                > p:first-of-type {
+                > p:nth-of-type(2) {
                   color: #231d2c;
                   font-family: "GothamNarrow-Book", "Helvetica Neue", sans-serif;
                   font-size: 12px;
@@ -255,7 +269,7 @@ function AssetsCollection() {
                 }
               `}
             >
-              <h1>{card.title}</h1>
+              <p>{card.title}</p>
               <p>{card.description}</p>
               <div
                 css={`
@@ -289,6 +303,7 @@ function AssetsCollection() {
                     viewBox="0 0 15 13"
                     fill="none"
                     xmlns="http://www.w3.org/2000/svg"
+                    role="presentation"
                   >
                     <path
                       d="M8.75 0.25L7.85625 1.12063L12.5938 5.875H0V7.125H12.5938L7.85625 11.8581L8.75 12.75L15 6.5L8.75 0.25Z"
@@ -329,6 +344,7 @@ function AssetsCollection() {
                 paddingX: 4,
                 backgroundActive: "#6061E5",
               }}
+              ariaControls={display + "-assets"}
               tabs={[
                 {
                   value: "all",
@@ -380,6 +396,7 @@ function AssetsCollection() {
               filterValue={filterValue}
               setFilterValue={setFilterValue}
               hasSearchButton
+              terminateSearch={() => {}}
             />
           </div>
         </div>
@@ -408,6 +425,7 @@ function AssetsCollection() {
             filterValue={filterValue}
             setFilterValue={setFilterValue}
             hasSearchButton
+            terminateSearch={() => {}}
           />
         </div>
         <div

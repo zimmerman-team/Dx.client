@@ -148,7 +148,7 @@ export default function Card() {
             <PrimaryButton
               bg="light"
               size="small"
-              onClick={() => history.push("/why-da")}
+              onClick={() => history.push("/why-dataxplorer")}
             >
               Learn More
             </PrimaryButton>
@@ -158,7 +158,7 @@ export default function Card() {
               onClick={() => history.push("/onboarding/signin")}
             >
               Sign in to try
-              <RightArrow />
+              <RightArrow role="presentation" />
             </PrimaryButton>
           </div>
         </div>

@@ -1,5 +1,5 @@
 import React from "react";
-import { IconButton, Popover, Tooltip } from "@material-ui/core";
+import { Popover, Tooltip } from "@material-ui/core";
 import { ReactComponent as FilterIcon } from "app/modules/home-module/assets/filter-fill.svg";
 
 import { iconButtonCss, sortByItemCss } from "app/modules/home-module/style";
@@ -43,7 +43,7 @@ export default function FilterPopover(
     <>
       {" "}
       <Tooltip title="Filter" placement="bottom">
-        <IconButton
+        <button
           ref={triggerRef}
           onClick={togglePopover}
           onKeyDown={(e) => handleTriggerKeyDown(e, e.currentTarget)}
@@ -52,8 +52,8 @@ export default function FilterPopover(
           css={iconButtonCss(!!openState)}
           aria-label="filter-button"
         >
-          <FilterIcon />
-        </IconButton>
+          <FilterIcon role="presentation" />
+        </button>
       </Tooltip>
       <Popover
         open={!!openState}

@@ -447,7 +447,7 @@ function DatasetUploadSteps(props: Props) {
               margin: 0;
             `}
           >
-            Conect a Dataset
+            Connect a Dataset
           </h1>
           <div
             css={`

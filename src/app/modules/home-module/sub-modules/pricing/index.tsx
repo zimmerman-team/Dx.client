@@ -238,8 +238,8 @@ export default function PricingModule() {
           css={`
             margin: 0;
             padding: 0;
-            margin-top: 124px;
-            font-size: 48px;
+            margin-top: 100px;
+            font-size: 64px;
             font-weight: 400;
             font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
             line-height: normal;

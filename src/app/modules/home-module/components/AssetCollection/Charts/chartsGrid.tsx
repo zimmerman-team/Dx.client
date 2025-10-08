@@ -30,6 +30,7 @@ interface Props {
   filterValue?: "allAssets" | "myAssets" | "dataxplorerAssets";
   view: "grid" | "table";
   addCard?: boolean;
+  gridId: string;
 }
 
 export interface IChartAsset {
@@ -234,7 +235,6 @@ export default function ChartsGrid(props: Props) {
   React.useEffect(() => {
     reloadData();
   }, [props.sortBy, token, props.filterValue]);
-
   const [,] = useDebounce(
     () => {
       if (initialRender.current) {
@@ -250,34 +250,36 @@ export default function ChartsGrid(props: Props) {
   return (
     <>
       {props.view === "grid" && (
-        <Grid container spacing={2}>
-          {props.addCard ? <ChartAddnewCard /> : null}
-          {loadedCharts.map((c, index) => (
-            <Grid item key={c.id} xs={12} sm={6} md={4} lg={3}>
-              <GridItem
-                id={c.id}
-                title={c.name}
-                date={c.updatedDate}
-                viz={getIcon(c.vizType)}
-                vizType={c.vizType}
-                isMappingValid={c.isMappingValid}
-                handleDelete={() => handleModal(c.id)}
-                handleDuplicate={() => handleDuplicate(c.id)}
-                owner={c.owner}
-                isAIAssisted={c.isAIAssisted}
-                ownerName={c.ownerName}
-              />
-              <div
-                css={`
-                  height: 16px;
-                  @media (max-width: 600px) {
-                    height: 8px;
-                  }
-                `}
-              />
-            </Grid>
-          ))}
-        </Grid>
+        <div id={props.gridId}>
+          <Grid container spacing={2}>
+            {props.addCard ? <ChartAddnewCard /> : null}
+            {loadedCharts.map((c, index) => (
+              <Grid item key={c.id} xs={12} sm={6} md={4} lg={3}>
+                <GridItem
+                  id={c.id}
+                  title={c.name}
+                  date={c.updatedDate}
+                  viz={getIcon(c.vizType)}
+                  vizType={c.vizType}
+                  isMappingValid={c.isMappingValid}
+                  handleDelete={() => handleModal(c.id)}
+                  handleDuplicate={() => handleDuplicate(c.id)}
+                  owner={c.owner}
+                  isAIAssisted={c.isAIAssisted}
+                  ownerName={c.ownerName.split(" ")[0]}
+                />
+                <div
+                  css={`
+                    height: 16px;
+                    @media (max-width: 600px) {
+                      height: 8px;
+                    }
+                  `}
+                />
+              </Grid>
+            ))}
+          </Grid>
+        </div>
       )}
       {props.view === "table" && (
         <HomepageTable
@@ -298,6 +300,7 @@ export default function ChartsGrid(props: Props) {
             data: loadedCharts.map((data) => ({
               ...data,
               type: "chart",
+              ownerName: data.ownerName.split(" ")[0],
               vizType: echartTypes(false).find((e) => e.id === data.vizType)
                 ?.label,
             })),

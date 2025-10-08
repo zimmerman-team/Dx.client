@@ -2,14 +2,12 @@ import React from "react";
 import moment from "moment";
 import { Link } from "react-router-dom";
 import { useAuth0 } from "@auth0/auth0-react";
-import IconButton from "@material-ui/core/IconButton";
-import { ReactComponent as MenuIcon } from "app/modules/home-module/assets/menu.svg";
 import { ReactComponent as ClockIcon } from "app/modules/home-module/assets/clock-icon.svg";
 import { ReactComponent as OwnerIcon } from "app/modules/home-module/assets/owner-icon.svg";
 import { EditorState } from "draft-js";
-import MenuItems from "app/modules/home-module/components/AssetCollection/All/menuItems";
-import { ReactComponent as Logo } from "app/modules/home-module/assets/logo.svg";
+import MenuPopover from "app/modules/home-module/components/AssetCollection/All/menuPopover";
 import { FOCUS_VISIBLE_STYLE_LIGHT } from "app/theme";
+import Logo from "app/assets/icons/Logo";
 
 interface Props {
   date: Date;
@@ -27,13 +25,6 @@ interface Props {
 
 export default function GridItem(props: Readonly<Props>) {
   const { isAuthenticated } = useAuth0();
-
-  const [menuOptionsDisplay, setMenuOptionsDisplay] = React.useState(false);
-  const showMenuOptions = (e: React.MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault();
-    e.stopPropagation();
-    setMenuOptionsDisplay(!menuOptionsDisplay);
-  };
 
   return (
     <div
@@ -68,6 +59,7 @@ export default function GridItem(props: Readonly<Props>) {
           }
         `}
         data-cy="story-grid-item"
+        aria-label={`story-card`}
       >
         <div
           css={`
@@ -95,35 +87,17 @@ export default function GridItem(props: Readonly<Props>) {
           `}
         >
           <p>Story</p>
-          <button
-            css={`
-              border: none;
-              background: ${menuOptionsDisplay ? "#CFD0F4" : "transparent"};
-              outline: none;
-              display: flex;
-              align-items: center;
-              justify-content: center;
-              position: absolute;
-              height: 19px;
-              width: 19px;
-              border-radius: 5px;
-              right: 5px;
-              top: 12px;
-              cursor: pointer;
-
-              svg {
-                flex-shrink: 0;
-              }
-              &:hover {
-                background: transparent;
-              }
-            `}
-            aria-label="story menu-button"
-            onClick={showMenuOptions}
-            data-cy="story-grid-item-menu-btn"
-          >
-            <MenuIcon />
-          </button>
+          <MenuPopover
+            handleDelete={() => props.handleDelete?.(props.id as string)}
+            handleDuplicate={() => props.handleDuplicate?.(props.id as string)}
+            id={props.id as string}
+            owner={props.owner}
+            path={`/story/${props.id}/edit`}
+            type="story"
+            menuId="stories-grid-item-menu"
+            dataCy="story-grid-item-menu-btn"
+            dataTestId=""
+          />
         </div>
         <div
           css={`
@@ -208,11 +182,7 @@ export default function GridItem(props: Readonly<Props>) {
               `}
             >
               <OwnerIcon aria-label="owner" />
-              {isAuthenticated ? (
-                <p>{props.ownerName?.split(" ")?.[0]}</p>
-              ) : (
-                <Logo />
-              )}
+              {isAuthenticated ? <p>{props.ownerName}</p> : <Logo />}
             </div>
             <div
               css={`
@@ -222,22 +192,11 @@ export default function GridItem(props: Readonly<Props>) {
               `}
             >
               <ClockIcon width={12} height={12} aria-label="date" />
-              <p>{moment(props.date).format("MMMM YYYY")}</p>
+              <p>{moment(props.date).format("DD-MM-YYYY")}</p>
             </div>
           </div>
         </div>
       </Link>
-
-      <MenuItems
-        handleClose={() => setMenuOptionsDisplay(false)}
-        handleDelete={() => props.handleDelete?.(props.id as string)}
-        handleDuplicate={() => props.handleDuplicate?.(props.id as string)}
-        id={props.id as string}
-        owner={props.owner}
-        path={`/story/${props.id}/edit`}
-        type="story"
-        display={menuOptionsDisplay}
-      />
     </div>
   );
 }

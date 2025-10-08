@@ -102,6 +102,9 @@ export default function PrepareForUse(props: {
             align-items: center;
             gap: 10px;
 
+            button:first-of-type {
+              height: 41px;
+            }
             button:last-of-type {
               height: 44px;
               border-radius: 10px;

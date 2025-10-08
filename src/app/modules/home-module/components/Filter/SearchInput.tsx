@@ -24,8 +24,14 @@ export const SearchInput: React.FC<SearchInputProps> = ({
   openSearch,
   setOpenSearch,
   searchIconCypressId,
-  inputRef,
+  inputRef: ContainerRef,
 }) => {
+  const inputRef = React.useRef<HTMLInputElement>(null);
+  React.useEffect(() => {
+    if (openSearch) {
+      inputRef?.current?.focus();
+    }
+  }, [openSearch]);
   return (
     <div
       css={`
@@ -37,11 +43,12 @@ export const SearchInput: React.FC<SearchInputProps> = ({
         `        width: 100%;
         `}
       `}
-      ref={inputRef}
+      ref={ContainerRef}
     >
       <div css={searchInputCss(!!openSearch)}>
-        <SearchIcon />
+        <SearchIcon role="presentation" />
         <input
+          ref={inputRef}
           type="text"
           value={searchValue}
           placeholder="Search"
@@ -69,7 +76,7 @@ export const SearchInput: React.FC<SearchInputProps> = ({
             css={iconButtonCss(openSearch)}
             aria-label="search-button"
           >
-            <SearchIcon />
+            <SearchIcon role="presentation" />
           </button>
         </Tooltip>
       )}

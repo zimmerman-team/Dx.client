@@ -11,7 +11,7 @@ interface MockProps {
   filterValue: "";
   setAssetsView: jest.Mock<any, any, any>;
   assetsView: "table" | "grid";
-  terminateSearch?: jest.Mock<any, any, any>;
+  terminateSearch: jest.Mock<any, any, any>;
   searchInputWidth?: string;
   openSearch: boolean;
   setOpenSearch: jest.Mock<any, any, any>;
@@ -34,6 +34,7 @@ const defaultProps = (newProps: Partial<MockProps>): MockProps => {
     setOpenSearch: jest.fn(),
     searchIconCypressId: "",
     hasSearchButton: false,
+
     ...newProps,
   };
 };
