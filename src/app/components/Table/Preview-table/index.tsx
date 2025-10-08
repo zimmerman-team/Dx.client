@@ -166,7 +166,7 @@ export default function PreviewTable(props: PreviewTableProps) {
                         <b>{val}</b>
                       </p>
                       {val && (
-                        <IconButton>
+                        <IconButton aria-label="Sort Icon">
                           <SortIcon />
                         </IconButton>
                       )}
