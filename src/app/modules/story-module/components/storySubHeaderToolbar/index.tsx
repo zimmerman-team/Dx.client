@@ -136,6 +136,19 @@ export function StorySubheaderToolbar(
   );
   const [displayMobileMenu, setDisplayMobileMenu] = React.useState(false);
 
+  const copyButtonRef = React.useRef<HTMLButtonElement>(null);
+
+  const open = Boolean(anchorEl);
+  const id = open ? "simple-popover" : undefined;
+
+  React.useEffect(() => {
+    if (open && copyButtonRef.current) {
+      setTimeout(() => {
+        copyButtonRef.current?.focus();
+      }, 0);
+    }
+  }, [open]);
+
   React.useEffect(() => {
     // handles saved changes state for autosave
     let timeout: NodeJS.Timeout;
@@ -202,9 +215,6 @@ export function StorySubheaderToolbar(
       editChartClear();
     };
   }, []);
-
-  const open = Boolean(anchorEl);
-  const id = open ? "simple-popover" : undefined;
 
   const handleModalDisplay = () => {
     setShowDeleteDialog(true);
