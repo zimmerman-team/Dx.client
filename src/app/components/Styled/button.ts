@@ -1,4 +1,4 @@
-import { FOCUS_VISIBLE_STYLE_LIGHT } from "app/theme";
+import { FOCUS_VISIBLE_STYLE_DARK, FOCUS_VISIBLE_STYLE_LIGHT } from "app/theme";
 import styled from "styled-components/macro";
 
 interface Props {
@@ -53,7 +53,7 @@ export const PrimaryButton = styled.button<Props>`
     color: #70777e;
   }
   :focus-visible {
-    ${FOCUS_VISIBLE_STYLE_LIGHT}
+    ${FOCUS_VISIBLE_STYLE_DARK}
   }
 `;
 

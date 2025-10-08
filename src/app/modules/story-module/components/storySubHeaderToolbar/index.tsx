@@ -43,7 +43,11 @@ import DuplicateMessage from "app/modules/common/mobile-duplicate-message";
 import { ExportStoryButton } from "./exportButton";
 import { PrimaryButton } from "app/components/Styled/button";
 import { ArrowBack } from "@material-ui/icons";
-import { MOBILE_BREAKPOINT, TABLET_STARTPOINT } from "app/theme";
+import {
+  FOCUS_VISIBLE_STYLE_LIGHT,
+  MOBILE_BREAKPOINT,
+  TABLET_STARTPOINT,
+} from "app/theme";
 import { ISnackbarState } from "app/modules/dataset-module/routes/upload-module/style";
 
 export const useStyles = makeStyles(() =>
@@ -298,7 +302,11 @@ export function StorySubheaderToolbar(
                 color: #231d2c;
                 text-decoration: none;
                 cursor: pointer;
+                :focus-visible {
+                  ${FOCUS_VISIBLE_STYLE_LIGHT}
+                }
               `}
+              aria-label="Back to Dashboard"
               data-cy="story-back-to-library-btn"
             >
               <Tooltip title="Back to Dashboard">
