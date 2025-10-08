@@ -1,7 +1,6 @@
 import React from "react";
 import Tooltip from "@material-ui/core/Tooltip";
 import SaveAlt from "@material-ui/icons/SaveAlt";
-import { exportPage } from "app/utils/exportPage";
 import IconButton from "@material-ui/core/IconButton";
 import {
   StyledMenu,
@@ -26,18 +25,12 @@ export function ExportStoryButton(props: { filename: string }) {
     setAnchorEl(null);
   }
 
-  function handleTypeChange(value: ".svg" | ".png" | ".pdf", filename: string) {
-    // if (value === ".png") {
-    //   exportPage("png", "#f2f7fd", filename);
-    // }
-    // if (value === ".svg") {
-    //   exportPage("svg", "#f2f7fd", filename);
-    // }
-    // if (value === ".pdf") {
-    //   exportPage("pdf", "", filename);
-    // }
-    // handleClose();
-  }
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLLIElement>) => {
+    if (e.key === "Enter" || e.key === " ") {
+      e.preventDefault();
+      e.currentTarget.querySelector("a")?.click();
+    }
+  };
 
   return (
     <>
@@ -56,59 +49,48 @@ export function ExportStoryButton(props: { filename: string }) {
         anchorEl={anchorEl}
         onClose={handleClose}
       >
-        <StyledMenuItem
-          onClick={() => handleTypeChange(".pdf", props.filename)}
-        >
+        <StyledMenuItem tabIndex={0} onKeyDown={handleKeyDown}>
           <Link
             target="_blank"
             to={`/story/${page}/downloaded-view?type=pdf&filename=${props.filename}`}
             data-cy="export-report-pdf"
             css={`
               text-decoration: none;
-              color: #262c34;
               width: 100%;
               height: 100%;
-              &:hover {
-                color: #fff;
-              }
             `}
+            aria-label="Export as PDF"
           >
             .pdf
           </Link>
         </StyledMenuItem>
-        <StyledMenuItem>
+        <StyledMenuItem tabIndex={0} onKeyDown={handleKeyDown}>
           <Link
             target="_blank"
             to={`/story/${page}/downloaded-view?type=png&filename=${props.filename}`}
             data-cy="export-report-png"
             css={`
               text-decoration: none;
-              color: #262c34;
               width: 100%;
               height: 100%;
-              &:hover {
-                color: #fff;
-              }
             `}
+            aria-label="Export as PNG"
           >
             .png
           </Link>
         </StyledMenuItem>
 
-        <StyledMenuItem>
+        <StyledMenuItem tabIndex={0} onKeyDown={handleKeyDown}>
           <Link
             target="_blank"
             to={`/story/${page}/downloaded-view?type=svg&filename=${props.filename}`}
             data-cy="export-report-svg"
             css={`
               text-decoration: none;
-              color: #262c34;
               width: 100%;
               height: 100%;
-              &:hover {
-                color: #fff;
-              }
             `}
+            aria-label="Export as SVG"
           >
             .svg
           </Link>
