@@ -12,7 +12,7 @@ import ResetIcon from "./assets/reset-icon";
 import Tabs from "./components/tabs";
 const swatches = [
   {
-    label: "DataXplorer default",
+    label: "Dataxplorer",
     value: ["#6061E5", "#73D3CD", "#F6C445", "#E492BD", "#E75656"],
   },
   {

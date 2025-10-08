@@ -21,7 +21,7 @@ export interface ChartBuilderCustomizeProps {
 
 export const checkLists = [
   {
-    label: "DataXplorer default",
+    label: "Dataxplorer",
     value: ["#E75656", "#E492BD", "#F6C445", "#73D3CD", "#6061E5"],
   },
   {
