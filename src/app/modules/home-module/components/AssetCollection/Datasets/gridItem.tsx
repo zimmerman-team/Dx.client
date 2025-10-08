@@ -291,8 +291,21 @@ export default function GridItem(props: Readonly<Props>) {
                   gap: 3px;
                 `}
               >
-                <ClockIcon width={12} height={12} role="presentation" />
-                <p>{moment(props.date).format("DD-MM-YYYY")}</p>
+                <ClockIcon
+                  width={12}
+                  height={12}
+                  role="presentation"
+                  css={`
+                    flex-shrink: 0;
+                  `}
+                />
+                <p
+                  css={`
+                    flex-shrink: 0;
+                  `}
+                >
+                  {moment(props.date).format("DD-MM-YYYY")}
+                </p>
               </div>
             </div>
           </div>
