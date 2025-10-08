@@ -9,8 +9,7 @@ import { useMediaQuery } from "usehooks-ts";
 import { DatasetListItemAPIModel } from "app/modules/dataset-module/data";
 import moment from "moment";
 import { useAuth0 } from "@auth0/auth0-react";
-import { PrimaryButton } from "app/components/Styled/button";
-import { MOBILE_BREAKPOINT } from "app/theme";
+import { FOCUS_VISIBLE_STYLE_DARK, MOBILE_BREAKPOINT } from "app/theme";
 import TablePreview from "app/modules/dataset-module/routes/upload-module/upload-steps/step2/TablePreview";
 
 interface Props {
@@ -127,15 +126,27 @@ export default function FinishedFragment(props: Props) {
                       storyPage ? `&fromstory=true&page=${storyPage}` : ""
                     }`,
                   }}
+                  onClick={handleCreateNewChart}
+                  css={`
+                    background: #231d2c;
+                    height: 48px;
+                    padding: 0 24px;
+                    border-radius: 12px;
+                    line-height: normal;
+                    font-size: 16px;
+                    font-style: normal;
+                    font-family: "GothamNarrow-Bold", "Helvetica Neue",
+                      sans-serif;
+                    color: #fff;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    :focus-visible {
+                      ${FOCUS_VISIBLE_STYLE_DARK}
+                    }
+                  `}
                 >
-                  <PrimaryButton
-                    size="big"
-                    bg="dark"
-                    type="button"
-                    onClick={handleCreateNewChart}
-                  >
-                    create chart
-                  </PrimaryButton>
+                  Create Chart
                 </Link>
               )}
             </>

@@ -32,7 +32,7 @@ import DuplicateMessage from "app/modules/common/mobile-duplicate-message";
 import { PrimaryButton } from "app/components/Styled/button";
 import { ArrowBack } from "@material-ui/icons";
 import ArrowBackIosIcon from "@material-ui/icons/ArrowBackIos";
-import { MOBILE_BREAKPOINT } from "app/theme";
+import { FOCUS_VISIBLE_STYLE_LIGHT, MOBILE_BREAKPOINT } from "app/theme";
 import { ISnackbarState } from "app/modules/dataset-module/routes/upload-module/style";
 
 export default function DatasetSubHeaderToolbar(
@@ -272,8 +272,12 @@ export default function DatasetSubHeaderToolbar(
                 color: #231d2c;
                 text-decoration: none;
                 cursor: pointer;
+                :focus-visible {
+                  ${FOCUS_VISIBLE_STYLE_LIGHT}
+                }
               `}
               data-cy="dataset-back-to-library-btn"
+              aria-label="back to dashboard"
             >
               <Tooltip title="Back to Dashboard">
                 {isSmallScreen ? (

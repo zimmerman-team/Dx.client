@@ -9,6 +9,7 @@ import { DatasetDataTable } from "app/modules/dataset-module/routes/upload-modul
 import { ReactComponent as FullScreenIcon } from "app/modules/dataset-module/routes/upload-module/assets/full-screen.svg";
 import { ReactComponent as CloseFullScreenIcon } from "app/modules/dataset-module/routes/upload-module/assets/close-full-screen.svg";
 import { DatasetListItemAPIModel } from "app/modules/dataset-module/data";
+import { FOCUS_VISIBLE_STYLE_LIGHT } from "app/theme";
 
 export interface FinishedFragmentProps {
   data: any[];
@@ -114,8 +115,10 @@ export default function TablePreview(props: FinishedFragmentProps) {
           position: relative;
         `}
       >
-        <div
+        <button
           css={`
+            all: unset;
+            display: block;
             display: flex;
             width: 44px;
             height: 44px;
@@ -129,6 +132,9 @@ export default function TablePreview(props: FinishedFragmentProps) {
             border-radius: 10px;
             background: #6061e5;
             z-index: 1;
+            :focus-visible {
+              ${FOCUS_VISIBLE_STYLE_LIGHT}
+            }
 
             /* Dark shadow */
             box-shadow: 0px 0px 10px 0px rgba(152, 161, 170, 0.6);
@@ -137,9 +143,10 @@ export default function TablePreview(props: FinishedFragmentProps) {
           onMouseLeave={() => setOpenFullScreenTooltip(false)}
           onClick={handleFullScreenDisplay}
           data-cy="dataset-full-screen-btn"
+          aria-label="Full Screen"
         >
           <FullScreenIcon width={32} height={32} />
-        </div>
+        </button>
 
         <DatasetDataTable
           data={props.data}
@@ -172,18 +179,25 @@ export default function TablePreview(props: FinishedFragmentProps) {
               align-items: center;
             `}
           >
-            <div
+            <button
               css={`
+                all: unset;
+                display: block;
                 width: 32px;
                 height: 32px;
                 cursor: pointer;
                 margin-bottom: 15px;
                 position: relative;
+
+                :focus-visible {
+                  ${FOCUS_VISIBLE_STYLE_LIGHT}
+                }
               `}
               onMouseOver={() => setCloseFullScreenTooltip(true)}
               onMouseLeave={() => setCloseFullScreenTooltip(false)}
               onClick={() => setOpenFullScreen(false)}
               data-cy="dataset-close-full-screen-btn"
+              aria-label="Close Full Screen"
             >
               <CloseFullScreenIcon width={32} height={32} />
 
@@ -204,7 +218,7 @@ export default function TablePreview(props: FinishedFragmentProps) {
               >
                 Close Full Screen
               </div>
-            </div>
+            </button>
           </div>
           <DatasetDataTable
             data={props.data}
