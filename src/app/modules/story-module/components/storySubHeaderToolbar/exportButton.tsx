@@ -17,6 +17,8 @@ export function ExportStoryButton(props: { filename: string }) {
   );
   const open = Boolean(anchorEl);
 
+  const firstMenuItemRef = React.useRef<HTMLLIElement>(null);
+
   function handleClick(event: React.MouseEvent<HTMLButtonElement>) {
     setAnchorEl(event.currentTarget);
   }
@@ -24,6 +26,14 @@ export function ExportStoryButton(props: { filename: string }) {
   function handleClose() {
     setAnchorEl(null);
   }
+
+  React.useEffect(() => {
+    if (open && firstMenuItemRef.current) {
+      setTimeout(() => {
+        firstMenuItemRef.current?.focus();
+      }, 0);
+    }
+  }, [open]);
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLLIElement>) => {
     if (e.key === "Enter" || e.key === " ") {
@@ -53,7 +63,11 @@ export function ExportStoryButton(props: { filename: string }) {
         onClose={handleClose}
         id="export-menu"
       >
-        <StyledMenuItem tabIndex={0} onKeyDown={handleKeyDown}>
+        <StyledMenuItem
+          ref={firstMenuItemRef}
+          tabIndex={0}
+          onKeyDown={handleKeyDown}
+        >
           <Link
             target="_blank"
             to={`/story/${page}/downloaded-view?type=pdf&filename=${props.filename}`}
@@ -64,6 +78,7 @@ export function ExportStoryButton(props: { filename: string }) {
               height: 100%;
             `}
             aria-label="Export as PDF"
+            rel="noopener noreferrer"
           >
             .pdf
           </Link>
@@ -79,6 +94,7 @@ export function ExportStoryButton(props: { filename: string }) {
               height: 100%;
             `}
             aria-label="Export as PNG"
+            rel="noopener noreferrer"
           >
             .png
           </Link>
@@ -95,6 +111,7 @@ export function ExportStoryButton(props: { filename: string }) {
               height: 100%;
             `}
             aria-label="Export as SVG"
+            rel="noopener noreferrer"
           >
             .svg
           </Link>
