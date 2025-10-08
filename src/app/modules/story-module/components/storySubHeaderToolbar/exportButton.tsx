@@ -38,6 +38,9 @@ export function ExportStoryButton(props: { filename: string }) {
         onClick={handleClick}
         aria-label="export-button"
         data-cy="export-report"
+        aria-haspopup="menu"
+        aria-expanded={open ? "true" : undefined}
+        aria-controls={open ? "export-menu" : undefined}
       >
         <Tooltip title="Export">
           <SaveAlt htmlColor="#262c34" />
@@ -48,6 +51,7 @@ export function ExportStoryButton(props: { filename: string }) {
         open={open}
         anchorEl={anchorEl}
         onClose={handleClose}
+        id="export-menu"
       >
         <StyledMenuItem tabIndex={0} onKeyDown={handleKeyDown}>
           <Link
