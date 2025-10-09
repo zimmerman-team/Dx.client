@@ -193,7 +193,11 @@ export default function GridItem(props: Props) {
               `}
             >
               <OwnerIcon role="presentation" />
-              {isAuthenticated ? <p>{props.ownerName}</p> : <Logo />}
+              {isAuthenticated ? (
+                <p>{props.ownerName}</p>
+              ) : (
+                <Logo main width="72px" height=" 7.702px" />
+              )}
             </div>
             <div
               css={`

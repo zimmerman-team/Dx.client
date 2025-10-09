@@ -282,7 +282,11 @@ export default function GridItem(props: Readonly<Props>) {
                 `}
               >
                 <OwnerIcon aria-label="owner" />
-                {isAuthenticated ? <p>{props.ownerName}</p> : <Logo />}
+                {isAuthenticated ? (
+                  <p>{props.ownerName}</p>
+                ) : (
+                  <Logo main width="72px" height=" 7.702px" />
+                )}
               </div>
               <div
                 css={`
