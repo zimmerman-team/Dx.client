@@ -3,8 +3,11 @@ import { Grid } from "@material-ui/core";
 import { quotecss } from "app/modules/home-module/sub-modules/partners/style";
 import Quote from "app/modules/home-module/assets/quote-icon.svg";
 import InlineLogo from "app/modules/home-module/assets/inline-logo";
+import { useCMSData } from "app/hooks/useCMSData";
+import { getCMSDataField } from "app/utils/getCMSDataField";
 
 export default function QuoteBlock() {
+  const cmsData = useCMSData({ returnData: true });
   return (
     <Grid css={quotecss} container direction="column" alignItems="center">
       <p
@@ -38,8 +41,18 @@ export default function QuoteBlock() {
             }
           `}
         />{" "}
-        There are multiple facets of data that we needed to be able to splice
-        and dice. <br /> Dataxplorer is allowing us to do that!
+        {getCMSDataField(
+          cmsData,
+          "pagesPartners.quoteBlockText1",
+          `There are multiple facets of data that we needed to be able to splice
+        and dice.`
+        )}
+        <br />{" "}
+        {getCMSDataField(
+          cmsData,
+          "pagesPartners.quoteBlockText2",
+          `Dataxplorer is allowing us to do that!`
+        )}
         <img
           src={Quote}
           alt="quote_icon"
@@ -60,9 +73,21 @@ export default function QuoteBlock() {
         />
       </p>
       <div>
-        <p>Murad Hrji | Senior Digital Architect</p>
+        <p>
+          {getCMSDataField(
+            cmsData,
+            "pagesPartners.quoteAuthor",
+            `Murad Hrji | Senior Digital Architect`
+          )}
+        </p>
 
-        <p>The Global Fund to Fight AIDS, Tuberculosis and Malaria</p>
+        <p>
+          {getCMSDataField(
+            cmsData,
+            "pagesPartners.quoteAuthorRole",
+            `The Global Fund to Fight AIDS, Tuberculosis and Malaria`
+          )}
+        </p>
       </div>
     </Grid>
   );

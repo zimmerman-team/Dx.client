@@ -28,6 +28,7 @@ import {
 import { useRecoilValue } from "recoil";
 import { fetchPlanLoadingAtom } from "./state/recoil/atoms";
 import { APPLICATION_JSON } from "./state/api";
+import { useCMSData } from "./hooks/useCMSData";
 
 const LandingModule = lazy(
   () => import("app/modules/home-module/sub-modules/landing")
@@ -251,6 +252,7 @@ const StripeReturn = () => {
 };
 
 export function MainRoutes() {
+  useCMSData({ loadData: true });
   useScrollToTop();
   useRouteListener();
 

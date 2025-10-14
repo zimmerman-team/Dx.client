@@ -7,8 +7,11 @@ import { CalendarIcon } from "./assets/CalendarIcon";
 import { DESKTOP_BREAKPOINT, MOBILE_BREAKPOINT } from "app/theme";
 import WhatYouLearn from "./components/what-you-learn";
 import ReserveYourSpot from "./components/reserve-your-spot";
+import { getCMSDataField } from "app/utils/getCMSDataField";
+import { useCMSData } from "app/hooks/useCMSData";
 
 const WebinarPage = () => {
+  const cmsData = useCMSData({ returnData: true });
   return (
     <div
       css={`
@@ -33,7 +36,11 @@ const WebinarPage = () => {
                 -webkit-text-fill-color: transparent;
               `}
             >
-              Join to Our Webinar Series
+              {getCMSDataField(
+                cmsData,
+                "pagesWebinar.heroTitle",
+                "Join to Our Webinar Series"
+              )}
             </b>
           </>
         }
@@ -50,10 +57,25 @@ const WebinarPage = () => {
           `}
         >
           <p>
-            Be among the first to experience the future of data visualization
-            and storytelling. Join us for an <br /> exclusive deep-dive into our
-            DataXplorer walkthrough, explore the features, and upcoming roadmap.
-            <br /> Get insights and ask questions directly to our product team.
+            {getCMSDataField(
+              cmsData,
+              "pagesWebinar.heroDescription1",
+              `Be among the first to experience the future of data visualization
+            and storytelling. Join us for an`
+            )}
+            <br />{" "}
+            {getCMSDataField(
+              cmsData,
+              "pagesWebinar.heroDescription2",
+              `exclusive deep-dive into our DataXplorer walkthrough, explore
+            the features, and upcoming roadmap.`
+            )}
+            <br />{" "}
+            {getCMSDataField(
+              cmsData,
+              "pagesWebinar.heroDescription3",
+              `Get insights and ask questions directly to our product team.`
+            )}
           </p>
           <Box height={"24px"} />
           <div
@@ -74,13 +96,24 @@ const WebinarPage = () => {
             `}
           >
             <p>
-              <ClockIcon /> 45 minutes
+              <ClockIcon />{" "}
+              {getCMSDataField(cmsData, "pagesWebinar.heroTime", `45 minutes`)}
             </p>
             <p>
-              <UsersIcon /> Interactive Q&A
+              <UsersIcon />{" "}
+              {getCMSDataField(
+                cmsData,
+                "pagesWebinar.heroInteractiveQA",
+                `Interactive Q&A`
+              )}
             </p>
             <p>
-              <CalendarIcon /> Monthly Sessions
+              <CalendarIcon />{" "}
+              {getCMSDataField(
+                cmsData,
+                "pagesWebinar.heroSchedule",
+                `Monthly Sessions`
+              )}
             </p>
           </div>
         </div>

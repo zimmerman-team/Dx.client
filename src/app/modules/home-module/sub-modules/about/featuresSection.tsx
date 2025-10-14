@@ -5,8 +5,56 @@ import {
 } from "app/theme";
 import React from "react";
 import { Container } from "@material-ui/core";
-import { features } from "./data";
+import { useCMSData } from "app/hooks/useCMSData";
+import { getCMSDataField } from "app/utils/getCMSDataField";
+
 export default function FeaturesSection() {
+  const cmsData = useCMSData({ returnData: true });
+
+  const features = React.useMemo(
+    () => [
+      {
+        title: "+100.000",
+        subtitle: getCMSDataField(
+          cmsData,
+          "pagesAbout.feature1Subtitle",
+          "Datasets available"
+        ),
+        text: getCMSDataField(
+          cmsData,
+          "pagesAbout.feature1Text",
+          "Access over 100.000 datasets to create stories and charts. Create impact with data from 3rd parties built in Dataxplorer or connect your in-house datasources."
+        ),
+      },
+      {
+        title: "+15 Visuals",
+        subtitle: getCMSDataField(
+          cmsData,
+          "pagesAbout.feature2Subtitle",
+          "Chart type provided"
+        ),
+        text: getCMSDataField(
+          cmsData,
+          "pagesAbout.feature2Text",
+          "Dataxplorer offers over 15 different chart types for you to work with. Based on the open sources Apache E-charts library you are able to create rich graphs."
+        ),
+      },
+      {
+        title: "+3",
+        subtitle: getCMSDataField(
+          cmsData,
+          "pagesAbout.feature3Subtitle",
+          "Languages are supported"
+        ),
+        text: getCMSDataField(
+          cmsData,
+          "pagesAbout.feature3Text",
+          "Dataxplorer caters to a global clientele, ensuring seamless data integration and communication. We will offer Dataxplorer in 3 different languages."
+        ),
+      },
+    ],
+    [cmsData]
+  );
   return (
     <>
       <div
