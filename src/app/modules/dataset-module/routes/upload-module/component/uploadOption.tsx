@@ -1,3 +1,4 @@
+import { FOCUS_VISIBLE_STYLE_LIGHT } from "app/theme";
 import React from "react";
 import { useHistory } from "react-router-dom";
 import { Tooltip } from "react-tooltip";
@@ -14,9 +15,8 @@ const UploadOption = (props: {
   onLogout?: () => void;
   canConnect?: boolean;
   upgradeRequired: boolean;
+  ariaLabel: string;
 }) => {
-  const [openSettings, setOpenSettings] = React.useState(false);
-
   const history = useHistory();
 
   return (
@@ -26,6 +26,7 @@ const UploadOption = (props: {
       }
     >
       <button
+        aria-label={props.ariaLabel}
         css={`
           border-radius: 10px;
           border: 1px solid #adb5bd;
@@ -38,6 +39,9 @@ const UploadOption = (props: {
             cursor: not-allowed;
           }
           position: relative;
+          :focus-visible {
+            ${FOCUS_VISIBLE_STYLE_LIGHT}
+          }
         `}
         disabled={props.disabled}
         onClick={(e) => {

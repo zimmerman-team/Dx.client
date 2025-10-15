@@ -47,11 +47,11 @@ export default function Stepper(
     >
       <span>
         {props.activeStep === props.index ? (
-          <InProgressIcon />
+          <InProgressIcon role="presentation" />
         ) : props.activeStep > props.index ? (
-          <CompletedIcon />
+          <CompletedIcon role="presentation" />
         ) : (
-          <IdleIcon />
+          <IdleIcon role="presentation" />
         )}
       </span>
       <div>

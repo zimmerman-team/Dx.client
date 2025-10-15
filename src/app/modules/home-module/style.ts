@@ -98,7 +98,7 @@ export const rowFlexCss = css`
   align-items: center;
 `;
 
-export const searchInputCss = (openSearch: boolean) => css`
+export const searchInputCss = (openSearch: boolean, isFocused: boolean) => css`
   background: #f1f3f5;
   display: flex;
   align-items: center;
@@ -110,6 +110,8 @@ export const searchInputCss = (openSearch: boolean) => css`
   opacity: ${openSearch ? 1 : 0};
   transition: opacity 0.2s ease-in-out 0s;
   overflow: hidden;
+  ${isFocused && "border-bottom: 1px solid #6061e5;"}
+
   input {
     outline: none;
     height: 100%;
@@ -119,7 +121,6 @@ export const searchInputCss = (openSearch: boolean) => css`
     background: inherit;
     border-style: none;
     border-radius: 10px;
-
     padding: 6px 0px !important;
   }
   @media (min-width: 768px) {
@@ -138,6 +139,7 @@ export const iconButtonCss = (active?: boolean) => css`
   outline: none;
   cursor: pointer;
   padding: 0;
+
   :focus-visible {
     ${FOCUS_VISIBLE_STYLE_LIGHT}
   }
