@@ -101,7 +101,8 @@ export const metaDatacss = css`
   textarea {
     font-family: "GothamNarrow-Book", "Helvetica Neue", sans-serif;
     font-size: 16px;
-    &:focus {
+    &:focus,
+    &:focus-visible {
       border-bottom: 1px solid #6061e5;
     }
   }

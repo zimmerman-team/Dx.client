@@ -3,6 +3,7 @@ import { uploadAreacss } from "app/modules/dataset-module/routes/upload-module/s
 import { ReactComponent as UploadIcon } from "app/modules/dataset-module/routes/upload-module/assets/upload.svg";
 import { formatBytes } from "app/utils/formatBytes";
 import { APPLICATION_JSON } from "app/state/api";
+import { FOCUS_VISIBLE_STYLE_LIGHT } from "app/theme";
 
 interface DropzoneProps {
   uploadError: boolean;
@@ -29,6 +30,7 @@ export const DropZone = (props: DropzoneProps) => {
     isDragActive,
     acceptedFiles,
     fileRejections,
+    isFocused,
   } = useDropzone({ onDrop: props.onDrop, accept: ACCEPTED_FILES });
 
   const fileRejectionItems = fileRejections.map(({ file, errors }) => (
@@ -41,6 +43,7 @@ export const DropZone = (props: DropzoneProps) => {
       </ul>
     </li>
   ));
+
   return (
     <>
       <div
@@ -61,6 +64,7 @@ export const DropZone = (props: DropzoneProps) => {
               "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='163' height='163' viewBox='0 0 20 20'%3E%3Cg %3E%3Cpolygon fill='%23ffffff' points='20 10 10 0 0 0 20 20'/%3E%3Cpolygon fill='%23ffffff' points='0 10 0 20 10 20'/%3E%3C/g%3E%3C/svg%3E"
             )`
             : "unset"};
+          ${isFocused && FOCUS_VISIBLE_STYLE_LIGHT}
         `}
         {...getRootProps()}
       >
@@ -69,6 +73,7 @@ export const DropZone = (props: DropzoneProps) => {
             {...getInputProps()}
             data-testid="local-upload"
             data-cy="local-upload-input"
+            aria-label="Local File Upload"
           />
           {!isDragActive && (
             <>

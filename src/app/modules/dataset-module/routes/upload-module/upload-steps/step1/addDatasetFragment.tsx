@@ -59,7 +59,7 @@ export default function AddDatasetFragment(props: Props) {
   }, []);
 
   const renderUploadOptionsList = () => {
-    return uploadOptions.map((option) => (
+    return uploadOptionsState.map((option) => (
       <UploadOption
         key={option.name}
         name={option.name}
@@ -72,6 +72,7 @@ export default function AddDatasetFragment(props: Props) {
         connected={option.connected}
         onLogout={option.onLogout}
         upgradeRequired={option.upgradeRequired}
+        ariaLabel={option.ariaLabel}
       />
     ));
   };
@@ -85,8 +86,13 @@ export default function AddDatasetFragment(props: Props) {
       type: "Table Dataset",
       formats: ["CSV", "XSLX", "JSON"],
       icon: <LocalIcon />,
-      onClick: () => {},
+      onClick: () => {
+        setUploadOptionsState((prev) => {
+          return prev.slice(1);
+        });
+      },
       upgradeRequired: false,
+      ariaLabel: "Local File Upload",
     },
     {
       name: "Google Drive",
@@ -103,6 +109,7 @@ export default function AddDatasetFragment(props: Props) {
         deleteGoogleDriveToken();
       },
       upgradeRequired: userPlan?.planData.name === "Free",
+      ariaLabel: "Google Drive Upload",
     },
     {
       name: "Microsoft Cloud",
@@ -119,6 +126,7 @@ export default function AddDatasetFragment(props: Props) {
         await clearToken();
       },
       upgradeRequired: userPlan?.planData.name === "Free",
+      ariaLabel: "Microsoft OneDrive Upload",
     },
     // {
     //   name: "API Connection",
@@ -169,6 +177,9 @@ export default function AddDatasetFragment(props: Props) {
     //   upgradeRequired: false,
     // },
   ];
+
+  const [uploadOptionsState, setUploadOptionsState] =
+    React.useState(uploadOptions);
 
   return (
     <>

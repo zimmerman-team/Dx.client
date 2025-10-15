@@ -110,8 +110,6 @@ export default function Filter(
           css={`
             height: 40px;
             width: 100px;
-            svg {
-            }
           `}
         >
           <MultiSwitch

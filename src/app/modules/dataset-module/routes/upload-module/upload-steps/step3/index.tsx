@@ -120,7 +120,9 @@ export default function DescribeAndSave(props: DescribeAndSaveProps) {
               display: flex;
               align-items: center;
               gap: 10px;
-
+              button:first-of-type {
+                height: 41px !important;
+              }
               button:last-of-type,
               button:nth-of-type(2) {
                 height: 44px;
