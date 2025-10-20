@@ -49,6 +49,7 @@ import {
   TABLET_STARTPOINT,
 } from "app/theme";
 import { ISnackbarState } from "app/modules/dataset-module/routes/upload-module/style";
+import CopyButton from "./copyButton";
 
 export const useStyles = makeStyles(() =>
   createStyles({
@@ -136,18 +137,8 @@ export function StorySubheaderToolbar(
   );
   const [displayMobileMenu, setDisplayMobileMenu] = React.useState(false);
 
-  const copyButtonRef = React.useRef<HTMLButtonElement>(null);
-
   const open = Boolean(anchorEl);
   const id = open ? "simple-popover" : undefined;
-
-  React.useEffect(() => {
-    if (open && copyButtonRef.current) {
-      setTimeout(() => {
-        copyButtonRef.current?.focus();
-      }, 0);
-    }
-  }, [open]);
 
   React.useEffect(() => {
     // handles saved changes state for autosave
@@ -191,7 +182,8 @@ export function StorySubheaderToolbar(
     setAnchorEl(null);
   };
 
-  const handleCopy = (text: string, result: boolean) => {
+  const handleCopy = (text: string) => {
+    navigator.clipboard.writeText(text);
     setOpenSnackbar(true);
   };
 
@@ -557,12 +549,7 @@ export function StorySubheaderToolbar(
                         `}
                       >
                         <div css={styles.sharePopup}>
-                          <CopyToClipboard
-                            text={window.location.href}
-                            onCopy={handleCopy}
-                          >
-                            <Button startIcon={<LinkIcon />}>Copy link</Button>
-                          </CopyToClipboard>
+                          <CopyButton handleCopy={handleCopy} />
                         </div>
                       </Popover>
                       {canStoryEditDelete && (
