@@ -29,7 +29,9 @@ function StoryInitialView(props: Readonly<StoryInitialViewProps>) {
   );
   const [openSearch, setOpenSearch] = React.useState(false);
   const [sortValue, setSortValue] = React.useState("updatedDate");
-  const [filterValue, setFilterValue] = React.useState("allAssets");
+  const [filterValue, setFilterValue] = React.useState<
+    "allAssets" | "myAssets" | "dataxplorerAssets"
+  >("allAssets");
 
   const storyCreateSuccess = useStoreState(
     (state) => state.stories.StoryCreate.success
@@ -157,6 +159,7 @@ function StoryInitialView(props: Readonly<StoryInitialViewProps>) {
         view={storiesView}
         showMenuButton
         gridId="stories-grid"
+        filterValue={filterValue}
       />
     </Container>
   );
