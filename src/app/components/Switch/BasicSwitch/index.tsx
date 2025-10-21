@@ -22,7 +22,7 @@ export function BasicSwitch({
 }: StyledSwitchProps) {
   return (
     <HeadlessSwitch tabs={tabs} activeTab={activeTab} onTabChange={onTabChange}>
-      {({ tabs, activeTab, activeIndex, onTabClick }) => (
+      {({ activeIndex, getTabProps }) => (
         <div
           css={`
             display: flex;
@@ -57,8 +57,8 @@ export function BasicSwitch({
           {tabs.map((tab, index) => (
             <button
               key={tab.value}
-              onClick={() => onTabClick(tab.value, index)}
               data-cy={tab.testId}
+              {...getTabProps(tab, index)}
               css={`
                 background: transparent;
                 font-weight: ${activeTab === tab.value ? "bold" : "medium"};

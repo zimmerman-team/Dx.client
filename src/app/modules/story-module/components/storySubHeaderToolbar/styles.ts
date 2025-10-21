@@ -169,6 +169,7 @@ export const styles = {
     color: #70777e;
     font-size: 18px;
     height: 35px;
+    width: 28px;
     border-radius: 8px;
     display: flex;
     align-items: center;

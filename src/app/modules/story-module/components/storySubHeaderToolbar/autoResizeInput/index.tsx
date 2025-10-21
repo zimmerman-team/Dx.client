@@ -1,5 +1,6 @@
 import React, { useRef } from "react";
 import { styles } from "app/modules/story-module/components/storySubHeaderToolbar/styles";
+import { FOCUS_VISIBLE_STYLE_LIGHT } from "app/theme";
 
 interface InputProps
   extends React.DetailedHTMLProps<
@@ -90,6 +91,9 @@ export default function AutoResizeInput(props: InputProps) {
           opacity: ${spanVisibility ? "0" : "1"};
           ${!autoResize ? "width: 100% !important;" : ""};
           max-width: 100% !important;
+          &:focus-visible {
+            ${spanVisibility ? "" : FOCUS_VISIBLE_STYLE_LIGHT}
+          }
         `}
         value={name}
         onChange={(e) => onChange(e.target.value)}
@@ -108,6 +112,9 @@ export default function AutoResizeInput(props: InputProps) {
           margin-left: -0.8px;
           @media (max-width: 1200px) {
             max-width: 100%;
+          }
+          &:focus-visible {
+            ${spanVisibility ? FOCUS_VISIBLE_STYLE_LIGHT : ""}
           }
         `}
       >
