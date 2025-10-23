@@ -23,7 +23,6 @@ export default function ChartItem(
     isAIAssistedChart: boolean;
   }>
 ) {
-  const nullRef = React.useRef(null);
   const [chartPreview, setChartPreview] = React.useState(false);
   const chartFromStory = useRecoilValue(chartFromStoryAtom);
 

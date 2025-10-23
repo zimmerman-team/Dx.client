@@ -165,6 +165,8 @@ export function StoryRightPanelCreateView(
       <PanelLabel currentView={currentView} />
       {currentView === "elements" && (
         <div
+          id="elements-panel"
+          aria-label="Elements Panel"
           css={`
             width: 100%;
             display: flex;
@@ -195,6 +197,8 @@ export function StoryRightPanelCreateView(
       )}
       {currentView === "media" && (
         <div
+          id="media-panel"
+          aria-label="Media Panel"
           css={`
             width: 100%;
             display: flex;

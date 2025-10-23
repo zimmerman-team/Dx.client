@@ -17,7 +17,7 @@ import {
   PRIVACY_POLICY_LINK,
   TELEPHONE_NUMBER,
   TERMS_AND_CONDITION_LINK,
-} from "app/modules/chart-module/util/constants";
+} from "app/constants";
 import Logo from "app/assets/icons/Logo";
 
 interface Props {

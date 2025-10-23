@@ -1,12 +1,10 @@
 import Skeleton from "@material-ui/lab/Skeleton";
 import SearchIcon from "@material-ui/icons/Search";
 import { useInfinityScroll } from "app/hooks/useInfinityScroll";
-
 import { TABLET_STARTPOINT } from "app/theme";
 import React from "react";
 import { sortByOptions, StoryElementsType } from ".";
 import { IFramesArray } from "app/modules/story-module/views/create/data";
-import KeyboardArrowDownIcon from "@material-ui/icons/KeyboardArrowDown";
 import { IHeaderDetails } from "app/modules/story-module/components/right-panel/data";
 import { IChartDetail } from "./data";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
@@ -14,7 +12,7 @@ import get from "lodash/get";
 import { useDebounce } from "react-use";
 import { CreateChartCard } from "./createChartCard";
 import ChartItem from "./chartItem";
-import { Button, StyledMenu, StyledMenuItem } from "./elementItem";
+import SortMenuPopover from "./menuPopover";
 
 export default function ChartList(
   props: Readonly<{
@@ -25,10 +23,10 @@ export default function ChartList(
   }>
 ) {
   const token = useStoreState((state) => state.AuthToken.value);
+  const [inputFocused, setInputFocused] = React.useState(false);
 
   const [searchValue, setSearchValue] = React.useState("");
   const [sortBy, setSortBy] = React.useState(sortByOptions[0]);
-  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
 
   const [loadedCharts, setLoadedCharts] = React.useState<IChartDetail[]>([]);
   const chartList = useStoreState(
@@ -99,14 +97,6 @@ export default function ChartList(
     });
   }, [chartsLoadSuccess]);
 
-  const handleClick = (event: React.MouseEvent<HTMLElement>) => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
-
   useDebounce(
     () => {
       loadChartsCount({
@@ -126,6 +116,8 @@ export default function ChartList(
   return (
     <React.Fragment>
       <div
+        id="charts-panel"
+        aria-label="Charts Panel"
         css={`
           width: 100%;
           gap: 8px;
@@ -149,6 +141,8 @@ export default function ChartList(
             background: #dfe3e6;
             border-radius: 24px;
             padding: 0 8px;
+            ${inputFocused && "border-bottom: 1px solid #6061e5;"}
+
             @media (min-width: ${TABLET_STARTPOINT}) and (max-width: 1090px) {
               width: 100%;
             }
@@ -157,6 +151,10 @@ export default function ChartList(
           <input
             type="text"
             onChange={(e) => setSearchValue(e.target.value)}
+            onBlur={() => setInputFocused(false)}
+            onFocus={(e) => {
+              setInputFocused(true);
+            }}
             data-cy="story-panel-chart-search-input"
             value={searchValue}
             css={`
@@ -168,64 +166,13 @@ export default function ChartList(
           />
           <SearchIcon htmlColor="#495057" />
         </div>
-        <Button
-          disableTouchRipple
-          onClick={handleClick}
-          css={`
-            width: 159px;
-            height: 35px;
-            border-radius: 24px;
-            background: #231d2c;
-            text-transform: capitalize;
-            padding-left: 16px;
-            display: flex;
-            svg {
-              margin-left: 10px;
-              transition: all 0.2s ease-in-out;
-              transform: rotate(${anchorEl ? "180" : "0"}deg);
-              > path {
-                fill: #fff;
-              }
-            }
-            @media (max-width: ${TABLET_STARTPOINT}) {
-              justify-self: flex-end;
-            }
-          `}
-        >
-          <span
-            css={`
-              color: #fff;
-              font-size: 14px;
-              overflow: hidden;
-              font-weight: 325;
-              white-space: nowrap;
-              text-overflow: ellipsis;
-              font-family: "GothamNarrow-Book", "Helvetica Neue", sans-serif;
-            `}
-          >
-            Sort by {sortBy.label}
-          </span>
-          <KeyboardArrowDownIcon />
-        </Button>
-        <StyledMenu
-          keepMounted
-          anchorEl={anchorEl}
-          id="breadcrumb-menu"
-          onClose={handleClose}
-          open={Boolean(anchorEl)}
-        >
-          {sortByOptions.map((option) => (
-            <StyledMenuItem
-              key={option.value}
-              onClick={() => {
-                setSortBy(option);
-                handleClose();
-              }}
-            >
-              {option.label}
-            </StyledMenuItem>
-          ))}
-        </StyledMenu>
+        <SortMenuPopover
+          menuItem={sortBy}
+          setMenuItem={setSortBy}
+          label={"Sort by  " + sortBy.label}
+          options={sortByOptions}
+          menuId="breadcrumb-menu"
+        />
       </div>
       <div
         css={`

@@ -10,6 +10,7 @@ import { useLoadDatasetDetails } from "./useLoadDatasetDetailsAPI";
 import AIIcon from "app/assets/icons/AIIcon";
 import { getDatasetDetailsSource } from "app/modules/chart-module/util/getDatasetDetailsSource";
 import { DatasetListItemAPIModel } from "app/modules/dataset-module/data";
+import { FOCUS_VISIBLE_STYLE_LIGHT } from "app/theme";
 
 interface Props {
   id: string;
@@ -303,6 +304,9 @@ export function StoryChartWrapper(props: Props) {
               color: #70777e;
               text-decoration: none;
               border-bottom: 1px solid #70777e;
+              :focus-visible {
+                ${FOCUS_VISIBLE_STYLE_LIGHT}
+              }
             }
           `}
         >

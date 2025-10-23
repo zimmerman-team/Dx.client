@@ -92,7 +92,9 @@ export default function AutoResizeInput(props: InputProps) {
           ${!autoResize ? "width: 100% !important;" : ""};
           max-width: 100% !important;
           &:focus-visible {
-            ${spanVisibility ? "" : FOCUS_VISIBLE_STYLE_LIGHT}
+            ${spanVisibility
+              ? ""
+              : "border: 1.5px solid #6061E5;border-radius: 4px;"}
           }
         `}
         value={name}
@@ -114,7 +116,9 @@ export default function AutoResizeInput(props: InputProps) {
             max-width: 100%;
           }
           &:focus-visible {
-            ${spanVisibility ? FOCUS_VISIBLE_STYLE_LIGHT : ""}
+            ${spanVisibility
+              ? "border: 1.5px solid #6061E5;border-radius: 4px;"
+              : ""}
           }
         `}
       >

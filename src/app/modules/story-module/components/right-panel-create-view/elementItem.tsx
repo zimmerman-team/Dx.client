@@ -17,12 +17,12 @@ import { useDebounce } from "react-use";
 import { css } from "styled-components";
 import ArrowDropDownIcon from "@material-ui/icons/ArrowDropDown";
 import SearchIcon from "@material-ui/icons/Search";
-import KeyboardArrowDownIcon from "@material-ui/icons/KeyboardArrowDown";
 import Skeleton from "@material-ui/lab/Skeleton";
 import ImageFrame from "./imageFrame";
 import { get } from "lodash";
 import VideoFrame from "./videoFrame";
 import MuiButton from "@material-ui/core/Button";
+import MenuPopover from "./menuPopover";
 
 export const Button = withStyles(() => ({
   root: {
@@ -95,6 +95,11 @@ export const StyledMenuItem = withStyles(() => ({
     color: "#231d2c",
     padding: "10px 12px",
     borderBottom: "1px solid #DFE3E6",
+    "&:focus-visible": {
+      border: "2px solid #00B5D8",
+      color: "#fff",
+      backgroundColor: "none",
+    },
   },
 }))(MenuItem);
 
@@ -134,6 +139,7 @@ export default function ElementItem(props: {
   const [source, setSource] = React.useState(
     get(currentSourceOptions, props.elementType, [{}])[0]
   );
+  const [inputFocused, setInputFocused] = React.useState(false);
 
   const { data, loading, search } = useSearchMediaSources(
     source.value,
@@ -231,7 +237,7 @@ export default function ElementItem(props: {
           }
         }}
       >
-        <div
+        <button
           ref={isImageElement || isVideoElement ? nullRef : drag}
           data-cy={`story-panel-${props.elementType}-item`}
           id={props.name}
@@ -240,7 +246,6 @@ export default function ElementItem(props: {
             props.disabled as boolean,
             isDragging,
             props.draggable,
-            dropDown,
             props.upgradeRequired
           )}
           onClick={() => {
@@ -270,7 +275,7 @@ export default function ElementItem(props: {
               </div>
             </>
           ) : null}
-        </div>
+        </button>
       </Tooltip>
 
       {isImageElement || isVideoElement ? (
@@ -293,12 +298,17 @@ export default function ElementItem(props: {
                 padding-left: 16px;
                 padding-right: 8.78px;
                 align-items: center;
+                ${inputFocused && "border-bottom: 1px solid #6061e5;"}
               `}
             >
               <input
                 type="text"
                 onChange={(e) => setSearchValue(e.target.value)}
                 value={searchValue}
+                onBlur={() => setInputFocused(false)}
+                onFocus={(e) => {
+                  setInputFocused(true);
+                }}
                 data-cy={`search-${props.elementType}-list`}
                 css={`
                   outline: none;
@@ -317,66 +327,13 @@ export default function ElementItem(props: {
                 width: max-content;
               `}
             >
-              <Button
-                disableTouchRipple
-                onClick={handleClick}
-                css={`
-                  width: 159px;
-                  height: 35px;
-                  border-radius: 24px;
-                  background: #231d2c;
-                  text-transform: capitalize;
-                  padding: 0 16px;
-                  display: flex;
-                  justify-content: space-between;
-
-                  svg {
-                    margin-left: 10px;
-                    transition: all 0.2s ease-in-out;
-                    transform: rotate(${anchorEl ? "180" : "0"}deg);
-                    > path {
-                      fill: #fff;
-                    }
-                  }
-                `}
-              >
-                <span
-                  css={`
-                    color: #fff;
-                    font-size: 14px;
-                    overflow: hidden;
-                    font-weight: 325;
-                    white-space: nowrap;
-                    text-overflow: ellipsis;
-                    font-family: "GothamNarrow-Book", "Helvetica Neue",
-                      sans-serif;
-                  `}
-                >
-                  {source.label}
-                </span>
-                <KeyboardArrowDownIcon />
-              </Button>
-              <StyledMenu
-                keepMounted
-                anchorEl={anchorEl}
-                id="breadcrumb-menu"
-                onClose={handleClose}
-                open={Boolean(anchorEl)}
-              >
-                {get(currentSourceOptions, props.elementType, [{}]).map(
-                  (option: any) => (
-                    <StyledMenuItem
-                      key={option.value}
-                      onClick={() => {
-                        setSource(option);
-                        handleClose();
-                      }}
-                    >
-                      {option.label}
-                    </StyledMenuItem>
-                  )
-                )}
-              </StyledMenu>
+              <MenuPopover
+                menuItem={source}
+                setMenuItem={setSource}
+                label={source.label}
+                options={get(currentSourceOptions, props.elementType, [{}])}
+                menuId="breadcrumb-menu"
+              />
             </div>
 
             <div

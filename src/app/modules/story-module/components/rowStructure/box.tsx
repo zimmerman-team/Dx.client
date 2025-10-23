@@ -30,7 +30,7 @@ import { decorators } from "app/modules/common/RichEditor/decorators";
 import { MIN_BOX_WIDTH } from "./data";
 import { useUndoRedo } from "app/hooks/useUndoRedo";
 import { compareEditorStates } from "app/modules/story-module/views/edit/compareStates";
-import { MOBILE_BREAKPOINT } from "app/theme";
+import { FOCUS_VISIBLE_STYLE_DARK, MOBILE_BREAKPOINT } from "app/theme";
 import { updateDynamicStylesOnRender } from "app/utils/draftjs/getStyleEl";
 
 // Types
@@ -470,7 +470,9 @@ const Box = (props: BoxProps) => {
             height: 22px;
             border-radius: 50%;
             background: #adb5bd;
-
+            :focus-visible {
+              ${FOCUS_VISIBLE_STYLE_DARK}
+            }
             :hover {
               background: #adb5bd;
               svg {
@@ -501,6 +503,9 @@ const Box = (props: BoxProps) => {
               height: 22px;
               border-radius: 50%;
               background: #adb5bd;
+              :focus-visible {
+                ${FOCUS_VISIBLE_STYLE_DARK}
+              }
               :hover {
                 background: #adb5bd;
                 svg {

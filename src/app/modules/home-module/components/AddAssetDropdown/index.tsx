@@ -75,19 +75,19 @@ export default function AddAssetDropdown() {
   const storyPath = "/story/new/initial";
   const ctaCards = [
     {
-      title: "Add Dataset",
+      title: "Dataset",
       link: "/dataset/new/upload",
       cypressId: "home-create-dataset-button",
       action: () => connectDataset(),
     },
     {
-      title: " Create a Chart",
+      title: "Chart",
       link: chartPath,
       cypressId: "home-create-chart-button",
       action: () => handleClick("chart", () => history.push(chartPath)),
     },
     {
-      title: "Build a Story",
+      title: "Story",
       link: storyPath,
       cypressId: "home-create-story-button",
       action: () => handleClick("story", () => history.push(storyPath)),
@@ -110,7 +110,7 @@ export default function AddAssetDropdown() {
           justify-content: space-between;
           border-radius: 12px;
           padding: 0 16px;
-          background: ${openState ? "#6061E5" : "#231d2c"};
+          background: ${openState ? "#002D9C" : "#231d2c"};
           color: #fff;
           height: 40px;
           outline: none;

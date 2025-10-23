@@ -54,7 +54,7 @@ export function CreateChartCard(props: {
   };
   return (
     <div>
-      <div
+      <button
         onClick={action}
         data-testid="create-chart-card"
         data-cy="story-panel-create-chart-card"
@@ -69,8 +69,14 @@ export function CreateChartCard(props: {
           align-items: center;
           position: relative;
           cursor: pointer;
+          outline: none;
+          border: none;
+          width: 100%;
           &:hover {
             opacity: 0.8;
+          }
+          :focus-visible {
+            border: 2px solid #231d2c;
           }
         `}
       >
@@ -94,6 +100,7 @@ export function CreateChartCard(props: {
               line-height: 20px;
               margin: 0;
               font-weight: bold;
+              text-align: left;
             }
             p {
               font-family: "GothamNarrow", "Helvetica Neue", sans-serif;
@@ -109,7 +116,7 @@ export function CreateChartCard(props: {
           <h1>New chart</h1>
           <p>Create a new chart in your library</p>
         </div>
-      </div>
+      </button>
     </div>
   );
 }
