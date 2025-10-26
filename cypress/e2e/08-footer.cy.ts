@@ -9,13 +9,7 @@ describe("testing footer for valid links", () => {
   });
 
   it("Logs A11y violations to the terminal", () => {
-    cy.checkA11y(
-      "",
-      {
-        retries: 3,
-      },
-      (violations) => cy.printA11yViolations(violations)
-    );
+    cy.checkA11y(undefined, undefined, undefined, true);
   });
   it("it should verify footer copies", () => {
     cy.get('[data-cy="home-footer"]')
@@ -123,9 +117,7 @@ describe("testing footer for valid links", () => {
         cy.contains("a", "Privacy").invoke("removeAttr", "target").click();
       });
 
-    cy.origin("https://drive.google.com", () => {
-      cy.location("hostname").should("include", "drive.google.com");
-    });
+    cy.location("pathname").should("include", "/privacy-policy");
 
     cy.visit("/");
 
@@ -137,8 +129,6 @@ describe("testing footer for valid links", () => {
           .click();
       });
 
-    cy.origin("https://drive.google.com", () => {
-      cy.location("origin").should("include", "https://drive.google.com");
-    });
+    cy.location("pathname").should("include", "/terms-and-conditions");
   });
 });

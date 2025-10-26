@@ -10,6 +10,7 @@ import { isValidDate } from "app/utils/isValidDate";
 import { IExternalDataset } from "app/modules/dataset-module/routes/upload-module/upload-steps/step1/externalSearch";
 import { ReactComponent as AddIcon } from "app/modules/home-module/assets/add-icon.svg";
 import { ReactComponent as RemoveIcon } from "app/modules/home-module/assets/remove-icon.svg";
+import { FOCUS_VISIBLE_STYLE_LIGHT } from "app/theme";
 
 type Column = { key: string; label: string; icon?: React.ReactNode };
 interface TableCellContentProps {
@@ -28,6 +29,11 @@ interface LinkCellProps {
   data: any;
   columnKey: string;
   cellWidth: number;
+}
+interface DescriptionCellProps {
+  data: any;
+  columnKey: string;
+  itemId: string | number;
 }
 // Separate component for link cells
 const LinkCell = ({ data, columnKey, cellWidth }: LinkCellProps) => (
@@ -52,6 +58,9 @@ const LinkCell = ({ data, columnKey, cellWidth }: LinkCellProps) => (
       align-items: center;
       gap: 8px;
       color: #231d2c;
+      :focus-visible {
+        ${FOCUS_VISIBLE_STYLE_LIGHT}
+      }
     `}
   >
     {data[columnKey]}
@@ -66,11 +75,6 @@ const LinkCell = ({ data, columnKey, cellWidth }: LinkCellProps) => (
   </a>
 );
 
-interface DescriptionCellProps {
-  data: any;
-  columnKey: string;
-  itemId: string | number;
-}
 // Separate component for description cells with expand/collapse
 const DescriptionCell = ({ data, columnKey, itemId }: DescriptionCellProps) => {
   const [isExpanded, setIsExpanded] = React.useState(false);
@@ -95,7 +99,9 @@ const DescriptionCell = ({ data, columnKey, itemId }: DescriptionCellProps) => {
           border: none;
           cursor: pointer;
           padding: 0;
-
+          :focus-visible {
+            ${FOCUS_VISIBLE_STYLE_LIGHT}
+          }
           svg {
             flex-shrink: 0;
             width: 15px;
@@ -220,7 +226,7 @@ export default function ExternalSearchTable(props: {
           border-style: hidden;
           border-collapse: collapse;
         `}
-        data-cy="homepage-table"
+        data-cy="external-search-table"
       >
         <TableHead
           css={`
@@ -256,10 +262,19 @@ export default function ExternalSearchTable(props: {
           {props.tableData.data.map((data, index) => (
             <TableRow
               key={`${data.id}-${index}`}
+              tabIndex={0}
               onClick={() => props.onItemClick(data)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter" || e.key === " ") {
+                  props.onItemClick(data);
+                }
+              }}
               css={`
                 &:hover {
                   cursor: pointer;
+                }
+                &:focus-visible {
+                  border: 2px solid #231d2c;
                 }
                 td {
                   padding: 0 16px;

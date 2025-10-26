@@ -27,11 +27,18 @@ export const SearchInput: React.FC<SearchInputProps> = ({
   inputRef: ContainerRef,
 }) => {
   const inputRef = React.useRef<HTMLInputElement>(null);
+  const [inputFocused, setInputFocused] = React.useState(false);
   React.useEffect(() => {
     if (openSearch) {
       inputRef?.current?.focus();
     }
   }, [openSearch]);
+  const handleInputKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "tab" && openSearch) {
+      setInputFocused(true);
+    }
+  };
+
   return (
     <div
       css={`
@@ -45,7 +52,7 @@ export const SearchInput: React.FC<SearchInputProps> = ({
       `}
       ref={ContainerRef}
     >
-      <div css={searchInputCss(!!openSearch)}>
+      <div css={searchInputCss(!!openSearch, inputFocused)}>
         <SearchIcon role="presentation" />
         <input
           ref={inputRef}
@@ -54,7 +61,12 @@ export const SearchInput: React.FC<SearchInputProps> = ({
           placeholder="Search"
           onChange={onSearchChange}
           onMouseDown={(e) => e.stopPropagation()}
-          onFocus={onFocus}
+          onFocus={(e) => {
+            setInputFocused(true);
+            onFocus?.(e);
+          }}
+          onKeyDown={handleInputKeyDown}
+          onBlur={() => setInputFocused(false)}
           onKeyPress={onKeyPress}
           data-cy="filter-search-input"
           aria-label="search"

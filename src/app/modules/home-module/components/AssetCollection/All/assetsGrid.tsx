@@ -289,9 +289,7 @@ export default function AssetsGrid(props: Props) {
                   description: data.title,
                   updatedDate: data.updatedDate,
                   createdDate: data.createdDate,
-                  type:
-                    data.assetType.charAt(0).toUpperCase() +
-                    data.assetType.slice(1),
+                  type: data.assetType.toLowerCase(),
 
                   ownerName: data.ownerName.split(" ")[0],
                   vizType: echartTypes(false).find((e) => e.id === data.vizType)
@@ -304,9 +302,7 @@ export default function AssetsGrid(props: Props) {
                   description: data.description,
                   updatedDate: data.updatedDate,
                   createdDate: data.createdDate,
-                  type:
-                    data.assetType.charAt(0).toUpperCase() +
-                    data.assetType.slice(1),
+                  type: data.assetType.toLowerCase() /* as keyof IDataTypeMap */,
                   ownerName: data.ownerName.split(" ")[0],
                 };
               }
@@ -322,9 +318,7 @@ export default function AssetsGrid(props: Props) {
                       .getPlainText(),
                 updatedDate: data.updatedDate,
                 createdDate: data.createdDate,
-                type:
-                  data.assetType.charAt(0).toUpperCase() +
-                  data.assetType.slice(1),
+                type: data.assetType.toLowerCase(),
 
                 ownerName: data.ownerName.split(" ")[0],
               };

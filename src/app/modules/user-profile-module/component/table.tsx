@@ -116,7 +116,7 @@ export function InvoiceTable(props: InvoiceTableProps) {
     return (
       <Table
         id="invoice-table"
-        data-cy="homepage-table"
+        data-cy="invoice-table"
         css={`
           border-spacing: 0;
           border-style: hidden;

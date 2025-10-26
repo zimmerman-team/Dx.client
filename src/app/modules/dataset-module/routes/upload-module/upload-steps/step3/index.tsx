@@ -40,7 +40,9 @@ export default function DescribeAndSave(props: DescribeAndSaveProps) {
     sourceUrl,
     ...mandatoryFields
   } = props.metadata.formDetails;
-  const handleSubmit = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+  const handleSubmit = async (
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => {
     e.preventDefault();
     //form validation before submitting
     for (const key in mandatoryFields) {
@@ -69,7 +71,7 @@ export default function DescribeAndSave(props: DescribeAndSaveProps) {
     }
 
     if (Object.values(mandatoryFields).every((value) => value !== "")) {
-      props.metadata.onSubmit(props.metadata.formDetails);
+      await props.metadata.onSubmit(props.metadata.formDetails);
     } else {
       console.log("form errors", mandatoryFields);
     }
@@ -120,7 +122,9 @@ export default function DescribeAndSave(props: DescribeAndSaveProps) {
               display: flex;
               align-items: center;
               gap: 10px;
-
+              button:first-of-type {
+                height: 41px !important;
+              }
               button:last-of-type,
               button:nth-of-type(2) {
                 height: 44px;
@@ -157,12 +161,13 @@ export default function DescribeAndSave(props: DescribeAndSaveProps) {
               size="small"
               bg="light"
               disabled={!isSaveEnabled}
-              onClick={(e) => {
-                handleSubmit(e);
+              onClick={async (e) => {
+                await handleSubmit(e);
                 history.push(
                   `/?newlyCreatedId=${props.tablePreview?.datasetId}`
                 );
               }}
+              data-cy="dataset-metadata-submit"
             >
               Save
               <svg
@@ -183,8 +188,8 @@ export default function DescribeAndSave(props: DescribeAndSaveProps) {
               size="small"
               bg="light"
               disabled={!isSaveEnabled}
-              onClick={(e) => {
-                handleSubmit(e);
+              onClick={async (e) => {
+                await handleSubmit(e);
                 setDatasetId(props.tablePreview?.datasetId || "");
                 history.push(
                   `/chart/new/chart-type?loadataset=true${

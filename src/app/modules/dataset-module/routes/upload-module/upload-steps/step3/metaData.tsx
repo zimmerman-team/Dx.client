@@ -6,10 +6,12 @@ import FormControl from "@material-ui/core/FormControl";
 import {
   CssInputLabel,
   CssSelectField,
-  CssTextField,
   metaDatacss,
 } from "app/modules/dataset-module/routes/upload-module/style";
-import { useLocation } from "react-router-dom";
+import { ChevronRight } from "@material-ui/icons";
+import { useMenuNavigation } from "app/hooks/useMenuNavigation";
+import Popover from "@material-ui/core/Popover";
+import { ReactComponent as CheckMarkIcon } from "app/modules/dataset-module/assets/check-mark.svg";
 
 interface IErrorState {
   name: {
@@ -34,7 +36,7 @@ interface IErrorState {
   };
 }
 export interface MetadataProps {
-  onSubmit: (data: IFormDetails) => void;
+  onSubmit: (data: IFormDetails) => Promise<void>;
   formDetails: {
     name: string;
     description: string;
@@ -129,9 +131,7 @@ const SelectCategoryField = (props: {
 
 export default function MetaData(props: Readonly<MetadataProps>) {
   const characterCount = props.formDetails.description?.length;
-  const handleChange = (
-    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
+  const handleChange = (event: { target: { name: string; value: string } }) => {
     const { public: isPublic, ...rest } = props.formDetails;
     //reset error state to release focus on input field before typing new value
     if (Object.values(props.errorState).some((value) => value.state === true)) {
@@ -149,6 +149,25 @@ export default function MetaData(props: Readonly<MetadataProps>) {
     });
   };
 
+  const {
+    openState,
+    setOpenState,
+    triggerRef,
+    itemRefs,
+    handleTriggerKeyDown,
+    handleMenuKeyDown,
+    activeIndex,
+    closeMenu,
+  } = useMenuNavigation({
+    items: datasetCategories,
+  });
+
+  const handleClosePopover = () => {
+    setOpenState(null);
+  };
+  const togglePopover = (event: React.MouseEvent<HTMLButtonElement>) => {
+    setOpenState(openState ? null : event.currentTarget);
+  };
   return (
     <div css={metaDatacss}>
       <div
@@ -156,7 +175,7 @@ export default function MetaData(props: Readonly<MetadataProps>) {
           width: 100%;
         `}
       >
-        <Grid container spacing={6}>
+        <Grid container spacing={3}>
           <Grid lg={12} xs={12} md={12} item>
             <div>
               <div
@@ -190,6 +209,7 @@ export default function MetaData(props: Readonly<MetadataProps>) {
                 onChange={handleChange}
                 name="name"
                 value={props.formDetails.name}
+                data-cy="dataset-metadata-title"
                 maxLength={50}
                 // ref={}
                 css={`
@@ -269,12 +289,134 @@ export default function MetaData(props: Readonly<MetadataProps>) {
             `}
           />
           <Grid lg={5} xs={12} md={5} item>
-            <SelectCategoryField
-              onChange={handleChange}
-              setFormDetails={props.setFormDetails}
-              formDetails={props.formDetails}
-              error={props.errorState.category.state}
-            />
+            <p
+              css={`
+                color: #231d2c;
+                font-family: "GothamNarrow-Book", "Helvetica Neue", sans-serif;
+                line-height: normal;
+                margin: 0;
+                margin-bottom: 9px;
+
+                font-size: 16px;
+              `}
+            >
+              Data Category
+            </p>
+
+            <button
+              ref={triggerRef}
+              onClick={togglePopover}
+              onKeyDown={(e) => handleTriggerKeyDown(e, e.currentTarget)}
+              aria-haspopup="menu"
+              aria-expanded={!!openState}
+              aria-label="filter-button"
+              data-cy="dataset-metadata-category"
+              css={`
+                border-radius: 10px;
+                border: none;
+                border-bottom: 1px solid #98a1aa;
+                background: #f1f3f5;
+                outline: none;
+                padding: 12.5px 16px;
+                width: 100%;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                svg {
+                  transform: ${openState ? "rotate(-90deg)" : "rotate(90deg)"};
+                  margin-left: auto;
+                }
+                :focus-visible {
+                  border-bottom: 1px solid #6061e5;
+                }
+              `}
+            >
+              {props.formDetails.category} <ChevronRight />
+            </button>
+            <Popover
+              open={!!openState}
+              anchorEl={openState}
+              onClose={handleClosePopover}
+              anchorOrigin={{
+                vertical: "bottom",
+                horizontal: "left",
+              }}
+              transformOrigin={{
+                vertical: "top",
+                horizontal: "left",
+              }}
+              css={`
+                .MuiPaper-root {
+                  margin-top: 4px;
+                  border-radius: 6px;
+                  height: auto;
+                  border: 1px solid #868e96;
+                  background: #f1f3f5;
+                  box-shadow: 0 2px 7px 0 rgba(0, 0, 0, 0.25);
+                  width: ${triggerRef.current?.offsetWidth}px;
+                }
+              `}
+            >
+              <div
+                role="menu"
+                onKeyDown={handleMenuKeyDown}
+                css={`
+                  display: flex;
+                  flex-direction: column;
+
+                  button {
+                    border: none;
+                    outline: none;
+                    text-align: left;
+                    line-height: 20px;
+                    font-size: 14px;
+                    cursor: pointer;
+                    &:focus-visible {
+                      border: 2px solid #231d2c;
+                      :nth-of-type(3) {
+                        border-bottom-left-radius: 6px;
+                        border-bottom-right-radius: 6px;
+                      }
+                    }
+                  }
+                `}
+              >
+                <div
+                  css={`
+                    height: 24px;
+                    width: 100%;
+                    background: #f1f3f5;
+                    padding-left: 4px;
+                  `}
+                >
+                  <CheckMarkIcon />
+                </div>
+                {datasetCategories.map((option, i) => (
+                  <button
+                    ref={(el) => (itemRefs.current[i] = el)}
+                    role="menuitem"
+                    key={option}
+                    tabIndex={activeIndex === i ? 0 : -1}
+                    onClick={() => {
+                      handleChange({
+                        target: { name: "category", value: option },
+                      });
+                      closeMenu();
+                    }}
+                    css={`
+                      padding: 1px 16px 1px 22px;
+                      height: 20px;
+                      display: flex;
+                      align-items: center;
+                      margin-bottom: 2px;
+                    `}
+                    data-cy="dataset-metadata-category-option"
+                  >
+                    {option}
+                  </button>
+                ))}
+              </div>
+            </Popover>
           </Grid>
           <Grid lg={7} xs={12} md={7} item>
             <p
@@ -297,7 +439,6 @@ export default function MetaData(props: Readonly<MetadataProps>) {
               value={props.formDetails.source}
               data-cy="dataset-metadata-source"
               data-testid="Source-of-the-data"
-              // ref={}
               css={`
                 border-radius: 10px;
                 border: none;
@@ -308,22 +449,6 @@ export default function MetaData(props: Readonly<MetadataProps>) {
                 width: 100%;
               `}
             />
-            {/* <CssTextField
-              id="outlined-basic"
-              label="Source of the data*"
-              variant="filled"
-              onChange={handleChange}
-              name="source"
-              fullWidth
-              data-cy="dataset-metadata-source"
-              inputProps={{
-                "data-testid": "Source-of-the-data",
-              }}
-              inputRef={(input) =>
-                input && props.errorState.source.state && input.focus()
-              }
-              value={props.formDetails.source}
-            /> */}
           </Grid>
           <Grid lg={12} xs={12} md={12} item>
             <p
