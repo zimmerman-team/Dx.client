@@ -29,7 +29,9 @@ function StoryInitialView(props: Readonly<StoryInitialViewProps>) {
   );
   const [openSearch, setOpenSearch] = React.useState(false);
   const [sortValue, setSortValue] = React.useState("updatedDate");
-  const [filterValue, setFilterValue] = React.useState("allAssets");
+  const [filterValue, setFilterValue] = React.useState<
+    "allAssets" | "myAssets" | "dataxplorerAssets"
+  >("allAssets");
 
   const storyCreateSuccess = useStoreState(
     (state) => state.stories.StoryCreate.success
@@ -146,7 +148,8 @@ function StoryInitialView(props: Readonly<StoryInitialViewProps>) {
             searchIconCypressId="open-search-button"
             filterValue={filterValue}
             setFilterValue={setFilterValue}
-            hasSearch
+            hasSearchButton
+            terminateSearch={() => {}}
           />
         </Grid>
       </Grid>
@@ -155,6 +158,8 @@ function StoryInitialView(props: Readonly<StoryInitialViewProps>) {
         searchStr={searchValue as string}
         view={storiesView}
         showMenuButton
+        gridId="stories-grid"
+        filterValue={filterValue}
       />
     </Container>
   );

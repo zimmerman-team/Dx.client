@@ -27,7 +27,7 @@ interface Props {
   setStoryName?: React.Dispatch<React.SetStateAction<string>>;
   storyName?: string;
   handleRightPanelOpen: () => void;
-  setPlugins: React.Dispatch<React.SetStateAction<ToolbarPluginsType>>;
+  setPluginsState: React.Dispatch<React.SetStateAction<ToolbarPluginsType>>;
   headerDetails: IHeaderDetails;
   setHeaderDetails: React.Dispatch<React.SetStateAction<IHeaderDetails>>;
 }
@@ -462,7 +462,7 @@ export default function HeaderBlock(props: Props) {
               placeholderState={headingPlaceholderState}
               setPlaceholderState={setHeadingPlaceholderState}
               textContent={props.headerDetails.heading}
-              setPlugins={props.setPlugins}
+              setPluginsState={props.setPluginsState}
               focusOnMount
               onBlur={() => {
                 setIsHeadingFocused(false);
@@ -538,7 +538,7 @@ export default function HeaderBlock(props: Props) {
               placeholderState={descriptionPlaceholderState}
               setPlaceholderState={setDescriptionPlaceholderState}
               textContent={props.headerDetails.description}
-              setPlugins={props.setPlugins}
+              setPluginsState={props.setPluginsState}
               onBlur={() => {
                 setIsDescriptionFocused(false);
               }}

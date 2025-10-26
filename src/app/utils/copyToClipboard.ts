@@ -19,3 +19,15 @@ export async function copyToClipboard(elementId: string) {
       console.error("Failed to copy text:", err);
     });
 }
+
+export async function copyTextToClipboard(textToCopy: string) {
+  // Use the Clipboard API to copy the text
+  navigator.clipboard
+    .writeText(textToCopy!)
+    .then(() => {
+      console.log("Copied to clipboard:", textToCopy);
+    })
+    .catch((err) => {
+      console.error("Failed to copy text:", err);
+    });
+}

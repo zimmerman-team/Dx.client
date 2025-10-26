@@ -42,13 +42,32 @@ export const StyledMenuItem = withStyles(() => ({
     "&:hover": {
       color: "#fff",
       backgroundColor: "#262C34",
+      "& a": {
+        color: "#fff",
+      },
     },
     "&:not(:last-child)": {
       borderBottom: "1px solid #C0C7D2",
     },
+    // ✅ Correct way to style focus visible state
+    "&.Mui-focusVisible": {
+      backgroundColor: "#262C34",
+      color: "#fff",
+      "& a": {
+        color: "#fff",
+      },
+    },
+    "& a": {
+      textDecoration: "none",
+      color: "#373D43",
+    },
   },
   selected: {
     backgroundColor: "#262C34 !important",
+    color: "#fff !important",
+    "& a": {
+      color: "#fff !important",
+    },
   },
 }))(MenuItem);
 

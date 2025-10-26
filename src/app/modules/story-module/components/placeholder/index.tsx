@@ -5,69 +5,90 @@ import { useDrop } from "react-dnd";
 import { isDividerOrRowFrameDraggingAtom } from "app/state/recoil/atoms";
 import { useRecoilValue } from "recoil";
 import { v4 } from "uuid";
+import { useUndoRedo } from "app/hooks/useUndoRedo";
 
 const PlaceHolder = (props: PlaceholderProps) => {
-  const moveCard = React.useCallback((itemId: string) => {
-    props.updateFramesArray((draft) => {
-      const dragIndex = draft.findIndex((frame) => frame.id === itemId);
+  const { store } = useUndoRedo(
+    props.framesArray,
+    props.updateFramesArray,
+    props.undoStack,
+    props.setUndoStack,
+    props.redoStack,
+    props.setRedoStack
+  );
 
-      const dropIndex =
-        props.index ?? draft.findIndex((frame) => frame.id === props.rowId) + 1;
+  const moveCard = React.useCallback(
+    (itemId: string) => {
+      store();
+      props.updateFramesArray((draft) => {
+        const dragIndex = draft.findIndex((frame) => frame.id === itemId);
 
-      const fakeId = v4();
-      const tempItem = { ...draft[dragIndex] };
-      draft[dragIndex].id = fakeId;
+        const dropIndex =
+          props.index ??
+          draft.findIndex((frame) => frame.id === props.rowId) + 1;
 
-      draft.splice(dropIndex, 0, tempItem);
-      const fakeIndex = draft.findIndex((frame) => frame.id === fakeId);
-      draft.splice(fakeIndex, 1);
-    });
-  }, []);
-  const [{ isOver, handlerId, item: dragItem }, drop] = useDrop(() => ({
-    // The type (or types) to accept - strings or symbols
-    accept: [
-      StoryElementsType.DIVIDER,
-      StoryElementsType.ROWFRAME,
-      StoryElementsType.ROW,
-    ],
-    // Props to collect
-    collect: (monitor) => ({
-      isOver: monitor.isOver(),
-      canDrop: monitor.canDrop(),
-      item: monitor.getItem(),
-      handlerId: monitor.getHandlerId(),
-    }),
-    drop: (item: any, monitor) => {
-      if (item.type === StoryElementsType.ROW) {
-        moveCard(item.id);
-      } else {
-        props.updateFramesArray((draft) => {
-          const tempIndex =
-            props.index ??
-            draft.findIndex((frame) => frame.id === props.rowId) + 1;
+        const fakeId = v4();
+        const tempItem = { ...draft[dragIndex] };
+        draft[dragIndex].id = fakeId;
 
-          const id = v4();
-          draft.splice(tempIndex, 0, {
-            id,
-            frame: {
-              rowId: id,
-              rowIndex: tempIndex,
-
-              type: item.type,
-            },
-            content:
-              item.type === StoryElementsType.ROWFRAME ? [] : ["divider"],
-            contentWidths: [],
-            contentHeights: [],
-            textEditorHeights: [],
-            contentTypes:
-              item.type === StoryElementsType.ROWFRAME ? [] : ["divider"],
-            structure: null,
-          });
-        });
-      }
+        draft.splice(dropIndex, 0, tempItem);
+        const fakeIndex = draft.findIndex((frame) => frame.id === fakeId);
+        draft.splice(fakeIndex, 1);
+      });
     },
-  }));
+    [props.framesArray]
+  );
+
+  const [{ isOver, handlerId, item: dragItem }, drop] = useDrop(
+    () => ({
+      // The type (or types) to accept - strings or symbols
+      accept: [
+        StoryElementsType.DIVIDER,
+        StoryElementsType.ROWFRAME,
+        StoryElementsType.ROW,
+      ],
+      // Props to collect
+      collect: (monitor) => ({
+        isOver: monitor.isOver(),
+        canDrop: monitor.canDrop(),
+        item: monitor.getItem(),
+        handlerId: monitor.getHandlerId(),
+      }),
+      drop: (item: any, monitor) => {
+        if (item.type === StoryElementsType.ROW) {
+          moveCard(item.id);
+        } else {
+          console.log(props.framesArray, "framesArray in placeholder");
+          store();
+          props.updateFramesArray((draft) => {
+            console.log(draft, "draft in placeholder");
+
+            const tempIndex =
+              props.index ??
+              draft.findIndex((frame) => frame.id === props.rowId) + 1;
+
+            const id = v4();
+            draft.splice(tempIndex, 0, {
+              id,
+              frame: {
+                rowId: id,
+
+                type: item.type,
+              },
+              content:
+                item.type === StoryElementsType.ROWFRAME ? [] : ["divider"],
+              contentWidths: [],
+              contentHeights: [],
+              contentTypes:
+                item.type === StoryElementsType.ROWFRAME ? [] : ["divider"],
+              structure: null,
+            });
+          });
+        }
+      },
+    }),
+    [props.framesArray]
+  );
 
   const isItemDragging = useRecoilValue(isDividerOrRowFrameDraggingAtom);
 

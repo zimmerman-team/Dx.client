@@ -3,6 +3,7 @@ import { ReactComponent as GoogleIcon } from "./assets/google-icon.svg";
 import { ReactComponent as LinkedInIcon } from "./assets/linkedin-icon.svg";
 import { ReactComponent as MicrosoftIcon } from "./assets/microsoft-icon.svg";
 import { socialAuth } from "app/utils/socialAuth";
+import { FOCUS_VISIBLE_STYLE_LIGHT } from "app/theme";
 
 const SignInButtons = () => {
   return (
@@ -38,6 +39,9 @@ const SignInButtons = () => {
             opacity: 0.8;
             cursor: pointer;
           }
+          :focus-visible {
+            ${FOCUS_VISIBLE_STYLE_LIGHT}
+          }
         }
       `}
     >
@@ -45,16 +49,16 @@ const SignInButtons = () => {
         data-cy="google-button"
         onClick={() => socialAuth("google-oauth2")}
       >
-        <GoogleIcon /> Google
+        <GoogleIcon role="presentation" /> Google
       </button>
       <button data-cy="linkedin-button" onClick={() => socialAuth("linkedin")}>
-        <LinkedInIcon /> LinkedIn
+        <LinkedInIcon role="presentation" /> LinkedIn
       </button>
       <button
         data-cy="microsoft-button"
         onClick={() => socialAuth("windowslive")}
       >
-        <MicrosoftIcon /> Microsoft
+        <MicrosoftIcon role="presentation" /> Microsoft
       </button>
     </div>
   );

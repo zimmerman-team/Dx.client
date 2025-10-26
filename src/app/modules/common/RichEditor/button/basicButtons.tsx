@@ -5,6 +5,8 @@ import {
   createTextAlignmentButton,
 } from "@draft-js-plugins/buttons";
 import Tooltip from "@material-ui/core/Tooltip";
+import { RedoIcon } from "app/assets/icons/Redo";
+import { UndoIcon } from "app/assets/icons/Undo";
 
 export const StrikeThroughButton = createInlineStyleButton({
   style: "STRIKETHROUGH",
@@ -246,3 +248,59 @@ export const BGHiglightPicker = (
     />
   </svg>
 );
+interface UndoRedoButtonProps {
+  disabled: boolean;
+  handleClick?: () => void;
+}
+
+export const UndoButton = ({ handleClick, disabled }: UndoRedoButtonProps) => {
+  return (
+    <button
+      onClick={handleClick}
+      css={`
+        border: none;
+        background: none;
+        border-radius: 8px;
+        cursor: pointer;
+        svg {
+          path {
+            fill: ${disabled ? " #ccc" : "#212529"};
+          }
+        }
+        :hover,
+        :active {
+          background: #f2f2f2;
+          outline: 0; /* reset for :focus */
+        }
+      `}
+    >
+      <UndoIcon />
+    </button>
+  );
+};
+
+export const RedoButton = ({ handleClick, disabled }: UndoRedoButtonProps) => {
+  return (
+    <button
+      onClick={handleClick}
+      css={`
+        border: none;
+        background: none;
+        border-radius: 8px;
+        cursor: pointer;
+        svg {
+          path {
+            fill: ${disabled ? " #ccc" : "#212529"};
+          }
+        }
+        :hover,
+        :active {
+          background: #f2f2f2;
+          outline: 0; /* reset for :focus */
+        }
+      `}
+    >
+      <RedoIcon />
+    </button>
+  );
+};

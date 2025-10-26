@@ -31,9 +31,7 @@ import { StoryModel, emptyStory } from "app/modules/story-module/data";
 import DeleteStoryDialog from "app/components/Dialogs/deleteStoryDialog";
 import { ChartAPIModel, emptyChartAPI } from "app/modules/chart-module/data";
 import { StorySubheaderToolbarProps } from "app/modules/chart-module/components/chartSubheaderToolbar/data";
-import { ReactComponent as PlayIcon } from "app/modules/story-module/asset/play-icon.svg";
 import { styles } from "app/modules/story-module/components/storySubHeaderToolbar/styles";
-import { ISnackbarState } from "app/modules/dataset-module/routes/upload-module/upload-steps/previewFragment";
 import StaticToolbar from "app/modules/story-module/components/storySubHeaderToolbar/staticToolbar";
 import AutoSaveSwitch from "app/modules/story-module/components/storySubHeaderToolbar/autoSaveSwitch";
 import AutoResizeInput from "app/modules/story-module/components/storySubHeaderToolbar/autoResizeInput";
@@ -43,8 +41,13 @@ import DuplicateMessage from "app/modules/common/mobile-duplicate-message";
 import { ExportStoryButton } from "./exportButton";
 import { PrimaryButton } from "app/components/Styled/button";
 import { ArrowBack } from "@material-ui/icons";
-import { MOBILE_BREAKPOINT, TABLET_STARTPOINT } from "app/theme";
 import ShareComponent from "app/components/ShareComponent";
+import {
+  FOCUS_VISIBLE_STYLE_LIGHT,
+  MOBILE_BREAKPOINT,
+  TABLET_STARTPOINT,
+} from "app/theme";
+import { ISnackbarState } from "app/modules/dataset-module/routes/upload-module/style";
 
 export const useStyles = makeStyles(() =>
   createStyles({
@@ -134,6 +137,19 @@ export function StorySubheaderToolbar(
     shareAssetDetailsAtom
   );
   const [displayMobileMenu, setDisplayMobileMenu] = React.useState(false);
+
+  const copyButtonRef = React.useRef<HTMLButtonElement>(null);
+
+  const open = Boolean(anchorEl);
+  const id = open ? "simple-popover" : undefined;
+
+  React.useEffect(() => {
+    if (open && copyButtonRef.current) {
+      setTimeout(() => {
+        copyButtonRef.current?.focus();
+      }, 0);
+    }
+  }, [open]);
 
   React.useEffect(() => {
     // handles saved changes state for autosave
@@ -278,7 +294,11 @@ export function StorySubheaderToolbar(
                 color: #231d2c;
                 text-decoration: none;
                 cursor: pointer;
+                :focus-visible {
+                  ${FOCUS_VISIBLE_STYLE_LIGHT}
+                }
               `}
+              aria-label="Back to Dashboard"
               data-cy="story-back-to-library-btn"
             >
               <Tooltip title="Back to Dashboard">
@@ -609,7 +629,17 @@ export function StorySubheaderToolbar(
       </Container>
       {view === "edit" && (
         <Container maxWidth="lg">
-          <StaticToolbar plugins={props.plugins} />
+          <StaticToolbar
+            plugins={props.plugins}
+            framesArray={props.framesArray}
+            redoStack={props.redoStack}
+            setRedoStack={props.setRedoStack}
+            updateFramesArray={props.updateFramesArray}
+            undoStack={props.undoStack}
+            setUndoStack={props.setUndoStack}
+            setUniformBlockTypeStyle={props.setUniformBlockTypeStyle}
+            uniformBlockTypeStyle={props.uniformBlockTypeStyle}
+          />
         </Container>
       )}
       <>

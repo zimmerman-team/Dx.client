@@ -26,7 +26,6 @@ import { useStoreActions, useStoreState } from "app/state/store/hooks";
 import DeleteChartDialog from "app/components/Dialogs/deleteChartDialog";
 import { ChartAPIModel, emptyChartAPI } from "app/modules/chart-module/data";
 import { ChartSubheaderToolbarProps } from "app/modules/chart-module/components/chartSubheaderToolbar/data";
-import { ISnackbarState } from "app/modules/dataset-module/routes/upload-module/upload-steps/previewFragment";
 import {
   chartFromStoryAtom,
   planDialogAtom,
@@ -48,6 +47,7 @@ import { MOBILE_BREAKPOINT } from "app/theme";
 import { ClickAwayListener } from "@material-ui/core";
 import ShareComponent from "app/components/ShareComponent";
 import { APPLICATION_JSON } from "app/state/api";
+import { ISnackbarState } from "app/modules/dataset-module/routes/upload-module/style";
 
 // eslint-disable-next-line sonarjs/cognitive-complexity
 export function ChartSubheaderToolbar(

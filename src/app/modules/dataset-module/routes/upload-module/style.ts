@@ -1,23 +1,50 @@
 import { Select, TextField, withStyles, InputLabel } from "@material-ui/core";
 import { MOBILE_BREAKPOINT } from "app/theme";
-import { pad } from "lodash";
+import Snackbar from "@material-ui/core/Snackbar";
 import { css } from "styled-components/macro";
 
-export const stepcss = css`
-  left: 0;
-  /* top: 50px; */
-  z-index: 10;
-  /* width: 100vw; */
-  height: 90px;
+export interface ISnackbarState {
+  open: boolean;
+  vertical: "top" | "bottom";
+  horizontal: "left" | "center" | "right";
+  message: string;
+}
 
+export const CssSnackbar = withStyles({
+  root: {
+    "  &&": {
+      zIndex: 1102,
+    },
+    "& .MuiSnackbarContent-message": {
+      fontSize: "18px",
+      fontFamily: "'GothamNarrow-Bold', 'Helvetica Neue', sans-serif",
+    },
+    "& .MuiSnackbarContent-root": {
+      backgroundColor: "#fff",
+      color: "#000",
+      borderRadius: "12px",
+      fontSize: "18px",
+      fontWeight: "bold",
+      letterSpacing: "0.5px",
+      width: "1232px",
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
+      "@media (max-width: 1257px)": {
+        width: "94vw",
+      },
+    },
+  },
+})(Snackbar);
+
+export const stepcss = css`
+  height: 50px;
+  width: 100%;
   display: flex;
   align-items: center;
-  /* position: fixed; */
-  justify-content: center;
-  gap: 8px;
-  padding: 16px 0;
-  @media (max-width: 881px) {
-    top: 66px;
+  justify-content: flex-start;
+  @media (max-width: ${MOBILE_BREAKPOINT}) {
+    height: 100%;
   }
 `;
 const gothamNarrowBold = "'GothamNarrow-Book', 'Helvetica Neue', sans-serif";
@@ -52,7 +79,6 @@ export const uploadAreacss = (isDragActive: boolean, disabled?: boolean) => css`
     padding: 12px 27px;
     gap: 10px;
     height: 43px;
-    /* width: 191px; */
     cursor: pointer;
     color: #ffffff;
     p {
@@ -71,6 +97,15 @@ export const uploadAreacss = (isDragActive: boolean, disabled?: boolean) => css`
 
 export const metaDatacss = css`
   width: 100%;
+  input,
+  textarea {
+    font-family: "GothamNarrow-Book", "Helvetica Neue", sans-serif;
+    font-size: 16px;
+    &:focus,
+    &:focus-visible {
+      border-bottom: 1px solid #6061e5;
+    }
+  }
   h1 {
     font-weight: 400;
     font-size: 48px;

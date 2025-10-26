@@ -1,20 +1,24 @@
 import React from "react";
-import Grid from "@material-ui/core/Grid";
 import Container from "@material-ui/core/Container";
 import { homeFootercss } from "app/modules/home-module/components/Footer/style";
 import { ReactComponent as CopyIcon } from "app/modules/home-module/components/Footer/asset/copy.svg";
-import { ReactComponent as LogoIcon } from "app/modules/home-module/components/Footer/asset/logo.svg";
 import { Link } from "react-router-dom";
 import NewsletterForm from "app/modules/common/newsletterForm";
 import { FieldErrors } from "react-hook-form";
 import moment from "moment";
 import InlineLogo from "app/modules/home-module/assets/inline-logo";
-import { DESKTOP_BREAKPOINT, MOBILE_BREAKPOINT } from "app/theme";
+import {
+  DESKTOP_BREAKPOINT,
+  FOCUS_VISIBLE_STYLE_LIGHT,
+  MOBILE_BREAKPOINT,
+} from "app/theme";
 import { useMediaQuery } from "usehooks-ts";
 import {
   PRIVACY_POLICY_LINK,
+  TELEPHONE_NUMBER,
   TERMS_AND_CONDITION_LINK,
-} from "app/modules/chart-module/util/constants/links";
+} from "app/modules/chart-module/util/constants";
+import Logo from "app/assets/icons/Logo";
 
 interface Props {
   mini?: boolean;
@@ -31,15 +35,15 @@ export default function DesktopFooter(props: Props) {
   const mobile = useMediaQuery(`(max-width:${MOBILE_BREAKPOINT})`);
   const tablet = useMediaQuery(`(max-width:${DESKTOP_BREAKPOINT})`);
   return (
-    <div
+    <footer
       css={`
         ${homeFootercss}
         border-top: ${props.mini ? "none" : "1px solid #dadaf8"};
       `}
+      data-cy="home-footer"
     >
       <Container
         maxWidth="lg"
-        data-cy="home-footer"
         css={`
           @media (max-width: ${DESKTOP_BREAKPOINT}) {
             padding: 0 32px !important;
@@ -83,108 +87,104 @@ export default function DesktopFooter(props: Props) {
               >
                 <Link
                   to="/"
+                  aria-label="Go to homepage"
                   css={`
                     text-decoration: none;
                     display: flex;
                     align-items: center;
                     gap: 8px;
+                    :focus-visible {
+                      ${FOCUS_VISIBLE_STYLE_LIGHT}
+                    }
                   `}
                 >
-                  <LogoIcon />
-                  <div
-                    css={`
-                      font-family: "Inter", sans-serif;
-                      color: #e75656;
-                      font-size: 14.978px;
-                      font-weight: 500;
-                      line-height: 14.978px;
-                      padding: 3.329px 10.922px;
-                      border-radius: 20.803px;
-                      border: 0.993px solid #e75656;
-                    `}
-                  >
-                    beta
-                  </div>
+                  <Logo height="22.2px" />
                 </Link>
               </p>
-              <ul
-                css={`
-                  margin: 0;
-                  display: flex;
-                  flex-direction: column;
-                  gap: 16px;
-                  color: #000;
-                  font-weight: 325;
-                  font-family: "GothamNarrow-Medium", sans-serif;
-                  @media (max-width: ${DESKTOP_BREAKPOINT}) {
-                    flex-direction: row-reverse;
-                    justify-content: space-between;
-                  }
-                  a {
-                    text-decoration: none;
+              <nav aria-label="Contact information">
+                <ul
+                  css={`
+                    margin: 0;
+                    display: flex;
+                    flex-direction: column;
+                    gap: 16px;
                     color: #000;
-                  }
-                  li {
-                    font-size: 14px;
-                    p {
-                      margin: 0px;
-                      line-height: normal;
-                    }
-                  }
-                `}
-              >
-                <li
-                  css={`
+                    font-weight: 325;
+                    font-family: "GothamNarrow-Medium", sans-serif;
                     @media (max-width: ${DESKTOP_BREAKPOINT}) {
-                      display: none;
+                      flex-direction: row-reverse;
+                      justify-content: space-between;
+                    }
+                    a {
+                      text-decoration: none;
+                      color: #000;
+                    }
+                    li {
+                      font-size: 14px;
+                      p {
+                        margin: 0px;
+                        line-height: normal;
+                      }
                     }
                   `}
                 >
-                  Tel: +3185 401 5241
-                </li>
+                  <li
+                    css={`
+                      @media (max-width: ${DESKTOP_BREAKPOINT}) {
+                        display: none;
+                      }
+                    `}
+                  >
+                    <a href={`tel:${TELEPHONE_NUMBER}`}>
+                      Tel: {TELEPHONE_NUMBER}
+                    </a>
+                  </li>
 
-                <li
-                  css={`
-                    @media (max-width: ${MOBILE_BREAKPOINT}) {
-                      display: none;
-                    }
-                  `}
-                >
-                  {" "}
-                  <a href="mailto:contact@dataxplorer.org">
-                    Email: contact@dataxplorer.org
-                  </a>{" "}
-                </li>
+                  <li
+                    css={`
+                      @media (max-width: ${MOBILE_BREAKPOINT}) {
+                        display: none;
+                      }
+                    `}
+                  >
+                    {" "}
+                    <a href="mailto:contact@dataxplorer.org">
+                      Email: contact@dataxplorer.org
+                    </a>{" "}
+                  </li>
 
-                <li
-                  css={`
-                    display: none;
-                    @media (max-width: ${DESKTOP_BREAKPOINT}) {
-                      display: block;
-                    }
-                  `}
-                >
-                  Tel: +3185 401 5241
-                  <a
+                  <li
                     css={`
                       display: none;
-                      @media (max-width: ${MOBILE_BREAKPOINT}) {
+                      @media (max-width: ${DESKTOP_BREAKPOINT}) {
                         display: block;
                       }
                     `}
-                    href="mailto:contact@dataxplorer.org"
                   >
-                    Email: contact@dataxplorer.org
-                  </a>{" "}
-                </li>
-                <li>
-                  <p>
-                    Keizersgracht 520H
-                    {mobile ? <br /> : tablet ? ", " : <br />}
-                    1017 EK Amsterdam <br /> The Netherlands
-                  </p>
-                </li>
-              </ul>
+                    <a href={`tel:${TELEPHONE_NUMBER}`}>
+                      Tel: {TELEPHONE_NUMBER}
+                    </a>
+                    <a
+                      css={`
+                        display: none;
+                        @media (max-width: ${MOBILE_BREAKPOINT}) {
+                          display: block;
+                        }
+                      `}
+                      href="mailto:contact@dataxplorer.org"
+                    >
+                      Email: contact@dataxplorer.org
+                    </a>{" "}
+                  </li>
+                  <li>
+                    <p>
+                      Keizersgracht 520H
+                      {mobile ? <br /> : tablet ? ", " : <br />}
+                      1017 EK Amsterdam <br /> The Netherlands
+                    </p>
+                  </li>
+                </ul>
+              </nav>
             </div>
 
             <div
@@ -196,7 +196,7 @@ export default function DesktopFooter(props: Props) {
                 }
               `}
             />
-            <div>
+            <nav aria-label="Footer routes">
               <ul
                 css={`
                   display: none;
@@ -234,13 +234,7 @@ export default function DesktopFooter(props: Props) {
                       align-items: center;
                     `}
                   >
-                    Why
-                    <InlineLogo
-                      css={`
-                        width: 103px;
-                        height: 12px;
-                      `}
-                    />
+                    Why DATAXPLORER
                   </Link>
                 </li>
                 <li>
@@ -268,6 +262,7 @@ export default function DesktopFooter(props: Props) {
                     font-family: "GothamNarrow-Bold", sans-serif;
                   }
                 `}
+                data-cy="footer-links"
               >
                 <li>
                   <Link to="/">Dashboard</Link>{" "}
@@ -284,13 +279,7 @@ export default function DesktopFooter(props: Props) {
                       align-items: center;
                     `}
                   >
-                    Why
-                    <InlineLogo
-                      css={`
-                        width: 103px;
-                        height: 12px;
-                      `}
-                    />
+                    Why DATAXPLORER
                   </Link>
                 </li>
 
@@ -304,7 +293,7 @@ export default function DesktopFooter(props: Props) {
                   <Link to="/contact">Contact Us</Link>
                 </li>
               </ul>
-            </div>
+            </nav>
             <div
               css={`
                 display: none;
@@ -354,7 +343,12 @@ export default function DesktopFooter(props: Props) {
                   width: 100%;
                   display: flex;
                   gap: 16px;
-
+                  form {
+                    height: 40px;
+                    @media (max-width: ${MOBILE_BREAKPOINT}) {
+                      height: 32px;
+                    }
+                  }
                   input {
                     outline: none;
                     border: none;
@@ -363,7 +357,7 @@ export default function DesktopFooter(props: Props) {
                     font-size: 16px;
                     padding: 11px 16px;
                     border-bottom: 1px solid #98a1aa;
-                    background: #f1f3f5;
+                    background: transparent;
                     font-family: "GothamNarrow-Book", "Helvetica Neue",
                       sans-serif;
                     font-weight: 325;
@@ -372,6 +366,9 @@ export default function DesktopFooter(props: Props) {
                         sans-serif;
                       font-weight: 325;
                       color: #98a1aa;
+                    }
+                    :focus-visible {
+                      ${FOCUS_VISIBLE_STYLE_LIGHT}
                     }
                   }
                   button {
@@ -383,10 +380,14 @@ export default function DesktopFooter(props: Props) {
                     font-family: "GothamNarrow-Bold", "Helvetica Neue",
                       sans-serif;
                     font-size: 16px;
-                    height: 41px;
+                    display: flex;
+                    align-items: center;
                     padding: 10px 16px;
                     font-weight: 400;
                     cursor: pointer;
+                    :focus-visible {
+                      ${FOCUS_VISIBLE_STYLE_LIGHT}
+                    }
                   }
                 `}
               >
@@ -419,7 +420,6 @@ export default function DesktopFooter(props: Props) {
       >
         <Container
           maxWidth="lg"
-          data-cy="home-footer"
           css={`
             @media (max-width: ${DESKTOP_BREAKPOINT}) {
               padding: 0 32px !important;
@@ -430,7 +430,8 @@ export default function DesktopFooter(props: Props) {
             }
           `}
         >
-          <div
+          <nav
+            aria-label="Copyright and legal information"
             css={`
               display: flex;
               gap: 20px;
@@ -449,6 +450,9 @@ export default function DesktopFooter(props: Props) {
               a {
                 text-decoration: none;
                 color: #000;
+                :focus-visible {
+                  ${FOCUS_VISIBLE_STYLE_LIGHT}
+                }
               }
               p {
                 margin: 0;
@@ -492,29 +496,19 @@ export default function DesktopFooter(props: Props) {
             />
             <p>
               {" "}
-              <a
-                href={PRIVACY_POLICY_LINK}
-                className="privacy-link"
-                target="_blank"
-                rel="noreferrer"
-              >
+              <Link to={PRIVACY_POLICY_LINK} className="privacy-link">
                 Privacy
-              </a>{" "}
+              </Link>{" "}
             </p>
             <p>
               {" "}
-              <a
-                href={TERMS_AND_CONDITION_LINK}
-                className="privacy-link"
-                target="_blank"
-                rel="noreferrer"
-              >
+              <Link to={TERMS_AND_CONDITION_LINK} className="privacy-link">
                 Terms and conditions
-              </a>{" "}
+              </Link>
             </p>
-          </div>
+          </nav>
         </Container>
       </div>
-    </div>
+    </footer>
   );
 }

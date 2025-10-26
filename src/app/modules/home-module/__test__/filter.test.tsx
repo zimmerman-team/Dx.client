@@ -11,12 +11,12 @@ interface MockProps {
   filterValue: "";
   setAssetsView: jest.Mock<any, any, any>;
   assetsView: "table" | "grid";
-  terminateSearch?: jest.Mock<any, any, any>;
+  terminateSearch: jest.Mock<any, any, any>;
   searchInputWidth?: string;
   openSearch: boolean;
   setOpenSearch: jest.Mock<any, any, any>;
   searchIconCypressId: string;
-  hasSearch: boolean;
+  hasSearchButton: boolean;
 }
 
 const defaultProps = (newProps: Partial<MockProps>): MockProps => {
@@ -33,7 +33,8 @@ const defaultProps = (newProps: Partial<MockProps>): MockProps => {
     terminateSearch: jest.fn(),
     setOpenSearch: jest.fn(),
     searchIconCypressId: "",
-    hasSearch: false,
+    hasSearchButton: false,
+
     ...newProps,
   };
 };

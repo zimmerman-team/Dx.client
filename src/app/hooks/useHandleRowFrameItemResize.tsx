@@ -1,8 +1,10 @@
 import { IFramesArray } from "app/modules/story-module/views/create/data";
+import { store } from "app/state/store";
 import { Updater } from "use-immer";
 
 export const usehandleRowFrameItemResize = (
-  updateFramesArray: Updater<IFramesArray[]>
+  updateFramesArray: Updater<IFramesArray[]>,
+  store: () => void
 ) => {
   const handleRowFrameItemResize = (
     rowId: string,
@@ -10,6 +12,8 @@ export const usehandleRowFrameItemResize = (
     width: number,
     height: number
   ) => {
+    store();
+
     updateFramesArray((draft) => {
       const frameIndex = draft.findIndex((frame) => frame.id === rowId);
       if (frameIndex === -1) return draft;
@@ -66,6 +70,8 @@ export const usehandleRowFrameItemResize = (
   };
 
   const handleRowHeightResize = (rowId: string, height: number) => {
+    store();
+
     updateFramesArray((draft) => {
       const frameIndex = draft.findIndex((frame) => frame.id === rowId);
       if (frameIndex === -1) {

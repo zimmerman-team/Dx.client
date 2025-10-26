@@ -18,15 +18,17 @@ import { Updater } from "use-immer";
 import { useMediaQuery } from "@material-ui/core";
 import { rowStructureHeights } from "./data";
 import { calculateWidths } from ".";
-import Box from "./box";
+import Box, { ContentType } from "./box";
 import { usehandleRowFrameItemResize } from "app/hooks/useHandleRowFrameItemResize";
-import { MOBILE_BREAKPOINT } from "app/theme";
+import { DESKTOP_BREAKPOINT, MOBILE_BREAKPOINT } from "app/theme";
 import { NumberSize, Resizable } from "re-resizable";
 import { Direction } from "re-resizable/lib/resizer";
 import {
   MIN_BOX_HEIGHT,
   MIN_BOX_WIDTH,
 } from "app/modules/story-module/components/rowStructure/data";
+import { useUndoRedo } from "app/hooks/useUndoRedo";
+import { isEqual } from "lodash";
 
 interface RowStructureDisplayProps {
   gap: string;
@@ -36,26 +38,30 @@ interface RowStructureDisplayProps {
   rowId: string;
   selectedType: string;
   framesArray: IFramesArray[];
-  selectedTypeHistory: string[];
   rowContentWidths: number[];
   rowContentHeights: number[];
   updateFramesArray: Updater<IFramesArray[]>;
+  undoStack: IFramesArray[][];
+  setUndoStack: React.Dispatch<React.SetStateAction<IFramesArray[][]>>;
+  redoStack: IFramesArray[][];
+  setRedoStack: React.Dispatch<React.SetStateAction<IFramesArray[][]>>;
   deleteFrame: (id: string) => void;
-  setSelectedTypeHistory: React.Dispatch<React.SetStateAction<string[]>>;
   rowStructureDetailItems: {
     rowId: string;
     width: number;
     factor: number;
     rowType: string;
   }[];
-  previewItems?: (string | object)[];
+  previewItems?: {
+    items: (string | object)[];
+  };
   onRowBoxItemResize: (
     rowId: string,
     itemIndex: number,
     width: number,
     height: number
   ) => void;
-  setPlugins: React.Dispatch<React.SetStateAction<ToolbarPluginsType>>;
+  setPluginsState: React.Dispatch<React.SetStateAction<ToolbarPluginsType>>;
   onSave: (type: "create" | "edit") => Promise<void>;
   forceSelectedType: string | undefined;
   setTempRowState: React.Dispatch<React.SetStateAction<IFramesArray>>;
@@ -66,6 +72,14 @@ export default function RowstructureDisplay(
   props: Readonly<RowStructureDisplayProps>
 ) {
   const isTablet = useMediaQuery("(max-width: 1110px)");
+  const { store } = useUndoRedo(
+    props.framesArray,
+    props.updateFramesArray,
+    props.undoStack,
+    props.setUndoStack,
+    props.redoStack,
+    props.setRedoStack
+  );
   const ref = useRef(null);
   useOnClickOutside(ref, () => setHandleDisplay(false));
   const location = useLocation();
@@ -87,7 +101,8 @@ export default function RowstructureDisplay(
       : "0.722415px dashed transparent";
 
   const { handleRowHeightResize } = usehandleRowFrameItemResize(
-    props.updateFramesArray
+    props.updateFramesArray,
+    store
   );
 
   const [_isResizing, setIsResizing] = useRecoilState(
@@ -136,16 +151,25 @@ export default function RowstructureDisplay(
         height: getHeight("oneByFive"),
       },
     ];
-
-    props.updateFramesArray((draft) => {
-      const rowStructure = draft[props.rowIndex].structure;
-      const defaultWidths =
-        rowSizes.find((row) => row.type === rowStructure)?.width ?? [];
-      const defaultHeights =
-        rowSizes.find((row) => row.type === rowStructure)?.height ?? [];
-      draft[props.rowIndex].contentWidths = defaultWidths;
-      draft[props.rowIndex].contentHeights = defaultHeights;
-    });
+    const defaultWidths =
+      rowSizes.find((row) => row.type === props.selectedType)?.width ?? [];
+    const defaultHeights =
+      rowSizes.find((row) => row.type === props.selectedType)?.height ?? [];
+    if (
+      isEqual(
+        defaultHeights,
+        props.framesArray[props.rowIndex].contentHeights
+      ) &&
+      isEqual(defaultWidths, props.framesArray[props.rowIndex].contentWidths)
+    ) {
+      return;
+    } else {
+      store();
+      props.updateFramesArray((draft) => {
+        draft[props.rowIndex].contentWidths = defaultWidths;
+        draft[props.rowIndex].contentHeights = defaultHeights;
+      });
+    }
   };
 
   const getNeighbourIndex = (itemIndex: number) => {
@@ -190,10 +214,19 @@ export default function RowstructureDisplay(
     _dir: Direction,
     _elementRef: HTMLElement
   ) => {
-    const textEditorHeights = props.framesArray[props.rowIndex]
-      .textEditorHeights as number[];
+    const textBoxHeights: number[] = [];
+
+    props.framesArray[props.rowIndex].contentTypes.forEach((c, index) => {
+      if (c === "text") {
+        const box = document.getElementById(`box-${props.rowIndex}-${index}`);
+        const boxHeight = box?.offsetHeight || MIN_BOX_HEIGHT;
+        textBoxHeights.push(boxHeight);
+      }
+    });
+
     //get the biggest value from the array
-    const maxHeight = Math.max(...textEditorHeights);
+    const maxHeight = Math.max(...textBoxHeights);
+    //if the text editor heights are not empty, get the
     if (maxHeight && maxHeight > MIN_BOX_HEIGHT) {
       setMinHeight(maxHeight);
     }
@@ -273,12 +306,11 @@ export default function RowstructureDisplay(
                 </IconButton>
                 <IconButton
                   onClick={() => {
-                    props.setSelectedTypeHistory([
-                      ...props.selectedTypeHistory,
-                      props.selectedType,
-                      "",
-                    ]);
-                    props.setTempRowState(props.framesArray[props.rowIndex]);
+                    props.setTempRowState(props.framesArray[props.rowIndex]); // Set the current row state to tempRowState
+                    store();
+                    props.updateFramesArray((draft) => {
+                      draft[props.rowIndex].structure = null;
+                    });
                   }}
                   data-cy="edit-row-structure-button"
                 >
@@ -321,18 +353,17 @@ export default function RowstructureDisplay(
               overflow-y: hidden;
               gap: ${props.gap};
               border: ${border};
+              @media (max-width: ${DESKTOP_BREAKPOINT}) {
                 :hover {
                   overflow-x: ${props.rightPanelOpen ? "scroll" : "hidden"};
                 }
               }
               @media (max-width: ${MOBILE_BREAKPOINT}) {
                 display: grid;
-                grid-template-columns: ${
-                  props.forceSelectedType === "oneByFive" ||
-                  props.forceSelectedType === "oneByFour"
-                    ? " auto auto"
-                    : "auto"
-                };
+                grid-template-columns: ${props.forceSelectedType ===
+                  "oneByFive" || props.forceSelectedType === "oneByFour"
+                  ? " auto auto"
+                  : "auto"};
               }
             `}
             data-cy={`row-frame-${props.rowIndex}`}
@@ -350,6 +381,11 @@ export default function RowstructureDisplay(
                   `[${index}]`,
                   boxHeight
                 )}
+                contentType={
+                  props.framesArray[props.rowIndex]?.contentTypes[
+                    index
+                  ] as ContentType
+                }
                 last={index === props.rowStructureDetailItems.length - 1}
                 itemIndex={index}
                 neighbourIndex={getNeighbourIndex(index)}
@@ -358,9 +394,18 @@ export default function RowstructureDisplay(
                 rowType={row.rowType}
                 onRowBoxItemResize={props.onRowBoxItemResize}
                 updateFramesArray={props.updateFramesArray}
-                previewItem={get(props.previewItems, `[${index}]`, undefined)}
+                redoStack={props.redoStack}
+                setRedoStack={props.setRedoStack}
+                undoStack={props.undoStack}
+                setUndoStack={props.setUndoStack}
+                framesArray={props.framesArray}
+                previewItem={get(
+                  props.previewItems?.items,
+                  `[${index}]`,
+                  undefined
+                )}
                 rowItemsCount={props.rowStructureDetailItems.length}
-                setPlugins={props.setPlugins}
+                setPluginsState={props.setPluginsState}
                 onSave={props.onSave}
                 rowContentWidths={props.rowContentWidths}
                 temporaryWidths={temporaryWidths}

@@ -7,7 +7,7 @@ import CardC from "app/modules/home-module/assets/dashboard-card-c.png";
 import CardD from "app/modules/home-module/assets/dashboard-card-d.png";
 
 import { DESKTOP_BREAKPOINT, MOBILE_BREAKPOINT } from "app/theme";
-import { Pagination } from "app/modules/home-module/sub-modules/partners";
+import { Pagination } from "app/modules/home-module/sub-modules/partners/components/partnerCarousel/partnerCarousel";
 
 const AutoPlaySwipeableViews = autoPlay(SwipeableViews);
 export default function DashboardCarousel() {
@@ -23,6 +23,7 @@ export default function DashboardCarousel() {
   const [autoPlay, setAutoPlay] = React.useState<boolean>(false);
   return (
     <div
+      role="presentation"
       css={`
         width: 100%;
         position: relative;

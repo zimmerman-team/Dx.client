@@ -19,7 +19,7 @@ interface MockProps {
   setStoryName?: React.Dispatch<React.SetStateAction<string>>;
   storyName?: string;
   handleRightPanelOpen: () => void;
-  setPlugins: React.Dispatch<React.SetStateAction<ToolbarPluginsType>>;
+  setPluginsState: React.Dispatch<React.SetStateAction<ToolbarPluginsType>>;
   headerDetails: {
     title: string;
     showHeader: boolean;
@@ -67,7 +67,7 @@ const defaultProps = (props: Partial<MockProps>): MockProps => {
     setHasSubHeaderTitleFocused: jest.fn(),
     setStoryName: jest.fn(),
     storyName: "Test Story",
-    setPlugins: jest.fn(),
+    setPluginsState: jest.fn(),
     headerDetails: {
       title: "Test Title",
       showHeader: true,

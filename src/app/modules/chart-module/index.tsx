@@ -390,7 +390,11 @@ export default function ChartModule() {
       if (page !== "new" && loadedChart?.name.length > 0) {
         setChartName(loadedChart.name);
       }
-      loadDataset(loadedChart.datasetId!);
+      loadDataset(
+        `${process.env.REACT_APP_API}/chart/sample-data${
+          token ? "" : "/public"
+        }/${loadedChart.datasetId!}`
+      );
       setSelectedAIChart(loadedChart.isAIAssisted);
       setIsLoadedChartMappingValid(loadedChart.isMappingValid);
       setChartType(loadedChart.vizType);
@@ -439,6 +443,8 @@ export default function ChartModule() {
     };
     setVisualOptions(tmpVisualOptions);
   }
+
+  console.log(visualOptions, "visualOptions");
 
   async function clear() {
     sessionStorage.setItem("visualOptions", JSON.stringify({}));

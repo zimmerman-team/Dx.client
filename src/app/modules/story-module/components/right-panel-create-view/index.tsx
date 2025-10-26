@@ -162,10 +162,10 @@ export const StoryElementsType = {
 };
 
 const sortByOptions = [
-  { value: "createdDate desc", label: "Recent" },
-  { value: "createdDate asc", label: "Recent" },
-  { value: "name desc", label: "Name" },
-  { value: "name asc", label: "Name" },
+  { value: "createdDate desc", label: "Recent Descending" },
+  { value: "createdDate asc", label: "Recent Ascending" },
+  { value: "name desc", label: "Name Descending" },
+  { value: "name asc", label: "Name Ascending" },
 ];
 
 const videoSources = [
@@ -283,14 +283,14 @@ export function StoryRightPanelCreateView(props: Readonly<Props>) {
   const [open, setOpen] = useState(true);
 
   const [elementItemDetails, setElementItemDetails] = React.useState([
-    {
-      elementType: StoryElementsType.HEADER,
-      leftIcon: <EditHeaderIcon />,
-      previewImg: HeaderPreviewImg,
-      name: "Header",
-      description: "Remove or add header to your story",
-      openTooltip: false,
-    },
+    // {
+    //   elementType: StoryElementsType.HEADER,
+    //   leftIcon: <EditHeaderIcon />,
+    //   previewImg: HeaderPreviewImg,
+    //   name: "Header",
+    //   description: "Remove or add header to your story",
+    //   openTooltip: false,
+    // },
     {
       elementType: StoryElementsType.ROWFRAME,
       leftIcon: <RowframeIcon />,
@@ -574,15 +574,78 @@ function StoryRightPanelCreateViewChartList(
 ) {
   const token = useStoreState((state) => state.AuthToken.value);
 
-  const [search, setSearch] = React.useState("");
+  const [searchValue, setSearchValue] = React.useState("");
   const [sortBy, setSortBy] = React.useState(sortByOptions[0]);
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+
+  const [loadedCharts, setLoadedCharts] = React.useState<IChartDetail[]>([]);
   const chartList = useStoreState(
     (state) => (state.charts.ChartGetList.crudData || []) as IChartDetail[]
   );
   const loadChartList = useStoreActions(
     (actions) => actions.charts.ChartGetList.fetch
   );
+
+  const chartsLoadSuccess = useStoreState(
+    (state) => state.charts.ChartGetList.success
+  );
+
+  const loadChartsCount = useStoreActions(
+    (actions) => actions.charts.ChartsCount.fetch
+  );
+  const chartsCount = useStoreState(
+    (state) => get(state, "charts.ChartsCount.data.count", 0) as number
+  );
+
+  const loading = useStoreState((state) => state.charts.ChartGetList.loading);
+
+  const limit = 10;
+
+  const [offset, setOffset] = React.useState(0);
+
+  const observerTarget = React.useRef(null);
+  const { isObserved } = useInfinityScroll(observerTarget);
+  const reset = () => {
+    setLoadedCharts([]);
+    setOffset(0);
+  };
+  const search = async (newPage?: boolean) => {
+    const realOffset = newPage ? offset + limit : 0;
+    if (!newPage) {
+      reset();
+    }
+    loadChartList({
+      token,
+      storeInCrudData: true,
+      filterString: `filter={"where":{"name":{"like":"${searchValue}.*","options":"i"}},"order":"${sortBy.value}","limit":${limit},"offset":${realOffset}}`,
+    });
+    if (newPage) {
+      setOffset(realOffset);
+    }
+  };
+
+  // Pagination on scroll
+  React.useEffect(() => {
+    if (
+      isObserved &&
+      loadedCharts.length > 0 &&
+      loadedCharts.length < chartsCount
+    ) {
+      search(true);
+    }
+  }, [isObserved]);
+
+  React.useEffect(() => {
+    if (!chartsLoadSuccess) {
+      return;
+    }
+    //update the loaded stories
+    setLoadedCharts((prevCharts) => {
+      const prevChartsIds = prevCharts.map((c) => c.id);
+      const f = chartList.filter((chart) => !prevChartsIds.includes(chart.id));
+      return [...prevCharts, ...f];
+    });
+  }, [chartsLoadSuccess]);
 
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
@@ -592,13 +655,21 @@ function StoryRightPanelCreateViewChartList(
     setAnchorEl(null);
   };
 
-  React.useEffect(() => {
-    loadChartList({
-      token,
-      storeInCrudData: true,
-      filterString: `filter={"where":{"name":{"like":"${search}.*","options":"i"}},"order":"${sortBy.value}"}`,
-    });
-  }, [token, search, sortBy]);
+  useDebounce(
+    () => {
+      loadChartsCount({
+        token,
+        filterString: `${
+          searchValue.length > 0
+            ? `where={"name":{"like":"${searchValue}.*","options":"i"}}`
+            : ""
+        }`,
+      });
+      search();
+    },
+    500,
+    [token, searchValue, sortBy]
+  );
 
   return (
     <React.Fragment>
@@ -633,8 +704,9 @@ function StoryRightPanelCreateViewChartList(
         >
           <input
             type="text"
-            onChange={(e) => setSearch(e.target.value)}
+            onChange={(e) => setSearchValue(e.target.value)}
             data-cy="story-panel-chart-search-input"
+            value={searchValue}
             css={`
               width: 100%;
               height: 100%;
@@ -738,7 +810,7 @@ function StoryRightPanelCreateViewChartList(
           storyName={props.storyName}
           onSave={props.onSave}
         />
-        {chartList
+        {loadedCharts
           .filter((c) => c.isMappingValid)
           .map((chart, index) => (
             <ChartItem
@@ -758,6 +830,25 @@ function StoryRightPanelCreateViewChartList(
               }
             />
           ))}
+        {loading
+          ? Array(4)
+              .fill(null)
+              .map((_d, index: number) => (
+                <Skeleton
+                  animation="wave"
+                  variant="rect"
+                  width="100%"
+                  height="125px"
+                  key={`${index}-skeleton`}
+                />
+              ))
+          : null}
+        <div
+          css={`
+            height: 1px;
+          `}
+          ref={observerTarget}
+        />
       </div>
     </React.Fragment>
   );

@@ -39,6 +39,7 @@ const SizeButton = styled.button`
   outline: none;
   user-select: none;
   width: auto !important;
+  height: 100%;
 `;
 
 const SizeInput = styled.input`
@@ -52,13 +53,18 @@ const SizeInput = styled.input`
   color: #231d2c;
   outline: none;
 `;
-
+const EDITOR_STATE_UNDEFINED_MESSAGE =
+  "getEditorState function is not provided.";
 export default function FontSizeController(props: Props) {
   const [fontSize, setFontSize] = React.useState(DEFAULT_FONT_SIZE);
 
   // Helper to extract current font size from editor state
   const getCurrentFontSize = useCallback(() => {
+    if (!props.getEditorState) {
+      return DEFAULT_FONT_SIZE;
+    }
     const editorState = props.getEditorState();
+
     if (!editorState) return DEFAULT_FONT_SIZE;
     const currentStyle = editorState.getCurrentInlineStyle();
 
@@ -86,13 +92,19 @@ export default function FontSizeController(props: Props) {
   }, [props]);
 
   useEffect(() => {
+    if (!props.getEditorState) {
+      return;
+    }
     // Only update local state when editor state changes
     setFontSize(getCurrentFontSize());
-  }, [props.getEditorState(), getCurrentFontSize]);
+  }, [props.getEditorState ?? null, getCurrentFontSize]);
 
   // Update the editor state with new font size
   const updateEditorStateWithFontSize = useCallback(
     (newFontSize: number) => {
+      if (!props.getEditorState || !props.setEditorState) {
+        return;
+      }
       const editorState = props.getEditorState();
       const currentStyle = editorState.getCurrentInlineStyle();
       let nextEditorState = editorState;
@@ -125,6 +137,9 @@ export default function FontSizeController(props: Props) {
 
   // Sync font size with editor state on selection or content changes
   useEffect(() => {
+    if (!props.getEditorState) {
+      return;
+    }
     const editorState = props.getEditorState();
 
     const syncFontSize = () => {
@@ -241,8 +256,8 @@ export default function FontSizeController(props: Props) {
           xmlns="http://www.w3.org/2000/svg"
         >
           <path
-            fill-rule="evenodd"
-            clip-rule="evenodd"
+            fillRule="evenodd"
+            clipRule="evenodd"
             d="M7.07955 0.362793C7.48684 0.362793 7.81701 0.692966 7.81701 1.10026V6.2625H12.9793C13.3865 6.2625 13.7167 6.59267 13.7167 6.99996C13.7167 7.40725 13.3865 7.73742 12.9793 7.73742H7.81701V12.8997C7.81701 13.307 7.48684 13.6371 7.07955 13.6371C6.67226 13.6371 6.34209 13.307 6.34209 12.8997V7.73742H1.17985C0.772556 7.73742 0.442383 7.40725 0.442383 6.99996C0.442383 6.59267 0.772556 6.2625 1.17985 6.2625L6.34209 6.2625V1.10026C6.34209 0.692966 6.67226 0.362793 7.07955 0.362793Z"
             fill="#231D2C"
           />

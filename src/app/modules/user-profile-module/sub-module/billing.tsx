@@ -165,7 +165,7 @@ export default function Billing() {
     <React.Fragment>
       {loading && <PageLoader />}
       <div>
-        <h4 css={billingcss.heading}>Billing</h4>
+        <h1 css={billingcss.heading}>Billing</h1>
         <div css={billingcss.section}>
           <p>Dataxplorer Plan</p>
 

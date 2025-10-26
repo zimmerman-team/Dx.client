@@ -13,8 +13,8 @@ import { useAuth0 } from "@auth0/auth0-react";
 import { Box } from "@material-ui/core";
 import AddAssetDropdown from "app/modules/home-module/components/AddAssetDropdown";
 import { Link } from "react-router-dom";
-import { PrimaryButton } from "app/components/Styled/button";
 import SignInButtons from "app/modules/home-module/components/SignInButtons";
+import { ctaLinkStyle } from "app/modules/home-module/sub-modules/partners";
 
 export default function WhyDX() {
   useTitle("Dataxplorer - Why Dataxplorer?");
@@ -70,22 +70,12 @@ export default function WhyDX() {
                   to="/"
                   data-cy="empower-block-explore-stories-link"
                   css={`
-                    text-decoration: none;
+                    ${ctaLinkStyle("dashboard")} @media (max-width: 600px) {
+                      width: max-content;
+                    }
                   `}
                 >
-                  <PrimaryButton
-                    css={`
-                      height: 48px;
-                      @media (max-width: 600px) {
-                        width: max-content;
-                      }
-                    `}
-                    size="big"
-                    bg="light"
-                    type="button"
-                  >
-                    Explore the Dashboard
-                  </PrimaryButton>
+                  Explore the Dashboard
                 </Link>
               </Box>
             ) : (

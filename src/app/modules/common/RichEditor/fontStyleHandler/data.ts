@@ -18,7 +18,7 @@ export const fontStyles = [
     key: "title",
     label: "Title",
     style: "title",
-    height: "70px",
+    height: "60px",
     fontFamily: DEFAULT_BOLD_FONT_FAMILY,
     fontSize: "40px",
     selected: false,
@@ -138,16 +138,34 @@ export const fontFamilyStyleMap = fontFamilies.reduce(
   },
   {}
 );
-
 export const blockStyleFn = (block: any) => {
+  let classes: string[] = [];
   const blockType = block.getType();
-
   // Find the font style that matches this block type
   const fontStyle = fontStyles.find((style) => style.blockType === blockType);
 
   if (fontStyle) {
-    return `font-style-${fontStyle.key}`;
+    classes.push(`font-style-${fontStyle.key}`);
   }
 
-  return "";
+  const color = block.getData().get("color");
+  const fontWeight = block.getData().get("fontWeight");
+  const fontFamily = block.getData().get("fontFamily");
+  const italic = block.getData().get("italic");
+
+  if (color) {
+    classes.push(`COLOR-${color.replace("#", "")}`);
+  }
+  if (fontWeight) {
+    classes.push(`FONT_WEIGHT-${fontWeight}`);
+  }
+  if (fontFamily) {
+    console.log(fontFamily, "fontFamily");
+    classes.push(`FONT_FAMILY-${fontFamily.replace(/\s/g, "_").toUpperCase()}`);
+  }
+  if (italic) {
+    classes.push("ITALIC");
+  }
+
+  return classes.join(" ");
 };

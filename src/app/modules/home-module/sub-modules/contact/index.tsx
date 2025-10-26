@@ -16,6 +16,11 @@ import { ReactComponent as SuccessIcon } from "./assets/success-icon.svg";
 import TryUsBlock from "app/modules/home-module/components/TryUsBlock";
 import { ChevronRight } from "@material-ui/icons";
 import { MOBILE_BREAKPOINT } from "app/theme";
+import {
+  CONTACT_EMAIL,
+  TELEPHONE_NUMBER,
+} from "app/modules/chart-module/util/constants";
+import { ctaLinkStyle } from "app/modules/home-module/sub-modules/partners";
 
 export default function ContactModule() {
   useTitle("Dataxplorer - Contact");
@@ -91,7 +96,7 @@ export default function ContactModule() {
   return (
     <>
       {loading && <PageLoader />}
-      <div
+      <main
         css={`
           margin-top: 50px;
           min-height: calc(100vh - 50px);
@@ -125,52 +130,36 @@ export default function ContactModule() {
                   data-cy="empower-block-explore-stories-link"
                   css={`
                     text-decoration: none;
+                    ${ctaLinkStyle("dashboard")}
+                    @media (max-width: ${MOBILE_BREAKPOINT}) {
+                      width: 194px;
+                      height: 41px;
+                    }
                   `}
                 >
-                  <PrimaryButton
-                    css={`
-                      height: 48px;
-                      @media (max-width: ${MOBILE_BREAKPOINT}) {
-                        width: 194px;
-                        height: 41px;
-                      }
-                    `}
-                    size="big"
-                    bg="light"
-                    type="button"
-                  >
-                    Explore the Dashboard
-                  </PrimaryButton>
+                  Explore the Dashboard
                 </Link>
                 <Link
                   to="/contact"
                   css={`
                     text-decoration: none;
+                    ${ctaLinkStyle("contact")}
+                    width: 141px;
+                    @media (max-width: ${MOBILE_BREAKPOINT}) {
+                      width: 194px;
+                      height: 41px;
+                    }
+                    display: flex;
+                    align-items: center;
+                    justify-content: space-between;
                   `}
                 >
-                  <PrimaryButton
+                  Email Us
+                  <ChevronRight
                     css={`
-                      height: 48px;
-                      width: 141px;
-                      @media (max-width: ${MOBILE_BREAKPOINT}) {
-                        width: 194px;
-                        height: 41px;
-                      }
-                      display: flex;
-                      align-items: center;
-                      justify-content: space-between;
+                      margin-right: -12px;
                     `}
-                    size="big"
-                    bg="light"
-                    type="button"
-                  >
-                    Email Us
-                    <ChevronRight
-                      css={`
-                        margin-right: -12px;
-                      `}
-                    />
-                  </PrimaryButton>
+                  />
                 </Link>
               </div>
             </div>
@@ -180,7 +169,7 @@ export default function ContactModule() {
                 Questions, inquiries, feedback, or future requests. — Have
                 something to share? We're listening.
                 <br />
-                Sign in to get the most out of <InlineLogo /> and keep things
+                Sign in to get the most out of Dataxplorer and keep things
                 connected.
               </p>
               <Box height={"40px"} />
@@ -234,7 +223,7 @@ export default function ContactModule() {
                   }
                 `}
               >
-                <h4
+                <h2
                   css={`
                     font-size: 48px;
                     font-style: normal;
@@ -246,7 +235,7 @@ export default function ContactModule() {
                   `}
                 >
                   Send Us a Message
-                </h4>
+                </h2>
                 <p>
                   We like to get out and know about you to see our clients –
                   we're more than happy to sit down and discuss a project. If
@@ -271,8 +260,9 @@ export default function ContactModule() {
                       width: 100%;
                     }
                   `}
+                  data-cy="contact-form-alert"
                 >
-                  <SuccessIcon />
+                  <SuccessIcon role="presentation" />
                   <p
                     css={`
                       font-size: 18px;
@@ -476,13 +466,6 @@ export default function ContactModule() {
                       flex-wrap: wrap;
                     `}
                   >
-                    <InlineLogo
-                      width={"309px"}
-                      height={"50px"}
-                      css={`
-                        flex-shrink: 0;
-                      `}
-                    />
                     <h3
                       css={`
                         font-size: 48px;
@@ -494,14 +477,14 @@ export default function ContactModule() {
                         margin: 0;
                       `}
                     >
-                      Headquarters
+                      Dataxplorer Headquarters
                     </h3>
                   </div>
                   <p>Feel free to contact us for any question you may have</p>
 
                   <p>
                     Zimmerman B.V. <br />
-                    Keizersgracht 520
+                    Keizersgracht 520H
                     <br />
                     1017 EK Amsterdam
                     <br />
@@ -509,9 +492,9 @@ export default function ContactModule() {
                   </p>
 
                   <p>
-                    Tel: +3120 213 4466
+                    Tel: {TELEPHONE_NUMBER}
                     <br />
-                    info@zimmerman.team
+                    {CONTACT_EMAIL}
                   </p>
                 </div>
               </div>
@@ -524,7 +507,7 @@ export default function ContactModule() {
             </div>
           </Container>
         </div>
-      </div>
+      </main>
       <HomeFooter />
     </>
   );

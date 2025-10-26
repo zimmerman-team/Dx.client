@@ -27,9 +27,10 @@ import { getLimit } from "app/modules/home-module/components/AssetCollection/Dat
 interface Props {
   sortBy: string;
   searchStr: string;
-  userOnly?: boolean;
+  filterValue?: "allAssets" | "myAssets" | "dataxplorerAssets";
   view: "grid" | "table";
   addCard?: boolean;
+  gridId: string;
 }
 
 export interface IChartAsset {
@@ -84,7 +85,7 @@ export default function ChartsGrid(props: Props) {
         ? `"where":{"name":{"like":"${props.searchStr}.*","options":"i"}},`
         : "";
 
-    return `${props.userOnly ? "userOnly=true&" : ""}filter={${value}"order":"${
+    return `filterValue=${props.filterValue}&filter={${value}"order":"${
       props.sortBy
     } ${props.sortBy === "name" ? "asc" : "desc"}","limit":${limit},"offset":${
       fromZeroOffset ? 0 : offset
@@ -96,7 +97,7 @@ export default function ChartsGrid(props: Props) {
       props.searchStr?.length > 0
         ? `where={"name":{"like":"${props.searchStr}.*","options":"i"}}`
         : "";
-    return `${props.userOnly ? "userOnly=true&" : ""}${value}`;
+    return `filterValue=${props.filterValue}&${value}`;
   };
 
   const loadData = (fromZeroOffset?: boolean) => {
@@ -233,8 +234,7 @@ export default function ChartsGrid(props: Props) {
 
   React.useEffect(() => {
     reloadData();
-  }, [props.sortBy, token, props.userOnly]);
-
+  }, [props.sortBy, token, props.filterValue]);
   const [,] = useDebounce(
     () => {
       if (initialRender.current) {
@@ -250,48 +250,57 @@ export default function ChartsGrid(props: Props) {
   return (
     <>
       {props.view === "grid" && (
-        <Grid container spacing={2}>
-          {props.addCard ? <ChartAddnewCard /> : null}
-          {loadedCharts.map((c, index) => (
-            <Grid item key={c.id} xs={12} sm={6} md={4} lg={3}>
-              <GridItem
-                id={c.id}
-                title={c.name}
-                date={c.updatedDate}
-                viz={getIcon(c.vizType)}
-                vizType={c.vizType}
-                isMappingValid={c.isMappingValid}
-                handleDelete={() => handleModal(c.id)}
-                handleDuplicate={() => handleDuplicate(c.id)}
-                owner={c.owner}
-                isAIAssisted={c.isAIAssisted}
-                ownerName={c.ownerName}
-              />
-              <div
-                css={`
-                  height: 16px;
-                  @media (max-width: 600px) {
-                    height: 8px;
-                  }
-                `}
-              />
-            </Grid>
-          ))}
-        </Grid>
+        <div id={props.gridId}>
+          <Grid container spacing={2}>
+            {props.addCard ? <ChartAddnewCard /> : null}
+            {loadedCharts.map((c, index) => (
+              <Grid item key={c.id} xs={12} sm={6} md={4} lg={3}>
+                <GridItem
+                  id={c.id}
+                  title={c.name}
+                  date={c.updatedDate}
+                  viz={getIcon(c.vizType)}
+                  vizType={c.vizType}
+                  isMappingValid={c.isMappingValid}
+                  handleDelete={() => handleModal(c.id)}
+                  handleDuplicate={() => handleDuplicate(c.id)}
+                  owner={c.owner}
+                  isAIAssisted={c.isAIAssisted}
+                  ownerName={c.ownerName.split(" ")[0]}
+                />
+                <div
+                  css={`
+                    height: 16px;
+                    @media (max-width: 600px) {
+                      height: 8px;
+                    }
+                  `}
+                />
+              </Grid>
+            ))}
+          </Grid>
+        </div>
       )}
       {props.view === "table" && (
         <HomepageTable
           handleDelete={handleModal}
           handleDuplicate={handleDuplicate}
+          cellWidths={[50, 450, 142, 142, 142, 142, 200, 50]}
           tableData={{
             columns: [
-              { key: "name", label: "Name" },
+              { key: "name", label: "File Name" },
+
+              { key: "type", label: "File Type" },
               { key: "vizType", label: "Chart Type" },
+
               { key: "updatedDate", label: "Last modified" },
+              { key: "createdDate", label: "Date Created" },
+              { key: "ownerName", label: "Creator" },
             ],
             data: loadedCharts.map((data) => ({
               ...data,
               type: "chart",
+              ownerName: data.ownerName.split(" ")[0],
               vizType: echartTypes(false).find((e) => e.id === data.vizType)
                 ?.label,
             })),

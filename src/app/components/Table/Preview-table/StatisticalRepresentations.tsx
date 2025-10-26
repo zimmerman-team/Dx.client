@@ -64,7 +64,7 @@ export const ProgressBar = (props: { progress: string; label: string }) => {
 };
 
 export const BarChartRepresentation = (props: ChartRepresentationProps) => {
-  const { render } = useDataThemesEchart();
+  const { render } = useDataThemesEchart({ readOnly: true });
   const domRef = React.useRef<HTMLDivElement>(null);
 
   React.useEffect(() => {

@@ -8,6 +8,7 @@ const TGFLogo = () => {
       viewBox="0 0 128 55"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
+      aria-label="The GlobalFund"
     >
       <path
         d="M56.9518 12.3505H53.8213V9.98273H63.0314V12.3505H59.9009V19.7825H56.9518V12.3505Z"

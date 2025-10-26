@@ -53,7 +53,6 @@ export const IncreaseIndentButton: React.FC<IndentButtonProps> = ({
     <Tooltip title="Increase Indent" placement="bottom">
       <button
         onClick={handleIncreaseIndent}
-        title="Increase Indent"
         css={`
           border: none;
           background: transparent;
@@ -119,7 +118,6 @@ export const DecreaseIndentButton: React.FC<IndentButtonProps> = ({
     <Tooltip title="Decrease Indent" placement="bottom">
       <button
         onClick={handleDecreaseIndent}
-        title="Decrease Indent"
         css={`
           border: none;
           background: transparent;

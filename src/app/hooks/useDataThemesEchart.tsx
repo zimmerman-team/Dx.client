@@ -1,6 +1,4 @@
 import React from "react";
-import get from "lodash/get";
-import filter from "lodash/filter";
 import uniqBy from "lodash/uniqBy";
 import sortBy from "lodash/sortBy";
 import * as echarts from "echarts/core";
@@ -38,6 +36,7 @@ import { checkLists } from "app/modules/chart-module/routes/customize/data";
 import { transform } from "echarts-stat";
 import { useSetRecoilState } from "recoil";
 import { chartsRenderedAtom } from "app/state/recoil/atoms";
+import { debounce } from "lodash";
 
 echarts.use([
   BarChart,
@@ -61,8 +60,24 @@ echarts.use([
   VisualMapComponent,
 ]);
 
-export function useDataThemesEchart() {
+interface UseDataThemesEchartProps {
+  readOnly?: boolean;
+  setVisualOptions?: (value: any) => void;
+  visualOptions?: any;
+}
+
+export function useDataThemesEchart({
+  visualOptions: mainVisualOptions,
+  setVisualOptions,
+  readOnly,
+}: UseDataThemesEchartProps) {
   const setChartsRendered = useSetRecoilState(chartsRenderedAtom);
+
+  const debouncedSetVisualOptions = debounce((value: any) => {
+    if (setVisualOptions) {
+      setVisualOptions(value);
+    }
+  }, 500);
 
   function onResize(chart: echarts.EChartsType, id: string, height?: number) {
     const container = document.getElementById(id);
@@ -100,6 +115,10 @@ export function useDataThemesEchart() {
       label,
       dataZoom,
       logarithmicYAxis,
+      dataZoomStart,
+      dataZoomEnd,
+      customYAxisName,
+      yAxisName,
     } = visualOptions;
 
     const sortedData = sortBy(data, (d) => d.bars);
@@ -140,7 +159,7 @@ export function useDataThemesEchart() {
         splitLine: {
           show: splitLineY ?? true,
         },
-        name: mapping?.size?.value?.[0] ?? "",
+        name: customYAxisName ? yAxisName : mapping?.size?.value?.[0] ?? "",
         nameTextStyle: {
           align: "left",
         },
@@ -149,18 +168,14 @@ export function useDataThemesEchart() {
         ? [
             {
               type: "inside",
-              start: 0,
-              end: 100,
+              start: dataZoomStart ?? 0,
+              end: dataZoomEnd ?? 100,
             },
             {
-              start: 0,
-              end: 100,
+              show: true,
             },
           ]
         : null,
-      // xAxis: orientation === "horizontal" ? { type: "value" } : { data: bars },
-      // yAxis: orientation === "vertical" ? { type: "value" } : { data: bars },
-      // backgroundColor: background,
       backgroundColor: "transparent",
       series: [
         {
@@ -207,7 +222,11 @@ export function useDataThemesEchart() {
       label,
       labelFontSize,
       dataZoom,
+      dataZoomStart,
+      dataZoomEnd,
       palette,
+      customYAxisName,
+      yAxisName,
     } = visualOptions;
 
     return {
@@ -227,17 +246,17 @@ export function useDataThemesEchart() {
       legend: {
         show: legend,
         data: data.series.map((d: any) => d.name),
+        type: "scroll",
       },
       dataZoom: dataZoom
         ? [
             {
               type: "inside",
-              start: 0,
-              end: 20,
+              start: dataZoomStart ?? 0,
+              end: dataZoomEnd ?? 20,
             },
             {
-              start: 0,
-              end: 20,
+              show: true,
             },
           ]
         : null,
@@ -251,6 +270,10 @@ export function useDataThemesEchart() {
       yAxis: [
         {
           type: "value",
+          name: customYAxisName ? yAxisName : mapping?.sizes?.value?.[0] ?? "",
+          nameTextStyle: {
+            align: "left",
+          },
         },
       ],
       series: data.series.map((d: any) => ({
@@ -294,7 +317,11 @@ export function useDataThemesEchart() {
       label,
       labelFontSize,
       dataZoom,
+      dataZoomStart,
+      dataZoomEnd,
       palette,
+      customYAxisName,
+      yAxisName,
     } = visualOptions;
 
     return {
@@ -320,17 +347,17 @@ export function useDataThemesEchart() {
       legend: {
         show: legend,
         data: data.series.map((d: any) => d.name),
+        type: "scroll",
       },
       dataZoom: dataZoom
         ? [
             {
               type: "inside",
-              start: 0,
-              end: 20,
+              start: dataZoomStart ?? 0,
+              end: dataZoomEnd ?? 20,
             },
             {
-              start: 0,
-              end: 20,
+              show: true,
             },
           ]
         : null,
@@ -344,6 +371,10 @@ export function useDataThemesEchart() {
       yAxis: [
         {
           type: "value",
+          name: customYAxisName ? yAxisName : mapping?.sizes?.value?.[0] ?? "",
+          nameTextStyle: {
+            align: "left",
+          },
         },
       ],
       series: data.series.map((d: any) => ({
@@ -393,6 +424,9 @@ export function useDataThemesEchart() {
       // chart
       drawDonut,
       arcThickness,
+      showLabel,
+      labelPosition,
+      labelFontSize,
       // Palette
       palette,
     } = visualOptions;
@@ -409,9 +443,10 @@ export function useDataThemesEchart() {
         formatter: (params: any) => valueFormatter3(params, isMonetaryValue),
       },
       legend: {
-        top: "5%",
         left: "center",
         show: showLegend,
+        type: "scroll",
+        width: "90%",
       },
       series: [
         {
@@ -423,11 +458,13 @@ export function useDataThemesEchart() {
           type: "pie",
           radius: drawDonut
             ? [`${thicknessPercent}%`, `${defaultRadius}%`]
-            : [`${defaultRadius}%`],
+            : ["0%", `${defaultRadius}%`],
           avoidLabelOverlap: false,
           label: {
-            show: false,
-            position: "center",
+            show: showLabel ?? true,
+            position: labelPosition ?? "outside",
+            fontSize: labelFontSize ?? 12,
+            rotate: labelPosition === "inside" ? true : false,
           },
           emphasis: {
             label: {
@@ -435,9 +472,6 @@ export function useDataThemesEchart() {
               fontSize: 40,
               fontWeight: "bold",
             },
-          },
-          labelLine: {
-            show: false,
           },
           data: data,
         },
@@ -495,7 +529,6 @@ export function useDataThemesEchart() {
 
     const top = height - newHeight > 0 ? (height - newHeight) / 2 : 0;
     const left = width - newWidth > 0 ? (width - newWidth) / 2 : 0;
-
     return {
       tooltip: {
         trigger: showTooltip ? "item" : "none",
@@ -572,14 +605,23 @@ export function useDataThemesEchart() {
       // chart options
       showLegend,
       dataZoom,
+      dataZoomStart,
+      dataZoomEnd,
       lineType,
       lineWidth,
+      smoothLine,
       // Tooltip
       showTooltip,
       isMonetaryValue,
+      palette,
+      customYAxisName,
+      yAxisName,
     } = visualOptions;
 
     return {
+      color:
+        checkLists.find((item) => item.label === palette)?.value ??
+        checkLists[0].value,
       grid: {
         top: marginTop,
         left: marginLeft,
@@ -601,7 +643,7 @@ export function useDataThemesEchart() {
         type: "value",
         zlevel: -1,
         z: -1,
-        name: mapping?.y?.value?.[0] ?? "",
+        name: customYAxisName ? yAxisName : mapping?.y?.value?.[0] ?? "",
         nameTextStyle: {
           align: "left",
         },
@@ -610,34 +652,34 @@ export function useDataThemesEchart() {
         ? [
             {
               type: "inside",
-              start: 0,
-              end: 20,
+              start: dataZoomStart ?? 0,
+              end: dataZoomEnd ?? 20,
             },
             {
-              start: 0,
-              end: 20,
+              show: true,
             },
           ]
         : null,
       legend: {
         show: showLegend,
         icon: "roundRect",
+        type: "scroll",
+        width: "90%",
       },
       backgroundColor: "transparent",
 
-      series: filter(get(data, "lines", []), (l: any) => l !== null).map(
-        (d: any) => ({
-          type: "line",
-          name: "year",
-          data: d[1].map((l: any) => l.y),
-          z: -1,
-          zlevel: -1,
-          lineStyle: {
-            type: lineType,
-            width: lineWidth,
-          },
-        })
-      ),
+      series: data.series.map((d: any) => ({
+        type: "line",
+        smooth: smoothLine ?? false,
+        name: d.name,
+        data: data.xAxisValues.map((x: any) => d.values[x] || 0),
+        z: -1,
+        zlevel: -1,
+        lineStyle: {
+          type: lineType,
+          width: lineWidth,
+        },
+      })),
       tooltip: {
         show: showTooltip,
         trigger: "axis",
@@ -664,6 +706,10 @@ export function useDataThemesEchart() {
       palette,
       // chart options
       dataZoom,
+      dataZoomStart,
+      dataZoomEnd,
+      customYAxisName,
+      yAxisName,
     } = visualOptions;
 
     const convertedData = sortBy(data, (d) => d.x).map((d: any) => [
@@ -698,7 +744,7 @@ export function useDataThemesEchart() {
       yAxis: {
         type: "value",
         boundaryGap: [0, "100%"],
-        name: mapping?.y?.value?.[0] ?? "",
+        name: customYAxisName ? yAxisName : mapping?.y?.value?.[0] ?? "",
         nameTextStyle: {
           align: "left",
         },
@@ -707,12 +753,11 @@ export function useDataThemesEchart() {
         ? [
             {
               type: "inside",
-              start: 0,
-              end: 20,
+              start: dataZoomStart ?? 0,
+              end: dataZoomEnd ?? 20,
             },
             {
-              start: 0,
-              end: 20,
+              show: true,
             },
           ]
         : null,
@@ -741,12 +786,17 @@ export function useDataThemesEchart() {
       // chart options
       showLegend,
       dataZoom,
+      dataZoomStart,
+      dataZoomEnd,
       label,
+      smoothLine,
       // Tooltip
       showTooltip,
       isMonetaryValue,
       // Palette
       palette,
+      customYAxisName,
+      yAxisName,
     } = visualOptions;
 
     return {
@@ -775,7 +825,7 @@ export function useDataThemesEchart() {
         type: "value",
         zlevel: -1,
         z: -1,
-        name: mapping?.y?.value?.[0] ?? "",
+        name: customYAxisName ? yAxisName : mapping?.y?.value?.[0] ?? "",
         nameTextStyle: {
           align: "left",
         },
@@ -787,37 +837,36 @@ export function useDataThemesEchart() {
         ? [
             {
               type: "inside",
-              start: 0,
-              end: 20,
+              start: dataZoomStart ?? 0,
+              end: dataZoomEnd ?? 20,
             },
             {
-              start: 0,
-              end: 20,
+              show: true,
             },
           ]
         : null,
       legend: {
         show: showLegend,
         icon: "roundRect",
+        type: "scroll",
       },
       // backgroundColor: background,
       backgroundColor: "transparent",
 
-      series: filter(get(data, "lines", []), (l: any) => l !== null).map(
-        (d: any) => ({
-          type: "line",
-          name: mapping?.y?.value?.[0],
-          data: d[1].map((l: any) => l.y),
-          stack: "Total",
-          areaStyle: {},
-          lineStyle: {
-            type: lineType,
-            width: lineWidth,
-          },
-          z: -1,
-          zlevel: -1,
-        })
-      ),
+      series: data.series.map((d: any) => ({
+        type: "line",
+        name: d.name,
+        data: data.xAxisValues.map((x: any) => d.values[x] || 0),
+        stack: "Total",
+        smooth: smoothLine ?? false,
+        areaStyle: {},
+        lineStyle: {
+          type: lineType,
+          width: lineWidth,
+        },
+        z: -1,
+        zlevel: -1,
+      })),
       tooltip: {
         show: showTooltip,
         trigger: "axis",
@@ -848,6 +897,10 @@ export function useDataThemesEchart() {
       palette,
       // chart
       dataZoom,
+      dataZoomStart,
+      dataZoomEnd,
+      customYAxisName,
+      yAxisName,
     } = visualOptions;
     const groups = Object.keys(data);
 
@@ -890,7 +943,7 @@ export function useDataThemesEchart() {
         },
         type: mapping.y.mappedType === "date" ? "category" : "value",
         scale: true,
-        name: mapping?.y?.value?.[0] ?? "",
+        name: customYAxisName ? yAxisName : mapping?.y?.value?.[0] ?? "",
         nameTextStyle: {
           align: "left",
         },
@@ -899,12 +952,11 @@ export function useDataThemesEchart() {
         ? [
             {
               type: "inside",
-              start: 0,
-              end: 100,
+              start: dataZoomStart ?? 0,
+              end: dataZoomEnd ?? 100,
             },
             {
-              start: 0,
-              end: 100,
+              show: true,
             },
           ]
         : null,
@@ -968,7 +1020,11 @@ export function useDataThemesEchart() {
       palette,
       // chart
       dataZoom,
+      dataZoomStart,
+      dataZoomEnd,
       trendline,
+      customYAxisName,
+      yAxisName,
     } = visualOptions;
 
     const list = checkLists.find((item) => item.label === palette)?.value ?? [];
@@ -992,7 +1048,7 @@ export function useDataThemesEchart() {
       },
       yAxis: {
         type: mapping.y.mappedType === "date" ? "category" : "value",
-        name: mapping?.y?.value?.[0] ?? "",
+        name: customYAxisName ? yAxisName : mapping?.y?.value?.[0] ?? "",
         nameTextStyle: {
           align: "left",
         },
@@ -1001,17 +1057,16 @@ export function useDataThemesEchart() {
         ? [
             {
               type: "inside",
-              start: 0,
-              end: 100,
+              start: dataZoomStart ?? 0,
+              end: dataZoomEnd ?? 100,
             },
             {
-              start: 0,
-              end: 100,
+              show: true,
             },
           ]
         : null,
       tooltip: {
-        trigger: "axis",
+        trigger: showTooltip ? "item" : "none",
         axisPointer: {
           type: "cross",
         },
@@ -1065,7 +1120,7 @@ export function useDataThemesEchart() {
     };
   }
 
-  function echartsHeatmap(data: any, visualOptions: any) {
+  function echartsHeatmap(data: any, visualOptions: any, mapping: any) {
     const {
       //artboard
       width,
@@ -1083,28 +1138,15 @@ export function useDataThemesEchart() {
       labelFontSize,
       // Palette
       palette,
+      customYAxisName,
+      yAxisName,
     } = visualOptions;
 
     const xAxisData = sortBy(data.filter((d: any) => d.x).map((d: any) => d.x));
 
-    const isYear = (d: any) => {
-      if (isNaN(d)) {
-        return false;
-      }
-      return d > 1000 && d <= new Date().getFullYear();
-    };
-
-    const isXAxisYear = xAxisData.every(isYear);
-
     const yAxisData = sortBy(data.filter((d: any) => d.y).map((d: any) => d.y));
 
-    const isYAxisYear = yAxisData.every(isYear);
-
-    const seriesData = data.map((item: any) => [
-      isXAxisYear ? String(item.x) : item.x,
-      isYAxisYear ? String(item.y) : item.y,
-      item.size,
-    ]);
+    const seriesData = data.map((item: any) => [item.x, item.y, item.size]);
 
     return {
       grid: {
@@ -1112,6 +1154,7 @@ export function useDataThemesEchart() {
         left: marginLeft,
         right: marginRight,
         bottom: marginBottom,
+        containLabel: true,
       },
       xAxis: {
         type: "category",
@@ -1125,6 +1168,10 @@ export function useDataThemesEchart() {
         data: uniqBy(yAxisData, (d: any) => d),
         splitArea: {
           show: true,
+        },
+        name: customYAxisName ? yAxisName : mapping?.y?.value?.[0] ?? "",
+        nameTextStyle: {
+          align: "left",
         },
       },
       tooltip: {
@@ -1411,7 +1458,8 @@ export function useDataThemesEchart() {
           data: data.categories?.map(function (a: { name: string }) {
             return a.name;
           }),
-          // show: showLegend,
+          show: showLegend,
+          type: "scroll",
         },
       ],
       tooltip: {
@@ -1498,6 +1546,7 @@ export function useDataThemesEchart() {
         {
           align: "left",
           show: showLegend,
+          type: "scroll",
         },
       ],
       tooltip: {
@@ -1707,7 +1756,7 @@ export function useDataThemesEchart() {
       color: checkLists.find((item) => item.label === palette)?.value,
       tooltip: {
         trigger: showTooltip ? "item" : "none",
-        formatter: (params: any) => valueFormatter1(params, isMonetaryValue),
+        formatter: (params: any) => valueFormatter3(params, isMonetaryValue),
       },
       series: [
         {
@@ -1761,6 +1810,24 @@ export function useDataThemesEchart() {
     const renderBigNumber = charts["bigNumber"].render;
     renderBigNumber(node, formatedData);
   }
+
+  const handleDataZoom = (event: any) => {
+    if (!readOnly) {
+      if (event.batch) {
+        debouncedSetVisualOptions({
+          ...mainVisualOptions,
+          dataZoomStart: event.batch[0].start,
+          dataZoomEnd: event.batch[0].end,
+        });
+      } else {
+        debouncedSetVisualOptions({
+          ...mainVisualOptions,
+          dataZoomStart: event.start,
+          dataZoomEnd: event.end,
+        });
+      }
+    }
+  };
 
   function render(
     data: any,
@@ -1838,13 +1905,13 @@ export function useDataThemesEchart() {
           echartsBubblechart(data, visualOptions, mapping),
         echartsScatterchart: () =>
           echartsScatterchart(data, visualOptions, mapping),
-        echartsHeatmap: () => echartsHeatmap(data, visualOptions),
+        echartsHeatmap: () => echartsHeatmap(data, visualOptions, mapping),
         echartsGraphgl: () => echartsGraphgl(data, visualOptions),
         echartsRadarchart: () => echartsRadarchart(data, visualOptions),
         echartsCirclepacking: () =>
           echartsCirclepacking(data, visualOptions, null),
       };
-      // @ts-expect-error jbh
+      // @ts-expect-error one is deprecated in echarts 5
       chart.one("finished", () => {
         if (chartId) {
           const chartKey = `key_${chartId}`;
@@ -1875,6 +1942,8 @@ export function useDataThemesEchart() {
           }
         });
       }
+
+      chart.on("datazoom", handleDataZoom);
     }
   }
 

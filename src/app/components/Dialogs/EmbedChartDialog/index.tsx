@@ -11,7 +11,7 @@ import ChartContainer from "./chartContainer";
 import { copyToClipboard } from "app/utils/copyToClipboard";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 import LinkOptions from "./linkOptions";
-import BasicSwitch from "app/components/Switch/BasicSwitch";
+import { BasicSwitch } from "app/components/Switch/BasicSwitch";
 import EmbedOptions from "./embedOptions";
 
 export default function EmbedChartDialog(props: {
@@ -156,8 +156,12 @@ export default function EmbedChartDialog(props: {
             >
               <BasicSwitch
                 activeTab={activeSwitchTab}
-                handleSwitch={handleSwitchTab}
-                setActiveTab={setActiveSwitchTab}
+                onTabChange={handleSwitchTab}
+                style={{
+                  radius: 20,
+                  paddingX: 16,
+                  backgroundActive: "#6061e5",
+                }}
                 tabs={switchTabs}
               />
             </div>

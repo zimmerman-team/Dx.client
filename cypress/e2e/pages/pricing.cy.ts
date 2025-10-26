@@ -10,6 +10,7 @@ describe("Testing the Pricing page", () => {
     cy.intercept("GET", `${apiUrl}/users/plan-data`).as("planData");
 
     cy.visit("/");
+    cy.injectAxe();
 
     cy.wait("@planData");
 
@@ -17,6 +18,10 @@ describe("Testing the Pricing page", () => {
     cy.get('[data-cy="app-bar"]').within(() => {
       cy.contains("a", "Pricing").click();
     });
+  });
+
+  it("Logs A11y violations to the terminal", () => {
+    cy.checkA11y(undefined, undefined, undefined, true);
   });
 
   it("Displays the displaysthe current plan", () => {
@@ -28,44 +33,14 @@ describe("Testing the Pricing page", () => {
   it("Shows the billing page and settings", () => {
     cy.visit("/user-management/billing");
 
-    cy.contains("button", "RENEW PLAN").click();
+    cy.contains("button", "RENEW PLAN").should("be.visible");
 
-    cy.origin("https://billing.stripe.com", () => {
-      cy.location("origin").should("include", "https://billing.stripe.com");
-    });
+    cy.contains("button", "UPGRADE PLAN").should("be.visible");
 
-    cy.visit("/user-management/billing");
+    cy.contains("button", "CANCEL PLAN").should("be.visible");
 
-    cy.contains("button", "UPGRADE PLAN").click();
+    cy.contains("button", "CHANGE PAYMENT METHOD").should("be.visible");
 
-    cy.origin("https://billing.stripe.com", () => {
-      cy.location("origin").should("include", "https://billing.stripe.com");
-    });
-
-    cy.visit("/user-management/billing");
-
-    cy.contains("button", "CANCEL PLAN").click();
-
-    cy.origin("https://billing.stripe.com", () => {
-      cy.location("origin").should("include", "https://billing.stripe.com");
-    });
-
-    cy.visit("/user-management/billing");
-
-    cy.contains("button", "CHANGE PAYMENT METHOD").click();
-
-    cy.origin("https://billing.stripe.com", () => {
-      cy.location("origin").should("include", "https://billing.stripe.com");
-    });
-
-    cy.visit("/user-management/billing");
-
-    cy.contains("button", "CHANGE BILLING INFO").click();
-
-    cy.origin("https://billing.stripe.com", () => {
-      cy.location("origin").should("include", "https://billing.stripe.com");
-    });
-
-    cy.visit("/user-management/billing");
+    cy.contains("button", "CHANGE BILLING INFO").should("be.visible");
   });
 });

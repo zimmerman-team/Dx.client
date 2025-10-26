@@ -1,6 +1,7 @@
 /// <reference types="cypress" />
 import "cypress-file-upload";
 import "cypress-network-idle";
+import "cypress-axe";
 
 // ***********************************************
 // This example commands.ts shows you how to
@@ -147,3 +148,37 @@ Cypress.Commands.add("setGoogleAccessToken", () => {
     localStorage.setItem("google_access_token", body.access_token);
   });
 });
+
+Cypress.Commands.add("printA11yViolations", (violations: any[]) => {
+  cy.task(
+    "log",
+    `${violations.length} accessibility violation${
+      violations.length === 1 ? "" : "s"
+    } ${violations.length === 1 ? "was" : "were"} detected`
+  );
+  // pluck specific keys to keep the table readable
+  const violationData = violations.map(
+    ({ id, impact, description, nodes }) => ({
+      id,
+      impact,
+      description,
+      nodes: nodes.length,
+    })
+  );
+
+  cy.task("table", violationData);
+});
+
+declare global {
+  namespace Cypress {
+    interface Chainable {
+      printA11yViolations(violations: any[]): Chainable<void>;
+      loginToAuth0(username: string, password: string): Chainable<void>;
+      saveLocalStorageCache(): Chainable<void>;
+      restoreLocalStorageCache(): Chainable<void>;
+      drag(subject: string): Chainable<Element>;
+      drop(subject: string): Chainable<Element>;
+      setGoogleAccessToken(): Chainable<void>;
+    }
+  }
+}

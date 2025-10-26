@@ -32,7 +32,8 @@ import { getColumns } from "app/modules/home-module/components/AssetCollection/A
 interface Props {
   sortBy: string;
   searchStr: string;
-  userOnly?: boolean;
+  filterValue?: "allAssets" | "myAssets" | "dataxplorerAssets";
+  gridId: string;
   view: "grid" | "table";
   inChartBuilder?: boolean;
   category?: string;
@@ -41,7 +42,7 @@ interface Props {
   lg?: GridSize;
   noAuth?: boolean;
 }
-export type assetType = "chart" | "dataset" | "story";
+export type AssetType = "chart" | "dataset" | "story";
 
 export default function AssetsGrid(props: Props) {
   const observerTarget = React.useRef(null);
@@ -49,7 +50,7 @@ export default function AssetsGrid(props: Props) {
   const [loadedAssets, setLoadedAssets] = React.useState<any[]>([]);
   const [modalDisplay, setModalDisplay] = React.useState<boolean>(false);
   const [activeAssetType, setActiveAssetType] =
-    React.useState<assetType | null>(null);
+    React.useState<AssetType | null>(null);
   const [enableButton, setEnableButton] = React.useState<boolean>(false);
   const initialRender = React.useRef(true);
 
@@ -75,10 +76,6 @@ export default function AssetsGrid(props: Props) {
     (state) => get(state, "assets.AssetsCount.data.count", 0) as number
   );
 
-  // const loadAssets = useStoreActions(
-  //   (actions) => actions.assets.AssetGetList.fetch
-  // );
-
   const loading = useStoreState((state) => state.assets.AssetGetList.loading);
 
   const assetsLoadSuccess = useStoreState(
@@ -91,7 +88,7 @@ export default function AssetsGrid(props: Props) {
         ? `"where":{"name":{"like":"${props.searchStr}.*","options":"i"}},`
         : "";
 
-    return `${props.userOnly ? "userOnly=true&" : ""}filter={${value}"order":"${
+    return `filterValue=${props.filterValue}&filter={${value}"order":"${
       props.sortBy
     } ${props.sortBy === "name" ? "asc" : "desc"}","limit":${limit},"offset":${
       fromZeroOffset ? 0 : offset
@@ -103,7 +100,7 @@ export default function AssetsGrid(props: Props) {
       props.searchStr?.length > 0
         ? `where={"name":{"like":"${props.searchStr}.*","options":"i"}}`
         : "";
-    return `${props.userOnly ? "userOnly=true&" : ""}${value}`;
+    return `filterValue=${props.filterValue}&${value}`;
   };
 
   const loadData = (fromZeroOffset?: boolean) => {
@@ -170,7 +167,7 @@ export default function AssetsGrid(props: Props) {
       chart: `${process.env.REACT_APP_API}/chart/${id}`,
       dataset: `${process.env.REACT_APP_API}/datasets/${id}`,
       story: `${process.env.REACT_APP_API}/story/${id}`,
-    }[activeAssetType as assetType];
+    }[activeAssetType as AssetType];
 
     axios
       .delete(url, {
@@ -185,7 +182,7 @@ export default function AssetsGrid(props: Props) {
       .catch((error) => console.log(error));
   };
 
-  const handleDuplicate = (id: string, assettype: assetType) => {
+  const handleDuplicate = (id: string, assettype: AssetType) => {
     if (!id) {
       return;
     }
@@ -257,7 +254,7 @@ export default function AssetsGrid(props: Props) {
 
   React.useEffect(() => {
     reloadData();
-  }, [props.sortBy, token, props.userOnly]);
+  }, [props.sortBy, token, props.filterValue]);
 
   const [,] = useDebounce(
     () => {
@@ -281,6 +278,7 @@ export default function AssetsGrid(props: Props) {
           handleDelete={handleModal}
           handleDuplicate={handleDuplicate}
           setActiveAssetType={setActiveAssetType}
+          cellWidths={[50, 300, 350, 142, 142, 142, 138, 150]}
           tableData={{
             columns: getColumns(),
             data: loadedAssets.map((data) => {
@@ -290,8 +288,10 @@ export default function AssetsGrid(props: Props) {
                   name: data.name,
                   description: data.title,
                   updatedDate: data.updatedDate,
-                  type: data.assetType,
-                  owner: data.owner,
+                  createdDate: data.createdDate,
+                  type: data.assetType.toLowerCase(),
+
+                  ownerName: data.ownerName.split(" ")[0],
                   vizType: echartTypes(false).find((e) => e.id === data.vizType)
                     ?.label,
                 };
@@ -301,102 +301,113 @@ export default function AssetsGrid(props: Props) {
                   name: data.name,
                   description: data.description,
                   updatedDate: data.updatedDate,
-                  type: data.assetType,
-                  owner: data.owner,
+                  createdDate: data.createdDate,
+                  type: data.assetType.toLowerCase() /* as keyof IDataTypeMap */,
+                  ownerName: data.ownerName.split(" ")[0],
                 };
               }
               return {
                 id: data.id,
                 name: data.name,
-                heading: data.heading
+                description: data.heading
                   ? EditorState.createWithContent(convertFromRaw(data.heading))
-                  : EditorState.createEmpty(),
+                      .getCurrentContent()
+                      .getPlainText()
+                  : EditorState.createEmpty()
+                      .getCurrentContent()
+                      .getPlainText(),
                 updatedDate: data.updatedDate,
-                type: data.assetType,
-                owner: data.owner,
+                createdDate: data.createdDate,
+                type: data.assetType.toLowerCase(),
+
+                ownerName: data.ownerName.split(" ")[0],
               };
             }),
           }}
         />
       ) : (
-        <Grid container spacing={2}>
-          {loadedAssets.map((d, index) => (
-            <Grid item key={d.id} xs={12} sm={6} md={4} lg={3}>
-              {
+        <div id={props.gridId}>
+          <Grid container spacing={2}>
+            {loadedAssets.map((d, index) => (
+              <Grid item key={d.id} xs={12} sm={6} md={4} lg={3}>
                 {
-                  chart: (
-                    <ChartGridItem
-                      id={d.id}
-                      title={d.name}
-                      date={d.updatedDate}
-                      viz={getIcon(d.vizType)}
-                      vizType={d.vizType}
-                      isMappingValid={d.isMappingValid}
-                      handleDelete={() => {
-                        setActiveAssetType(d.assetType as assetType);
-                        handleModal(d.id);
-                      }}
-                      handleDuplicate={() =>
-                        handleDuplicate(d.id, d.assetType as assetType)
-                      }
-                      owner={d.owner}
-                      isAIAssisted={d.isAIAssisted}
-                      ownerName={d.ownerName ?? ""}
-                    />
-                  ),
-                  dataset: (
-                    <DatasetGridItem
-                      path={`/dataset/${d.id}/edit`}
-                      title={d.name}
-                      date={d.updatedDate}
-                      handleDelete={() => {
-                        setActiveAssetType(d.assetType as assetType);
-                        handleModal(d.id);
-                      }}
-                      descr={d.description}
-                      handleDuplicate={() => {
-                        handleDuplicate(d.id, d.assetType as assetType);
-                      }}
-                      showMenu={!props.inChartBuilder}
-                      id={d.id}
-                      owner={d.owner}
-                      inChartBuilder={props.inChartBuilder as boolean}
-                      ownerName={d.ownerName ?? ""}
-                    />
-                  ),
-                  story: (
-                    <StoryGridItem
-                      id={d.id}
-                      key={d.id}
-                      name={d.name}
-                      date={d.updatedDate}
-                      viz={<ColoredStoryIcon />}
-                      color={d.backgroundColor}
-                      handleDelete={() => {
-                        setActiveAssetType(d.assetType as assetType);
-                        handleModal(d.id);
-                      }}
-                      handleDuplicate={() =>
-                        handleDuplicate(d.id, d.assetType as assetType)
-                      }
-                      heading={
-                        d.heading
-                          ? EditorState.createWithContent(
-                              convertFromRaw(d.heading)
-                            )
-                          : EditorState.createEmpty()
-                      }
-                      owner={d.owner}
-                      ownerName={d.ownerName ?? ""}
-                    />
-                  ),
-                }[d.assetType as assetType]
-              }
+                  {
+                    chart: (
+                      <ChartGridItem
+                        id={d.id}
+                        title={d.name}
+                        date={d.updatedDate}
+                        viz={getIcon(d.vizType)}
+                        vizType={d.vizType}
+                        isMappingValid={d.isMappingValid}
+                        handleDelete={() => {
+                          setActiveAssetType(d.assetType as AssetType);
+                          handleModal(d.id);
+                        }}
+                        handleDuplicate={() =>
+                          handleDuplicate(d.id, d.assetType as AssetType)
+                        }
+                        owner={d.owner}
+                        isAIAssisted={d.isAIAssisted}
+                        ownerName={d.ownerName.split(" ")[0]}
+                      />
+                    ),
+                    dataset: (
+                      <DatasetGridItem
+                        editPath={`/dataset/${d.id}/edit`}
+                        title={d.name}
+                        date={d.updatedDate}
+                        handleDelete={() => {
+                          setActiveAssetType(d.assetType as AssetType);
+                          handleModal(d.id);
+                        }}
+                        descr={d.description}
+                        handleDuplicate={() => {
+                          handleDuplicate(d.id, d.assetType as AssetType);
+                        }}
+                        showMenu={!props.inChartBuilder}
+                        id={d.id}
+                        owner={d.owner}
+                        inChartBuilder={props.inChartBuilder as boolean}
+                        ownerName={d.ownerName.split(" ")[0]}
+                        source={d.source}
+                        sourceURL={d.sourceUrl}
+                      />
+                    ),
+                    story: (
+                      <StoryGridItem
+                        id={d.id}
+                        key={d.id}
+                        name={d.name}
+                        date={d.updatedDate}
+                        viz={<ColoredStoryIcon />}
+                        color={d.backgroundColor}
+                        handleDelete={() => {
+                          setActiveAssetType(d.assetType as AssetType);
+                          handleModal(d.id);
+                        }}
+                        handleDuplicate={() =>
+                          handleDuplicate(d.id, d.assetType as AssetType)
+                        }
+                        heading={
+                          d.heading
+                            ? EditorState.createWithContent(
+                                convertFromRaw(d.heading)
+                              )
+                            : EditorState.createEmpty()
+                        }
+                        owner={d.owner}
+                        ownerName={d.ownerName.split(" ")[0]}
+                      />
+                    ),
+                  }[d.assetType as AssetType]
+                }
 
-              <Box height={16} />
-            </Grid>
-          ))}
-        </Grid>
+                <Box height={16} />
+              </Grid>
+            ))}
+          </Grid>
+        </div>
       )}
 
       <Box height={80} />
@@ -436,7 +447,7 @@ export default function AssetsGrid(props: Props) {
               handleInputChange={handleInputChange}
             />
           ),
-        }[activeAssetType as assetType]
+        }[activeAssetType as AssetType]
       }
     </>
   );

@@ -5,7 +5,6 @@ import Container from "@material-ui/core/Container";
 import useResizeObserver from "use-resize-observer";
 import { useRecoilState } from "recoil";
 import { GridColumns } from "app/modules/story-module/components/grid-columns";
-import HeaderBlock from "app/modules/story-module/components/headerBlock";
 import { ItemComponent } from "app/modules/story-module/components/order-container";
 import AddRowFrameButton from "app/modules/story-module/components/rowStructure/addRowFrameButton";
 import RowFrame from "app/modules/story-module/components/rowStructure";
@@ -44,14 +43,13 @@ function StoryCreateView(props: Readonly<StoryCreateViewProps>) {
           id: rowOne,
           frame: {
             rowId: rowOne,
-            rowIndex: 0,
+
             forceSelectedType: "oneByFive",
             type: "rowFrame",
           },
           content: [null, null, null, null, null],
           contentWidths: [20, 20, 20, 20, 20],
           contentHeights: [121, 121, 121, 121, 121],
-          textEditorHeights: [null, null, null, null, null],
           contentTypes: [null, null, null, null, null],
           structure: "oneByFive",
         },
@@ -59,14 +57,12 @@ function StoryCreateView(props: Readonly<StoryCreateViewProps>) {
           id: rowTwo,
           frame: {
             rowId: rowTwo,
-            rowIndex: 1,
             forceSelectedType: "oneByOne",
             type: "rowFrame",
           },
           content: [null],
           contentWidths: [100],
           contentHeights: [400],
-          textEditorHeights: [null],
           contentTypes: [null],
           structure: "oneByOne",
         },
@@ -75,14 +71,12 @@ function StoryCreateView(props: Readonly<StoryCreateViewProps>) {
           id: rowFive,
           frame: {
             rowId: rowFive,
-            rowIndex: 2,
             forceSelectedType: "oneByThree",
             type: "rowFrame",
           },
           content: [null, null, null],
           contentWidths: [33, 33, 33],
           contentHeights: [460, 460, 460],
-          textEditorHeights: [null, null, null],
           contentTypes: [null, null, null],
           structure: "oneByThree",
         },
@@ -103,7 +97,7 @@ function StoryCreateView(props: Readonly<StoryCreateViewProps>) {
           height: 55px;
         `}
       />
-      <HeaderBlock
+      {/* <HeaderBlock
         isToolboxOpen={props.rightPanelOpen}
         previewMode={false}
         headerDetails={{ ...props.headerDetails }}
@@ -111,9 +105,9 @@ function StoryCreateView(props: Readonly<StoryCreateViewProps>) {
         setStoryName={props.setStoryName}
         storyName={props.storyName}
         hasStoryNameFocused={props.hasStoryNameFocused}
-        setPlugins={props.setPlugins}
+        setPluginsState={props.setPluginsState}
         handleRightPanelOpen={props.handleRightPanelOpen}
-      />
+      /> */}
       <Container maxWidth="lg">
         <div
           ref={ref}
@@ -153,18 +147,21 @@ function StoryCreateView(props: Readonly<StoryCreateViewProps>) {
                 >
                   <RowFrame
                     {...frame.frame}
+                    rowIndex={index}
                     updateFramesArray={props.updateFramesArray}
                     framesArray={props.framesArray}
                     view={props.view}
                     rowContentHeights={frame.contentHeights}
                     rowContentWidths={frame.contentWidths}
-                    previewItems={
-                      frame.frame.previewItems as (string | object)[]
-                    }
+                    previewItems={undefined}
                     onSave={props.onSave}
-                    setPlugins={props.setPlugins}
+                    setPluginsState={props.setPluginsState}
                     endStoryTour={() => {}}
                     rightPanelOpen={props.rightPanelOpen}
+                    redoStack={props.redoStack}
+                    setRedoStack={props.setRedoStack}
+                    undoStack={props.undoStack}
+                    setUndoStack={props.setUndoStack}
                   />
                 </div>
                 <Box height={38} />
@@ -173,6 +170,10 @@ function StoryCreateView(props: Readonly<StoryCreateViewProps>) {
                   deleteFrame={props.deleteFrame}
                   framesArray={props.framesArray}
                   updateFramesArray={props.updateFramesArray}
+                  redoStack={props.redoStack}
+                  setRedoStack={props.setRedoStack}
+                  undoStack={props.undoStack}
+                  setUndoStack={props.setUndoStack}
                 />
               </ItemComponent>
             );
@@ -186,6 +187,10 @@ function StoryCreateView(props: Readonly<StoryCreateViewProps>) {
               setRowStructureType={setRowStructuretype}
               endTour={() => {}}
               rightPanelOpen={props.rightPanelOpen}
+              redoStack={props.redoStack}
+              setRedoStack={props.setRedoStack}
+              undoStack={props.undoStack}
+              setUndoStack={props.setUndoStack}
             />
           }
           <Box height={45} />
