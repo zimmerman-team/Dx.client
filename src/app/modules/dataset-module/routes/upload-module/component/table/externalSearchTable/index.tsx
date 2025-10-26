@@ -226,7 +226,7 @@ export default function ExternalSearchTable(props: {
           border-style: hidden;
           border-collapse: collapse;
         `}
-        data-cy="homepage-table"
+        data-cy="external-search-table"
       >
         <TableHead
           css={`
