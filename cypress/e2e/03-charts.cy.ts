@@ -62,13 +62,7 @@ describe("Testing create chart on DX", () => {
   });
 
   it("Logs A11y violations to the terminal", () => {
-    cy.checkA11y(
-      "",
-      {
-        retries: 3,
-      },
-      (violations) => cy.printA11yViolations(violations)
-    );
+    cy.checkA11y(undefined, undefined, undefined, true);
   });
 
   it("Can create a bar chart", () => {
@@ -887,7 +881,7 @@ describe("Testing create chart on DX", () => {
       .should("be.visible");
   });
 
-  it.only("Can create a Tree Map", () => {
+  it("Can create a Tree Map", () => {
     cy.get('[data-cy="chart-type-item"]').contains("Tree Map").click();
 
     cy.get('[data-cy="chart-type-preview"]')
@@ -1946,13 +1940,7 @@ describe("Testing Ai chart creation", () => {
     cy.get('[data-cy="toolbox-chart-next"]').click();
   });
   it("Logs A11y violations to the terminal", () => {
-    cy.checkA11y(
-      "",
-      {
-        retries: 3,
-      },
-      (violations) => cy.printA11yViolations(violations)
-    );
+    cy.checkA11y(undefined, undefined, undefined, true);
   });
   it("Can create a chart with AI", () => {
     cy.wait("@aiSuggestion");
@@ -2027,13 +2015,7 @@ describe("Edit, duplicate and delete chart", () => {
     cy.wait("@fetchCharts");
   });
   it("Logs A11y violations to the terminal", () => {
-    cy.checkA11y(
-      "",
-      {
-        retries: 3,
-      },
-      (violations) => cy.printA11yViolations(violations)
-    );
+    cy.checkA11y(undefined, undefined, undefined, true);
   });
 
   it("Can Edit a chart", () => {

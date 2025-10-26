@@ -30,6 +30,8 @@ import { MultiSwitch } from "app/modules/home-module/components/TabSwitch";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 import get from "lodash/get";
 import MobileControls from "app/modules/home-module/components/MobileAssetsControls";
+import { useMediaQuery } from "@material-ui/core";
+import { useDebounce } from "react-use";
 
 const ctaCards = [
   {
@@ -79,6 +81,9 @@ function AssetsCollection() {
   const [display, setDisplay] = useRecoilState(homeDisplayAtom);
   const token = useStoreState((state) => state.AuthToken.value);
   const gridId = "assets-grid";
+
+  const tablet = useMediaQuery(`(max-width: ${DESKTOP_BREAKPOINT})`);
+  const mobile = useMediaQuery(`(max-width: ${MOBILE_BREAKPOINT})`);
   const loadChartsCount = useStoreActions(
     (actions) => actions.charts.ChartsCount.fetch
   );
@@ -104,36 +109,53 @@ function AssetsCollection() {
     (state) => get(state, "assets.AssetsCount.data.count", 0) as number
   );
 
-  React.useEffect(() => {
-    if (token) {
-      loadAssetsCount({
-        token,
-        filterString: getWhereString(searchValue as string, filterValue),
-      });
+  // React.useEffect(() => {
+  //   if (token) {
+  //     loadAssetsCount({
+  //       token,
+  //       filterString: getWhereString(searchValue as string, filterValue),
+  //     });
 
-      loadDatasetCount({
-        token,
-        filterString: getWhereString(searchValue as string, filterValue),
-      });
-      loadChartsCount({
-        token,
-        filterString: getWhereString(searchValue as string, filterValue),
-      });
-      loadStoriesCount({
-        token,
-        filterString: getWhereString(searchValue as string, filterValue),
-      });
-    }
-  }, [
-    loadChartsCount,
-    loadDatasetCount,
-    loadStoriesCount,
-    token,
-    filterValue,
-    searchValue,
-    loadAssetsCount,
-  ]);
+  //     loadDatasetCount({
+  //       token,
+  //       filterString: getWhereString(searchValue as string, filterValue),
+  //     });
+  //     loadChartsCount({
+  //       token,
+  //       filterString: getWhereString(searchValue as string, filterValue),
+  //     });
+  //     loadStoriesCount({
+  //       token,
+  //       filterString: getWhereString(searchValue as string, filterValue),
+  //     });
+  //   }
+  // }, [token, filterValue, searchValue]);
 
+  useDebounce(
+    () => {
+      if (token) {
+        loadAssetsCount({
+          token,
+          filterString: getWhereString(searchValue as string, filterValue),
+        });
+
+        loadDatasetCount({
+          token,
+          filterString: getWhereString(searchValue as string, filterValue),
+        });
+        loadChartsCount({
+          token,
+          filterString: getWhereString(searchValue as string, filterValue),
+        });
+        loadStoriesCount({
+          token,
+          filterString: getWhereString(searchValue as string, filterValue),
+        });
+      }
+    },
+    500,
+    [searchValue, filterValue, token]
+  );
   const displayGrid = (searchStr: string, sortByStr: string) => {
     switch (display) {
       case "data":
@@ -401,72 +423,75 @@ function AssetsCollection() {
           </div>
         </div>
 
-        <div
-          css={`
-            display: none;
-            @media (min-width: ${TABLET_STARTPOINT}) {
+        {mobile ? (
+          <div
+            css={`
+              display: none;
+
+              @media (max-width: ${MOBILE_BREAKPOINT}) {
+                display: block;
+              }
+            `}
+          >
+            <MobileControls
+              assetsControlsProps={{
+                datasetCount,
+                chartCount: chartsCount,
+                storyCount: storiesCount,
+                allCount: assetsCount,
+              }}
+              searchInputProps={{
+                searchValue: searchValue as string,
+                onSearchChange: (e) => setSearchValue(e.target.value),
+                onFocus: () => setOpenSearch(true),
+                openSearch,
+                setOpenSearch,
+                hasSearchButton: true,
+                searchIconCypressId: "home-search-button",
+                onKeyPress: (e) => {
+                  if (e.key === "Enter") {
+                    e.preventDefault();
+                  }
+                },
+              }}
+              terminateSearch={() => setOpenSearch(false)}
+              setSortValue={setSortValue}
+              setFilterValue={setFilterValue}
+              setAssetsView={setAssetsView}
+              assetsView={assetsView}
+              sortValue={sortValue}
+              filterValue={filterValue}
+            />
+          </div>
+        ) : tablet ? (
+          <div
+            css={`
+              display: none;
+
               @media (max-width: ${DESKTOP_BREAKPOINT}) {
                 padding-top: 16px;
                 display: block;
               }
-            }
-          `}
-        >
-          <Filter
-            searchValue={searchValue as string}
-            setSearchValue={setSearchValue}
-            setSortValue={setSortValue}
-            setAssetsView={setAssetsView}
-            sortValue={sortValue}
-            assetsView={assetsView}
-            openSearch={openSearch}
-            setOpenSearch={setOpenSearch}
-            searchIconCypressId="home-search-button"
-            filterValue={filterValue}
-            setFilterValue={setFilterValue}
-            hasSearchButton
-            terminateSearch={() => {}}
-          />
-        </div>
-        <div
-          css={`
-            display: none;
+            `}
+          >
+            <Filter
+              searchValue={searchValue as string}
+              setSearchValue={setSearchValue}
+              setSortValue={setSortValue}
+              setAssetsView={setAssetsView}
+              sortValue={sortValue}
+              assetsView={assetsView}
+              openSearch={openSearch}
+              setOpenSearch={setOpenSearch}
+              searchIconCypressId="home-search-button"
+              filterValue={filterValue}
+              setFilterValue={setFilterValue}
+              hasSearchButton
+              terminateSearch={() => {}}
+            />
+          </div>
+        ) : null}
 
-            @media (max-width: ${MOBILE_BREAKPOINT}) {
-              display: block;
-            }
-          `}
-        >
-          <MobileControls
-            assetsControlsProps={{
-              datasetCount,
-              chartCount: chartsCount,
-              storyCount: storiesCount,
-              allCount: assetsCount,
-            }}
-            searchInputProps={{
-              searchValue: searchValue as string,
-              onSearchChange: (e) => setSearchValue(e.target.value),
-              onFocus: () => setOpenSearch(true),
-              openSearch,
-              setOpenSearch,
-              hasSearchButton: true,
-              searchIconCypressId: "home-search-button",
-              onKeyPress: (e) => {
-                if (e.key === "Enter") {
-                  e.preventDefault();
-                }
-              },
-            }}
-            terminateSearch={() => setOpenSearch(false)}
-            setSortValue={setSortValue}
-            setFilterValue={setFilterValue}
-            setAssetsView={setAssetsView}
-            assetsView={assetsView}
-            sortValue={sortValue}
-            filterValue={filterValue}
-          />
-        </div>
         {display === "data" ? (
           <DatasetCategoryList
             datasetCategories={datasetCategories}

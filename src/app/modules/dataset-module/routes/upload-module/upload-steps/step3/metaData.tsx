@@ -36,7 +36,7 @@ interface IErrorState {
   };
 }
 export interface MetadataProps {
-  onSubmit: (data: IFormDetails) => void;
+  onSubmit: (data: IFormDetails) => Promise<void>;
   formDetails: {
     name: string;
     description: string;
@@ -209,6 +209,7 @@ export default function MetaData(props: Readonly<MetadataProps>) {
                 onChange={handleChange}
                 name="name"
                 value={props.formDetails.name}
+                data-cy="dataset-metadata-title"
                 maxLength={50}
                 // ref={}
                 css={`
@@ -309,6 +310,7 @@ export default function MetaData(props: Readonly<MetadataProps>) {
               aria-haspopup="menu"
               aria-expanded={!!openState}
               aria-label="filter-button"
+              data-cy="dataset-metadata-category"
               css={`
                 border-radius: 10px;
                 border: none;
@@ -408,6 +410,7 @@ export default function MetaData(props: Readonly<MetadataProps>) {
                       align-items: center;
                       margin-bottom: 2px;
                     `}
+                    data-cy="dataset-metadata-category-option"
                   >
                     {option}
                   </button>

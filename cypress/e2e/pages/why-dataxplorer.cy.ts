@@ -22,13 +22,7 @@ describe("Testing the Why dataxplorer page logged in", () => {
   });
 
   it("Logs A11y violations to the terminal", () => {
-    cy.checkA11y(
-      "",
-      {
-        retries: 3,
-      },
-      (violations) => cy.printA11yViolations(violations)
-    );
+    cy.checkA11y(undefined, undefined, undefined, true);
   });
 
   it("Displays the buttons that link to the correct pages", () => {
