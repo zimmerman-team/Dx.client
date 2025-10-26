@@ -55,6 +55,9 @@ export default function FinishedFragment(props: Props) {
     }
   };
 
+  console.log(props.dataTotalCount, "rows");
+  console.log(props.stats.length, "columns");
+
   return (
     <div css={dataSetsCss}>
       <div

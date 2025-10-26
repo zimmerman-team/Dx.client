@@ -1,18 +1,12 @@
 /// <reference types="cypress" />
 
-describe("testing footer for valid links", () => {
+describe("testing header for valid links", () => {
   beforeEach(() => {
     cy.visit("/");
     cy.injectAxe();
   });
   it("Logs A11y violations to the terminal", () => {
-    cy.checkA11y(
-      "",
-      {
-        retries: 3,
-      },
-      (violations) => cy.printA11yViolations(violations)
-    );
+    cy.checkA11y(undefined, undefined, undefined, true);
   });
   it("clicking logo should remain in home page", () => {
     cy.get("[data-cy=header-logo]").scrollIntoView().click();

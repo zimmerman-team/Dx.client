@@ -1,6 +1,7 @@
 /// <reference types="cypress" />
 import "cypress-file-upload";
 import "cypress-network-idle";
+import "cypress-axe";
 
 // ***********************************************
 // This example commands.ts shows you how to

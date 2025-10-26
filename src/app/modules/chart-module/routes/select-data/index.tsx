@@ -83,6 +83,7 @@ function ChartModuleDataView(
         lg={props.toolboxOpen ? 4 : 3}
         filterValue="myAssets"
         gridId="datasets-grid"
+        hideCreateChartButton
       />
     </div>
   );

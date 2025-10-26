@@ -22,12 +22,12 @@ export default function UserProfileLayout() {
     {
       title: "profile",
       component: (active: boolean) => <RightIcon active={active} />,
-      testId: "",
+      testId: "profile-tab",
     },
     {
       title: "billing",
       component: (active: boolean) => <RightIcon active={active} />,
-      testId: "",
+      testId: "billing-tab",
     },
     {
       title: "Sign Out",

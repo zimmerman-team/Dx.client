@@ -127,6 +127,7 @@ export default function PrepareForUse(props: {
               size="small"
               bg="light"
               onClick={() => props.processing.setActiveStep(2)}
+              data-cy="describe-and-save-button"
             >
               Describe and Save
               <svg

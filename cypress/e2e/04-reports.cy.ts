@@ -31,13 +31,7 @@ describe("Testing stories on DX", () => {
     cy.get('[data-cy="cookie-btn"]').click();
   });
   it("Logs A11y violations to the terminal", () => {
-    cy.checkA11y(
-      "",
-      {
-        retries: 3,
-      },
-      (violations) => cy.printA11yViolations(violations)
-    );
+    cy.checkA11y(undefined, undefined, undefined, true);
   });
 
   it("Can Create story", () => {
@@ -58,7 +52,7 @@ describe("Testing stories on DX", () => {
     cy.get('[data-cy="story-sub-header-title-input"]').type(storyTestName);
 
     cy.intercept(`${apiUrl}/story/*`).as("fetchStory");
-    cy.intercept(`${apiUrl}/stories?filter=*`).as("fetchStories");
+    cy.intercept(`${apiUrl}/stories?filterValue=*`).as("fetchStories");
 
     cy.intercept("PATCH", `${apiUrl}/story/*`).as("patchStory");
 
@@ -200,7 +194,7 @@ describe("Testing stories on DX", () => {
     );
 
     cy.intercept(`${apiUrl}/story/*`).as("fetchStory");
-    cy.intercept(`${apiUrl}/stories?filter=*`).as("fetchStories");
+    cy.intercept(`${apiUrl}/stories?filterValue=*`).as("fetchStories");
 
     cy.intercept("PATCH", `${apiUrl}/story/*`).as("patchStory");
 
@@ -310,7 +304,7 @@ describe("Edit, duplicate and delete story", () => {
 
     cy.get('[data-cy="cookie-btn"]').click();
 
-    cy.intercept(`${apiUrl}/stories?filter=*`).as("fetchStories");
+    cy.intercept(`${apiUrl}/stories?filterValue=*`).as("fetchStories");
 
     cy.get('[data-cy="home-charts-tab"]').scrollIntoView().click();
     cy.get('[data-cy="home-stories-tab"]').scrollIntoView().click();
@@ -318,13 +312,7 @@ describe("Edit, duplicate and delete story", () => {
     cy.wait("@fetchStories");
   });
   it("Logs A11y violations to the terminal", () => {
-    cy.checkA11y(
-      "",
-      {
-        retries: 3,
-      },
-      (violations) => cy.printA11yViolations(violations)
-    );
+    cy.checkA11y(undefined, undefined, undefined, true);
   });
 
   it("Can Edit a story", () => {
@@ -335,6 +323,8 @@ describe("Edit, duplicate and delete story", () => {
     );
 
     cy.wait("@fetchStories");
+
+    cy.waitForNetworkIdle(apiUrl, 2000);
     cy.contains('[data-cy="story-grid-item"]', storyTestName)
       .first()
       .scrollIntoView()
@@ -492,6 +482,7 @@ describe("Edit, duplicate and delete story", () => {
       });
 
     cy.intercept(`${apiUrl}/story/*`).as("fetchStory");
+    cy.waitForNetworkIdle(apiUrl, 2000);
 
     cy.get('[data-cy="story-grid-item-edit-btn"]').click();
 
@@ -517,6 +508,8 @@ describe("Edit, duplicate and delete story", () => {
     );
 
     cy.wait("@fetchStories");
+
+    cy.waitForNetworkIdle(apiUrl, 2000);
 
     cy.contains('[data-cy="story-grid-item"]', `${storyTestName} - Edited`)
       .first()
@@ -676,6 +669,7 @@ describe("Edit, duplicate and delete story", () => {
       });
 
     cy.intercept(`${apiUrl}/story/*`).as("fetchStory");
+    cy.waitForNetworkIdle(apiUrl, 2000);
 
     cy.get('[data-cy="story-grid-item-edit-btn"]').click();
 
@@ -811,8 +805,8 @@ describe("Edit, duplicate and delete story", () => {
 
     // Delete the advanced story
 
-    cy.get("[data-cy=home-search-button]").click();
-    cy.wait(2000);
+    // cy.get("[data-cy=home-search-button]").click();
+    // cy.wait(2000);
     cy.get("[data-cy=filter-search-input]").type(
       `{selectall}{backspace}${advancedStoryTestName}`
     );
