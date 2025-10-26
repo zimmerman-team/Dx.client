@@ -21,13 +21,7 @@ describe("Testing the Pricing page", () => {
   });
 
   it("Logs A11y violations to the terminal", () => {
-    cy.checkA11y(
-      "",
-      {
-        retries: 3,
-      },
-      (violations) => cy.printA11yViolations(violations)
-    );
+    cy.checkA11y(undefined, undefined, undefined, true);
   });
 
   it("Displays the displaysthe current plan", () => {

@@ -13,6 +13,7 @@ import { AssetType } from "app/modules/home-module/components/AssetCollection/Al
 import { ReactComponent as AddIcon } from "app/modules/home-module/assets/add-icon.svg";
 import { ReactComponent as RemoveIcon } from "app/modules/home-module/assets/remove-icon.svg";
 import { FOCUS_VISIBLE_STYLE_DARK, FOCUS_VISIBLE_STYLE_LIGHT } from "app/theme";
+import { capitalize } from "lodash";
 
 interface IData {
   id: string;
@@ -323,7 +324,11 @@ export function HomepageTable(props: Readonly<TableComponentProps>) {
                       />
                     ) : (
                       <RegularCell
-                        value={data[column.key]}
+                        value={
+                          column.key === "type"
+                            ? capitalize(data[column.key])
+                            : data[column.key]
+                        }
                         isFirstColumn={false}
                       />
                     )}

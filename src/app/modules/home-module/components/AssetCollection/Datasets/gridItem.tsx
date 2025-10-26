@@ -34,6 +34,7 @@ interface Props {
   inChartBuilder: boolean;
   onItemClick?: (id: string) => void;
   ownerName: string;
+  hideCreateChartButton?: boolean;
 }
 
 export default function GridItem(props: Readonly<Props>) {
@@ -335,7 +336,7 @@ export default function GridItem(props: Readonly<Props>) {
           >
             Your Dataset is here!
           </ReactTooltip>
-          {displayCreateChartButton && (
+          {displayCreateChartButton && !props.hideCreateChartButton && (
             <Tooltip
               title={
                 canEditDelete

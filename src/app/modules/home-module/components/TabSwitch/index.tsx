@@ -65,6 +65,7 @@ export function MultiSwitch({
               {...getTabProps(tab, index)}
               aria-label={`${tab.value}-view-button`}
               aria-controls={ariaControls}
+              data-cy={tab.testId}
               tabIndex={activeTab === tab.value ? 0 : -1}
               css={`
                 font-family: ${activeTab === tab.value

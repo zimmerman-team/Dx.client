@@ -29,6 +29,7 @@ interface Props {
   lg?: GridSize;
   gridId: string;
   filterValue?: "allAssets" | "myAssets" | "dataxplorerAssets";
+  hideCreateChartButton?: boolean;
 }
 
 export const getLimit = () => {
@@ -286,6 +287,7 @@ export default function DatasetsGrid(props: Readonly<Props>) {
                   ownerName={data.ownerName.split(" ")[0]}
                   source={data.source}
                   sourceURL={data.sourceUrl}
+                  hideCreateChartButton={props.hideCreateChartButton}
                 />
 
                 {!props.inChartBuilder && <Box height={{ xs: 0, lg: 8 }} />}

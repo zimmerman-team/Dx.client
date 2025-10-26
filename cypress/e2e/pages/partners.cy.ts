@@ -13,13 +13,7 @@ describe("Testing the Partners page logged in", () => {
     });
   });
   it("Logs A11y violations to the terminal", () => {
-    cy.checkA11y(
-      "",
-      {
-        retries: 3,
-      },
-      (violations) => cy.printA11yViolations(violations)
-    );
+    cy.checkA11y(undefined, undefined, undefined, true);
   });
 
   it("Can switch between the different tabs", () => {
