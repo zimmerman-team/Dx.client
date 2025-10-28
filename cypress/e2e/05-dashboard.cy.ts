@@ -24,9 +24,18 @@ describe("Dashboard", () => {
   it("Can view all asset types on the dashboard", () => {
     cy.get('[data-cy="home-all-tab"]').scrollIntoView().click();
     cy.wait("@fetchAssets");
-    cy.get('[data-cy="dataset-grid-item"]').should("be.visible");
-    cy.get('[data-cy="story-grid-item"]').should("be.visible");
-    cy.get('[data-cy="dataset-grid-item"]').should("be.visible");
+    cy.get('[data-cy="dataset-grid-item"]')
+      .first()
+      .scrollIntoView()
+      .should("be.visible");
+    cy.get('[data-cy="story-grid-item"]')
+      .first()
+      .scrollIntoView()
+      .should("be.visible");
+    cy.get('[data-cy="dataset-grid-item"]')
+      .first()
+      .scrollIntoView()
+      .should("be.visible");
   });
 
   it("Can filter datasets by category", () => {
