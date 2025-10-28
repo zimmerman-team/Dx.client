@@ -2,10 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { ReactComponent as CopyIcon } from "app/modules/home-module/components/Footer/asset/copy.svg";
 import moment from "moment";
-import {
-  PRIVACY_POLICY_LINK,
-  TERMS_AND_CONDITION_LINK,
-} from "app/modules/chart-module/util/constants";
+import { PRIVACY_POLICY_LINK, TERMS_AND_CONDITION_LINK } from "app/constants";
 import Logo from "app/assets/icons/Logo";
 
 export default function MobileFooter() {

@@ -1,3 +1,4 @@
+import { FOCUS_VISIBLE_STYLE_LIGHT } from "app/theme";
 import React from "react";
 
 import styled from "styled-components";
@@ -31,6 +32,9 @@ const StyledInput = styled.input`
   border-radius: 36px;
   appearance: none;
   cursor: pointer;
+  &:focus-visible + span {
+    ${FOCUS_VISIBLE_STYLE_LIGHT}
+  }
 `;
 
 const StyledSpan = styled.span<Props>`
@@ -56,12 +60,18 @@ const AutoSaveSwitch = (props: {
   disabled?: boolean;
 }) => {
   return (
-    <StyledLabel checked={props.checked}>
+    <StyledLabel
+      checked={props.checked}
+      role="switch"
+      aria-label="Auto Save Switch"
+    >
       <p>{props.checked ? "ON" : "OFF"}</p>
       <StyledInput
         type="checkbox"
         checked={props.checked}
         disabled={props.disabled ?? false}
+        aria-checked={props.checked}
+        aria-disabled={props.disabled}
         onChange={(e) => {
           props.setAutoSave({
             isAutoSaveEnabled: e.target.checked,

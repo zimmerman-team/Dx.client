@@ -44,6 +44,7 @@ import { ExportStoryButton } from "./exportButton";
 import { PrimaryButton } from "app/components/Styled/button";
 import { ArrowBack } from "@material-ui/icons";
 import {
+  FOCUS_VISIBLE_STYLE_DARK,
   FOCUS_VISIBLE_STYLE_LIGHT,
   MOBILE_BREAKPOINT,
   TABLET_STARTPOINT,
@@ -304,7 +305,7 @@ export function StorySubheaderToolbar(
                 color: #231d2c;
                 text-decoration: none;
                 cursor: pointer;
-                :focus-visible {
+                &:focus-visible {
                   ${FOCUS_VISIBLE_STYLE_LIGHT}
                 }
               `}
@@ -470,11 +471,19 @@ export function StorySubheaderToolbar(
                           :disabled {
                             opacity: 0.5;
                           }
+                          :focus-visible {
+                            ${FOCUS_VISIBLE_STYLE_DARK}
+                          }
                         `}
                         data-cy="view-story-button-tablet"
-                        aria-label="view-story-button-tablet"
+                        aria-label="view story"
                       >
-                        <svg width="20" height="19" viewBox="0 0 20 19">
+                        <svg
+                          width="20"
+                          height="19"
+                          viewBox="0 0 20 19"
+                          role="presentation"
+                        >
                           <rect width="20" height="19" rx="3" fill="#262C34" />
                           <path
                             fill="#EFEFEF"
@@ -489,11 +498,14 @@ export function StorySubheaderToolbar(
                       <IconButton
                         onClick={onSave}
                         disabled={!props.isSaveEnabled}
-                        aria-label="save button"
+                        aria-label="save story"
                         css={`
                           padding: 0px;
                           :disabled {
                             opacity: 0.5;
+                          }
+                          :focus-visible {
+                            ${FOCUS_VISIBLE_STYLE_DARK}
                           }
                         `}
                         data-cy="save-story-button"

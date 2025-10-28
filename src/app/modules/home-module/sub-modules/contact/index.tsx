@@ -8,7 +8,6 @@ import { APPLICATION_JSON } from "app/state/api";
 import { PrimaryButton } from "app/components/Styled/button";
 import Hero from "app/modules/home-module/components/hero";
 import SignInButtons from "app/modules/home-module/components/SignInButtons";
-import InlineLogo from "app/modules/home-module/assets/inline-logo";
 import { Link } from "react-router-dom";
 import { useAuth0 } from "@auth0/auth0-react";
 import InputField, { TextField } from "./components/input";
@@ -16,10 +15,7 @@ import { ReactComponent as SuccessIcon } from "./assets/success-icon.svg";
 import TryUsBlock from "app/modules/home-module/components/TryUsBlock";
 import { ChevronRight } from "@material-ui/icons";
 import { MOBILE_BREAKPOINT } from "app/theme";
-import {
-  CONTACT_EMAIL,
-  TELEPHONE_NUMBER,
-} from "app/modules/chart-module/util/constants";
+import { CONTACT_EMAIL, TELEPHONE_NUMBER } from "app/constants";
 import { ctaLinkStyle } from "app/modules/home-module/sub-modules/partners";
 import { getCMSDataField } from "app/utils/getCMSDataField";
 import { useCMSData } from "app/hooks/useCMSData";

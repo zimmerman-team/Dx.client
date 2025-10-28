@@ -20,7 +20,11 @@ import { rowStructureHeights } from "./data";
 import { calculateWidths } from ".";
 import Box, { ContentType } from "./box";
 import { usehandleRowFrameItemResize } from "app/hooks/useHandleRowFrameItemResize";
-import { DESKTOP_BREAKPOINT, MOBILE_BREAKPOINT } from "app/theme";
+import {
+  DESKTOP_BREAKPOINT,
+  FOCUS_VISIBLE_STYLE_DARK,
+  MOBILE_BREAKPOINT,
+} from "app/theme";
 import { NumberSize, Resizable } from "re-resizable";
 import { Direction } from "re-resizable/lib/resizer";
 import {
@@ -292,6 +296,9 @@ export default function RowstructureDisplay(
                           fill: #fff;
                         }
                       }
+                    }
+                    :focus-visible {
+                      ${FOCUS_VISIBLE_STYLE_DARK}
                     }
                   }
                 `}

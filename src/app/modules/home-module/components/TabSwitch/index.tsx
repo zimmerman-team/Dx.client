@@ -25,7 +25,7 @@ export function MultiSwitch({
 }: StyledSwitchProps) {
   return (
     <HeadlessSwitch tabs={tabs} activeTab={activeTab} onTabChange={onTabChange}>
-      {({ tabs, activeTab, activeIndex, focusIndex, getTabProps }) => (
+      {({ activeIndex, focusIndex, getTabProps }) => (
         <div
           css={`
             display: flex;

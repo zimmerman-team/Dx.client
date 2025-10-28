@@ -37,6 +37,10 @@ export const SearchInput: React.FC<SearchInputProps> = ({
     if (e.key === "tab" && openSearch) {
       setInputFocused(true);
     }
+    if (e.key === "Escape" && openSearch) {
+      setInputFocused(false);
+      setOpenSearch?.(false);
+    }
   };
 
   return (

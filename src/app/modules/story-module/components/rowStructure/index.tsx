@@ -35,6 +35,7 @@ import { useMediaQuery } from "@material-ui/core";
 import { rowStructureHeights } from "./data";
 import { isEmpty } from "lodash";
 import { useUndoRedo } from "app/hooks/useUndoRedo";
+import { FOCUS_VISIBLE_STYLE_LIGHT } from "app/theme";
 
 const rowStructureDetailItems = [
   [{ rowType: "oneByOne", rowId: "oneByOne-1", width: "100%", factor: 1 }],
@@ -603,6 +604,9 @@ export default function RowFrame(props: RowFrameProps) {
                   top: -5px;
                   right: -5px;
                   position: absolute;
+                  :focus-visible {
+                    ${FOCUS_VISIBLE_STYLE_LIGHT}
+                  }
                 `}
                 onClick={() => {
                   if (
@@ -692,7 +696,7 @@ const OneByOne = (props: IRowStructureType) => {
     }
   };
   return (
-    <div css={blockcss} onClick={handleClick} data-cy="one-by-one-type">
+    <button css={blockcss} onClick={handleClick} data-cy="one-by-one-type">
       <p>1/1</p>
       <div>
         <div
@@ -703,7 +707,7 @@ const OneByOne = (props: IRowStructureType) => {
           `}
         />
       </div>
-    </div>
+    </button>
   );
 };
 
@@ -717,7 +721,7 @@ const OneByTwo = (props: IRowStructureType) => {
     props.handleRowFrameStructureTypeSelection("oneByTwo");
   };
   return (
-    <div css={blockcss} onClick={handleClick} data-cy="one-by-two-type">
+    <button css={blockcss} onClick={handleClick} data-cy="one-by-two-type">
       <p>1/2</p>
       <div
         css={`
@@ -734,7 +738,7 @@ const OneByTwo = (props: IRowStructureType) => {
         <div />
         <div />
       </div>
-    </div>
+    </button>
   );
 };
 
@@ -748,7 +752,7 @@ const OneByThree = (props: IRowStructureType) => {
     }
   };
   return (
-    <div css={blockcss} onClick={handleClick}>
+    <button css={blockcss} onClick={handleClick}>
       <p>1/3</p>
       <div
         css={`
@@ -766,7 +770,7 @@ const OneByThree = (props: IRowStructureType) => {
         <div />
         <div />
       </div>
-    </div>
+    </button>
   );
 };
 
@@ -780,7 +784,7 @@ const OneByFour = (props: IRowStructureType) => {
     }
   };
   return (
-    <div css={blockcss} onClick={handleClick}>
+    <button css={blockcss} onClick={handleClick}>
       <p>1/4</p>
       <div
         css={`
@@ -799,7 +803,7 @@ const OneByFour = (props: IRowStructureType) => {
         <div />
         <div />
       </div>
-    </div>
+    </button>
   );
 };
 
@@ -813,7 +817,7 @@ const OneByFive = (props: IRowStructureType) => {
     }
   };
   return (
-    <div css={blockcss} onClick={handleClick}>
+    <button css={blockcss} onClick={handleClick}>
       <p>1/5</p>
       <div
         css={`
@@ -833,7 +837,7 @@ const OneByFive = (props: IRowStructureType) => {
         <div />
         <div />
       </div>
-    </div>
+    </button>
   );
 };
 
@@ -927,6 +931,9 @@ function Divider(props: {
                       fill: #fff;
                     }
                   }
+                }
+                :focus-visible {
+                  ${FOCUS_VISIBLE_STYLE_LIGHT}
                 }
               }
             `}

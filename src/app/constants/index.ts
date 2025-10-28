@@ -5,5 +5,5 @@ export const COOKIE_POLICY_LINK =
 export const DATA_POLICY_LINK =
   "https://drive.google.com/file/d/1bokZTczN9bwebi4-fSz7i0rOIeufxYoR/view?usp=drive_link";
 
-export const TELEPHONE_NUMBER = "+3120 213 4466";
+export const TELEPHONE_NUMBER = "+3185 130 5884";
 export const CONTACT_EMAIL = "contact@dataxplorer.org";

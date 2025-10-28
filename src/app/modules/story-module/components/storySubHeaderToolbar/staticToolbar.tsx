@@ -73,13 +73,15 @@ export default function StaticToolbar(props: {
   );
   const isDesktop = useMediaQuery("(min-width: 1219px)");
   //control modals for color and background color pickers
-  const [anchorEl, setAnchorEl] = React.useState<HTMLDivElement | null>(null);
+  const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(
+    null
+  );
   const [activeColorModal, setActiveColorModal] = React.useState<
     "bg" | "color" | null
   >(null);
   const [displayRestIcons, setDisplayRestIcons] = React.useState(false);
   const handleClick = (
-    event: React.MouseEvent<HTMLDivElement>,
+    event: React.MouseEvent<HTMLButtonElement, MouseEvent>,
     modalType: "bg" | "color"
   ) => {
     setActiveColorModal(modalType);
@@ -190,11 +192,10 @@ export default function StaticToolbar(props: {
                 <ItalicButton {...externalProps} />
                 <UnderlineButton {...externalProps} />
                 <Tooltip title="Text color" placement="bottom">
-                  <div
+                  <button
                     onMouseDown={(e) => e.preventDefault()}
                     onClick={(e) => handleClick(e, "color")}
                     id={colorId}
-                    tabIndex={0} // Add tabIndex attribute to make the div focusable
                     css={`
                       ${commonstyles.highlightPicker} ${commonstyles.colorPicker(
                         color
@@ -202,14 +203,13 @@ export default function StaticToolbar(props: {
                     `}
                   >
                     {HiglightPicker}
-                  </div>
+                  </button>
                 </Tooltip>
                 <Tooltip title="Highlight color" placement="bottom">
-                  <div
+                  <button
                     onMouseDown={(e) => e.preventDefault()}
                     onClick={(e) => handleClick(e, "bg")}
                     id={bgId}
-                    tabIndex={0} // Add tabIndex attribute to make the div focusable
                     css={`
                       ${commonstyles.highlightPicker} ${commonstyles.bgHighlightPicker(
                         bgColor
@@ -217,7 +217,7 @@ export default function StaticToolbar(props: {
                     `}
                   >
                     {BGHiglightPicker}
-                  </div>
+                  </button>
                 </Tooltip>
                 {externalProps.getEditorState !== undefined && (
                   <ColorModal
