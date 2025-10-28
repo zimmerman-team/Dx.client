@@ -74,7 +74,7 @@ export default function EditMetaData() {
   }, [loadedDataset]);
 
   const onSubmit = async () => {
-    axios
+    await axios
       .patch(
         `${process.env.REACT_APP_API}/datasets/${page}`,
         { ...formDetails },

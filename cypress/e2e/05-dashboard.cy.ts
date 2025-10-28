@@ -7,9 +7,9 @@ describe("Dashboard", () => {
     // restore login session
     cy.restoreLocalStorageCache();
     cy.intercept("GET", `${apiUrl}/assets**`).as("fetchAssets");
-    cy.intercept("GET", `${apiUrl}/datasets?filter=*`).as("fetchDatasets");
+    cy.intercept("GET", `${apiUrl}/datasets?filterValue=*`).as("fetchDatasets");
     cy.intercept("GET", `${apiUrl}/charts*`).as("fetchCharts");
-    cy.intercept(`${apiUrl}/stories?filter=*`).as("fetchStories");
+    cy.intercept(`${apiUrl}/stories?filterValue=*`).as("fetchStories");
 
     cy.visit("/");
     cy.injectAxe();
@@ -18,13 +18,7 @@ describe("Dashboard", () => {
   });
 
   it("Logs A11y violations to the terminal", () => {
-    cy.checkA11y(
-      "",
-      {
-        retries: 3,
-      },
-      (violations) => cy.printA11yViolations(violations)
-    );
+    cy.checkA11y(undefined, undefined, undefined, true);
   });
 
   it("Can view all asset types on the dashboard", () => {

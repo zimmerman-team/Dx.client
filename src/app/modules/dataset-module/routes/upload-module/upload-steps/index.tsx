@@ -154,9 +154,9 @@ function DatasetUploadSteps(props: Props) {
     }
   }, [activeStep]);
 
-  const onSubmitMetadata = () => {
+  const onSubmitMetadata = async () => {
     //Post the dataset
-    axios
+    await axios
       .post(
         `${process.env.REACT_APP_API}/datasets`,
         { ...formDetails, authId: user?.sub, id: props.datasetId },
@@ -172,7 +172,7 @@ function DatasetUploadSteps(props: Props) {
         //we do this to load data to populate the table
         // loadSampleDataset(response.data.data.id);
         //we do this to update the dataset list with the new dataset
-        loadDatasets({ token, storeInCrudData: true });
+        // loadDatasets({ token, storeInCrudData: true });
         if (response?.data.error && response?.data.errorType === "planError") {
           return setPlanDialog({
             open: true,

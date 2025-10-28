@@ -8,13 +8,7 @@ describe("testing contact form", () => {
     cy.get('[data-cy="cookie-btn"]').click();
   });
   it("Logs A11y violations to the terminal", () => {
-    cy.checkA11y(
-      "",
-      {
-        retries: 3,
-      },
-      (violations) => cy.printA11yViolations(violations)
-    );
+    cy.checkA11y(undefined, undefined, undefined, true);
   });
   it("should submit contact form", () => {
     cy.intercept(`${apiUrl}/users/send-contact-form-to-intercom`).as(

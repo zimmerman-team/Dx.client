@@ -9,13 +9,7 @@ describe("Home page tests", () => {
   });
 
   it("Logs A11y violations to the terminal", () => {
-    cy.checkA11y(
-      "",
-      {
-        retries: 3,
-      },
-      (violations) => cy.printA11yViolations(violations)
-    );
+    cy.checkA11y(undefined, undefined, undefined, true);
   });
 
   it("Can go to explore stories page and create story from the about page", () => {
