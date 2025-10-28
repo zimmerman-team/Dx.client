@@ -21,11 +21,14 @@ import {
   TELEPHONE_NUMBER,
 } from "app/modules/chart-module/util/constants";
 import { ctaLinkStyle } from "app/modules/home-module/sub-modules/partners";
+import { getCMSDataField } from "app/utils/getCMSDataField";
+import { useCMSData } from "app/hooks/useCMSData";
 
 export default function ContactModule() {
   useTitle("Dataxplorer - Contact");
 
   const { isAuthenticated } = useAuth0();
+  const cmsData = useCMSData({ returnData: true });
   const md = useMediaQuery("(max-width: 940px)");
   const [message, setMessage] = React.useState("");
   const [loading, setLoading] = React.useState(false);
@@ -105,12 +108,22 @@ export default function ContactModule() {
           justify-content: space-between;
         `}
       >
-        <Hero title="Contact Us">
+        <Hero
+          title={getCMSDataField(
+            cmsData,
+            "pagesContact.heroTitle",
+            "Contact Us"
+          )}
+        >
           {isAuthenticated ? (
             <div>
               <p>
-                Questions, inquiries, feedback, or future requests. — Have
-                something to share? We're listening.
+                {getCMSDataField(
+                  cmsData,
+                  "pagesContact.heroSubtitle",
+                  `Questions, inquiries, feedback, or future requests. — Have
+                something to share? We're listening.`
+                )}
               </p>
               <Box height={"40px"} />
               <div
@@ -137,7 +150,11 @@ export default function ContactModule() {
                     }
                   `}
                 >
-                  Explore the Dashboard
+                  {getCMSDataField(
+                    cmsData,
+                    "pagesContact.exploreDataStoriesCta",
+                    "Explore the Dashboard"
+                  )}
                 </Link>
                 <Link
                   to="/contact"
@@ -154,7 +171,11 @@ export default function ContactModule() {
                     justify-content: space-between;
                   `}
                 >
-                  Email Us
+                  {getCMSDataField(
+                    cmsData,
+                    "pagesContact.contactUsCta",
+                    "Email Us"
+                  )}
                   <ChevronRight
                     css={`
                       margin-right: -12px;
@@ -166,11 +187,19 @@ export default function ContactModule() {
           ) : (
             <div>
               <p>
-                Questions, inquiries, feedback, or future requests. — Have
-                something to share? We're listening.
+                {getCMSDataField(
+                  cmsData,
+                  "pagesContact.heroSubtitle",
+                  `Questions, inquiries, feedback, or future requests. — Have
+                something to share? We're listening.`
+                )}
                 <br />
-                Sign in to get the most out of Dataxplorer and keep things
-                connected.
+                {getCMSDataField(
+                  cmsData,
+                  "pagesContact.signInText",
+                  `Sign in to get the most out of Dataxplorer and keep things
+                connected.`
+                )}
               </p>
               <Box height={"40px"} />
               <SignInButtons />
@@ -234,16 +263,30 @@ export default function ContactModule() {
                     margin: 0;
                   `}
                 >
-                  Send Us a Message
+                  {getCMSDataField(
+                    cmsData,
+                    "pagesContact.contactFormTitle",
+                    "Send Us a Message"
+                  )}
                 </h2>
                 <p>
-                  We like to get out and know about you to see our clients –
+                  {getCMSDataField(
+                    cmsData,
+                    "pagesContact.contactFormSubtitle",
+                    `We like to get out and know about you to see our clients –
                   we're more than happy to sit down and discuss a project. If
                   you'd like to meet up, talk through a project, feel free to
-                  get in touch.
+                  get in touch.`
+                  )}
                 </p>
 
-                <p>Fill in the details and our team will get back to you.</p>
+                <p>
+                  {getCMSDataField(
+                    cmsData,
+                    "pagesContact.contactFormDescription",
+                    "Fill in the details and our team will get back to you."
+                  )}
+                </p>
               </div>
               {isSubscribed ? (
                 <div
@@ -273,7 +316,11 @@ export default function ContactModule() {
                       margin-top: 20px;
                     `}
                   >
-                    Message successfully sent.
+                    {getCMSDataField(
+                      cmsData,
+                      "pagesContact.contactFormSuccessMessage",
+                      "Message successfully sent."
+                    )}
                   </p>
                   <PrimaryButton
                     type="submit"
@@ -295,7 +342,11 @@ export default function ContactModule() {
                       resetForm();
                     }}
                   >
-                    Send Another Message
+                    {getCMSDataField(
+                      cmsData,
+                      "pagesContact.contactFormSuccessButtonText",
+                      "Send Another Message"
+                    )}
                   </PrimaryButton>
                 </div>
               ) : (
@@ -317,8 +368,16 @@ export default function ContactModule() {
                 >
                   <InputField
                     id="email-input"
-                    label="E-mail"
-                    placeholder="Enter your email"
+                    label={getCMSDataField(
+                      cmsData,
+                      "pagesContact.contactFormEmailLabel",
+                      "E-mail"
+                    )}
+                    placeholder={getCMSDataField(
+                      cmsData,
+                      "pagesContact.contactFormEmailPlaceholder",
+                      "Enter your email"
+                    )}
                     required
                     name="email"
                     type="email"
@@ -328,8 +387,16 @@ export default function ContactModule() {
                   />
                   <InputField
                     id="first-name-input"
-                    label="First Name"
-                    placeholder="Enter your first name"
+                    label={getCMSDataField(
+                      cmsData,
+                      "pagesContact.contactFormFirstNameLabel",
+                      "First Name"
+                    )}
+                    placeholder={getCMSDataField(
+                      cmsData,
+                      "pagesContact.contactFormFirstNamePlaceholder",
+                      "Enter your first name"
+                    )}
                     name="firstName"
                     value={contactFormDetails.firstName}
                     onChange={handleContactFormChange}
@@ -338,8 +405,16 @@ export default function ContactModule() {
                   />
                   <InputField
                     id="last-name-input"
-                    label="Last Name"
-                    placeholder="Enter your last name"
+                    label={getCMSDataField(
+                      cmsData,
+                      "pagesContact.contactFormLastNameLabel",
+                      "Last Name"
+                    )}
+                    placeholder={getCMSDataField(
+                      cmsData,
+                      "pagesContact.contactFormLastNamePlaceholder",
+                      "Enter your last name"
+                    )}
                     name="lastName"
                     value={contactFormDetails.lastName}
                     onChange={handleContactFormChange}
@@ -349,8 +424,16 @@ export default function ContactModule() {
 
                   <TextField
                     id="message-input"
-                    label="Message"
-                    placeholder="Enter your message"
+                    label={getCMSDataField(
+                      cmsData,
+                      "pagesContact.contactFormMessageLabel",
+                      "Message"
+                    )}
+                    placeholder={getCMSDataField(
+                      cmsData,
+                      "pagesContact.contactFormMessagePlaceholder",
+                      "Enter your message"
+                    )}
                     name="message"
                     value={contactFormDetails.message}
                     onChange={handleContactFormChange}
@@ -382,7 +465,11 @@ export default function ContactModule() {
                         }
                       `}
                     >
-                      Send Message
+                      {getCMSDataField(
+                        cmsData,
+                        "pagesContact.contactFormSubmitButtonText",
+                        "Send Message"
+                      )}
                     </PrimaryButton>
                   </div>
                 </form>
@@ -477,10 +564,20 @@ export default function ContactModule() {
                         margin: 0;
                       `}
                     >
-                      Dataxplorer Headquarters
+                      {getCMSDataField(
+                        cmsData,
+                        "pagesContact.contactAddressTitle",
+                        "Dataxplorer Headquarters"
+                      )}
                     </h3>
                   </div>
-                  <p>Feel free to contact us for any question you may have</p>
+                  <p>
+                    {getCMSDataField(
+                      cmsData,
+                      "pagesContact.contactAddressSubtitle",
+                      "Feel free to contact us for any question you may have"
+                    )}
+                  </p>
 
                   <p>
                     Zimmerman B.V. <br />
@@ -500,8 +597,16 @@ export default function ContactModule() {
               </div>
 
               <TryUsBlock
-                title="Give Dataxplorer a try, on us"
-                subtitle="Dataxplorer turns data into impact in minutes"
+                title={getCMSDataField(
+                  cmsData,
+                  "pagesContact.tryUsBlockTitle",
+                  "Give Dataxplorer a try, on us"
+                )}
+                subtitle={getCMSDataField(
+                  cmsData,
+                  "pagesContact.tryUsBlockSubtitle",
+                  "Dataxplorer turns data into impact in minutes"
+                )}
                 signInWith
               />
             </div>

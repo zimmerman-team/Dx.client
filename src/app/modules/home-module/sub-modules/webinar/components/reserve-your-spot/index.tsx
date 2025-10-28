@@ -11,8 +11,11 @@ import TryUsBlock from "app/modules/home-module/components/TryUsBlock";
 import { useAddAttendee, useGetEvents } from "app/hooks/useEvents";
 import moment from "moment";
 import CircleLoader from "app/modules/home-module/components/Loader";
+import { useCMSData } from "app/hooks/useCMSData";
+import { getCMSDataField } from "app/utils/getCMSDataField";
 
 const ReserveYourSpot = () => {
+  const cmsData = useCMSData({ returnData: true });
   const [data, setData] = React.useState({
     firstName: "",
     lastName: "",
@@ -118,10 +121,19 @@ const ReserveYourSpot = () => {
             }
           `}
         >
-          <h2>Reserve Your Spot</h2>
+          <h2>
+            {getCMSDataField(
+              cmsData,
+              "pagesWebinar.reserveYourSpotTitle",
+              "Reserve Your Spot"
+            )}
+          </h2>
           <h4>
-            Choose your preferred time and register to join our next webinar
-            session.
+            {getCMSDataField(
+              cmsData,
+              "pagesWebinar.reserveYourSpotDescription",
+              "Choose your preferred time and register to join our next webinar session."
+            )}
           </h4>
 
           <div
@@ -151,7 +163,13 @@ const ReserveYourSpot = () => {
                 }
               `}
             >
-              <h3>Select Your Preferred Time</h3>
+              <h3>
+                {getCMSDataField(
+                  cmsData,
+                  "pagesWebinar.reserveYourSpotTimeTitle",
+                  "Select Your Preferred Time"
+                )}
+              </h3>
 
               {loading ? <CircleLoader /> : null}
 
@@ -286,7 +304,13 @@ const ReserveYourSpot = () => {
                 gap: 20px;
               `}
             >
-              <h3>Registration Details</h3>
+              <h3>
+                {getCMSDataField(
+                  cmsData,
+                  "pagesWebinar.reserveYourSpotRegistrationTitle",
+                  "Registration Details"
+                )}
+              </h3>
               {addingAttendee ? (
                 <CircleLoader />
               ) : (

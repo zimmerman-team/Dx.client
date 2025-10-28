@@ -4,8 +4,11 @@ import { ReactComponent as MissionImg } from "app/modules/home-module/assets/abo
 import { ReactComponent as DXImg } from "app/modules/home-module/assets/about-dx.svg";
 import { Box } from "@material-ui/core";
 import { DESKTOP_BREAKPOINT } from "app/theme";
+import { getCMSDataField } from "app/utils/getCMSDataField";
+import { useCMSData } from "app/hooks/useCMSData";
 
 export default function MissionSection() {
+  const cmsData = useCMSData({ returnData: true });
   return (
     <>
       <div css={subParagraphcss}>
@@ -22,17 +25,23 @@ export default function MissionSection() {
             />
           </div>
           <div>
-            <h3 id="ab-desktop">Mission</h3>
+            <h3 id="ab-desktop">
+              {getCMSDataField(cmsData, "pagesAbout.missionTitle", "Mission")}
+            </h3>
             <div
               css={`
                 height: 24px;
               `}
             />
             <p css={``}>
-              Our mission is to create lasting impact for organizations that
+              {getCMSDataField(
+                cmsData,
+                "pagesAbout.missionText",
+                `Our mission is to create lasting impact for organizations that
               bring positive change to our world by helping them to unlock the
               power of data. Our trusted and easy-to-use data solutions boost an
-              organization's performance by powering its core mission.
+              organization's performance by powering its core mission.`
+              )}
             </p>
           </div>
         </div>
@@ -58,18 +67,33 @@ export default function MissionSection() {
       >
         <div>
           <div>
-            <h3 id="ab-desktop">Dataxplorer</h3>
+            <h3 id="ab-desktop">
+              {getCMSDataField(
+                cmsData,
+                "pagesAbout.dataxplorerTitle",
+                "Dataxplorer"
+              )}
+            </h3>
             <Box height={24} />
             <p>
-              Many organizations struggle to convey the data they collect,
+              {getCMSDataField(
+                cmsData,
+                "pagesAbout.dataxplorerText1",
+                `Many organizations struggle to convey the data they collect,
               analyze, and share. We specialize in turning data into a strategic
               asset, helping global organizations communicate their impact with
-              precision and effectiveness.
-              <br /> <br /> To position your organization as a leader in your
+              precision and effectiveness.`
+              )}
+              <br /> <br />{" "}
+              {getCMSDataField(
+                cmsData,
+                "pagesAbout.dataxplorerText2",
+                `To position your organization as a leader in your
               field using the power of data, we offer Dataxplorer, an
               AI-powered, purpose-driven data platform. Dataxplorer equips
               people with insightful data for making informed decisions, driving
-              us closer to an equitable future for all.
+              us closer to an equitable future for all.`
+              )}
             </p>
           </div>
 

@@ -20,10 +20,13 @@ import TeamSection from "./teamSection";
 import MissionSection from "./missionSection";
 import FeaturesSection from "./featuresSection";
 import AuthButtons from "./authButtons";
+import { useCMSData } from "app/hooks/useCMSData";
+import { getCMSDataField } from "app/utils/getCMSDataField";
 
 export default function AboutModule() {
   useTitle("Dataxplorer - About");
   const { isAuthenticated } = useAuth0();
+  const cmsData = useCMSData({ returnData: true });
 
   return (
     <div
@@ -96,7 +99,7 @@ export default function AboutModule() {
                 }
               `}
             >
-              Our Story
+              {getCMSDataField(cmsData, "pagesAbout.title", "Our Story")}
             </h1>
             <div
               css={`
@@ -136,7 +139,7 @@ export default function AboutModule() {
                     }
                   `}
                 >
-                  Our Story
+                  {getCMSDataField(cmsData, "pagesAbout.title", "Our Story")}
                 </h1>
 
                 <p
@@ -159,15 +162,23 @@ export default function AboutModule() {
                     }
                   `}
                 >
-                  With 20+ years combined experience in data and global health
+                  {getCMSDataField(
+                    cmsData,
+                    "pagesAbout.subTitle1",
+                    `With 20+ years combined experience in data and global health
                   development, we empower organisations with innovative data
                   solutions to enhance their communication. Our decade-long
                   commitment drives us to advance data communication
-                  continually.
+                  continually.`
+                  )}
                   <br />
                   <br />
-                  Discover the true potential of your data with Dataxplorer. Let
-                  us help you harness its power!
+                  {getCMSDataField(
+                    cmsData,
+                    "pagesAbout.subTitle2",
+                    `Discover the true potential of your data with Dataxplorer. Let
+                  us help you harness its power!`
+                  )}
                 </p>
               </div>
 
@@ -220,7 +231,11 @@ export default function AboutModule() {
                     data-cy="empower-block-explore-stories-link"
                     css={ctaLinkStyle("dashboard")}
                   >
-                    Explore the Dashboard
+                    {getCMSDataField(
+                      cmsData,
+                      "pagesAbout.exploreDashboardCta",
+                      "Explore the Dashboard"
+                    )}
                   </Link>
                 </div>
               )}

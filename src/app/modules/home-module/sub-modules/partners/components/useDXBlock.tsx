@@ -1,7 +1,10 @@
 import React from "react";
 import { ReactComponent as InlineGFLogo } from "app/modules/home-module/sub-modules/partners/assets/inline-gf-logo.svg";
+import { getCMSDataField } from "app/utils/getCMSDataField";
+import { useCMSData } from "app/hooks/useCMSData";
 
 export default function DXBlock() {
+  const cmsData = useCMSData({ returnData: true });
   return (
     <div
       css={`
@@ -33,7 +36,8 @@ export default function DXBlock() {
           }
         `}
       >
-        <InlineGFLogo aria-label="The Global Fund" /> Case Study
+        <InlineGFLogo aria-label="The Global Fund" />{" "}
+        {getCMSDataField(cmsData, "pagesPartners.caseStudyTitle", "Case Study")}
       </p>
 
       <h2
@@ -54,7 +58,11 @@ export default function DXBlock() {
           }
         `}
       >
-        The Global Fund to fight AIDS, Tuberculosis and Malaria
+        {getCMSDataField(
+          cmsData,
+          "pagesPartners.caseStudySubtitle",
+          `The Global Fund to fight AIDS, Tuberculosis and Malaria`
+        )}
       </h2>
       <p
         css={`
@@ -75,10 +83,14 @@ export default function DXBlock() {
           }
         `}
       >
-        The Global Fund is a partnership designed to accelerate the end of AIDS,
-        tuberculosis and malaria as epidemics. As an international organization,{" "}
+        {getCMSDataField(
+          cmsData,
+          "pagesPartners.caseStudyDescription",
+          `The Global Fund is a partnership designed to accelerate the end of AIDS,
+        tuberculosis and malaria as epidemics. As an international organization, 
         the Global Fund mobilizes and invests more than US$4 billion a year to
-        support programs run by local experts in more than 100 countries.{" "}
+        support programs run by local experts in more than 100 countries.`
+        )}
       </p>
     </div>
   );

@@ -26,6 +26,8 @@ import {
 } from "app/theme";
 import { css } from "styled-components/macro";
 import PartnerCarousel from "./components/partnerCarousel/partnerCarousel";
+import { useCMSData } from "app/hooks/useCMSData";
+import { getCMSDataField } from "app/utils/getCMSDataField";
 
 export const ctaLinkStyle = (label: string) => css`
   display: flex;
@@ -67,6 +69,7 @@ export default function PartnersModule() {
   useTitle("Dataxplorer - Partners");
 
   const { isAuthenticated } = useAuth0();
+  const cmsData = useCMSData({ returnData: true });
 
   return (
     <>
@@ -81,12 +84,21 @@ export default function PartnersModule() {
         `}
       >
         <div>
-          <Hero title="Our Partners">
+          <Hero
+            title={getCMSDataField(
+              cmsData,
+              "pagesPartners.heroTitle",
+              "Our Partners"
+            )}
+          >
             {isAuthenticated ? (
               <div>
                 <p>
-                  Collaboration is at the heart of everything we do — meet the
-                  partners driving change with us.
+                  {getCMSDataField(
+                    cmsData,
+                    "pagesPartners.heroText",
+                    "Collaboration is at the heart of everything we do — meet the partners driving change with us."
+                  )}
                 </p>
                 <Box height={"40px"} />
                 <Box
@@ -102,21 +114,35 @@ export default function PartnersModule() {
                     data-cy="empower-block-explore-stories-link"
                     css={ctaLinkStyle("dashboard")}
                   >
-                    Go to the Dashboard
+                    {getCMSDataField(
+                      cmsData,
+                      "pagesPartners.heroGoToDashboardButtonText",
+                      "Go to the Dashboard"
+                    )}
                   </Link>
                   <Link to="/contact" css={ctaLinkStyle("contact")}>
-                    Contact Us
+                    {getCMSDataField(
+                      cmsData,
+                      "pagesPartners.heroContactUsButtonText",
+                      "Contact Us"
+                    )}
                   </Link>
                 </Box>
               </div>
             ) : (
               <div>
                 <p>
-                  Collaboration is at the heart of everything we do — meet the
-                  partners driving change with us.
+                  {getCMSDataField(
+                    cmsData,
+                    "pagesPartners.heroText",
+                    "Collaboration is at the heart of everything we do — meet the partners driving change with us."
+                  )}
                   <br />
-                  Sign in to get the most out of Dataxplorer and keep things
-                  connected.
+                  {getCMSDataField(
+                    cmsData,
+                    "pagesPartners.heroSignInText",
+                    "Sign in to get the most out of Dataxplorer and keep things connected."
+                  )}
                 </p>
                 <Box height={"40px"} />
                 <SignInButtons />
@@ -173,8 +199,16 @@ export default function PartnersModule() {
                 `}
               >
                 <TryUsBlock
-                  title="Give Dataxplorer a try, on us"
-                  subtitle="Dataxplorer turns data into impact in minutes"
+                  title={getCMSDataField(
+                    cmsData,
+                    "pagesPartners.tryUsBlockTitle",
+                    "Give Dataxplorer a try, on us"
+                  )}
+                  subtitle={getCMSDataField(
+                    cmsData,
+                    "pagesPartners.tryUsBlockSubtitle",
+                    "Dataxplorer turns data into impact in minutes"
+                  )}
                   signInWith
                 />
               </Container>
