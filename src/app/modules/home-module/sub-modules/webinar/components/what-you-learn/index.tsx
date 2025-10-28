@@ -4,27 +4,56 @@ import { DESKTOP_BREAKPOINT, MOBILE_BREAKPOINT } from "app/theme";
 import FlagIcon from "app/modules/home-module/sub-modules/webinar/assets/FlagIcon";
 import CheckIcon from "app/modules/home-module/sub-modules/webinar/assets/CheckIcon";
 import { CalendarIcon2 } from "app/modules/home-module/sub-modules/webinar/assets/CalendarIcon";
+import { useCMSData } from "app/hooks/useCMSData";
+import { getCMSDataField } from "app/utils/getCMSDataField";
 
 const WhatYouLearn = () => {
-  const features = [
-    {
-      icon: FlagIcon,
-      title: "Platform Features",
-      description:
-        "Discover the DataXplorer tools and capabilities to enhance your workflow",
-    },
-    {
-      icon: CheckIcon,
-      title: "Best Practices",
-      description: "Learn proven strategies and tips from our product experts",
-    },
-    {
-      icon: CalendarIcon2,
-      title: "Roadmap Preview",
-      description:
-        "Get exclusive insights into what's coming next and how it will benefit you",
-    },
-  ];
+  const cmsData = useCMSData({ returnData: true });
+
+  const features = React.useMemo(
+    () => [
+      {
+        icon: FlagIcon,
+        title: getCMSDataField(
+          cmsData,
+          "pagesWebinar.feature1Title",
+          "Platform Features"
+        ),
+        description: getCMSDataField(
+          cmsData,
+          "pagesWebinar.feature1Description",
+          "Discover the DataXplorer tools and capabilities to enhance your workflow"
+        ),
+      },
+      {
+        icon: CheckIcon,
+        title: getCMSDataField(
+          cmsData,
+          "pagesWebinar.feature2Title",
+          "Best Practices"
+        ),
+        description: getCMSDataField(
+          cmsData,
+          "pagesWebinar.feature2Description",
+          "Learn proven strategies and tips from our product experts"
+        ),
+      },
+      {
+        icon: CalendarIcon2,
+        title: getCMSDataField(
+          cmsData,
+          "pagesWebinar.feature3Title",
+          "Roadmap Preview"
+        ),
+        description: getCMSDataField(
+          cmsData,
+          "pagesWebinar.feature3Description",
+          "Get exclusive insights into what's coming next and how it will benefit you"
+        ),
+      },
+    ],
+    []
+  );
   return (
     <div
       css={`
@@ -69,13 +98,25 @@ const WhatYouLearn = () => {
               margin-top: 10px;
               margin-bottom: 0;
               padding: 0;
+              max-width: 500px;
+              margin-left: auto;
+              margin-right: auto;
             }
           `}
         >
-          <h2>What You'll Learn</h2>
+          <h2>
+            {getCMSDataField(
+              cmsData,
+              "pagesWebinar.whatYouLearnTitle",
+              "What You'll Learn"
+            )}
+          </h2>
           <h4>
-            Each session covers the latest updates and gives you the tools
-            <br /> to maximize your platform experience.
+            {getCMSDataField(
+              cmsData,
+              "pagesWebinar.whatYouLearnDescription",
+              "Each session covers the latest updates and gives you the tools to maximize your platform experience."
+            )}
           </h4>
 
           <div

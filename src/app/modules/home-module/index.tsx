@@ -11,9 +11,13 @@ import { Box } from "@material-ui/core";
 import SignInButtons from "./components/SignInButtons";
 import Card from "./components/carousel";
 import useBackgroundColor from "app/hooks/useBackgroundColor";
+import { useCMSData } from "app/hooks/useCMSData";
+import { getCMSDataField } from "app/utils/getCMSDataField";
 
 export default function HomeModule() {
   useTitle("Dataxplorer");
+
+  const cmsData = useCMSData({ returnData: true });
 
   const { isAuthenticated } = useAuth0();
   useBackgroundColor(isAuthenticated ? "#FFF" : "#f2f7fd", [isAuthenticated]);
@@ -38,20 +42,43 @@ export default function HomeModule() {
             <Hero
               title={
                 <>
-                  Create high impact data driven{" "}
-                  <b
-                    css={`
-                      background: linear-gradient(90deg, #231d2c, #6061e5);
-                      -webkit-background-clip: text;
-                      -webkit-text-fill-color: transparent;
-                    `}
-                  >
-                    stories
-                  </b>
+                  {getCMSDataField(
+                    cmsData,
+                    "pagesHome.heroTitle",
+                    "Create high impact data driven {storiesText}",
+                    {
+                      storiesText: (
+                        <b
+                          css={`
+                            background: linear-gradient(
+                              90deg,
+                              #231d2c,
+                              #6061e5
+                            );
+                            -webkit-background-clip: text;
+                            -webkit-text-fill-color: transparent;
+                          `}
+                        >
+                          {getCMSDataField(
+                            cmsData,
+                            "pagesHome.heroTitleStoriesText",
+                            "stories"
+                          )}
+                        </b>
+                      ),
+                    },
+                    true
+                  )}
                 </>
               }
             >
-              <p>Sign in for free to unlock data visualisation tools with</p>
+              <p>
+                {getCMSDataField(
+                  cmsData,
+                  "pagesHome.heroSignInText",
+                  "Sign in for free to unlock data visualisation tools with"
+                )}
+              </p>
               <Box height={"10px"} />
               <SignInButtons />
             </Hero>

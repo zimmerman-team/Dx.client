@@ -8,23 +8,6 @@ import StefanosAvi from "app/modules/home-module/assets/team/stefanos.png";
 import EmmanuellaAvi from "app/modules/home-module/assets/team/emmanuella.png";
 import SamuelAvi from "app/modules/home-module/assets/team/samuel.png";
 import AnsonAvi from "app/modules/home-module/assets/team/anson.png";
-export const features = [
-  {
-    title: "+100.000",
-    subtitle: "Datasets available",
-    text: "Access over 100.000 datasets to create stories and charts. Create impact with data from 3rd parties built in Dataxplorer or connect your in-house datasources.",
-  },
-  {
-    title: "+15 Visuals",
-    subtitle: "Chart type provided",
-    text: "Dataxplorer offers over 15 different chart types for you to work with. Based on the open sources Apache E-charts library you are able to create rich graphs.",
-  },
-  {
-    title: "+3",
-    subtitle: "Languages are supported",
-    text: "Dataxplorer caters to a global clientele, ensuring seamless data integration and communication. We will offer Dataxplorer in 3 different languages.",
-  },
-];
 
 export const uiUx = "UI/UX Design Intern";
 

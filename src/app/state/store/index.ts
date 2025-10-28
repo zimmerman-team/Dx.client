@@ -3,6 +3,7 @@ import { StoreModel } from "app/state/api/interfaces";
 
 import {
   AuthTokenState,
+  CMSData,
   DataSourceSnackbarVisibilityState,
   DataSourceState,
 } from "app/state/api/action-reducers/sync";
@@ -50,6 +51,16 @@ import {
   AssetsCount,
 } from "app/state/api/action-reducers/assets";
 import { UserProfile } from "app/state/api/action-reducers/user";
+import componentsFooter from "app/state/api/action-reducers/cms/componentsFooter";
+import componentsHeader from "app/state/api/action-reducers/cms/componentsHeader";
+import pagesHome from "app/state/api/action-reducers/cms/pagesHome";
+import pagesDashboard from "app/state/api/action-reducers/cms/pagesDashboard";
+import pagesAbout from "app/state/api/action-reducers/cms/pagesAbout";
+import pagesWhyDataxplorer from "app/state/api/action-reducers/cms/pagesWhyDataxplorer";
+import pagesPricing from "app/state/api/action-reducers/cms/pagesPricing";
+import pagesPartners from "app/state/api/action-reducers/cms/pagesPartners";
+import pagesContact from "app/state/api/action-reducers/cms/pagesContact";
+import pagesWebinar from "app/state/api/action-reducers/cms/pagesWebinar";
 
 const storeContent: StoreModel = {
   // global search
@@ -103,6 +114,19 @@ const storeContent: StoreModel = {
     stories: persist(GlobalSearchStories),
     datasets: persist(GlobalSearchDatasets),
   },
+  cms: {
+    componentsFooter: persist(componentsFooter),
+    componentsHeader: persist(componentsHeader),
+    pagesHome: persist(pagesHome),
+    pagesDashboard: persist(pagesDashboard),
+    pagesAbout: persist(pagesAbout),
+    pagesWhyDataxplorer: persist(pagesWhyDataxplorer),
+    pagesPricing: persist(pagesPricing),
+    pagesPartners: persist(pagesPartners),
+    pagesContact: persist(pagesContact),
+    pagesWebinar: persist(pagesWebinar),
+  },
+  CMSData: persist(CMSData),
 };
 
 export const store = createStore(storeContent);

@@ -6,8 +6,11 @@ import { ReactComponent as RightArrow } from "app/modules/home-module/assets/rig
 import { DESKTOP_BREAKPOINT, MOBILE_BREAKPOINT } from "app/theme";
 import { useHistory } from "react-router-dom";
 import TryUsBlock from "app/modules/home-module/components/TryUsBlock";
+import { useCMSData } from "app/hooks/useCMSData";
+import { getCMSDataField } from "app/utils/getCMSDataField";
 
 export default function NonAuthUserLibrary() {
+  const cmsData = useCMSData({ returnData: true });
   const history = useHistory();
 
   return (
@@ -68,10 +71,20 @@ export default function NonAuthUserLibrary() {
           `}
         >
           <div>
-            <h2>See Our Default Dataxplorer Assets</h2>
+            <h2>
+              {getCMSDataField(
+                cmsData,
+                "pagesHome.defaultAssetsTitle",
+                "See Our Default Dataxplorer Assets"
+              )}
+            </h2>
             <p>
-              Explore ready-made assets from DataXplorer. Sign in to create your
-              own data stories.
+              {getCMSDataField(
+                cmsData,
+                "pagesHome.defaultAssetsSubtitle",
+                `Explore ready-made assets from DataXplorer. Sign in to create your
+              own data stories.`
+              )}
             </p>
           </div>
           <div
@@ -93,15 +106,27 @@ export default function NonAuthUserLibrary() {
               size="small"
               onClick={() => history.push("/onboarding/signin")}
             >
-              See It in Action
+              {getCMSDataField(
+                cmsData,
+                "pagesHome.defaultAssetsSeeItInActionButton",
+                "See It in Action"
+              )}
               <RightArrow />
             </PrimaryButton>
           </div>
         </div>
         <AssetsList />
         <TryUsBlock
-          title="Give Dataxplorer a try, on us"
-          subtitle="Dataxplorer turns data into impact in minutes"
+          title={getCMSDataField(
+            cmsData,
+            "pagesHome.tryUsBlockTitle",
+            "Give Dataxplorer a try, on us"
+          )}
+          subtitle={getCMSDataField(
+            cmsData,
+            "pagesHome.tryUsBlockSubtitle",
+            "Dataxplorer turns data into impact in minutes"
+          )}
           signInWith
         />
       </Container>

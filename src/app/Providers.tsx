@@ -9,12 +9,13 @@ import { PageLoader } from "app/modules/common/page-loader";
 import { StoreProvider, useStoreRehydrated } from "easy-peasy";
 import { ErrorBoundaryDX } from "app/components/ErrorBoundary";
 import { StylesProvider, CssBaseline } from "@material-ui/core";
-
+import { Helmet, HelmetProvider } from "react-helmet-async";
 type ProviderProps = {
   children: any;
 };
 
 function Providers(props: ProviderProps) {
+  const siteUrl = process.env.REACT_APP_BASE_URL || "https://dataxplorer.org";
   return (
     <ErrorBoundaryDX>
       <RecoilRoot>
@@ -23,12 +24,21 @@ function Providers(props: ProviderProps) {
           <ThemeProvider theme={theme}>
             <CssBaseline />
             <StoreProvider store={store}>
-              <AppContainer>
-                {/* react router */}
-                <Router>
-                  <div>{props.children}</div>
-                </Router>
-              </AppContainer>
+              <HelmetProvider>
+                <AppContainer>
+                  {/* react router */}
+                  <Helmet>
+                    <meta
+                      name="twitter:image"
+                      content={`${siteUrl}/logo.png`}
+                    />
+                    <meta property="og:image" content={`${siteUrl}/logo.png`} />
+                  </Helmet>
+                  <Router>
+                    <div>{props.children}</div>
+                  </Router>
+                </AppContainer>
+              </HelmetProvider>
             </StoreProvider>
           </ThemeProvider>
         </StylesProvider>

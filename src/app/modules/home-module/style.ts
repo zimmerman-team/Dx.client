@@ -110,7 +110,7 @@ export const searchInputCss = (openSearch: boolean, isFocused: boolean) => css`
   opacity: ${openSearch ? 1 : 0};
   transition: opacity 0.2s ease-in-out 0s;
   overflow: hidden;
-  ${isFocused && "border-bottom: 1px solid #6061e5;"}
+  ${isFocused && "border: 2px solid #6061e5; background: #F1F3F5;"}
 
   input {
     outline: none;

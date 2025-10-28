@@ -19,71 +19,13 @@ import { useCheckPricingActive } from "app/hooks/useCheckPricingActive";
 import { DESKTOP_BREAKPOINT } from "app/theme";
 import useBackgroundColor from "app/hooks/useBackgroundColor";
 import SubscriptionToggle from "./components/subscription-toggle";
-
-const VIEWS = [
-  {
-    name: "Monthly Plan",
-    key: "monthly",
-  },
-  {
-    name: "Annual Plan",
-    key: "yearly",
-  },
-];
-
-const PLANS = [
-  {
-    name: "Free Plan",
-    yearlyPrice: "Free forever",
-    monthlyPrice: "Free forever",
-    text: "For individuals or teams just getting started in Dataxplorer",
-    current: false,
-    recommended: false,
-    buttonText: "Activate",
-    discount: "",
-    key: "free",
-    available: true,
-  },
-  {
-    name: "Pro",
-    yearlyPrice: "€720",
-    monthlyPrice: "€75",
-    text: "For individual users.",
-    current: false,
-    recommended: false,
-    buttonText: "Activate a free trial",
-    discount: "(Save 20%)",
-    key: "pro",
-    available: true,
-  },
-  {
-    name: "Team",
-    yearlyPrice: "€576",
-    monthlyPrice: "€60",
-    text: "Scale up to 100 users and connect your team.",
-    current: false,
-    recommended: false,
-    buttonText: "Activate free trial",
-    discount: "(Save 20%)",
-    key: "team",
-    available: true,
-  },
-  {
-    name: "Enterprise",
-    yearlyPrice: "Custom",
-    monthlyPrice: "Custom",
-    text: "For organisations looking scale into powerful data visualization, with full support and security",
-    current: false,
-    recommended: false,
-    buttonText: "Contact us",
-    discount: "",
-    key: "enterprise",
-    available: true,
-  },
-];
+import { useCMSData } from "app/hooks/useCMSData";
+import { getCMSDataField } from "app/utils/getCMSDataField";
 
 export default function PricingModule() {
   useTitle("Dataxplorer - Pricing");
+
+  const cmsData = useCMSData({ returnData: true });
 
   const { user, isAuthenticated } = useAuth0();
   useBackgroundColor("#FFF", []);
@@ -93,7 +35,7 @@ export default function PricingModule() {
 
   const [subscriptionPlan, setSubscriptionPlan] = React.useState("monthly");
   const [currentPlan, setCurrentPlan] = React.useState(
-    isAuthenticated ? PLANS[0].name : ""
+    isAuthenticated ? "free" : ""
   );
 
   const { loading: pricingActiveLoading, pricingActive } =
@@ -104,6 +46,158 @@ export default function PricingModule() {
   const token = useStoreState((state) => state.AuthToken.value);
 
   const history = useHistory();
+
+  const VIEWS = React.useMemo(
+    () => [
+      {
+        name: getCMSDataField(
+          cmsData,
+          "pagesPricing.subscriptionToggleMonthly",
+          "Monthly Plan"
+        ),
+        key: "monthly",
+      },
+      {
+        name: getCMSDataField(
+          cmsData,
+          "pagesPricing.subscriptionToggleYearly",
+          "Annual Plan"
+        ),
+        key: "yearly",
+      },
+    ],
+    [cmsData]
+  );
+
+  const PLANS = React.useMemo(
+    () => [
+      {
+        name: getCMSDataField(cmsData, "pagesPricing.freePlanName", "Free"),
+        yearlyPrice: getCMSDataField(
+          cmsData,
+          "pagesPricing.freePlanYearlyPrice",
+          "Free forever"
+        ),
+        monthlyPrice: getCMSDataField(
+          cmsData,
+          "pagesPricing.freePlanMonthlyPrice",
+          "Free forever"
+        ),
+        text: getCMSDataField(
+          cmsData,
+          "pagesPricing.freePlanText",
+          "For individuals or teams just getting started in Dataxplorer"
+        ),
+        current: false,
+        recommended: false,
+        buttonText: getCMSDataField(
+          cmsData,
+          "pagesPricing.freePlanButtonText",
+          "Activate"
+        ),
+        discount: "",
+        key: "free",
+        available: true,
+      },
+      {
+        name: getCMSDataField(cmsData, "pagesPricing.proPlanName", "Pro"),
+        yearlyPrice: getCMSDataField(
+          cmsData,
+          "pagesPricing.proPlanYearlyPrice",
+          "€720"
+        ),
+        monthlyPrice: getCMSDataField(
+          cmsData,
+          "pagesPricing.proPlanMonthlyPrice",
+          "€75"
+        ),
+        text: getCMSDataField(
+          cmsData,
+          "pagesPricing.proPlanText",
+          "For individual users."
+        ),
+        current: false,
+        recommended: false,
+        buttonText: getCMSDataField(
+          cmsData,
+          "pagesPricing.proPlanButtonText",
+          "Activate a free trial"
+        ),
+        discount: getCMSDataField(
+          cmsData,
+          "pagesPricing.proPlanDiscount",
+          "(Save 20%)"
+        ),
+        key: "pro",
+        available: true,
+      },
+      {
+        name: getCMSDataField(cmsData, "pagesPricing.teamPlanName", "Team"),
+        yearlyPrice: getCMSDataField(
+          cmsData,
+          "pagesPricing.teamPlanYearlyPrice",
+          "€576"
+        ),
+        monthlyPrice: getCMSDataField(
+          cmsData,
+          "pagesPricing.teamPlanMonthlyPrice",
+          "€60"
+        ),
+        text: getCMSDataField(
+          cmsData,
+          "pagesPricing.teamPlanText",
+          "Scale up to 100 users and connect your team."
+        ),
+        current: false,
+        recommended: false,
+        buttonText: getCMSDataField(
+          cmsData,
+          "pagesPricing.teamPlanButtonText",
+          "Activate free trial"
+        ),
+        discount: getCMSDataField(
+          cmsData,
+          "pagesPricing.teamPlanDiscount",
+          "(Save 20%)"
+        ),
+        key: "team",
+        available: true,
+      },
+      {
+        name: getCMSDataField(
+          cmsData,
+          "pagesPricing.enterprisePlanName",
+          "Enterprise"
+        ),
+        yearlyPrice: getCMSDataField(
+          cmsData,
+          "pagesPricing.enterprisePlanYearlyPrice",
+          "Custom"
+        ),
+        monthlyPrice: getCMSDataField(
+          cmsData,
+          "pagesPricing.enterprisePlanMonthlyPrice",
+          "Custom"
+        ),
+        text: getCMSDataField(
+          cmsData,
+          "pagesPricing.enterprisePlanText",
+          "For organisations looking scale into powerful data visualization, with full support and security"
+        ),
+        current: false,
+        recommended: false,
+        buttonText: getCMSDataField(
+          cmsData,
+          "pagesPricing.enterprisePlanButtonText",
+          "Contact us"
+        ),
+        discount: "",
+        key: "enterprise",
+        available: true,
+      },
+    ],
+    [cmsData]
+  );
 
   const createNewStripeCustomer = async () => {
     const customerCreationResponse = await axios.post(
@@ -134,9 +228,7 @@ export default function PricingModule() {
       })
       .then((response) => {
         setCurrentPlan(
-          response.data.data.plan === "Free"
-            ? "Free Plan"
-            : response.data.data.plan
+          response.data.data.plan === "Free" ? "free" : response.data.data.plan
         );
       })
       .catch((error) => {
@@ -168,6 +260,21 @@ export default function PricingModule() {
     return checkoutSessionResponse.data.data;
   };
 
+  const plans = React.useMemo(() => {
+    return PLANS.map((plan) => {
+      return {
+        ...plan,
+        current: pricingActive
+          ? plan.key === currentPlan
+          : currentPlan
+          ? plan.key === "free"
+          : false,
+        available: plan.key === "free" ? true : pricingActive,
+        recommended: pricingActive ? plan.key === "pro" : false,
+      };
+    });
+  }, [currentPlan, pricingActive, PLANS]);
+
   const handlePlanButtonClick = async (key: string) => {
     if (!isAuthenticated) {
       return history.replace(
@@ -176,7 +283,7 @@ export default function PricingModule() {
     }
     const isInUpgradeFlow =
       new URLSearchParams(location.search).get("flow") === "upgrade";
-    if (currentPlan !== PLANS[0].name) {
+    if (currentPlan !== plans[0].key) {
       const flowParam = isInUpgradeFlow ? "?flow=upgrade" : "";
       history.push(`/user-management/billing${flowParam}`);
       return;
@@ -198,21 +305,6 @@ export default function PricingModule() {
         break;
     }
   };
-
-  const plans = React.useMemo(() => {
-    return PLANS.map((plan) => {
-      return {
-        ...plan,
-        current: pricingActive
-          ? plan.name === currentPlan
-          : currentPlan
-          ? plan.name === "Free Plan"
-          : false,
-        available: plan.name === "Free Plan" ? true : pricingActive,
-        recommended: pricingActive ? plan.name === "Pro" : false,
-      };
-    });
-  }, [currentPlan, pricingActive]);
 
   React.useEffect(() => {
     if (isAuthenticated) {
@@ -250,7 +342,11 @@ export default function PricingModule() {
             }
           `}
         >
-          Create stories that aren't a pain to build
+          {getCMSDataField(
+            cmsData,
+            "pagesPricing.title",
+            "Create stories that aren't a pain to build"
+          )}
         </h1>
         <p
           css={`
@@ -275,8 +371,11 @@ export default function PricingModule() {
             }
           `}
         >
-          Dataxplorer simplifies and empowers visual data storytelling for all.
-          Free for all.
+          {getCMSDataField(
+            cmsData,
+            "pagesPricing.subtitle",
+            "Dataxplorer simplifies and empowers visual data storytelling for all. Free for all."
+          )}
         </p>
         <Box height={65} />
         <div
@@ -303,7 +402,11 @@ export default function PricingModule() {
                 line-height: normal;
               `}
             >
-              Choose Your Subscription
+              {getCMSDataField(
+                cmsData,
+                "pagesPricing.chooseYourSubscriptionText",
+                "Choose Your Subscription"
+              )}
             </p>
             <p
               css={`
@@ -318,7 +421,11 @@ export default function PricingModule() {
                 text-align: center;
               `}
             >
-              Save 20% for annual plans
+              {getCMSDataField(
+                cmsData,
+                "pagesPricing.subscriptionDiscountText",
+                "Save 20% for annual plans"
+              )}
             </p>
           </div>
           <SubscriptionToggle

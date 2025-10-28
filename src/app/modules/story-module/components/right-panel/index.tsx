@@ -16,7 +16,7 @@ export function StoryRightPanel(props: StoryRightPanelProps) {
   });
   return (
     <Slide direction="left" in={props.open} style={{ visibility: "visible" }}>
-      <div css={styles.container}>
+      <aside css={styles.container}>
         {!isMobile && (
           <div
             role="button"
@@ -72,7 +72,7 @@ export function StoryRightPanel(props: StoryRightPanelProps) {
             onSave={props.onSave}
           />
         )}
-      </div>
+      </aside>
     </Slide>
   );
 }

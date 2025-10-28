@@ -12,9 +12,13 @@ import { team } from "./data";
 import EmptyAvi from "app/modules/home-module/assets/team/empty.png";
 import { Link } from "react-router-dom";
 import { ReactComponent as BackArrow } from "app/modules/home-module/assets/back-arrow.svg";
+import { useCMSData } from "app/hooks/useCMSData";
+import { getCMSDataField } from "app/utils/getCMSDataField";
 
 export default function TeamSection() {
   const [selectedItem, setSelectedItem] = React.useState(0);
+
+  const cmsData = useCMSData({ returnData: true });
 
   const teamCarousel = team.map((member) => (
     <div key={member.name}>
@@ -98,7 +102,7 @@ export default function TeamSection() {
           }
         `}
       >
-        Join Our Team
+        {getCMSDataField(cmsData, "pagesAbout.joinOurTeamCta", "Join Our Team")}
       </Link>
     </div>
   ));
@@ -120,7 +124,7 @@ export default function TeamSection() {
           }
         `}
       >
-        Meet Our Team
+        {getCMSDataField(cmsData, "pagesAbout.ourTeamTitle", "Meet Our Team")}
       </h2>
       <p
         css={`
@@ -141,10 +145,17 @@ export default function TeamSection() {
           }
         `}
       >
-        Zimmerman B.V. is a data information technology company based in
-        Amsterdam that specialises
-        <br /> in making data meaningful through visualisation tooling and
-        dashboards.
+        {getCMSDataField(
+          cmsData,
+          "pagesAbout.ourTeamSubtitle1",
+          "Zimmerman B.V. is a data information technology company based in Amsterdam that specialises"
+        )}
+        <br />
+        {getCMSDataField(
+          cmsData,
+          "pagesAbout.ourTeamSubtitle2",
+          "in making data meaningful through visualisation tooling and dashboards."
+        )}
       </p>
       <Box
         height={{
@@ -310,7 +321,11 @@ export default function TeamSection() {
                 }
               `}
             >
-              Join Our Team
+              {getCMSDataField(
+                cmsData,
+                "pagesAbout.joinOurTeamCta",
+                "Join Our Team"
+              )}
             </a>
           </div>
         ))}

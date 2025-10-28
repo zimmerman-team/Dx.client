@@ -43,11 +43,13 @@ import { PrimaryButton } from "app/components/Styled/button";
 import { ArrowBack } from "@material-ui/icons";
 import ShareComponent from "app/components/ShareComponent";
 import {
+  FOCUS_VISIBLE_STYLE_DARK,
   FOCUS_VISIBLE_STYLE_LIGHT,
   MOBILE_BREAKPOINT,
   TABLET_STARTPOINT,
 } from "app/theme";
 import { ISnackbarState } from "app/modules/dataset-module/routes/upload-module/style";
+import CopyButton from "./copyButton";
 
 export const useStyles = makeStyles(() =>
   createStyles({
@@ -138,18 +140,8 @@ export function StorySubheaderToolbar(
   );
   const [displayMobileMenu, setDisplayMobileMenu] = React.useState(false);
 
-  const copyButtonRef = React.useRef<HTMLButtonElement>(null);
-
   const open = Boolean(anchorEl);
   const id = open ? "simple-popover" : undefined;
-
-  React.useEffect(() => {
-    if (open && copyButtonRef.current) {
-      setTimeout(() => {
-        copyButtonRef.current?.focus();
-      }, 0);
-    }
-  }, [open]);
 
   React.useEffect(() => {
     // handles saved changes state for autosave
@@ -294,7 +286,7 @@ export function StorySubheaderToolbar(
                 color: #231d2c;
                 text-decoration: none;
                 cursor: pointer;
-                :focus-visible {
+                &:focus-visible {
                   ${FOCUS_VISIBLE_STYLE_LIGHT}
                 }
               `}
@@ -460,11 +452,19 @@ export function StorySubheaderToolbar(
                           :disabled {
                             opacity: 0.5;
                           }
+                          :focus-visible {
+                            ${FOCUS_VISIBLE_STYLE_DARK}
+                          }
                         `}
                         data-cy="view-story-button-tablet"
-                        aria-label="view-story-button-tablet"
+                        aria-label="view story"
                       >
-                        <svg width="20" height="19" viewBox="0 0 20 19">
+                        <svg
+                          width="20"
+                          height="19"
+                          viewBox="0 0 20 19"
+                          role="presentation"
+                        >
                           <rect width="20" height="19" rx="3" fill="#262C34" />
                           <path
                             fill="#EFEFEF"
@@ -479,11 +479,14 @@ export function StorySubheaderToolbar(
                       <IconButton
                         onClick={onSave}
                         disabled={!props.isSaveEnabled}
-                        aria-label="save button"
+                        aria-label="save story"
                         css={`
                           padding: 0px;
                           :disabled {
                             opacity: 0.5;
+                          }
+                          :focus-visible {
+                            ${FOCUS_VISIBLE_STYLE_DARK}
                           }
                         `}
                         data-cy="save-story-button"

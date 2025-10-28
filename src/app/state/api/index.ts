@@ -83,11 +83,12 @@ export const APIModel = <QueryModel, ResponseModel>(
       actions.onRequest();
     }
 
-    let Authorization: string | undefined = `Bearer ${get(
-      query,
-      "token",
-      undefined
-    )}`;
+    let Authorization: string | undefined = `Bearer ${
+      process.env.REACT_APP_CMS_API &&
+      url.includes(process.env.REACT_APP_CMS_API)
+        ? process.env.REACT_APP_CMS_TOKEN
+        : get(query, "token", undefined)
+    }`;
     if (query.nonAuthCall) {
       Authorization = undefined;
     }

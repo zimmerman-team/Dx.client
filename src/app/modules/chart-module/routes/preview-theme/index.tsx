@@ -13,7 +13,6 @@ import WarningDialog from "app/modules/chart-module/components/dialog/warningDia
 import GeomapLegend from "app/modules/chart-module/components/geomap-legend";
 import ErrorComponent from "app/modules/chart-module/components/dialog/errrorComponent";
 import { DatasetListItemAPIModel } from "app/modules/dataset-module/data";
-import { getDatasetDetailsSource } from "app/modules/chart-module/util/getDatasetDetailsSource";
 import { mobileDescriptioncss } from "app/modules/dataset-module/routes/upload-module/style";
 import moment from "moment";
 import AIIcon from "app/assets/icons/AIIcon";
@@ -40,10 +39,7 @@ export function ChartBuilderPreviewTheme(props: ChartBuilderPreviewThemeProps) {
     (state) =>
       (state.dataThemes.DatasetGet.crudData ?? {}) as DatasetListItemAPIModel
   );
-  const { sourceUrl, filename } = getDatasetDetailsSource(
-    datasetDetails,
-    undefined
-  );
+
   React.useEffect(() => {
     if (token) {
       loadDataset({
@@ -72,7 +68,8 @@ export function ChartBuilderPreviewTheme(props: ChartBuilderPreviewThemeProps) {
       domRef &&
       domRef.current &&
       !isEmpty(mapping) &&
-      !isEmpty(visualOptions)
+      !isEmpty(visualOptions) &&
+      !isEmpty(props.renderedChartMappedData)
     ) {
       const loader = document.getElementById("chart-placeholder");
       if (loader) {

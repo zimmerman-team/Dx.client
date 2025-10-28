@@ -3,7 +3,6 @@ import { ReactComponent as SortIcon } from "app/modules/home-module/assets/sort-
 
 import { iconButtonCss, sortByItemCss } from "app/modules/home-module/style";
 import { useMenuNavigation } from "app/hooks/useMenuNavigation";
-import { FOCUS_VISIBLE_STYLE_DARK } from "app/theme";
 import React from "react";
 
 export default function SortPopover(
@@ -84,7 +83,6 @@ export default function SortPopover(
               line-height: 20px;
 
               &:focus-visible {
-                /* ${FOCUS_VISIBLE_STYLE_DARK} */
                 border: 2px solid #00b5d8;
                 :nth-of-type(3) {
                   border-bottom-left-radius: 16px;

@@ -235,23 +235,21 @@ export function FontFamilyHandler(props: Props) {
                 `}
               >
                 {currentFontFamily.label === style.label && (
-                  <button>
-                    <svg
-                      width="15"
-                      height="11"
-                      viewBox="0 0 15 11"
-                      fill="none"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <path
-                        d="M13.292 1.5L5.04199 9.75L1.29199 6"
-                        stroke="#70777E"
-                        strokeWidth="1.5"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      />
-                    </svg>
-                  </button>
+                  <svg
+                    width="15"
+                    height="11"
+                    viewBox="0 0 15 11"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M13.292 1.5L5.04199 9.75L1.29199 6"
+                      stroke="#70777E"
+                      strokeWidth="1.5"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                  </svg>
                 )}
               </div>
             </div>

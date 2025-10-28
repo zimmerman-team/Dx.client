@@ -5,7 +5,7 @@ import { IFramesArray } from "app/modules/story-module/views/create/data";
 import { ReactComponent as PlusIcon } from "app/modules/story-module/asset/addButton.svg";
 import { IRowFrameStructure } from "app/state/recoil/atoms";
 import { Updater } from "use-immer";
-import { TABLET_STARTPOINT } from "app/theme";
+import { FOCUS_VISIBLE_STYLE_LIGHT } from "app/theme";
 import { useUndoRedo } from "app/hooks/useUndoRedo";
 interface Props {
   updateFramesArray: Updater<IFramesArray[]>;
@@ -80,6 +80,9 @@ export default function AddRowFrameButton(props: Props) {
           disabled={props.rowStructureType.disableAddRowStructureButton}
           css={`
             padding: 4px;
+            :focus-visible {
+              ${FOCUS_VISIBLE_STYLE_LIGHT}
+            }
           `}
           data-cy="add-row-frame-button"
         >

@@ -31,6 +31,7 @@ import ShareComponent from "app/components/ShareComponent";
 import { APPLICATION_JSON } from "app/state/api";
 import { FOCUS_VISIBLE_STYLE_LIGHT, MOBILE_BREAKPOINT } from "app/theme";
 import { ISnackbarState } from "app/modules/dataset-module/routes/upload-module/style";
+import CopyButton from "app/modules/story-module/components/storySubHeaderToolbar/copyButton";
 
 export default function DatasetSubHeaderToolbar(
   props: Readonly<{ name: string }>

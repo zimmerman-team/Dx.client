@@ -15,7 +15,7 @@ describe("testing footer for valid links", () => {
     cy.get('[data-cy="home-footer"]')
       .scrollIntoView()
       .within(() => {
-        cy.contains("Tel: +3120 213 4466");
+        cy.contains("Tel: +3185 130 5884");
         cy.contains("Email: contact@dataxplorer.org");
         cy.contains("Keizersgracht 520H");
         cy.contains("1017 EK Amsterdam");

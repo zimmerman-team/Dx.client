@@ -1,5 +1,5 @@
 import React, { useRef } from "react";
-import { EditorState, Modifier, RichUtils } from "draft-js";
+import { EditorState, RichUtils } from "draft-js";
 import { Popper } from "@material-ui/core";
 import { useOnClickOutside } from "usehooks-ts";
 import {
@@ -16,7 +16,7 @@ interface Props {
   theme: any;
   id: "color-popover" | "bg-popover" | undefined;
   open: boolean;
-  anchorEl: HTMLDivElement | null;
+  anchorEl: HTMLButtonElement | null;
   handleClose: () => void;
   hex: string;
   setHex: (color: string) => void;

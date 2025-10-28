@@ -11,13 +11,10 @@ export interface Tab {
 interface HeadlessSwitchProps {
   tabs: Tab[];
   activeTab: string;
-  onTabChange: (value: string) => void;
+  onTabChange: (value: any) => void;
   children: (props: {
-    tabs: Tab[];
-    activeTab: string;
     activeIndex: number;
     focusIndex: number;
-    onTabClick: (value: string, index: number) => void;
     getTabProps: (
       tab: Tab,
       index: number
@@ -110,11 +107,8 @@ export function HeadlessSwitch({
   return (
     <>
       {children({
-        tabs,
-        activeTab,
         activeIndex,
         focusIndex,
-        onTabClick: handleTabClick,
         getTabProps,
       })}
     </>
