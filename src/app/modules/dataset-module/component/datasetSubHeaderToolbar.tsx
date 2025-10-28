@@ -34,6 +34,7 @@ import { ArrowBack } from "@material-ui/icons";
 import ArrowBackIosIcon from "@material-ui/icons/ArrowBackIos";
 import { FOCUS_VISIBLE_STYLE_LIGHT, MOBILE_BREAKPOINT } from "app/theme";
 import { ISnackbarState } from "app/modules/dataset-module/routes/upload-module/style";
+import CopyButton from "app/modules/story-module/components/storySubHeaderToolbar/copyButton";
 
 export default function DatasetSubHeaderToolbar(
   props: Readonly<{ name: string }>
@@ -154,8 +155,9 @@ export default function DatasetSubHeaderToolbar(
     }
   };
 
-  const handleCopy = (text: string, result: boolean) => {
-    setOpenSnackbar(result);
+  const handleCopy = (text: string) => {
+    navigator.clipboard.writeText(text);
+    setOpenSnackbar(true);
   };
 
   const handleModal = () => {
@@ -338,12 +340,7 @@ export default function DatasetSubHeaderToolbar(
                     `}
                   >
                     <div css={styles.sharePopup}>
-                      <CopyToClipboard
-                        text={window.location.href}
-                        onCopy={handleCopy}
-                      >
-                        <Button startIcon={<LinkIcon />}>Copy link</Button>
-                      </CopyToClipboard>
+                      <CopyButton handleCopy={handleCopy} />
                     </div>
                   </Popover>
                   {canDatasetEditDelete && (
