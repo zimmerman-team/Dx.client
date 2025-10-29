@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import styles from "./InlineColorPicker.module.css";
-import { ColorPicker } from "app/components/ColorPicker";
+import { ColorPicker } from "@app/components/ColorPicker";
 import {
   ColorService,
   IColor,
-} from "app/components/ColorPicker/services/color";
+} from "@app/components/ColorPicker/services/color";
 import { ClickAwayListener } from "@material-ui/core";
 
 interface Props {

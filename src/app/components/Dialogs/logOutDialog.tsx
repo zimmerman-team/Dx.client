@@ -3,8 +3,8 @@ import { useAuth0 } from "@auth0/auth0-react";
 import { useStyles } from "./deleteChartDialog";
 import { CloseOutlined } from "@material-ui/icons";
 import { IconButton, Modal } from "@material-ui/core";
-import { useStoreActions } from "app/state/store/hooks";
-import { PrimaryButton, TertiaryButton } from "app/components/Styled/button";
+import { useStoreActions } from "@app/state/store/hooks";
+import { PrimaryButton, TertiaryButton } from "@app/components/Styled/button";
 
 interface Props {
   modalDisplay: boolean;

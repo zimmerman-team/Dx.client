@@ -1,5 +1,5 @@
-import { FilterGroupModel } from "app/components/ToolBoxPanel/components/filters/data";
-import { ChartRenderedItem } from "app/modules/chart-module/data";
+import { FilterGroupModel } from "@app/components/ToolBoxPanel/components/filters/data";
+import { ChartRenderedItem } from "@app/modules/chart-module/data";
 import CloudDoneIcon from "@material-ui/icons/CloudDone";
 import TableChartIcon from "@material-ui/icons/TableChart";
 import AssessmentIcon from "@material-ui/icons/Assessment";

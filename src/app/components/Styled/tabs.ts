@@ -1,5 +1,5 @@
-import { FOCUS_VISIBLE_STYLE_LIGHT } from "app/theme";
-import styled from "styled-components/macro";
+import { FOCUS_VISIBLE_STYLE_LIGHT } from "@app/theme";
+import styled from "styled-components";
 
 interface ITab {
   active?: boolean;

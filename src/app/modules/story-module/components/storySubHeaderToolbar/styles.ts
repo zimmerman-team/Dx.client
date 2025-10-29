@@ -1,6 +1,6 @@
-import { MOBILE_BREAKPOINT, TABLET_STARTPOINT } from "app/theme";
-import { getContrastColor } from "app/utils/getContrastColor";
-import { css } from "styled-components/macro";
+import { MOBILE_BREAKPOINT, TABLET_STARTPOINT } from "@app/theme";
+import { getContrastColor } from "@app/utils/getContrastColor";
+import { css } from "styled-components";
 
 export const styles = {
   container: (toolbarVisible: boolean) => css`

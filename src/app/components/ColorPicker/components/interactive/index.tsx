@@ -1,7 +1,7 @@
 import React, { memo, useCallback } from "react";
 
-import { clamp, isTouch } from "app/components/ColorPicker/utils";
-import { useBoundingClientRect } from "app/components/ColorPicker/hooks/useBoundingClientRect";
+import { clamp, isTouch } from "@app/components/ColorPicker/utils";
+import { useBoundingClientRect } from "@app/components/ColorPicker/hooks/useBoundingClientRect";
 
 interface IInteractiveProps {
   readonly onCoordinateChange: (final: boolean, x: number, y: number) => void;

@@ -11,31 +11,31 @@ import { useHistory, useLocation, useParams } from "react-router-dom";
 import {
   itemSpacing,
   containerGap,
-} from "app/modules/story-module/components/rowStructure/data";
-import RowstructureDisplay from "app/modules/story-module/components/rowStructure/rowStructureDisplay";
-import { ReactComponent as CloseIcon } from "app/modules/story-module/asset/closeIcon.svg";
-import { ReactComponent as DeleteIcon } from "app/modules/story-module/asset/deleteIcon.svg";
+} from "@app/modules/story-module/components/rowStructure/data";
+import RowstructureDisplay from "@app/modules/story-module/components/rowStructure/rowStructureDisplay";
+import CloseIcon from "@app/modules/story-module/asset/closeIcon.svg?react";
+import DeleteIcon from "@app/modules/story-module/asset/deleteIcon.svg?react";
 import {
   isDividerOrRowFrameDraggingAtom,
   storyContentContainerWidth,
   storyCreationTourStepAtom,
-} from "app/state/recoil/atoms";
+} from "@app/state/recoil/atoms";
 import {
   blockcss,
   containercss,
-} from "app/modules/story-module/components/rowStructure/style";
-import { IFramesArray } from "app/modules/story-module/views/create/data";
+} from "@app/modules/story-module/components/rowStructure/style";
+import { IFramesArray } from "@app/modules/story-module/views/create/data";
 import { useOnClickOutside } from "usehooks-ts";
-import { ToolbarPluginsType } from "app/modules/story-module/components/storySubHeaderToolbar/staticToolbar";
+import { ToolbarPluginsType } from "@app/modules/story-module/components/storySubHeaderToolbar/staticToolbar";
 import { useDrag } from "react-dnd";
-import { StoryElementsType } from "app/modules/story-module/components/right-panel-create-view";
-import { usehandleRowFrameItemResize } from "app/hooks/useHandleRowFrameItemResize";
+import { StoryElementsType } from "@app/modules/story-module/components/right-panel-create-view";
+import { usehandleRowFrameItemResize } from "@app/hooks/useHandleRowFrameItemResize";
 import { Updater } from "use-immer";
 import { useMediaQuery } from "@material-ui/core";
 import { rowStructureHeights } from "./data";
 import { isEmpty } from "lodash";
-import { useUndoRedo } from "app/hooks/useUndoRedo";
-import { FOCUS_VISIBLE_STYLE_LIGHT } from "app/theme";
+import { useUndoRedo } from "@app/hooks/useUndoRedo";
+import { FOCUS_VISIBLE_STYLE_LIGHT } from "@app/theme";
 
 const rowStructureDetailItems = [
   [{ rowType: "oneByOne", rowId: "oneByOne-1", width: "100%", factor: 1 }],

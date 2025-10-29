@@ -1,11 +1,11 @@
 /* third-party */
 import React from "react";
 /* project */
-import { FilterGroupModel } from "app/components/ToolBoxPanel/components/filters/data";
-import { FilterGroup } from "app/modules/chart-module/routes/filters/components/FilterGroup";
-import { ExpandedFilterGroup } from "app/modules/chart-module/routes/filters/components/ExpandedFilterGroup";
-import ToolboxSubHeader from "app/modules/chart-module/components/toolbox/steps/sub-header";
-import { useStoreActions, useStoreState } from "app/state/store/hooks";
+import { FilterGroupModel } from "@app/components/ToolBoxPanel/components/filters/data";
+import { FilterGroup } from "@app/modules/chart-module/routes/filters/components/FilterGroup";
+import { ExpandedFilterGroup } from "@app/modules/chart-module/routes/filters/components/ExpandedFilterGroup";
+import ToolboxSubHeader from "@app/modules/chart-module/components/toolbox/steps/sub-header";
+import { useStoreActions, useStoreState } from "@app/state/store/hooks";
 
 interface ChartToolBoxFiltersProps {
   filterOptionGroups: FilterGroupModel[];

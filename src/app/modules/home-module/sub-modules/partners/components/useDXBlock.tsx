@@ -1,7 +1,7 @@
 import React from "react";
-import { ReactComponent as InlineGFLogo } from "app/modules/home-module/sub-modules/partners/assets/inline-gf-logo.svg";
-import { getCMSDataField } from "app/utils/getCMSDataField";
-import { useCMSData } from "app/hooks/useCMSData";
+import InlineGFLogo from "@app/modules/home-module/sub-modules/partners/assets/inline-gf-logo.svg?react";
+import { getCMSDataField } from "@app/utils/getCMSDataField";
+import { useCMSData } from "@app/hooks/useCMSData";
 
 export default function DXBlock() {
   const cmsData = useCMSData({ returnData: true });

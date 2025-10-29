@@ -4,19 +4,19 @@ import React from "react";
 import get from "lodash/get";
 import map from "lodash/map";
 import useDebounce from "react-use/lib/useDebounce";
-import { useStoreState } from "app/state/store/hooks";
+import { useStoreState } from "@app/state/store/hooks";
 // @ts-ignore
 import { getOptionsConfig, getEnabledOptions } from "@rawgraphs/rawgraphs-core";
 /* project */
-import { charts } from "app/modules/chart-module/data";
-import { TriangleXSIcon } from "app/assets/icons/TriangleXS";
+import { charts } from "@app/modules/chart-module/data";
+import { TriangleXSIcon } from "@app/assets/icons/TriangleXS";
 import {
   getDefaultForRepeat,
   getPartialMappedData,
   getPartialMapping,
   WrapControlComponent,
-} from "app/modules/chart-module/routes/customize/utils";
-import ToolboxSubHeader from "app/modules/chart-module/components/toolbox/steps/sub-header";
+} from "@app/modules/chart-module/routes/customize/utils";
+import ToolboxSubHeader from "@app/modules/chart-module/components/toolbox/steps/sub-header";
 
 interface ChartToolBoxCustomizeProps {
   dataTypes?: any;

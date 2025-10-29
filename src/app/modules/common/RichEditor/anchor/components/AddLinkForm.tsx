@@ -11,9 +11,9 @@ import PropTypes from "prop-types";
 import clsx from "clsx";
 import EditorUtils from "@draft-js-plugins/utils";
 import { EditorState } from "draft-js";
-import URLUtils from "app/modules/common/RichEditor/anchor/utils/URLUtils";
-import { AnchorPluginTheme } from "app/modules/common/RichEditor/anchor/theme";
-import { getEntityKey } from "app/utils/draftjs/getEntityKey";
+import URLUtils from "@app/modules/common/RichEditor/anchor/utils/URLUtils";
+import { AnchorPluginTheme } from "@app/modules/common/RichEditor/anchor/theme";
+import { getEntityKey } from "@app/utils/draftjs/getEntityKey";
 
 export interface OverrideContentProps {
   getEditorState: () => EditorState;

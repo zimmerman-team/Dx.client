@@ -1,7 +1,7 @@
 import React from "react";
-import InlineLogo from "app/modules/home-module/assets/inline-logo";
-import { navLinkcss } from "app/components/AppBar/style";
-import { DropDownNav } from "app/components/AppBar/components/drop-down-nav";
+import InlineLogo from "@app/modules/home-module/assets/inline-logo";
+import { navLinkcss } from "@app/components/AppBar/style";
+import { DropDownNav } from "@app/components/AppBar/components/drop-down-nav";
 import { NavLink } from "react-router-dom";
 
 export const NavList = (props: {

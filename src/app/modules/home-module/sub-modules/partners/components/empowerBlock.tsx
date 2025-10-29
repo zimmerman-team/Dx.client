@@ -1,19 +1,19 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { useAuth0 } from "@auth0/auth0-react";
-import { socialAuth } from "app/utils/socialAuth";
-import { PrimaryButton } from "app/components/Styled/button";
-import { ReactComponent as GoogleIcon } from "app/modules/onboarding-module/asset/google-img.svg";
-import { ReactComponent as LinkedInIcon } from "app/modules/onboarding-module/asset/linkedIn-img.svg";
-import { ReactComponent as MicrosoftIcon } from "app/modules/onboarding-module/asset/microsoft-img.svg";
-import { ReactComponent as Ellipses } from "app/modules/home-module/assets/ellipses.svg";
-import { ReactComponent as EllipsesMobile } from "app/modules/home-module/assets/ellipses-mobile.svg";
+import { socialAuth } from "@app/utils/socialAuth";
+import { PrimaryButton } from "@app/components/Styled/button";
+import GoogleIcon from "@app/modules/onboarding-module/asset/google-img.svg?react";
+import LinkedInIcon from "@app/modules/onboarding-module/asset/linkedIn-img.svg?react";
+import MicrosoftIcon from "@app/modules/onboarding-module/asset/microsoft-img.svg?react";
+import Ellipses from "@app/modules/home-module/assets/ellipses.svg?react";
+import EllipsesMobile from "@app/modules/home-module/assets/ellipses-mobile.svg?react";
 import {
   empowercss,
   ClimateButton,
-} from "app/modules/home-module/sub-modules/partners/style";
+} from "@app/modules/home-module/sub-modules/partners/style";
 import { Box } from "@material-ui/core";
-import AddAssetDropdown from "app/modules/home-module/components/AddAssetDropdown";
+import AddAssetDropdown from "@app/modules/home-module/components/AddAssetDropdown";
 
 export default function EmpowerBlock(props: {
   view?: "why-dx" | "contact" | "about" | "partners" | "explore" | "landing";

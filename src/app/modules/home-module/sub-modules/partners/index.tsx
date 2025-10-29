@@ -5,29 +5,29 @@ import Tabs from "@material-ui/core/Tabs";
 
 import Container from "@material-ui/core/Container";
 import withStyles from "@material-ui/core/styles/withStyles";
-import HomeFooter from "app/modules/home-module/components/Footer";
-import DXBlock from "app/modules/home-module/sub-modules/partners/components/useDXBlock";
-import QuoteBlock from "app/modules/home-module/sub-modules/partners/components/quoteBlock";
-import OurPartnersBlock from "app/modules/home-module/sub-modules/partners/components/ourPartnersBlock";
+import HomeFooter from "@app/modules/home-module/components/Footer";
+import DXBlock from "@app/modules/home-module/sub-modules/partners/components/useDXBlock";
+import QuoteBlock from "@app/modules/home-module/sub-modules/partners/components/quoteBlock";
+import OurPartnersBlock from "@app/modules/home-module/sub-modules/partners/components/ourPartnersBlock";
 
 import { useTitle } from "react-use";
-import Hero from "app/modules/home-module/components/hero";
+import Hero from "@app/modules/home-module/components/hero";
 import { useAuth0 } from "@auth0/auth0-react";
 import { Box } from "@material-ui/core";
-import { PrimaryButton } from "app/components/Styled/button";
+import { PrimaryButton } from "@app/components/Styled/button";
 import { Link } from "react-router-dom";
-import SignInButtons from "app/modules/home-module/components/SignInButtons";
-import InlineLogo from "app/modules/home-module/assets/inline-logo";
-import TryUsBlock from "app/modules/home-module/components/TryUsBlock";
+import SignInButtons from "@app/modules/home-module/components/SignInButtons";
+import InlineLogo from "@app/modules/home-module/assets/inline-logo";
+import TryUsBlock from "@app/modules/home-module/components/TryUsBlock";
 import {
   DESKTOP_BREAKPOINT,
   FOCUS_VISIBLE_STYLE_LIGHT,
   MOBILE_BREAKPOINT,
-} from "app/theme";
-import { css } from "styled-components/macro";
+} from "@app/theme";
+import { css } from "styled-components";
 import PartnerCarousel from "./components/partnerCarousel/partnerCarousel";
-import { useCMSData } from "app/hooks/useCMSData";
-import { getCMSDataField } from "app/utils/getCMSDataField";
+import { useCMSData } from "@app/hooks/useCMSData";
+import { getCMSDataField } from "@app/utils/getCMSDataField";
 
 export const ctaLinkStyle = (label: string) => css`
   display: flex;

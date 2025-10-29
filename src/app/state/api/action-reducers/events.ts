@@ -57,7 +57,7 @@ export interface GoogleEvent {
 export const getWebinarEvents = async () => {
   try {
     const response = await axios.get(
-      `${process.env.REACT_APP_API}/webinar-events`
+      `${import.meta.env.VITE_API}/webinar-events`
     );
 
     return (response.data || []) as GoogleEvent[];
@@ -83,7 +83,7 @@ export const addAttendeeToEvent = async (
 ) => {
   try {
     const response = await axios.post<{ message?: string; error?: string }>(
-      `${process.env.REACT_APP_API}/webinar-events/${eventId}/attendees`,
+      `${import.meta.env.VITE_API}/webinar-events/${eventId}/attendees`,
       {
         ...attendee,
       }

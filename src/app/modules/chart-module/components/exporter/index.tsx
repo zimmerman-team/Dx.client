@@ -2,8 +2,8 @@ import React from "react";
 import MenuItem from "@material-ui/core/MenuItem";
 import { withStyles } from "@material-ui/core/styles";
 import Menu, { MenuProps } from "@material-ui/core/Menu";
-import { TriangleXSIcon } from "app/assets/icons/TriangleXS";
-import { styles } from "app/modules/chart-module/components/exporter/styles";
+import { TriangleXSIcon } from "@app/assets/icons/TriangleXS";
+import { styles } from "@app/modules/chart-module/components/exporter/styles";
 
 export const StyledMenu = withStyles({
   paper: {

@@ -1,13 +1,13 @@
 import React from "react";
 import { useRecoilState } from "recoil";
 import { StoryRightPanelCreateViewProps } from ".";
-import { storyRightPanelViewAtom } from "app/state/recoil/atoms";
-import EditHeaderIcon from "app/modules/story-module/asset/EditHeaderIcon";
+import { storyRightPanelViewAtom } from "@app/state/recoil/atoms";
+import EditHeaderIcon from "@app/modules/story-module/asset/EditHeaderIcon";
 import IconButton from "@material-ui/core/IconButton";
 import { Close } from "@material-ui/icons";
 import ArrowDropUpIcon from "@material-ui/icons/ArrowDropUp";
-import ChartOptionColor from "app/modules/chart-module/routes/customize/components/ChartOptionColor";
-import { IColor } from "app/components/ColorPicker/services/color";
+import ChartOptionColor from "@app/modules/chart-module/routes/customize/components/ChartOptionColor";
+import { IColor } from "@app/components/ColorPicker/services/color";
 
 export default function EditHeaderPanelView(
   props: StoryRightPanelCreateViewProps

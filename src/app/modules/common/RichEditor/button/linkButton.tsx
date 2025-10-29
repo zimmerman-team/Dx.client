@@ -1,6 +1,6 @@
 import { DefaultLinkButtonProps } from "@draft-js-plugins/anchor";
 import { Tooltip } from "@material-ui/core";
-import buttonStyles from "app/modules/common/RichEditor/style/buttonStyles.module.css";
+import buttonStyles from "@app/modules/common/RichEditor/style/buttonStyles.module.css";
 import { PropsWithChildren } from "react";
 
 const LinkIcon = (

@@ -20,20 +20,20 @@ env:
   AUTH0_PASSWORD: ${{ secrets.AUTH0_PASSWORD }}
   AUTH0_CLIENT_SECRET: ${{ secrets.AUTH0_CLIENT_SECRET }}
 
-  REACT_APP_AUTH0_DOMAIN: ${{ secrets.REACT_APP_AUTH0_DOMAIN }}
-  REACT_APP_AUTH0_AUDIENCE: ${{ secrets.REACT_APP_AUTH0_AUDIENCE }}
-  REACT_APP_AUTH0_CLIENT: ${{ secrets.REACT_APP_AUTH0_CLIENT }}
+  VITE_AUTH0_DOMAIN: ${{ secrets.REACT_APP_AUTH0_DOMAIN }}
+  VITE_AUTH0_AUDIENCE: ${{ secrets.REACT_APP_AUTH0_AUDIENCE }}
+  VITE_AUTH0_CLIENT: ${{ secrets.REACT_APP_AUTH0_CLIENT }}
 
   # API
-  REACT_APP_API: ${{ secrets.REACT_APP_API }}
-  REACT_APP_BASE_URL: ${{ secrets.REACT_APP_BASE_URL }}
-  REACT_APP_MAPBOX_TOKEN: ${{ secrets.REACT_APP_MAPBOX_TOKEN }}
-  REACT_APP_GOOGLE_ANALYTICS_ID: ${{ secrets.REACT_APP_GOOGLE_ANALYTICS_ID }}
-  REACT_APP_CMS_API: ${{ secrets.REACT_APP_CMS_API }}
-  REACT_APP_CMS_TOKEN: ${{ secrets.REACT_APP_CMS_TOKEN }}
-  REACT_APP_GOOGLE_API_CLIENT_ID: ${{ secrets.REACT_APP_GOOGLE_API_CLIENT_ID }}
-  REACT_APP_GOOGLE_API_DEV_KEY: ${{ secrets.REACT_APP_GOOGLE_API_DEV_KEY }}
-  REACT_APP_CYPRESS_TEST: "true"
+  VITE_API: ${{ secrets.REACT_APP_API }}
+  VITE_BASE_URL: ${{ secrets.REACT_APP_BASE_URL }}
+  VITE_MAPBOX_TOKEN: ${{ secrets.REACT_APP_MAPBOX_TOKEN }}
+  VITE_GOOGLE_ANALYTICS_ID: ${{ secrets.REACT_APP_GOOGLE_ANALYTICS_ID }}
+  VITE_CMS_API: ${{ secrets.REACT_APP_CMS_API }}
+  VITE_CMS_TOKEN: ${{ secrets.REACT_APP_CMS_TOKEN }}
+  VITE_GOOGLE_API_CLIENT_ID: ${{ secrets.REACT_APP_GOOGLE_API_CLIENT_ID }}
+  VITE_GOOGLE_API_DEV_KEY: ${{ secrets.REACT_APP_GOOGLE_API_DEV_KEY }}
+  VITE_CYPRESS_TEST: "true"
   CYPRESS_PROJECT_ID: ${{ secrets.CYPRESS_PROJECT_ID }}
   GENERATE_SOURCEMAP: false
 
@@ -80,7 +80,7 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: "16"
+          node-version: "22"
           cache: "yarn"
 
       - name: Install packages

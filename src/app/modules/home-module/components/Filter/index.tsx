@@ -1,11 +1,11 @@
 import React from "react";
-import { rowFlexCss } from "app/modules/home-module/style";
+import { rowFlexCss } from "@app/modules/home-module/style";
 import { Tooltip } from "@material-ui/core";
-import { ReactComponent as GridIcon } from "app/modules/home-module/assets/grid-fill.svg";
-import { ReactComponent as TableIcon } from "app/modules/home-module/assets/table-icon.svg";
-import { ReactComponent as MenuIcon } from "app/modules/home-module/assets/menu.svg";
-import AddAssetDropdown from "app/modules/home-module/components/AddAssetDropdown";
-import { MultiSwitch } from "app/modules/home-module/components/TabSwitch";
+import GridIcon from "@app/modules/home-module/assets/grid-fill.svg?react";
+import TableIcon from "@app/modules/home-module/assets/table-icon.svg?react";
+import MenuIcon from "@app/modules/home-module/assets/menu.svg?react";
+import AddAssetDropdown from "@app/modules/home-module/components/AddAssetDropdown";
+import { MultiSwitch } from "@app/modules/home-module/components/TabSwitch";
 import { useOnClickOutside } from "usehooks-ts";
 import { SearchInput } from "./SearchInput";
 import FilterPopover from "./FilterPopover";

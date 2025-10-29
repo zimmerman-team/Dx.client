@@ -4,16 +4,16 @@ import {
   DESKTOP_BREAKPOINT,
   MOBILE_BREAKPOINT,
   FOCUS_VISIBLE_STYLE_DARK,
-} from "app/theme";
+} from "@app/theme";
 import React from "react";
 import { Carousel } from "react-responsive-carousel";
-import { ctaLinkStyle } from "app/modules/home-module/sub-modules/partners";
+import { ctaLinkStyle } from "@app/modules/home-module/sub-modules/partners";
 import { team } from "./data";
-import EmptyAvi from "app/modules/home-module/assets/team/empty.png";
+import EmptyAvi from "@app/modules/home-module/assets/team/empty.png";
 import { Link } from "react-router-dom";
-import { ReactComponent as BackArrow } from "app/modules/home-module/assets/back-arrow.svg";
-import { useCMSData } from "app/hooks/useCMSData";
-import { getCMSDataField } from "app/utils/getCMSDataField";
+import BackArrow from "@app/modules/home-module/assets/back-arrow.svg?react";
+import { useCMSData } from "@app/hooks/useCMSData";
+import { getCMSDataField } from "@app/utils/getCMSDataField";
 
 export default function TeamSection() {
   const [selectedItem, setSelectedItem] = React.useState(0);

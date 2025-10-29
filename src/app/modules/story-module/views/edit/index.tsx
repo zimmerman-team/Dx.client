@@ -8,36 +8,36 @@ import Container from "@material-ui/core/Container";
 import { EditorState, convertFromRaw } from "draft-js";
 import { useTitle } from "react-use";
 import { useAuth0 } from "@auth0/auth0-react";
-import { useStoreActions, useStoreState } from "app/state/store/hooks";
-import { StoryModel, emptyStory } from "app/modules/story-module/data";
-import { StoryEditViewProps } from "app/modules/story-module/views/edit/data";
-import HeaderBlock from "app/modules/story-module/components/headerBlock";
-import { NotAuthorizedMessageModule } from "app/modules/common/not-authorized-message";
-import { ItemComponent } from "app/modules/story-module/components/order-container";
-import { StoryElementsType } from "app/modules/story-module/components/right-panel-create-view";
-import AddRowFrameButton from "app/modules/story-module/components/rowStructure/addRowFrameButton";
-import { GridColumns } from "app/modules/story-module/components/grid-columns";
+import { useStoreActions, useStoreState } from "@app/state/store/hooks";
+import { StoryModel, emptyStory } from "@app/modules/story-module/data";
+import { StoryEditViewProps } from "@app/modules/story-module/views/edit/data";
+import HeaderBlock from "@app/modules/story-module/components/headerBlock";
+import { NotAuthorizedMessageModule } from "@app/modules/common/not-authorized-message";
+import { ItemComponent } from "@app/modules/story-module/components/order-container";
+import { StoryElementsType } from "@app/modules/story-module/components/right-panel-create-view";
+import AddRowFrameButton from "@app/modules/story-module/components/rowStructure/addRowFrameButton";
+import { GridColumns } from "@app/modules/story-module/components/grid-columns";
 
 import {
   IRowFrameStructure,
   storyContentContainerWidth,
-} from "app/state/recoil/atoms";
-import { IFramesArray } from "app/modules/story-module/views/create/data";
-import RowFrame from "app/modules/story-module/components/rowStructure";
-import TourGuide from "app/components/Dialogs/TourGuide";
+} from "@app/state/recoil/atoms";
+import { IFramesArray } from "@app/modules/story-module/views/create/data";
+import RowFrame from "@app/modules/story-module/components/rowStructure";
+import TourGuide from "@app/components/Dialogs/TourGuide";
 import useCookie from "@devhammed/use-cookie";
 import get from "lodash/get";
-import { PageLoader } from "app/modules/common/page-loader";
-import { handleDragOverScroll } from "app/utils/handleAutoScroll";
+import { PageLoader } from "@app/modules/common/page-loader";
+import { handleDragOverScroll } from "@app/utils/handleAutoScroll";
 import {
   compareFramesArrayState,
   compareHeaderDetailsState,
-} from "app/modules/story-module/views/edit/compareStates";
-import PlaceHolder from "app/modules/story-module/components/placeholder";
-import useAutosave from "app/hooks/useAutoSave";
-import { TABLET_STARTPOINT } from "app/theme";
-import { decorators } from "app/modules/common/RichEditor/decorators";
-import { useUndoRedo } from "app/hooks/useUndoRedo";
+} from "@app/modules/story-module/views/edit/compareStates";
+import PlaceHolder from "@app/modules/story-module/components/placeholder";
+import useAutosave from "@app/hooks/useAutoSave";
+import { TABLET_STARTPOINT } from "@app/theme";
+import { decorators } from "@app/modules/common/RichEditor/decorators";
+import { useUndoRedo } from "@app/hooks/useUndoRedo";
 import { useMediaQuery } from "@material-ui/core";
 
 function StoryEditView(props: Readonly<StoryEditViewProps>) {

@@ -1,12 +1,12 @@
-import { PrimaryButton } from "app/components/Styled/button";
-import { ReactComponent as Logo } from "app/modules/home-module/assets/logo.svg";
-import { ReactComponent as RightArrow } from "app/modules/home-module/assets/right-arr.svg";
+import { PrimaryButton } from "@app/components/Styled/button";
+import Logo from "@app/modules/home-module/assets/logo.svg?react";
+import RightArrow from "@app/modules/home-module/assets/right-arr.svg?react";
 import DashboardCarousel from "./carousel";
 import { Container } from "@material-ui/core";
-import { DESKTOP_BREAKPOINT, MOBILE_BREAKPOINT } from "app/theme";
+import { DESKTOP_BREAKPOINT, MOBILE_BREAKPOINT } from "@app/theme";
 import { useHistory } from "react-router-dom";
-import { useCMSData } from "app/hooks/useCMSData";
-import { getCMSDataField } from "app/utils/getCMSDataField";
+import { useCMSData } from "@app/hooks/useCMSData";
+import { getCMSDataField } from "@app/utils/getCMSDataField";
 
 export default function Card() {
   const history = useHistory();

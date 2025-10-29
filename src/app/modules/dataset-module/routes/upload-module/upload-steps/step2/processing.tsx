@@ -1,7 +1,7 @@
 import React from "react";
-import { ReactComponent as ErrorICon } from "app/modules/dataset-module/routes/upload-module/assets/error-icon.svg";
-import { PrimaryButton } from "app/components/Styled/button";
-import { formatRemainingTime } from "app/hooks/useOnUploadProgress";
+import ErrorICon from "@app/modules/dataset-module/routes/upload-module/assets/error-icon.svg?react";
+import { PrimaryButton } from "@app/components/Styled/button";
+import { formatRemainingTime } from "@app/hooks/useOnUploadProgress";
 
 export interface ProcessingMetaDataProps {
   setProcessingError: React.Dispatch<React.SetStateAction<string | null>>;

@@ -1,4 +1,4 @@
-import { IColor } from "app/components/ColorPicker/services/color";
+import { IColor } from "@app/components/ColorPicker/services/color";
 
 export function isTouch<T>(
   event: any

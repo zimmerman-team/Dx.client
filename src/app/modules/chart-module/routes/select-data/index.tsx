@@ -1,15 +1,15 @@
 /* third-party */
 import React from "react";
 import useTitle from "react-use/lib/useTitle";
-import { useStoreActions, useStoreState } from "app/state/store/hooks";
+import { useStoreActions, useStoreState } from "@app/state/store/hooks";
 import { useParams, useHistory } from "react-router-dom";
 /* project */
-import { datasetCategories } from "app/modules/dataset-module/routes/upload-module/upload-steps/step3/metaData";
-import DatasetsGrid from "app/modules/home-module/components/AssetCollection/Datasets/datasetsGrid";
-import { styles as commonStyles } from "app/modules/chart-module/routes/common/styles";
-import DatasetCategoryList from "app/modules/home-module/components/AssetCollection/Datasets/datasetCategoryList";
-import { ChartRenderedItem } from "app/modules/chart-module/data";
-import Filter from "app/modules/home-module/components/Filter";
+import { datasetCategories } from "@app/modules/dataset-module/routes/upload-module/upload-steps/step3/metaData";
+import DatasetsGrid from "@app/modules/home-module/components/AssetCollection/Datasets/datasetsGrid";
+import { styles as commonStyles } from "@app/modules/chart-module/routes/common/styles";
+import DatasetCategoryList from "@app/modules/home-module/components/AssetCollection/Datasets/datasetCategoryList";
+import { ChartRenderedItem } from "@app/modules/chart-module/data";
+import Filter from "@app/modules/home-module/components/Filter";
 
 function ChartModuleDataView(
   props: Readonly<{
@@ -39,7 +39,7 @@ function ChartModuleDataView(
   const token = useStoreState((state) => state.AuthToken.value);
 
   const handleItemClick = (id: string) => {
-    const loadDatasetAPI = `${process.env.REACT_APP_API}/chart/sample-data${
+    const loadDatasetAPI = `${import.meta.env.VITE_API}/chart/sample-data${
       token ? "" : "/public"
     }/${id}`;
     setDataset(id);

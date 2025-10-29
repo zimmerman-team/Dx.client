@@ -1,10 +1,10 @@
 import React from "react";
 import { Popover, Tooltip } from "@material-ui/core";
-import { ReactComponent as FilterIcon } from "app/modules/home-module/assets/filter-fill.svg";
+import FilterIcon from "@app/modules/home-module/assets/filter-fill.svg?react";
 
-import { iconButtonCss, sortByItemCss } from "app/modules/home-module/style";
-import { useMenuNavigation } from "app/hooks/useMenuNavigation";
-import { FOCUS_VISIBLE_STYLE_DARK } from "app/theme";
+import { iconButtonCss, sortByItemCss } from "@app/modules/home-module/style";
+import { useMenuNavigation } from "@app/hooks/useMenuNavigation";
+import { FOCUS_VISIBLE_STYLE_DARK } from "@app/theme";
 
 export default function FilterPopover(
   props: Readonly<{

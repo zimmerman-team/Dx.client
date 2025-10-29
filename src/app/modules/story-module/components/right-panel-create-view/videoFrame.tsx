@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import { ReactComponent as YoutubeIcon } from "app/modules/story-module/asset/youtube-icon.svg";
+import YoutubeIcon from "@app/modules/story-module/asset/youtube-icon.svg?react";
 import { css } from "styled-components";
 import { useDrag } from "react-dnd";
-import YoutubeGradient from "app/modules/story-module/asset/youtube-gradient.png";
+import YoutubeGradient from "@app/modules/story-module/asset/youtube-gradient.png";
 
 export default function VideoFrame(props: {
   videoId: string;

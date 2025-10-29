@@ -1,5 +1,5 @@
 import { Tab, Tabs, withStyles } from "@material-ui/core";
-import { DESKTOP_BREAKPOINT } from "app/theme";
+import { DESKTOP_BREAKPOINT } from "@app/theme";
 
 export const StyledTab = withStyles(() => ({
   root: {

@@ -1,4 +1,4 @@
-import { FOCUS_VISIBLE_STYLE_LIGHT } from "app/theme";
+import { FOCUS_VISIBLE_STYLE_LIGHT } from "@app/theme";
 import React from "react";
 import { useHistory } from "react-router-dom";
 import { Tooltip } from "react-tooltip";

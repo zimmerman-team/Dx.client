@@ -7,11 +7,11 @@ import {
   CssInputLabel,
   CssSelectField,
   metaDatacss,
-} from "app/modules/dataset-module/routes/upload-module/style";
+} from "@app/modules/dataset-module/routes/upload-module/style";
 import { ChevronRight } from "@material-ui/icons";
-import { useMenuNavigation } from "app/hooks/useMenuNavigation";
+import { useMenuNavigation } from "@app/hooks/useMenuNavigation";
 import Popover from "@material-ui/core/Popover";
-import { ReactComponent as CheckMarkIcon } from "app/modules/dataset-module/assets/check-mark.svg";
+import CheckMarkIcon from "@app/modules/dataset-module/assets/check-mark.svg?react";
 
 interface IErrorState {
   name: {

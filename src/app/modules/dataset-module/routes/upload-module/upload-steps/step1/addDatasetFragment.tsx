@@ -3,16 +3,16 @@ import React, { useCallback } from "react";
 
 /** project */
 
-import { DropZone } from "app/modules/dataset-module/routes/upload-module/component/dropzone";
-import LocalIcon from "app/modules/dataset-module/routes/upload-module/assets/upload-options-icons/local";
-import GoogleIcon from "app/modules/dataset-module/routes/upload-module/assets/upload-options-icons/google";
-import MicrosoftIcon from "app/modules/dataset-module/routes/upload-module/assets/upload-options-icons/microsoft";
-import UploadOption from "app/modules/dataset-module/routes/upload-module/component/uploadOption";
+import { DropZone } from "@app/modules/dataset-module/routes/upload-module/component/dropzone";
+import LocalIcon from "@app/modules/dataset-module/routes/upload-module/assets/upload-options-icons/local";
+import GoogleIcon from "@app/modules/dataset-module/routes/upload-module/assets/upload-options-icons/google";
+import MicrosoftIcon from "@app/modules/dataset-module/routes/upload-module/assets/upload-options-icons/microsoft";
+import UploadOption from "@app/modules/dataset-module/routes/upload-module/component/uploadOption";
 import { useCookie } from "react-use";
-import useGoogleDrivePicker from "app/hooks/useGoogleDrivePicker";
-import { useOneDrivePicker } from "app/hooks/useOneDrivePicker";
-import { useCheckUserPlan } from "app/hooks/useCheckUserPlan";
-import { DESKTOP_BREAKPOINT, TABLET_STARTPOINT } from "app/theme";
+import useGoogleDrivePicker from "@app/hooks/useGoogleDrivePicker";
+import { useOneDrivePicker } from "@app/hooks/useOneDrivePicker";
+import { useCheckUserPlan } from "@app/hooks/useCheckUserPlan";
+import { DESKTOP_BREAKPOINT, TABLET_STARTPOINT } from "@app/theme";
 
 interface Props {
   disabled: boolean;

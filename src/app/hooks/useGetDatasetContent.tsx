@@ -1,5 +1,5 @@
-import { APPLICATION_JSON } from "app/state/api";
-import { useStoreState } from "app/state/store/hooks";
+import { APPLICATION_JSON } from "@app/state/api";
+import { useStoreState } from "@app/state/store/hooks";
 import axios from "axios";
 import React, { useEffect } from "react";
 
@@ -17,7 +17,7 @@ const useGetDatasetContent = (datasetId: string, pageSize: number = 10) => {
     setLoading(true);
     axios
       .get(
-        `${process.env.REACT_APP_API}/datasets${
+        `${import.meta.env.VITE_API}/datasets${
           token ? "" : "/public"
         }/${datasetId}/data?page=${nextPageToken}&pageSize=${pageSize}`,
         {

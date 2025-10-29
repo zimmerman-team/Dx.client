@@ -1,7 +1,7 @@
 /* third-party */
 import React from "react";
 /* project */
-import { ReactComponent as InfoIcon } from "app/modules/story-module/asset/info-icon.svg";
+import InfoIcon from "@app/modules/story-module/asset/info-icon.svg?react";
 import { Tooltip } from "react-tooltip";
 
 export default function PanelLabel(props: {

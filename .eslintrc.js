@@ -39,10 +39,10 @@ module.exports = {
     //     paths: [
     //       {
     //         name: "styled-components",
-    //         message: "Please import from styled-components/macro.",
+    //         message: "Please import from styled-components.",
     //       },
     //     ],
-    //     patterns: ["!styled-components/macro"],
+    //     patterns: ["!styled-components"],
     //   },
     // ],
 

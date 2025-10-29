@@ -6,9 +6,9 @@ export function socialAuth(
   page_params?: string
 ) {
   const webAuth = new Auth0JS.WebAuth({
-    domain: process.env.REACT_APP_AUTH0_DOMAIN as string,
-    clientID: process.env.REACT_APP_AUTH0_CLIENT as string,
-    audience: process.env.REACT_APP_AUTH0_AUDIENCE as string,
+    domain: import.meta.env.VITE_AUTH0_DOMAIN as string,
+    clientID: import.meta.env.VITE_AUTH0_CLIENT as string,
+    audience: import.meta.env.VITE_AUTH0_AUDIENCE as string,
     redirectUri: `${window.location.origin}/callback${page_params ?? ""}`,
   });
 
