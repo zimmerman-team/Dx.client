@@ -10,8 +10,10 @@ import { useParams } from "react-router-dom";
 import useResizeObserver from "use-resize-observer";
 
 export default function EmbedChartRoute() {
-  const { chartId, datasetId } =
-    useParams<{ chartId: string; datasetId: string }>();
+  const { chartId, datasetId } = useParams<{
+    chartId: string;
+    datasetId: string;
+  }>();
   const { ref } = useResizeObserver<HTMLDivElement>();
 
   const containerRef = React.useRef<HTMLDivElement>(null);

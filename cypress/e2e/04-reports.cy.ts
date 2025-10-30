@@ -38,6 +38,8 @@ describe("Testing stories on DX", () => {
     cy.get('[data-cy="home-asset-dropdown-button"]').click();
     cy.get('[data-cy="home-create-story-button"]').click();
 
+    cy.wait(5000);
+
     cy.contains(
       '[data-cy="story-template-card"]',
       "Blank template story"
