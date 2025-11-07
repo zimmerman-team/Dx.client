@@ -1,5 +1,4 @@
 import { Container } from "@material-ui/core";
-import MetaData from "app/modules/dataset-module/routes/upload-module/upload-steps/step3/metaData";
 import { APPLICATION_JSON } from "app/state/api";
 import { allAssetsSortBy } from "app/state/recoil/atoms";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
@@ -53,13 +52,6 @@ export default function EditMetaData() {
     public: false,
     source: "",
     sourceUrl: "",
-  });
-  const [errorState, setErrorState] = React.useState({
-    name: { state: false, message: "" },
-    description: { state: false, message: "" },
-    category: { state: false, message: "" },
-    source: { state: false, message: "" },
-    sourceUrl: { state: false, message: "" },
   });
 
   React.useEffect(() => {

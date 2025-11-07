@@ -7,6 +7,7 @@ import TablePreview, {
 import { isValidUrl } from "app/utils/emailValidation";
 import { useHistory, useLocation } from "react-router-dom";
 import { useStoreActions } from "app/state/store/hooks";
+import { updateLog } from "app/utils/updateLog";
 
 interface DescribeAndSaveProps {
   metadata: Omit<
@@ -40,10 +41,24 @@ export default function DescribeAndSave(props: DescribeAndSaveProps) {
     sourceUrl,
     ...mandatoryFields
   } = props.metadata.formDetails;
+
   const handleSubmit = async (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
     e.preventDefault();
+    updateLog({
+      level: "info",
+      message: `Submitting dataset metadata form: ${JSON.stringify(
+        mandatoryFields
+      )}`,
+    });
+    if (!mandatoryFields || typeof mandatoryFields !== "object") {
+      updateLog({
+        level: "error",
+        message: `Invalid dataset metadata form: ${mandatoryFields}`,
+      });
+      return;
+    }
     //form validation before submitting
     for (const key in mandatoryFields) {
       if (
@@ -78,6 +93,19 @@ export default function DescribeAndSave(props: DescribeAndSaveProps) {
   };
 
   React.useEffect(() => {
+    updateLog({
+      level: "info",
+      message: "Validating dataset metadata form for enabling save button",
+    });
+
+    if (!mandatoryFields || typeof mandatoryFields !== "object") {
+      updateLog({
+        level: "error",
+        message: `Invalid dataset metadata form: ${mandatoryFields}`,
+      });
+      setIsSaveEnabled(false);
+      return;
+    }
     const isFormValid = Object.values(mandatoryFields).every(
       (value) => value !== ""
     );

@@ -35,7 +35,6 @@ interface DescriptionCellProps {
   columnKey: string;
   itemId: string | number;
 }
-// Separate component for link cells
 const LinkCell = ({ data, columnKey, cellWidth }: LinkCellProps) => (
   <a
     href={data.url}
@@ -75,7 +74,6 @@ const LinkCell = ({ data, columnKey, cellWidth }: LinkCellProps) => (
   </a>
 );
 
-// Separate component for description cells with expand/collapse
 const DescriptionCell = ({ data, columnKey, itemId }: DescriptionCellProps) => {
   const [isExpanded, setIsExpanded] = React.useState(false);
   const toggleExpansion = (
@@ -137,8 +135,6 @@ const DescriptionCell = ({ data, columnKey, itemId }: DescriptionCellProps) => {
   );
 };
 
-// Separate component for regular cells
-
 const RegularCell = ({ data, column, cellWidth }: RegularCellProps) => {
   const textAlign = column.key === "id" ? "center" : "left";
 
@@ -162,20 +158,16 @@ const RegularCell = ({ data, column, cellWidth }: RegularCellProps) => {
   );
 };
 
-// Helper function for formatting cell values
 const formatCellValue = (value: string) => {
   if (!value) return "";
   return isValidDate(value) ? moment(value).format("MM-DD-YYYY") : value;
 };
 
-// Helper function to determine cell type
 const getCellType = (colIndex: number, column: Column) => {
   if (colIndex === 1) return "link";
   if (column.label === "Description") return "description";
   return "regular";
 };
-
-// Main cell renderer
 
 const TableCellContent = ({
   data,

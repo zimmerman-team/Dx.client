@@ -8,6 +8,7 @@ import { ReactComponent as InstagramIcon } from "app/modules/home-module/assets/
 import { ReactComponent as MastodonIcon } from "app/modules/home-module/assets/mastodon-icon.svg";
 import { copyToClipboard } from "app/utils/copyToClipboard";
 import Snackbar from "@material-ui/core/Snackbar";
+import { updateLog } from "app/utils/updateLog";
 
 const Box = (props: { content: string; height: number; id: string }) => {
   return (
@@ -51,9 +52,17 @@ export default function ShareModal(props: {
 
   const handleCopyURL = async (url: string) => {
     try {
+      updateLog({
+        level: "info",
+        message: `Copying URL: ${url}`,
+      });
       await copyToClipboard(url);
       setCopyAlert(true);
     } catch (error) {
+      updateLog({
+        level: "error",
+        message: `Error copying URL: ${error}`,
+      });
       console.error("Failed to copy URL:", error);
     }
   };

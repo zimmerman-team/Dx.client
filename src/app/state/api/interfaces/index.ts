@@ -166,5 +166,6 @@ export interface StoreModel {
     pagesContact: CMSApiCallModel;
     pagesWebinar: CMSApiCallModel;
   };
+  logging: ApiCallModel;
   CMSData: CMSDataModel;
 }
