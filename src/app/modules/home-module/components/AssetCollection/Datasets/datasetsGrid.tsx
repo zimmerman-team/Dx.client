@@ -16,6 +16,7 @@ import DatasetAddnewCard from "app/modules/home-module/components/AssetCollectio
 import CircleLoader from "app/modules/home-module/components/Loader";
 import { loadedDatasetsAtom, planDialogAtom } from "app/state/recoil/atoms";
 import { DatasetListItemAPIModel } from "app/modules/dataset-module/data";
+import { useHistory, useLocation } from "react-router-dom";
 
 interface Props {
   sortBy: string;
@@ -44,6 +45,8 @@ export const getLimit = () => {
 };
 export default function DatasetsGrid(props: Readonly<Props>) {
   const limit = getLimit();
+  const location = useLocation();
+  const history = useHistory();
   const observerTarget = React.useRef(null);
   const [cardId, setCardId] = React.useState<string>("");
   const [enableButton, setEnableButton] = React.useState<boolean>(false);
@@ -55,6 +58,8 @@ export default function DatasetsGrid(props: Readonly<Props>) {
   const setPlanDialog = useSetRecoilState(planDialogAtom);
   const [loadedDatasets, setLoadedDatasets] =
     useRecoilState(loadedDatasetsAtom);
+
+  const [highlightedId, setHighlightedId] = React.useState<string | null>(null);
   const datasets = useStoreState(
     (state) =>
       (state.dataThemes.DatasetGetList.crudData ??
@@ -76,6 +81,28 @@ export default function DatasetsGrid(props: Readonly<Props>) {
   const datasetLoadSuccess = useStoreState(
     (state) => state.dataThemes.DatasetGetList.success
   );
+
+  const queryParams = new URLSearchParams(location.search);
+  const searchParams = queryParams.get("newlyCreatedId");
+
+  React.useEffect(() => {
+    if (searchParams) {
+      setHighlightedId(searchParams);
+
+      // Auto-clear after 5 seconds
+      const timeout = setTimeout(() => {
+        setHighlightedId(null);
+        const queryParams = new URLSearchParams(location.search);
+        queryParams.delete("newlyCreatedId");
+        history.replace({
+          pathname: location.pathname,
+          search: queryParams.toString(),
+        });
+      }, 5000);
+
+      return () => clearTimeout(timeout);
+    }
+  }, [searchParams]);
 
   const getFilterString = (fromZeroOffset?: boolean) => {
     const value =
@@ -288,6 +315,7 @@ export default function DatasetsGrid(props: Readonly<Props>) {
                   source={data.source}
                   sourceURL={data.sourceUrl}
                   hideCreateChartButton={props.hideCreateChartButton}
+                  newlyCreated={highlightedId === data.id}
                 />
 
                 {!props.inChartBuilder && <Box height={{ xs: 0, lg: 8 }} />}

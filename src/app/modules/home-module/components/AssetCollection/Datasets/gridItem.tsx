@@ -35,6 +35,7 @@ interface Props {
   onItemClick?: (id: string) => void;
   ownerName: string;
   hideCreateChartButton?: boolean;
+  newlyCreated?: boolean;
 }
 
 export default function GridItem(props: Readonly<Props>) {
@@ -61,33 +62,11 @@ export default function GridItem(props: Readonly<Props>) {
     e.stopPropagation();
     setMenuOptionsDisplay(!menuOptionsDisplay);
   };
-  const [highlightedId, setHighlightedId] = React.useState<string | null>(null);
-  const queryParams = new URLSearchParams(location.search);
-  const searchParams = queryParams.get("newlyCreatedId");
 
   let destinationPath = `/dataset/${props.id}`;
   if (location.pathname === "/") {
     destinationPath += "?fromHome=true";
   }
-
-  React.useEffect(() => {
-    if (searchParams) {
-      setHighlightedId(searchParams);
-
-      // Auto-clear after 5 seconds
-      const timeout = setTimeout(() => {
-        setHighlightedId(null);
-        const queryParams = new URLSearchParams(location.search);
-        queryParams.delete("newlyCreatedId");
-        history.replace({
-          pathname: location.pathname,
-          search: queryParams.toString(),
-        });
-      }, 5000);
-
-      return () => clearTimeout(timeout);
-    }
-  }, []);
 
   return (
     <div
@@ -95,13 +74,14 @@ export default function GridItem(props: Readonly<Props>) {
         position: relative;
       `}
       data-cy="dataset-grid-item"
-      className="asset-indicator"
+      className={props.newlyCreated ? "asset-indicator" : ""}
       onMouseEnter={() => setDisplayCreateChartButton(true)}
       onMouseLeave={() => setDisplayCreateChartButton(false)}
     >
       <ReactTooltip
         anchorSelect=".asset-indicator"
         place="right"
+        isOpen={props.newlyCreated}
         defaultIsOpen
         style={{
           background: "#231D2C",
@@ -116,7 +96,7 @@ export default function GridItem(props: Readonly<Props>) {
           lineHeight: "16px",
           textAlign: "center",
           zIndex: 1,
-          display: highlightedId !== props.id ? "none" : "block",
+          display: props.newlyCreated ? "block" : "none",
         }}
       >
         Your Dataset is here!
@@ -157,7 +137,7 @@ export default function GridItem(props: Readonly<Props>) {
           padding: 10px;
           box-shadow: 0px 1px 14px 0px rgba(0, 0, 0, 0.12);
           border-radius: 10px;
-          ${highlightedId === props.id ? "border: 1.5px solid #6061E5;" : ""}
+          ${props.newlyCreated ? "border: 1.5px solid #6061E5;" : ""}
 
           &:hover {
             box-shadow: 0px 7px 22px 0px rgba(0, 0, 0, 0.1);
@@ -175,14 +155,14 @@ export default function GridItem(props: Readonly<Props>) {
             height: 20px;
             p {
               border-radius: 5px;
-              background: ${highlightedId === props.id ? "#6061E5" : "#ededff"};
+              background: ${props.newlyCreated ? "#6061E5" : "#ededff"};
               box-shadow: 0px 0px 10px 0px rgba(152, 161, 170, 0.05);
               display: flex;
               padding: 0px 6px;
               justify-content: center;
               align-items: center;
               gap: 10px;
-              color: ${highlightedId === props.id ? "#fff" : "#231d2c"};
+              color: ${props.newlyCreated ? "#fff" : "#231d2c"};
               font-family: "GothamNarrow-Book", "Helvetica Neue", sans-serif;
               font-size: 12px;
               width: fit-content;
@@ -314,28 +294,6 @@ export default function GridItem(props: Readonly<Props>) {
               </div>
             </div>
           </div>
-          <ReactTooltip
-            anchorSelect=".asset-indicator"
-            place="right"
-            defaultIsOpen
-            style={{
-              background: "#231D2C",
-              borderRadius: "10px",
-              padding: "16px",
-              whiteSpace: "nowrap",
-              color: "#fff",
-              fontSize: "14px",
-              fontFamily: "GothamNarrow-Book, 'Helvetica Neue', sans-serif",
-              width: "156px",
-              height: "52px",
-              lineHeight: "16px",
-              textAlign: "center",
-              zIndex: 1,
-              display: highlightedId !== props.id ? "none" : "block",
-            }}
-          >
-            Your Dataset is here!
-          </ReactTooltip>
           {displayCreateChartButton && !props.hideCreateChartButton && (
             <Tooltip
               title={
