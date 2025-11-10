@@ -434,14 +434,7 @@ export default function ChartModule() {
       ...get(defaultChartOptions, chartType ?? "echartsBarchart", {}),
     };
     const defaultOptionsValues = getDefaultOptionsValues(options);
-
-    let tmpVisualOptions: any = { ...(visualOptions || defaultOptionsValues) };
-    tmpVisualOptions = {
-      ...defaultOptionsValues,
-      ...tmpVisualOptions,
-      width: defaultOptionsValues.width,
-    };
-    setVisualOptions(tmpVisualOptions);
+    setVisualOptions(defaultOptionsValues);
   }
 
   async function clear() {
