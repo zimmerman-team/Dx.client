@@ -1,11 +1,6 @@
-import React from "react";
-import useDrivePicker from "react-google-drive-picker";
-import {
-  CallbackDoc,
-  PickerCallback,
-} from "react-google-drive-picker/dist/typeDefs";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { getCookie } from "app/utils/getCookie";
+import { useScript } from "./useScript";
 
 interface Props {
   onFileSubmit: (file: File) => void;
@@ -23,10 +18,23 @@ function useGoogleDrivePicker({
   googleDriveToken,
   setGoogleDriveToken,
 }: Props) {
-  const [openPicker, tokenFromPicker] = useDrivePicker();
+  const gapiLoaded = useScript("https://apis.google.com/js/api.js");
+  const gisLoaded = useScript("https://accounts.google.com/gsi/client");
+
+  const [tokenClient, setTokenClient] = useState<any>(null);
+  const [pickerLoaded, setPickerLoaded] = useState(false);
+  const [usingFreshToken, setUsingFreshToken] = useState(false);
+  const [clickedToOpen, setClickedToOpen] = useState(false);
+
+  // Load picker once gapi is ready
+  useEffect(() => {
+    if (gapiLoaded) {
+      window.gapi.load("picker", () => setPickerLoaded(true));
+    }
+  }, [gapiLoaded]);
 
   const handleGoogleDriveFilePicker = async (
-    file: CallbackDoc,
+    file: any,
     accessToken: string
   ) => {
     try {
@@ -48,54 +56,78 @@ function useGoogleDrivePicker({
       console.log(e, "handleGoogleDriveFilePicker error");
     }
   };
-  React.useEffect(() => {
-    if (process.env.REACT_APP_CYPRESS_TEST === "true") {
-      window.handleGoogleDriveFilePicker = function (file: any, token: string) {
-        handleGoogleDriveFilePicker(file, token);
-      };
-    }
-  }, []);
 
-  React.useEffect(() => {
-    if (tokenFromPicker) {
-      setGoogleDriveToken(tokenFromPicker.access_token, {
-        expires: new Date(new Date().getTime() + 3540 * 1000),
-        httpsOnly: true,
-        secure: true,
-        sameSite: "strict",
-      });
-    }
-  }, [tokenFromPicker]);
+  const openPickerWithToken = (token: string) => {
+    const view = new window.google.picker.DocsView(
+      window.google.picker.ViewId.SPREADSHEETS
+    );
 
-  const getAccessTokenAndOpenPicker = async () => {
-    try {
-      //opens google drive picker
-      openPicker({
-        clientId: process.env.REACT_APP_GOOGLE_API_CLIENT_ID as string,
-        developerKey: process.env.REACT_APP_GOOGLE_API_DEV_KEY as string,
-        viewId: "SPREADSHEETS",
-        supportDrives: true,
-        token: googleDriveToken!,
-        setSelectFolderEnabled: true,
-        callbackFunction: (d: PickerCallback) => {
-          if (d.docs?.[0]) {
-            handleGoogleDriveFilePicker(
-              d.docs[0],
-              googleDriveToken! ??
-                tokenFromPicker?.access_token ??
-                getCookie("googleDriveToken")
-            );
-          } else if (d.action === "cancel") {
-            onCancel();
-          }
-        },
-      });
-    } catch (e) {
-      console.log(e, "error");
-    }
+    const picker = new window.google.picker.PickerBuilder()
+      .setDeveloperKey(process.env.REACT_APP_GOOGLE_API_DEV_KEY as string)
+      .setOAuthToken(token)
+      .addView(view)
+      .setCallback((data: any) => {
+        if (data.action === "picked") {
+          handleGoogleDriveFilePicker(data.docs[0], token);
+        } else if (data.action === "cancel") {
+          onCancel();
+        }
+      })
+      .build();
+
+    picker.setVisible(true);
   };
 
-  return { getAccessTokenAndOpenPicker };
+  const openNewPicker = () => {
+    setClickedToOpen(true);
+    if (!pickerLoaded || !tokenClient) {
+      console.warn("Google Picker not ready yet.");
+      return;
+    }
+
+    // Request access token if not available
+    if (!googleDriveToken) {
+      tokenClient.requestAccessToken();
+      return;
+    }
+
+    openPickerWithToken(googleDriveToken);
+  };
+
+  // Initialize OAuth token client
+  useEffect(() => {
+    if (gisLoaded) {
+      const client = window.google.accounts.oauth2.initTokenClient({
+        client_id: process.env.REACT_APP_GOOGLE_API_CLIENT_ID as string,
+        scope: [
+          "https://www.googleapis.com/auth/drive.readonly",
+          "https://www.googleapis.com/auth/drive.file",
+          "https://www.googleapis.com/auth/drive.metadata",
+        ].join(" "),
+        callback: (tokenResponse: any) => {
+          setGoogleDriveToken(tokenResponse.access_token, {
+            expires: new Date(new Date().getTime() + 3540 * 1000),
+            httpsOnly: true,
+            secure: true,
+            sameSite: "strict",
+          });
+          setUsingFreshToken(true);
+        },
+      });
+      setTokenClient(client);
+    }
+  }, [gisLoaded]);
+
+  // Open picker when we have a fresh token
+  useEffect(() => {
+    // Only open if user clicked AND token just came in
+    if (clickedToOpen && usingFreshToken && googleDriveToken) {
+      openPickerWithToken(googleDriveToken);
+      setUsingFreshToken(false);
+      setClickedToOpen(false); // reset to avoid future auto-opens
+    }
+  }, [usingFreshToken, clickedToOpen, googleDriveToken]);
+  return { getAccessTokenAndOpenPicker: openNewPicker };
 }
 
 export default useGoogleDrivePicker;

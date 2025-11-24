@@ -27,6 +27,8 @@ export default function AddDatasetFragment(props: Props) {
   const [googleDriveToken, setGoogleDriveToken, deleteGoogleDriveToken] =
     useCookie("googleDriveToken");
 
+  const isLocalUpload = props.activeOption === "Local upload";
+
   const { userPlan } = useCheckUserPlan();
 
   const { getAccessTokenAndOpenPicker } = useGoogleDrivePicker({
@@ -59,7 +61,8 @@ export default function AddDatasetFragment(props: Props) {
   }, []);
 
   const renderUploadOptionsList = () => {
-    return uploadOptionsState.map((option) => (
+    return (isLocalUpload ? uploadOptions.slice(1) : uploadOptions).map(
+      (option) => (
       <UploadOption
         key={option.name}
         name={option.name}
@@ -74,7 +77,8 @@ export default function AddDatasetFragment(props: Props) {
         upgradeRequired={option.upgradeRequired}
         ariaLabel={option.ariaLabel}
       />
-    ));
+      )
+    );
   };
 
   const databaseConnection = "DataBase Connection";
@@ -86,11 +90,7 @@ export default function AddDatasetFragment(props: Props) {
       type: "Table Dataset",
       formats: ["CSV", "XSLX", "JSON"],
       icon: <LocalIcon />,
-      onClick: () => {
-        setUploadOptionsState((prev) => {
-          return prev.slice(1);
-        });
-      },
+      onClick: () => {},
       upgradeRequired: false,
       ariaLabel: "Local File Upload",
     },
@@ -207,7 +207,7 @@ export default function AddDatasetFragment(props: Props) {
           </p>
         </div>
 
-        {props.activeOption === "Local upload" ? (
+        {isLocalUpload ? (
           <div
             css={`
               display: flex;
