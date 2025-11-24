@@ -2,6 +2,52 @@ import axios from "axios";
 import React, { useEffect, useMemo, useState } from "react";
 import { PopupRequest, PublicClientApplication } from "@azure/msal-browser";
 import { v4 } from "uuid";
+
+export const OneDrivePickerModal = ({
+  open,
+  setOpen,
+}: {
+  open: boolean;
+  setOpen: (open: boolean) => void;
+}) => {
+  // if (!open) return null;
+
+  return (
+    <div
+      style={{
+        position: "fixed",
+        inset: 0,
+        background: "rgba(0,0,0,0.55)",
+        display: open ? "flex" : "none",
+        justifyContent: "center",
+        alignItems: "center",
+        zIndex: 999999,
+      }}
+      onClick={() => setOpen(false)}
+    >
+      <div
+        style={{
+          width: 900,
+          height: 600,
+          background: "white",
+          borderRadius: 10,
+          overflow: "hidden",
+        }}
+        onClick={(e) => e.stopPropagation()}
+      >
+        <iframe
+          title="Onedrive Modal"
+          id="one-drive-iframe-id"
+          style={{
+            width: "100%",
+            height: "100%",
+            border: "none",
+          }}
+        />
+      </div>
+    </div>
+  );
+};
 interface Props {
   onFileSubmit: (file: File) => void;
   onCancel: () => void;
@@ -14,6 +60,7 @@ export const useOneDrivePicker = ({
   onDownloadStart,
 }: Props) => {
   const [app, setApp] = useState<PublicClientApplication | null>(null);
+  const [open, setOpen] = React.useState<boolean>(false);
   const baseUrl = "https://onedrive.live.com/picker";
 
   const [connected, setConnected] = useState(false);
@@ -59,22 +106,18 @@ export const useOneDrivePicker = ({
       },
     },
   };
-
   let win: Window | null;
   let port: MessagePort | null;
 
   async function launchPicker() {
     const authToken = await getToken();
-    const popupHeight = 500;
-    const popupWidth = 1000;
-    const popupLeft = (window.screen.width - popupWidth) / 2;
-    const popupTop = (window.screen.height - popupHeight) / 2;
+    setOpen(true);
 
-    win = window.open(
-      "",
-      "Picker",
-      `width=${popupWidth},height=${popupHeight},left=${popupLeft},top=${popupTop}`
-    );
+    const frame: HTMLIFrameElement | null = document.getElementById(
+      "one-drive-iframe-id"
+    ) as HTMLIFrameElement;
+
+    win = frame?.contentWindow;
 
     if (win) {
       const queryString = new URLSearchParams({
@@ -160,6 +203,7 @@ export const useOneDrivePicker = ({
 
       case "close":
         win.close();
+        setOpen(false);
         onCancel();
         break;
 
@@ -173,9 +217,8 @@ export const useOneDrivePicker = ({
             result: "success",
           },
         });
-
         win.close();
-
+        setOpen(false);
         break;
 
       default:
@@ -235,7 +278,6 @@ export const useOneDrivePicker = ({
     let accessToken = "";
 
     const authParams: PopupRequest = { scopes: [`OneDrive.ReadOnly`] };
-
     try {
       // see if we have already the idtoken saved
       const resp = await app.acquireTokenSilent(authParams);
@@ -287,5 +329,9 @@ export const useOneDrivePicker = ({
     }
   }, [app]);
 
-  return { launchPicker, clearToken, connected };
+  const oneDrivePickerModal = (
+    <OneDrivePickerModal open={open} setOpen={setOpen} />
+  );
+
+  return { launchPicker, clearToken, connected, oneDrivePickerModal };
 };

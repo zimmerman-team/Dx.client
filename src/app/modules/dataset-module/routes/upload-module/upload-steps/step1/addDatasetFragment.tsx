@@ -42,17 +42,18 @@ export default function AddDatasetFragment(props: Props) {
     setGoogleDriveToken,
   });
 
-  const { launchPicker, clearToken, connected } = useOneDrivePicker({
-    onCancel: () => {
-      props.setActiveOption(null);
-    },
-    onFileSubmit: (file: File) => {
-      props.onFileSubmit(file);
-    },
-    onDownloadStart: () => {
-      props.setActiveStep(1);
-    },
-  });
+  const { launchPicker, clearToken, connected, oneDrivePickerModal } =
+    useOneDrivePicker({
+      onCancel: () => {
+        props.setActiveOption(null);
+      },
+      onFileSubmit: (file: File) => {
+        props.onFileSubmit(file);
+      },
+      onDownloadStart: () => {
+        props.setActiveStep(1);
+      },
+    });
 
   const onDrop = useCallback((acceptedFiles: File[]) => {
     if (acceptedFiles.length > 0) {
@@ -63,20 +64,20 @@ export default function AddDatasetFragment(props: Props) {
   const renderUploadOptionsList = () => {
     return (isLocalUpload ? uploadOptions.slice(1) : uploadOptions).map(
       (option) => (
-      <UploadOption
-        key={option.name}
-        name={option.name}
-        type={option.type}
-        formats={option.formats}
-        icon={option.icon}
-        onClick={option.onClick}
-        setActiveOption={props.setActiveOption}
-        canConnect={option.canConnect}
-        connected={option.connected}
-        onLogout={option.onLogout}
-        upgradeRequired={option.upgradeRequired}
-        ariaLabel={option.ariaLabel}
-      />
+        <UploadOption
+          key={option.name}
+          name={option.name}
+          type={option.type}
+          formats={option.formats}
+          icon={option.icon}
+          onClick={option.onClick}
+          setActiveOption={props.setActiveOption}
+          canConnect={option.canConnect}
+          connected={option.connected}
+          onLogout={option.onLogout}
+          upgradeRequired={option.upgradeRequired}
+          ariaLabel={option.ariaLabel}
+        />
       )
     );
   };
@@ -178,9 +179,6 @@ export default function AddDatasetFragment(props: Props) {
     // },
   ];
 
-  const [uploadOptionsState, setUploadOptionsState] =
-    React.useState(uploadOptions);
-
   return (
     <>
       <div>
@@ -249,6 +247,7 @@ export default function AddDatasetFragment(props: Props) {
           </div>
         )}
       </div>
+      {oneDrivePickerModal}
     </>
   );
 }
