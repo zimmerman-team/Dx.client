@@ -56,7 +56,6 @@ const ExternalSearch = (props: {
   const terminateSearch = () => {
     abortControllerRef.current.abort();
     abortControllerRef.current = new AbortController();
-    setOffset(0);
   };
 
   const { userPlan } = useCheckUserPlan();
@@ -70,6 +69,7 @@ const ExternalSearch = (props: {
   }, [isObserved]);
 
   const loadSearch = async (nextPage: boolean = false) => {
+    const localOffset = nextPage ? offset : 0;
     try {
       setLoading(true);
       const response = await axios.get(
@@ -77,7 +77,7 @@ const ExternalSearch = (props: {
           process.env.REACT_APP_API
         }/external-sources/search?q=${searchValue}&source=${
           sources.length ? sources.join(",") : "Kaggle,World Bank,WHO,HDX,TGF"
-        }&offset=${offset}&limit=${limit}&sortBy=${sortValue}`,
+        }&offset=${localOffset}&limit=${limit}&sortBy=${sortValue}`,
         {
           signal: abortControllerRef.current.signal,
           headers: {
@@ -130,7 +130,6 @@ const ExternalSearch = (props: {
 
   useEffect(() => {
     if (token && firstTimeRef.current) {
-      setDatasets([]);
       loadSearch();
     }
   }, [token]);
@@ -157,7 +156,6 @@ const ExternalSearch = (props: {
     setView("table");
     if (token) {
       setIsSearching(true);
-      setDatasets([]);
       loadSearch();
     }
   };
