@@ -1,7 +1,7 @@
 import React from "react";
 
 /* third-party */
-import { useHistory } from "react-router-dom";
+import { useHistory, useLocation } from "react-router-dom";
 import { useRecoilState } from "recoil";
 import Box from "@material-ui/core/Box";
 import Container from "@material-ui/core/Container";
@@ -72,6 +72,7 @@ const getWhereString = (searchStr: string, filterValue: string) => {
 };
 function AssetsCollection() {
   const history = useHistory();
+  const location = useLocation();
   const [categories, setCategories] = React.useState<string[]>([]);
   const [assetsView, setAssetsView] = useRecoilState(allAssetsViewAtom);
   const [searchValue, setSearchValue] = React.useState<string | undefined>("");
@@ -130,6 +131,15 @@ function AssetsCollection() {
   //     });
   //   }
   // }, [token, filterValue, searchValue]);
+
+  const queryParams = new URLSearchParams(location.search);
+  const searchParams = queryParams.get("newlyCreatedId");
+
+  React.useEffect(() => {
+    if (searchParams) {
+      setDisplay("data");
+    }
+  }, [searchParams]);
 
   useDebounce(
     () => {
