@@ -2,7 +2,7 @@ import axios from "axios";
 
 export const updateLog = async (body: { level: string; message: string }) => {
   try {
-    const response = await axios.post(`${process.env.REACT_APP_API}/logging`, {
+    const response = await axios.post(`${import.meta.env.VITE_API}/logging`, {
       ...body,
     });
     return response.data;
