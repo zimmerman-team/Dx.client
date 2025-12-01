@@ -69,7 +69,7 @@ describe("Testing the Partners page logged in", () => {
 
         cy.origin("https://data.theglobalfund.org", () => {
           cy.location("hostname").should("eq", "data.theglobalfund.org");
-          cy.location("pathname").should("include", "/geography");
+          cy.location("pathname").should("include", "/overview");
         });
       });
 

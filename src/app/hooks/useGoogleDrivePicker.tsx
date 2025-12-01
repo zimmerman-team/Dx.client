@@ -64,7 +64,7 @@ function useGoogleDrivePicker({
     );
 
     const picker = new window.google.picker.PickerBuilder() // NOSONAR
-      .setDeveloperKey(process.env.REACT_APP_GOOGLE_API_DEV_KEY as string)
+      .setDeveloperKey(import.meta.env.VITE_GOOGLE_API_DEV_KEY as string)
       .setOAuthToken(token)
       .addView(view)
       .setCallback((data: any) => {
@@ -100,7 +100,7 @@ function useGoogleDrivePicker({
     // NOSONAR
     if (gisLoaded) {
       const client = window.google.accounts.oauth2.initTokenClient({
-        client_id: process.env.REACT_APP_GOOGLE_API_CLIENT_ID as string,
+        client_id: import.meta.env.VITE_GOOGLE_API_CLIENT_ID as string,
         scope: [
           "https://www.googleapis.com/auth/drive.readonly",
           "https://www.googleapis.com/auth/drive.file",
