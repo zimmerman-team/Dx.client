@@ -1,27 +1,27 @@
 import React from "react";
 import { Box, Container } from "@material-ui/core";
-import { ReactComponent as StoryImg } from "app/modules/home-module/assets/about-story.svg";
+import StoryImg from "@app/modules/home-module/assets/about-story.svg?react";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
-import HomeFooter from "app/modules/home-module/components/Footer";
+import HomeFooter from "@app/modules/home-module/components/Footer";
 import { useTitle } from "react-use";
 import { Link } from "react-router-dom";
 import { useAuth0 } from "@auth0/auth0-react";
-import HeroEllipses from "app/modules/home-module/assets/hero-ellipses.png";
-import HeroEllipsesTablet from "app/modules/home-module/assets/hero-ellipses-tablet.svg";
-import HeroEllipsesMobile from "app/modules/home-module/assets/hero-ellipses-mobile.svg";
-import AddAssetDropdown from "app/modules/home-module/components/AddAssetDropdown";
+import HeroEllipses from "@app/modules/home-module/assets/hero-ellipses.png";
+import HeroEllipsesTablet from "@app/modules/home-module/assets/hero-ellipses-tablet.svg";
+import HeroEllipsesMobile from "@app/modules/home-module/assets/hero-ellipses-mobile.svg";
+import AddAssetDropdown from "@app/modules/home-module/components/AddAssetDropdown";
 import {
   DESKTOP_BREAKPOINT,
   MOBILE_BREAKPOINT,
   TABLET_STARTPOINT,
-} from "app/theme";
-import { ctaLinkStyle } from "app/modules/home-module/sub-modules/partners";
+} from "@app/theme";
+import { ctaLinkStyle } from "@app/modules/home-module/sub-modules/partners";
 import TeamSection from "./teamSection";
 import MissionSection from "./missionSection";
 import FeaturesSection from "./featuresSection";
 import AuthButtons from "./authButtons";
-import { useCMSData } from "app/hooks/useCMSData";
-import { getCMSDataField } from "app/utils/getCMSDataField";
+import { useCMSData } from "@app/hooks/useCMSData";
+import { getCMSDataField } from "@app/utils/getCMSDataField";
 
 export default function AboutModule() {
   useTitle("Dataxplorer - About");

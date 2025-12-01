@@ -2,11 +2,11 @@
 import React from "react";
 /** project */
 import { IconButton } from "@material-ui/core";
-import { ReactComponent as ClockIcon } from "app/modules/dataset-module/routes/upload-module/assets/clock-icon.svg";
-import { ReactComponent as CloseIcon } from "app/modules/dataset-module/routes/upload-module/assets/close-icon.svg";
+import ClockIcon from "@app/modules/dataset-module/routes/upload-module/assets/clock-icon.svg?react";
+import CloseIcon from "@app/modules/dataset-module/routes/upload-module/assets/close-icon.svg?react";
 
-import { statisticalTableToolBoxStyle } from "app/components/Table/Preview-table/StatisticalTableToolBox/style";
-import { barChartdata } from "app/components/Table/Preview-table/data";
+import { statisticalTableToolBoxStyle } from "@app/components/Table/Preview-table/StatisticalTableToolBox/style";
+import { barChartdata } from "@app/components/Table/Preview-table/data";
 
 export interface ColumnDetailsProps {
   columnName: string;

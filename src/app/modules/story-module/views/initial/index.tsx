@@ -6,14 +6,14 @@ import {
   TemplateItem,
   StoryInitialViewProps,
   StoryTemplateModel,
-} from "app/modules/story-module/views/initial/data";
-import { StoryModel, emptyStory } from "app/modules/story-module/data";
-import StoriesGrid from "app/modules/home-module/components/AssetCollection/Stories/storiesGrid";
+} from "@app/modules/story-module/views/initial/data";
+import { StoryModel, emptyStory } from "@app/modules/story-module/data";
+import StoriesGrid from "@app/modules/home-module/components/AssetCollection/Stories/storiesGrid";
 import { useHistory } from "react-router-dom";
-import { useStoreActions, useStoreState } from "app/state/store/hooks";
+import { useStoreActions, useStoreState } from "@app/state/store/hooks";
 import { useMount, useTitle, useUpdateEffect } from "react-use";
 import { isEmpty } from "lodash";
-import Filter from "app/modules/home-module/components/Filter";
+import Filter from "@app/modules/home-module/components/Filter";
 import { useMediaQuery } from "@material-ui/core";
 
 function StoryInitialView(props: Readonly<StoryInitialViewProps>) {

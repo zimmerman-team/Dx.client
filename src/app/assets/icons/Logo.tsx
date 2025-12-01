@@ -1,6 +1,6 @@
 import React from "react";
-import LogoDark from "app/modules/home-module/assets/logo-beta.svg";
-import LogoMain from "app/modules/home-module/assets/logo-main.svg";
+import LogoDark from "@app/modules/home-module/assets/logo-beta.svg";
+import LogoMain from "@app/modules/home-module/assets/logo-main.svg";
 
 export default function Logo(props: {
   width?: string;

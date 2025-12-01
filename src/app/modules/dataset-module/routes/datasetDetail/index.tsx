@@ -1,16 +1,16 @@
-import { useChartsRawData } from "app/hooks/useChartsRawData";
+import { useChartsRawData } from "@app/hooks/useChartsRawData";
 import React from "react";
-import DatasetSubHeaderToolbar from "app/modules/dataset-module/component/datasetSubHeaderToolbar";
-import { useStoreActions, useStoreState } from "app/state/store/hooks";
+import DatasetSubHeaderToolbar from "@app/modules/dataset-module/component/datasetSubHeaderToolbar";
+import { useStoreActions, useStoreState } from "@app/state/store/hooks";
 import get from "lodash/get";
 import { Container } from "@material-ui/core";
 import { useParams } from "react-router-dom";
-import { DatasetListItemAPIModel } from "app/modules/dataset-module/data";
+import { DatasetListItemAPIModel } from "@app/modules/dataset-module/data";
 import { useAuth0 } from "@auth0/auth0-react";
-import { PageLoader } from "app/modules/common/page-loader";
+import { PageLoader } from "@app/modules/common/page-loader";
 import { useTitle } from "react-use";
-import { NotAuthorizedMessageModule } from "app/modules/common/not-authorized-message";
-import HomeFooter from "app/modules/home-module/components/Footer";
+import { NotAuthorizedMessageModule } from "@app/modules/common/not-authorized-message";
+import HomeFooter from "@app/modules/home-module/components/Footer";
 import FinishedFragment from "./FinishedFragment";
 
 export default function DatasetDetail() {
@@ -64,7 +64,7 @@ export default function DatasetDetail() {
 
   React.useEffect(() => {
     loadSampleDataset(
-      `${process.env.REACT_APP_API}/chart/sample-data${
+      `${import.meta.env.VITE_API}/chart/sample-data${
         token ? "" : "/public"
       }/${page}`
     );

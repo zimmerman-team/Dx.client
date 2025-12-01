@@ -5,10 +5,10 @@ import { useOnClickOutside } from "usehooks-ts";
 import {
   ColorService,
   IColor,
-} from "app/components/ColorPicker/services/color";
-import { ColorPicker } from "app/components/ColorPicker";
-import { setBlockData } from "app/utils/draftjs/setBlockData";
-import { registerDynamicStyle } from "app/utils/draftjs/getStyleEl";
+} from "@app/components/ColorPicker/services/color";
+import { ColorPicker } from "@app/components/ColorPicker";
+import { setBlockData } from "@app/utils/draftjs/setBlockData";
+import { registerDynamicStyle } from "@app/utils/draftjs/getStyleEl";
 
 interface Props {
   getEditorState: () => EditorState;

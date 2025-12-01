@@ -1,8 +1,8 @@
 import React from "react";
 import { Link, useHistory } from "react-router-dom";
-import { ReactComponent as BgImg } from "app/modules/common/no-match-page/asset/bg-ellipse.svg";
-import { PrimaryButton } from "app/components/Styled/button";
-import HomeFooter from "app/modules/home-module/components/Footer";
+import BgImg from "@app/modules/common/no-match-page/asset/bg-ellipse.svg?react";
+import { PrimaryButton } from "@app/components/Styled/button";
+import HomeFooter from "@app/modules/home-module/components/Footer";
 
 // cc:refactor this component, inline css need to be moved to proper styled components
 

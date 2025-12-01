@@ -1,6 +1,6 @@
 import React from "react";
-import { HeadlessSwitch, Tab } from "app/components/Switch/headless";
-import { FOCUS_VISIBLE_STYLE_LIGHT } from "app/theme";
+import { HeadlessSwitch, Tab } from "@app/components/Switch/headless";
+import { FOCUS_VISIBLE_STYLE_LIGHT } from "@app/theme";
 
 interface StyledSwitchProps {
   tabs: Tab[];

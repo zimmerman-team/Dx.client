@@ -1,8 +1,8 @@
-import { FOCUS_VISIBLE_STYLE_LIGHT, MOBILE_BREAKPOINT } from "app/theme";
-import { socialAuth } from "app/utils/socialAuth";
-import { ReactComponent as GoogleIcon } from "app/modules/onboarding-module/asset/google-img.svg";
-import { ReactComponent as LinkedInIcon } from "app/modules/onboarding-module/asset/linkedIn-img.svg";
-import { ReactComponent as MicrosoftIcon } from "app/modules/onboarding-module/asset/microsoft-img.svg";
+import { FOCUS_VISIBLE_STYLE_LIGHT, MOBILE_BREAKPOINT } from "@app/theme";
+import { socialAuth } from "@app/utils/socialAuth";
+import GoogleIcon from "@app/modules/onboarding-module/asset/google-img.svg?react";
+import LinkedInIcon from "@app/modules/onboarding-module/asset/linkedIn-img.svg?react";
+import MicrosoftIcon from "@app/modules/onboarding-module/asset/microsoft-img.svg?react";
 import React from "react";
 
 export default function AuthButtons() {

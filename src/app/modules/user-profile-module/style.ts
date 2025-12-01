@@ -1,5 +1,5 @@
 import { css } from "styled-components";
-import { FOCUS_VISIBLE_STYLE_LIGHT, MOBILE_BREAKPOINT } from "app/theme";
+import { FOCUS_VISIBLE_STYLE_LIGHT, MOBILE_BREAKPOINT } from "@app/theme";
 export const layoutcss = css`
   margin-top: 50px;
   display: flex;

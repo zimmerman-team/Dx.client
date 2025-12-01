@@ -7,20 +7,20 @@ import { useRecoilState, useSetRecoilState } from "recoil";
 import { useImmer } from "use-immer";
 import { useAuth0 } from "@auth0/auth0-react";
 import { HTML5Backend } from "react-dnd-html5-backend";
-import { NoMatchPage } from "app/modules/common/no-match-page";
-import StoryEditView from "app/modules/story-module/views/edit";
-import AITemplate from "app/modules/story-module/views/ai-template";
+import { NoMatchPage } from "@app/modules/common/no-match-page";
+import StoryEditView from "@app/modules/story-module/views/edit";
+import AITemplate from "@app/modules/story-module/views/ai-template";
 import { EditorState, convertToRaw } from "draft-js";
-import { useStoreActions, useStoreState } from "app/state/store/hooks";
+import { useStoreActions, useStoreState } from "@app/state/store/hooks";
 import {
   IUniformBlockTypeStyle,
   StoryModel,
   emptyStory,
-} from "app/modules/story-module/data";
-import { StoryPreviewView } from "app/modules/story-module/views/preview";
-import StoryInitialView from "app/modules/story-module/views/initial";
-import { IFramesArray } from "app/modules/story-module/views/create/data";
-import { StoryRightPanel } from "app/modules/story-module/components/right-panel";
+} from "@app/modules/story-module/data";
+import { StoryPreviewView } from "@app/modules/story-module/views/preview";
+import StoryInitialView from "@app/modules/story-module/views/initial";
+import { IFramesArray } from "@app/modules/story-module/views/create/data";
+import { StoryRightPanel } from "@app/modules/story-module/components/right-panel";
 import {
   Route,
   Switch,
@@ -31,16 +31,16 @@ import {
 import {
   planDialogAtom,
   storyRightPanelViewAtom,
-} from "app/state/recoil/atoms";
-import { StorySubheaderToolbar } from "app/modules/story-module/components/storySubHeaderToolbar";
-import { ToolbarPluginsType } from "app/modules/story-module/components/storySubHeaderToolbar/staticToolbar";
+} from "@app/state/recoil/atoms";
+import { StorySubheaderToolbar } from "@app/modules/story-module/components/storySubHeaderToolbar";
+import { ToolbarPluginsType } from "@app/modules/story-module/components/storySubHeaderToolbar/staticToolbar";
 import DownloadedView from "./views/downloaded-view";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
-import NotAvailableOnMobile from "app/modules/common/not-available";
-import { MOBILE_BREAKPOINT } from "app/theme";
-import { decorators } from "app/modules/common/RichEditor/decorators";
-import { createHeadingEditorState } from "app/utils/draftjs/createEditorStateWithBlockType";
-import { useEditorPlugins } from "app/hooks/useEditorPlugins";
+import NotAvailableOnMobile from "@app/modules/common/not-available";
+import { MOBILE_BREAKPOINT } from "@app/theme";
+import { decorators } from "@app/modules/common/RichEditor/decorators";
+import { createHeadingEditorState } from "@app/utils/draftjs/createEditorStateWithBlockType";
+import { useEditorPlugins } from "@app/hooks/useEditorPlugins";
 
 export default function StoryModule() {
   const { user, isAuthenticated } = useAuth0();

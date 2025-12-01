@@ -5,7 +5,7 @@ import {
   PickerCallback,
 } from "react-google-drive-picker/dist/typeDefs";
 import axios from "axios";
-import { getCookie } from "app/utils/getCookie";
+import { getCookie } from "@app/utils/getCookie";
 
 interface Props {
   onFileSubmit: (file: File) => void;
@@ -49,7 +49,7 @@ function useGoogleDrivePicker({
     }
   };
   React.useEffect(() => {
-    if (process.env.REACT_APP_CYPRESS_TEST === "true") {
+    if (import.meta.env.VITE_CYPRESS_TEST === "true") {
       window.handleGoogleDriveFilePicker = function (file: any, token: string) {
         handleGoogleDriveFilePicker(file, token);
       };
@@ -71,8 +71,8 @@ function useGoogleDrivePicker({
     try {
       //opens google drive picker
       openPicker({
-        clientId: process.env.REACT_APP_GOOGLE_API_CLIENT_ID as string,
-        developerKey: process.env.REACT_APP_GOOGLE_API_DEV_KEY as string,
+        clientId: import.meta.env.VITE_GOOGLE_API_CLIENT_ID as string,
+        developerKey: import.meta.env.VITE_GOOGLE_API_DEV_KEY as string,
         viewId: "SPREADSHEETS",
         supportDrives: true,
         token: googleDriveToken!,

@@ -1,24 +1,24 @@
 import React from "react";
 import Container from "@material-ui/core/Container";
-import { homeFootercss } from "app/modules/home-module/components/Footer/style";
-import { ReactComponent as CopyIcon } from "app/modules/home-module/components/Footer/asset/copy.svg";
+import { homeFootercss } from "@app/modules/home-module/components/Footer/style";
+import CopyIcon from "@app/modules/home-module/components/Footer/asset/copy.svg?react";
 import { Link } from "react-router-dom";
-import NewsletterForm from "app/modules/common/newsletterForm";
+import NewsletterForm from "@app/modules/common/newsletterForm";
 import { FieldErrors } from "react-hook-form";
 import moment from "moment";
-import InlineLogo from "app/modules/home-module/assets/inline-logo";
+import InlineLogo from "@app/modules/home-module/assets/inline-logo";
 import {
   DESKTOP_BREAKPOINT,
   FOCUS_VISIBLE_STYLE_LIGHT,
   MOBILE_BREAKPOINT,
-} from "app/theme";
+} from "@app/theme";
 import { useMediaQuery } from "usehooks-ts";
 import {
   PRIVACY_POLICY_LINK,
   TELEPHONE_NUMBER,
   TERMS_AND_CONDITION_LINK,
-} from "app/constants";
-import Logo from "app/assets/icons/Logo";
+} from "@app/constants";
+import Logo from "@app/assets/icons/Logo";
 
 interface Props {
   mini?: boolean;
@@ -496,15 +496,15 @@ export default function DesktopFooter(props: Props) {
             />
             <p>
               {" "}
-              <Link to={PRIVACY_POLICY_LINK} className="privacy-link">
+              <a href={PRIVACY_POLICY_LINK} className="privacy-link">
                 Privacy
-              </Link>{" "}
+              </a>{" "}
             </p>
             <p>
               {" "}
-              <Link to={TERMS_AND_CONDITION_LINK} className="privacy-link">
+              <a href={TERMS_AND_CONDITION_LINK} className="privacy-link">
                 Terms and conditions
-              </Link>
+              </a>
             </p>
           </nav>
         </Container>

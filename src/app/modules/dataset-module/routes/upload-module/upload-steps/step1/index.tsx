@@ -1,8 +1,8 @@
 import React from "react";
-import AddDatasetFragment from "app/modules/dataset-module/routes/upload-module/upload-steps/step1/addDatasetFragment";
+import AddDatasetFragment from "@app/modules/dataset-module/routes/upload-module/upload-steps/step1/addDatasetFragment";
 import ExternalSearch, {
   IExternalDataset,
-} from "app/modules/dataset-module/routes/upload-module/upload-steps/step1/externalSearch";
+} from "@app/modules/dataset-module/routes/upload-module/upload-steps/step1/externalSearch";
 interface UploadYourDataProps {
   addDatasetFragmentProps: {
     onFileSubmit: (file: File) => void;

@@ -1,4 +1,4 @@
-import { PrimaryButton } from "app/components/Styled/button";
+import { PrimaryButton } from "@app/components/Styled/button";
 import React from "react";
 
 export default function CopyButton(props: {

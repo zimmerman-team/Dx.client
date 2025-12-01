@@ -1,8 +1,8 @@
 import React from "react";
-import { ReactComponent as InProgressIcon } from "app/modules/dataset-module/routes/upload-module/assets/upload-options-icons/in-progress-icon.svg";
-import { ReactComponent as IdleIcon } from "app/modules/dataset-module/routes/upload-module/assets/upload-options-icons/idle-icon.svg";
-import { ReactComponent as CompletedIcon } from "app/modules/dataset-module/routes/upload-module/assets/upload-options-icons/completed-icon.svg";
-import { MOBILE_BREAKPOINT } from "app/theme";
+import InProgressIcon from "@app/modules/dataset-module/routes/upload-module/assets/upload-options-icons/in-progress-icon.svg?react";
+import IdleIcon from "@app/modules/dataset-module/routes/upload-module/assets/upload-options-icons/idle-icon.svg?react";
+import CompletedIcon from "@app/modules/dataset-module/routes/upload-module/assets/upload-options-icons/completed-icon.svg?react";
+import { MOBILE_BREAKPOINT } from "@app/theme";
 
 export default function Stepper(
   props: Readonly<{

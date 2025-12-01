@@ -1,9 +1,9 @@
 import { FileRejection, useDropzone } from "react-dropzone";
-import { uploadAreacss } from "app/modules/dataset-module/routes/upload-module/style";
-import { ReactComponent as UploadIcon } from "app/modules/dataset-module/routes/upload-module/assets/upload.svg";
-import { formatBytes } from "app/utils/formatBytes";
-import { APPLICATION_JSON } from "app/state/api";
-import { FOCUS_VISIBLE_STYLE_LIGHT } from "app/theme";
+import { uploadAreacss } from "@app/modules/dataset-module/routes/upload-module/style";
+import UploadIcon from "@app/modules/dataset-module/routes/upload-module/assets/upload.svg?react";
+import { formatBytes } from "@app/utils/formatBytes";
+import { APPLICATION_JSON } from "@app/state/api";
+import { FOCUS_VISIBLE_STYLE_LIGHT } from "@app/theme";
 
 interface DropzoneProps {
   uploadError: boolean;

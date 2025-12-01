@@ -1,12 +1,12 @@
 import React from "react";
 import { v4 } from "uuid";
 import IconButton from "@material-ui/core/IconButton";
-import { IFramesArray } from "app/modules/story-module/views/create/data";
-import { ReactComponent as PlusIcon } from "app/modules/story-module/asset/addButton.svg";
-import { IRowFrameStructure } from "app/state/recoil/atoms";
+import { IFramesArray } from "@app/modules/story-module/views/create/data";
+import PlusIcon from "@app/modules/story-module/asset/addButton.svg?react";
+import { IRowFrameStructure } from "@app/state/recoil/atoms";
 import { Updater } from "use-immer";
-import { FOCUS_VISIBLE_STYLE_LIGHT } from "app/theme";
-import { useUndoRedo } from "app/hooks/useUndoRedo";
+import { FOCUS_VISIBLE_STYLE_LIGHT } from "@app/theme";
+import { useUndoRedo } from "@app/hooks/useUndoRedo";
 interface Props {
   updateFramesArray: Updater<IFramesArray[]>;
   framesArray: IFramesArray[];

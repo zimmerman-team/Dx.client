@@ -5,20 +5,20 @@ import TextFieldsIcon from "@material-ui/icons/TextFields";
 import {
   storyRightPanelViewAtom,
   chartFromStoryAtom,
-} from "app/state/recoil/atoms";
+} from "@app/state/recoil/atoms";
 import PhotoLibraryIcon from "@material-ui/icons/PhotoLibrary";
 /* project */
-import { IFramesArray } from "app/modules/story-module/views/create/data";
-import TextPreviewImg from "app/modules/story-module/asset/textPreview.svg";
-import DividerPreviewImg from "app/modules/story-module/asset/dividerPreview.svg";
-import RowFramePreviewImg from "app/modules/story-module/asset/rowframePreview.svg";
-import { ReactComponent as DividerIcon } from "app/modules/story-module/asset/dividerIcon.svg";
+import { IFramesArray } from "@app/modules/story-module/views/create/data";
+import TextPreviewImg from "@app/modules/story-module/asset/textPreview.svg";
+import DividerPreviewImg from "@app/modules/story-module/asset/dividerPreview.svg";
+import RowFramePreviewImg from "@app/modules/story-module/asset/rowframePreview.svg";
+import DividerIcon from "@app/modules/story-module/asset/dividerIcon.svg?react";
 
-import { ReactComponent as VideoIcon } from "app/modules/story-module/asset/video-icon.svg";
-import { ReactComponent as RowframeIcon } from "app/modules/story-module/asset/rowframe-icon.svg";
-import PanelLabel from "app/modules/story-module/components/right-panel-create-view/panelLabel";
-import { IHeaderDetails } from "app/modules/story-module/components/right-panel/data";
-import { useCheckUserPlan } from "app/hooks/useCheckUserPlan";
+import VideoIcon from "@app/modules/story-module/asset/video-icon.svg?react";
+import RowframeIcon from "@app/modules/story-module/asset/rowframe-icon.svg?react";
+import PanelLabel from "@app/modules/story-module/components/right-panel-create-view/panelLabel";
+import { IHeaderDetails } from "@app/modules/story-module/components/right-panel/data";
+import { useCheckUserPlan } from "@app/hooks/useCheckUserPlan";
 import ChartList from "./chartList";
 import ElementItem from "./elementItem";
 import EditHeaderPanelView from "./editHeaderPanelView";

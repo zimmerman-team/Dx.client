@@ -1,15 +1,15 @@
 /* Other imports*/
 import React, { ReactElement, useRef } from "react";
-import { ToolbarPluginsType } from "app/modules/story-module/components/storySubHeaderToolbar/staticToolbar";
+import { ToolbarPluginsType } from "@app/modules/story-module/components/storySubHeaderToolbar/staticToolbar";
 import { useRecoilState } from "recoil";
 import {
   textEditorElementIdAtom,
   textEditorElementIdAtomType,
-} from "app/state/recoil/atoms";
-import fontSizeStyleMap from "app/modules/common/RichEditor/fontSizeHandler/styleMap";
+} from "@app/state/recoil/atoms";
+import fontSizeStyleMap from "@app/modules/common/RichEditor/fontSizeHandler/styleMap";
 import { blockStyleFn, fontFamilyStyleMap } from "./fontStyleHandler/data";
 import { colorStyleFn, bgColorStyleFn, gothamBoldFn } from "./ColorModal";
-import { useEditorPlugins } from "app/hooks/useEditorPlugins";
+import { useEditorPlugins } from "@app/hooks/useEditorPlugins";
 /*plugins */
 import { DraftHandleValue, EditorState, RichUtils } from "draft-js";
 import Editor from "@draft-js-plugins/editor";
@@ -21,7 +21,7 @@ import "@draft-js-plugins/emoji/lib/plugin.css";
 import "./style/indent.css";
 import editorStyles from "./style/editorStyles.module.css";
 import "./fontStyleHandler/style.css";
-import { handlePaste, onCopy } from "app/utils/draftjs/copyPaste";
+import { handlePaste, onCopy } from "@app/utils/draftjs/copyPaste";
 
 export const RichEditor = (props: {
   editMode: boolean;

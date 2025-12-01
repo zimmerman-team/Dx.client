@@ -3,16 +3,16 @@ import React from "react";
 import { useAuth0 } from "@auth0/auth0-react";
 import useTitle from "react-use/lib/useTitle";
 /* project */
-import HomeFooter from "app/modules/home-module/components/Footer";
+import HomeFooter from "@app/modules/home-module/components/Footer";
 import AssetsCollection from "./components/AssetCollection";
 import Hero from "./components/hero";
 import NonAuthUserLibrary from "./components/nonAuthUserLibrary";
 import { Box } from "@material-ui/core";
 import SignInButtons from "./components/SignInButtons";
 import Card from "./components/carousel";
-import useBackgroundColor from "app/hooks/useBackgroundColor";
-import { useCMSData } from "app/hooks/useCMSData";
-import { getCMSDataField } from "app/utils/getCMSDataField";
+import useBackgroundColor from "@app/hooks/useBackgroundColor";
+import { useCMSData } from "@app/hooks/useCMSData";
+import { getCMSDataField } from "@app/utils/getCMSDataField";
 
 export default function HomeModule() {
   useTitle("Dataxplorer");

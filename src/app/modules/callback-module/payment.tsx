@@ -4,10 +4,10 @@ import Box from "@material-ui/core/Box";
 import { Link, useHistory } from "react-router-dom";
 import { useAuth0 } from "@auth0/auth0-react";
 import Container from "@material-ui/core/Container";
-import { PageLoader } from "app/modules/common/page-loader";
-import HomeFooter from "app/modules/home-module/components/Footer";
-import BgEllipses from "app/modules/home-module/assets/full-bg-ellipses.svg";
-import { APPLICATION_JSON } from "app/state/api";
+import { PageLoader } from "@app/modules/common/page-loader";
+import HomeFooter from "@app/modules/home-module/components/Footer";
+import BgEllipses from "@app/modules/home-module/assets/full-bg-ellipses.svg";
+import { APPLICATION_JSON } from "@app/state/api";
 
 const CommonLink = (props: { to: string; text: string; replace?: boolean }) => {
   return (
@@ -56,7 +56,9 @@ export function PaymentSuccessCallbackModule() {
       getAccessTokenSilently().then((token: string) => {
         axios
           .post(
-            `${process.env.REACT_APP_API}/stripe/update-user-subscription-metadata`,
+            `${
+              import.meta.env.VITE_API
+            }/stripe/update-user-subscription-metadata`,
             {
               sessionId,
             },
@@ -78,7 +80,9 @@ export function PaymentSuccessCallbackModule() {
           });
         axios
           .get(
-            `${process.env.REACT_APP_API}/stripe/auto-update-address/${user?.sub}`,
+            `${import.meta.env.VITE_API}/stripe/auto-update-address/${
+              user?.sub
+            }`,
             {
               headers: {
                 "Content-Type": APPLICATION_JSON,

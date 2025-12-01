@@ -1,12 +1,12 @@
 import React from "react";
 import Tooltip from "@material-ui/core/Tooltip";
 import SaveAlt from "@material-ui/icons/SaveAlt";
-import { exportPage } from "app/utils/exportPage";
+import { exportPage } from "@app/utils/exportPage";
 import IconButton from "@material-ui/core/IconButton";
 import {
   StyledMenu,
   StyledMenuItem,
-} from "app/modules/chart-module/components/exporter";
+} from "@app/modules/chart-module/components/exporter";
 import { Link, useParams } from "react-router-dom";
 
 export function ExportChartButton(props: { filename: string }) {

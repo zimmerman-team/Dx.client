@@ -9,7 +9,7 @@ import Tooltip from "@material-ui/core/Tooltip";
 import Popover from "@material-ui/core/Popover";
 import ShareIcon from "@material-ui/icons/Share";
 import MoreIcon from "@material-ui/icons/MoreVert";
-import { LinkIcon } from "app/assets/icons/Link";
+import { LinkIcon } from "@app/assets/icons/Link";
 import DeleteIcon from "@material-ui/icons/Delete";
 import Container from "@material-ui/core/Container";
 import IconButton from "@material-ui/core/IconButton";
@@ -18,36 +18,36 @@ import CloudDoneIcon from "@material-ui/icons/CloudDone";
 import ArrowBackIosIcon from "@material-ui/icons/ArrowBackIos";
 import CopyToClipboard from "react-copy-to-clipboard";
 import FileCopyIcon from "@material-ui/icons/FileCopy";
-import { PageLoader } from "app/modules/common/page-loader";
+import { PageLoader } from "@app/modules/common/page-loader";
 import { Link, useHistory, useParams } from "react-router-dom";
 import Snackbar from "@material-ui/core/Snackbar";
-import { styles } from "app/modules/chart-module/components/chartSubheaderToolbar/styles";
-import { useStoreActions, useStoreState } from "app/state/store/hooks";
-import DeleteChartDialog from "app/components/Dialogs/deleteChartDialog";
-import { ChartAPIModel, emptyChartAPI } from "app/modules/chart-module/data";
-import { ChartSubheaderToolbarProps } from "app/modules/chart-module/components/chartSubheaderToolbar/data";
+import { styles } from "@app/modules/chart-module/components/chartSubheaderToolbar/styles";
+import { useStoreActions, useStoreState } from "@app/state/store/hooks";
+import DeleteChartDialog from "@app/components/Dialogs/deleteChartDialog";
+import { ChartAPIModel, emptyChartAPI } from "@app/modules/chart-module/data";
+import { ChartSubheaderToolbarProps } from "@app/modules/chart-module/components/chartSubheaderToolbar/data";
 import {
   chartFromStoryAtom,
   planDialogAtom,
   shareAssetDetailsAtom,
-} from "app/state/recoil/atoms";
-import AutoSaveSwitch from "app/modules/story-module/components/storySubHeaderToolbar/autoSaveSwitch";
-import useAutosave from "app/hooks/useAutoSave";
-import { useStyles } from "app/modules/story-module/components/storySubHeaderToolbar";
-import AutoResizeInput from "app/modules/story-module/components/storySubHeaderToolbar/autoResizeInput";
+} from "@app/state/recoil/atoms";
+import AutoSaveSwitch from "@app/modules/story-module/components/storySubHeaderToolbar/autoSaveSwitch";
+import useAutosave from "@app/hooks/useAutoSave";
+import { useStyles } from "@app/modules/story-module/components/storySubHeaderToolbar";
+import AutoResizeInput from "@app/modules/story-module/components/storySubHeaderToolbar/autoResizeInput";
 import { isEqual } from "lodash";
-import EmbedChartDialog from "app/components/Dialogs/EmbedChartDialog";
+import EmbedChartDialog from "@app/components/Dialogs/EmbedChartDialog";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
-import DuplicateMessage from "app/modules/common/mobile-duplicate-message";
-import { InfoSnackbar } from "app/modules/story-module/components/storySubHeaderToolbar/infosnackbar";
-import ShareModal from "app/modules/dataset-module/component/shareModal";
-import { PrimaryButton } from "app/components/Styled/button";
+import DuplicateMessage from "@app/modules/common/mobile-duplicate-message";
+import { InfoSnackbar } from "@app/modules/story-module/components/storySubHeaderToolbar/infosnackbar";
+import ShareModal from "@app/modules/dataset-module/component/shareModal";
+import { PrimaryButton } from "@app/components/Styled/button";
 import { ArrowBack } from "@material-ui/icons";
-import { MOBILE_BREAKPOINT } from "app/theme";
+import { MOBILE_BREAKPOINT } from "@app/theme";
 import { ClickAwayListener } from "@material-ui/core";
-import ShareComponent from "app/components/ShareComponent";
-import { APPLICATION_JSON } from "app/state/api";
-import { ISnackbarState } from "app/modules/dataset-module/routes/upload-module/style";
+import ShareComponent from "@app/components/ShareComponent";
+import { APPLICATION_JSON } from "@app/state/api";
+import { ISnackbarState } from "@app/modules/dataset-module/routes/upload-module/style";
 
 // eslint-disable-next-line sonarjs/cognitive-complexity
 export function ChartSubheaderToolbar(
@@ -243,7 +243,7 @@ export function ChartSubheaderToolbar(
 
     setShowDeleteDialog(false);
     axios
-      .delete(`${process.env.REACT_APP_API}/chart/${page}`, {
+      .delete(`${import.meta.env.VITE_API}/chart/${page}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -263,7 +263,7 @@ export function ChartSubheaderToolbar(
 
   const handleDuplicate = () => {
     axios
-      .get(`${process.env.REACT_APP_API}/chart/duplicate/${page}`, {
+      .get(`${import.meta.env.VITE_API}/chart/duplicate/${page}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },

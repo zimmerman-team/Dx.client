@@ -1,10 +1,10 @@
 import React from "react";
-import { useStoreActions, useStoreState } from "app/state/store/hooks";
-import { PageLoader } from "app/modules/common/page-loader";
-import { useDataThemesEchart } from "app/hooks/useDataThemesEchart";
-import GeomapLegend from "app/modules/chart-module/components/geomap-legend";
-import { ChartAPIModel } from "app/modules/chart-module/data";
-import { DatasetListItemAPIModel } from "app/modules/dataset-module/data";
+import { useStoreActions, useStoreState } from "@app/state/store/hooks";
+import { PageLoader } from "@app/modules/common/page-loader";
+import { useDataThemesEchart } from "@app/hooks/useDataThemesEchart";
+import GeomapLegend from "@app/modules/chart-module/components/geomap-legend";
+import { ChartAPIModel } from "@app/modules/chart-module/data";
+import { DatasetListItemAPIModel } from "@app/modules/dataset-module/data";
 import { get } from "lodash";
 
 export type ChartType =

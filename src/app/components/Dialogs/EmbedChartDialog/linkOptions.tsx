@@ -1,9 +1,9 @@
 import React from "react";
 import ShareContent from "./shareContent";
 import CopyButton from "./copyButton";
-import { ReactComponent as FacebookIcon } from "app/components/Dialogs/EmbedChartDialog/assets/facebook.svg";
-import { ReactComponent as TwitterIcon } from "app/components/Dialogs/EmbedChartDialog/assets/twitter.svg";
-import { ReactComponent as LinkedinIcon } from "app/components/Dialogs/EmbedChartDialog/assets/linkedIn.svg";
+import FacebookIcon from "@app/components/Dialogs/EmbedChartDialog/assets/facebook.svg?react";
+import TwitterIcon from "@app/components/Dialogs/EmbedChartDialog/assets/twitter.svg?react";
+import LinkedinIcon from "@app/components/Dialogs/EmbedChartDialog/assets/linkedIn.svg?react";
 
 export default function LinkOptions(props: {
   chartId: string;
