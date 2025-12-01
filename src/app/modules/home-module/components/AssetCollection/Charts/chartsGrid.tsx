@@ -23,6 +23,7 @@ import { useAuth0 } from "@auth0/auth0-react";
 import { useSetRecoilState } from "recoil";
 import { planDialogAtom } from "@app/state/recoil/atoms";
 import { getLimit } from "@app/modules/home-module/components/AssetCollection/Datasets/datasetsGrid";
+import { updateLog } from "@app/utils/updateLog";
 
 interface Props {
   sortBy: string;
@@ -80,6 +81,10 @@ export default function ChartsGrid(props: Props) {
   );
 
   const getFilterString = (fromZeroOffset?: boolean) => {
+    updateLog({
+      level: "info",
+      message: `Getting filter string for charts grid `,
+    });
     const value =
       props.searchStr?.length > 0
         ? `"where":{"name":{"like":"${props.searchStr}.*","options":"i"}},`
@@ -93,6 +98,10 @@ export default function ChartsGrid(props: Props) {
   };
 
   const getWhereString = () => {
+    updateLog({
+      level: "info",
+      message: `Getting where string for charts grid `,
+    });
     const value =
       props.searchStr?.length > 0
         ? `where={"name":{"like":"${props.searchStr}.*","options":"i"}}`
@@ -167,36 +176,43 @@ export default function ChartsGrid(props: Props) {
       .catch((error) => console.log(error));
   };
 
-  const handleDuplicate = (id: string) => {
+  const handleDuplicate = async (id: string) => {
     if (!id) {
       return;
     }
-    axios
-      .get(`${import.meta.env.VITE_API}/chart/duplicate/${id}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      })
-      .then((response) => {
-        if (response?.data.error && response?.data.errorType === "planError") {
-          return setPlanDialog({
-            open: true,
-            message: response?.data.error,
-            tryAgain: "",
-            onTryAgain: () => {},
-          });
+
+    try {
+      const response = await axios.get(
+        `${import.meta.env.VITE_API}/chart/duplicate/${id}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
         }
-        if (response.data.planWarning) {
-          setPlanDialog({
-            open: true,
-            message: response.data.planWarning,
-            tryAgain: "",
-            onTryAgain: () => {},
-          });
-        }
-        reloadData();
-      })
-      .catch((error) => console.log(error));
+      );
+
+      if (response?.data.error && response?.data.errorType === "planError") {
+        return setPlanDialog({
+          open: true,
+          message: response?.data.error,
+          tryAgain: "",
+          onTryAgain: () => {},
+        });
+      }
+
+      if (response.data.planWarning) {
+        setPlanDialog({
+          open: true,
+          message: response.data.planWarning,
+          tryAgain: "",
+          onTryAgain: () => {},
+        });
+      }
+
+      reloadData();
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -225,6 +241,10 @@ export default function ChartsGrid(props: Props) {
       return;
     }
     //update the loaded stories
+    updateLog({
+      level: "info",
+      message: `Updating loaded charts in charts grid `,
+    });
     setLoadedCharts((prevCharts) => {
       const prevChartsIds = prevCharts.map((c) => c.id);
       const f = charts.filter((chart) => !prevChartsIds.includes(chart.id));
@@ -235,6 +255,7 @@ export default function ChartsGrid(props: Props) {
   React.useEffect(() => {
     reloadData();
   }, [props.sortBy, token, props.filterValue]);
+
   const [,] = useDebounce(
     () => {
       if (initialRender.current) {

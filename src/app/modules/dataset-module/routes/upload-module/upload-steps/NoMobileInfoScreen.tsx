@@ -2,16 +2,27 @@ import React from "react";
 import PlugIcon from "@app/modules/dataset-module/routes/upload-module/assets/plug.svg?react";
 import { copyTextToClipboard } from "@app/utils/copyToClipboard";
 import { Snackbar } from "@material-ui/core";
+import { updateLog } from "@app/utils/updateLog";
 
 export default function NoMobileInfoScreen() {
   const [copyAlert, setCopyAlert] = React.useState<boolean>(false);
   const handleCopyToClipboard = async () => {
-    copyTextToClipboard(window.location.href).then(() => {
-      setCopyAlert(true);
+    updateLog({
+      level: "info",
+      message: `Copying link to clipboard: ${window.location.href}`,
     });
+    copyTextToClipboard(window.location.href) // NOSONAR
+      .then(() => {
+        setCopyAlert(true);
+      })
+      .catch((err) => {
+        updateLog({
+          level: "error",
+          message: `Failed to copy to clipboard: ${err}`,
+        });
+      });
   };
 
-  console.log("rendering", window.location.href);
   return (
     <div
       css={`

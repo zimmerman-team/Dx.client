@@ -16,6 +16,7 @@ import DatasetAddnewCard from "@app/modules/home-module/components/AssetCollecti
 import CircleLoader from "@app/modules/home-module/components/Loader";
 import { loadedDatasetsAtom, planDialogAtom } from "@app/state/recoil/atoms";
 import { DatasetListItemAPIModel } from "@app/modules/dataset-module/data";
+import { updateLog } from "@app/utils/updateLog";
 
 interface Props {
   sortBy: string;
@@ -208,6 +209,10 @@ export default function DatasetsGrid(props: Readonly<Props>) {
       return;
     }
     //update the loaded datasets
+    updateLog({
+      level: "info",
+      message: `Updating loaded datasets in datasets grid `,
+    });
     setLoadedDatasets((prevDatasets) => {
       const prevDatasetsIds = prevDatasets.map((d) => d.id);
       const f = datasets.filter(
@@ -234,8 +239,6 @@ export default function DatasetsGrid(props: Readonly<Props>) {
         return;
       }
       reloadData();
-      // if (props.searchStr !== undefined) {
-      // }
     },
     500,
     [props.searchStr]

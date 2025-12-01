@@ -42,9 +42,6 @@ export default function TablePreview(props: FinishedFragmentProps) {
     message: "",
   });
 
-  const [openFullScreenTooltip, setOpenFullScreenTooltip] =
-    React.useState(false);
-
   const [closeFullScreenTooltip, setCloseFullScreenTooltip] =
     React.useState(false);
 
@@ -139,8 +136,6 @@ export default function TablePreview(props: FinishedFragmentProps) {
             /* Dark shadow */
             box-shadow: 0px 0px 10px 0px rgba(152, 161, 170, 0.6);
           `}
-          onMouseOver={() => setOpenFullScreenTooltip(true)}
-          onMouseLeave={() => setOpenFullScreenTooltip(false)}
           onClick={handleFullScreenDisplay}
           data-cy="dataset-full-screen-btn"
           aria-label="Full Screen"

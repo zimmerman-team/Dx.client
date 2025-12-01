@@ -2,7 +2,6 @@
 import React from "react";
 import axios from "axios";
 import get from "lodash/get";
-import find from "lodash/find";
 import Box from "@material-ui/core/Box";
 import Grid, { GridSize } from "@material-ui/core/Grid";
 import useDebounce from "react-use/lib/useDebounce";
@@ -12,22 +11,15 @@ import { useInfinityScroll } from "@app/hooks/useInfinityScroll";
 import CircleLoader from "@app/modules/home-module/components/Loader";
 import { useStoreActions, useStoreState } from "@app/state/store/hooks";
 import DeleteChartDialog from "@app/components/Dialogs/deleteChartDialog";
-import {
-  coloredEchartTypes,
-  echartTypes,
-} from "@app/modules/chart-module/routes/chart-type/data";
-import ChartGridItem from "@app/modules/home-module/components/AssetCollection/Charts/gridItem";
-import DatasetGridItem from "@app/modules/home-module/components/AssetCollection/Datasets/gridItem";
-import StoryGridItem from "@app/modules/home-module/components/AssetCollection/Stories/gridItem";
-import ColoredStoryIcon from "@app/assets/icons/ColoredStoryIcon";
 import DeleteDatasetDialog from "@app/components/Dialogs/deleteDatasetDialog";
 import DeleteStoryDialog from "@app/components/Dialogs/deleteStoryDialog";
-import { EditorState, convertFromRaw } from "draft-js";
 import { getLimit } from "@app/modules/home-module/components/AssetCollection/Datasets/datasetsGrid";
 import { HomepageTable } from "@app/modules/home-module/components/Table/";
 import { planDialogAtom } from "@app/state/recoil/atoms";
 import { useSetRecoilState } from "recoil";
 import { getColumns } from "@app/modules/home-module/components/AssetCollection/All/data";
+import RenderAsset, { renderAssetTableData } from "./renderAsset";
+import { updateLog } from "@app/utils/updateLog";
 
 interface Props {
   sortBy: string;
@@ -83,24 +75,52 @@ export default function AssetsGrid(props: Props) {
   );
 
   const getFilterString = (fromZeroOffset?: boolean) => {
-    const value =
-      props.searchStr?.length > 0
-        ? `"where":{"name":{"like":"${props.searchStr}.*","options":"i"}},`
-        : "";
+    try {
+      updateLog({
+        level: "info",
+        message: "Getting filter string for assets grid",
+      }).catch((err) => {
+        console.error("Logging error:", err);
+      });
+      const value =
+        props.searchStr?.length > 0
+          ? `"where":{"name":{"like":"${props.searchStr}.*","options":"i"}},`
+          : "";
 
-    return `filterValue=${props.filterValue}&filter={${value}"order":"${
-      props.sortBy
-    } ${props.sortBy === "name" ? "asc" : "desc"}","limit":${limit},"offset":${
-      fromZeroOffset ? 0 : offset
-    }}`;
+      return `filterValue=${props.filterValue}&filter={${value}"order":"${
+        props.sortBy
+      } ${
+        props.sortBy === "name" ? "asc" : "desc"
+      }","limit":${limit},"offset":${fromZeroOffset ? 0 : offset}}`;
+    } catch (error) {
+      updateLog({
+        level: "error",
+        message: `Error getting filter string for assets grid: ${error}`,
+      });
+      return ``;
+    }
   };
 
   const getWhereString = () => {
-    const value =
-      props.searchStr?.length > 0
-        ? `where={"name":{"like":"${props.searchStr}.*","options":"i"}}`
-        : "";
-    return `filterValue=${props.filterValue}&${value}`;
+    try {
+      updateLog({
+        level: "info",
+        message: "Getting where string for assets grid",
+      }).catch((err) => {
+        console.error("Logging error:", err);
+      });
+      const value =
+        props.searchStr?.length > 0
+          ? `where={"name":{"like":"${props.searchStr}.*","options":"i"}}`
+          : "";
+      return `filterValue=${props.filterValue}&${value}`;
+    } catch (error) {
+      updateLog({
+        level: "error",
+        message: `Error getting where string for assets grid: ${error}`,
+      });
+      return ``;
+    }
   };
 
   const loadData = (fromZeroOffset?: boolean) => {
@@ -156,8 +176,6 @@ export default function AssetsGrid(props: Props) {
   const handleDelete = (id: string) => {
     setModalDisplay(false);
     setEnableButton(false);
-
-    console.log(activeAssetType);
 
     if (!id) {
       return;
@@ -232,18 +250,14 @@ export default function AssetsGrid(props: Props) {
     setModalDisplay(true);
   };
 
-  const getIcon = (vizType: string) => {
-    const type = find(coloredEchartTypes(), { id: vizType });
-    if (type) {
-      return type.icon;
-    }
-    return coloredEchartTypes()[0].icon;
-  };
-
   React.useEffect(() => {
     if (!assetsLoadSuccess) {
       return;
     }
+    updateLog({
+      level: "info",
+      message: "Updating loaded assets in assets grid",
+    });
     //update the loaded stories
     setLoadedAssets((prevAssets) => {
       const prevAssetsIds = prevAssets.map((c) => c.id);
@@ -281,126 +295,25 @@ export default function AssetsGrid(props: Props) {
           cellWidths={[50, 300, 350, 142, 142, 142, 138, 150]}
           tableData={{
             columns: getColumns(),
-            data: loadedAssets.map((data) => {
-              if (data.assetType === "chart") {
-                return {
-                  id: data.id,
-                  name: data.name,
-                  description: data.title,
-                  updatedDate: data.updatedDate,
-                  createdDate: data.createdDate,
-                  type: data.assetType.toLowerCase(),
-
-                  ownerName: data.ownerName.split(" ")[0],
-                  vizType: echartTypes(false).find((e) => e.id === data.vizType)
-                    ?.label,
-                };
-              } else if (data.assetType === "dataset") {
-                return {
-                  id: data.id,
-                  name: data.name,
-                  description: data.description,
-                  updatedDate: data.updatedDate,
-                  createdDate: data.createdDate,
-                  type: data.assetType.toLowerCase() /* as keyof IDataTypeMap */,
-                  ownerName: data.ownerName.split(" ")[0],
-                };
-              }
-              return {
-                id: data.id,
-                name: data.name,
-                description: data.heading
-                  ? EditorState.createWithContent(convertFromRaw(data.heading))
-                      .getCurrentContent()
-                      .getPlainText()
-                  : EditorState.createEmpty()
-                      .getCurrentContent()
-                      .getPlainText(),
-                updatedDate: data.updatedDate,
-                createdDate: data.createdDate,
-                type: data.assetType.toLowerCase(),
-
-                ownerName: data.ownerName.split(" ")[0],
-              };
-            }),
+            data: loadedAssets.map((data) =>
+              renderAssetTableData(data, data.assetType)
+            ),
           }}
         />
       ) : (
         <div id={props.gridId}>
           <Grid container spacing={2}>
-            {loadedAssets.map((d, index) => (
+            {loadedAssets.map((d) => (
               <Grid item key={d.id} xs={12} sm={6} md={4} lg={3}>
                 {
-                  {
-                    chart: (
-                      <ChartGridItem
-                        id={d.id}
-                        title={d.name}
-                        date={d.updatedDate}
-                        viz={getIcon(d.vizType)}
-                        vizType={d.vizType}
-                        isMappingValid={d.isMappingValid}
-                        handleDelete={() => {
-                          setActiveAssetType(d.assetType as AssetType);
-                          handleModal(d.id);
-                        }}
-                        handleDuplicate={() =>
-                          handleDuplicate(d.id, d.assetType as AssetType)
-                        }
-                        owner={d.owner}
-                        isAIAssisted={d.isAIAssisted}
-                        ownerName={d.ownerName.split(" ")[0]}
-                      />
-                    ),
-                    dataset: (
-                      <DatasetGridItem
-                        editPath={`/dataset/${d.id}/edit`}
-                        title={d.name}
-                        date={d.updatedDate}
-                        handleDelete={() => {
-                          setActiveAssetType(d.assetType as AssetType);
-                          handleModal(d.id);
-                        }}
-                        descr={d.description}
-                        handleDuplicate={() => {
-                          handleDuplicate(d.id, d.assetType as AssetType);
-                        }}
-                        showMenu={!props.inChartBuilder}
-                        id={d.id}
-                        owner={d.owner}
-                        inChartBuilder={props.inChartBuilder as boolean}
-                        ownerName={d.ownerName.split(" ")[0]}
-                        source={d.source}
-                        sourceURL={d.sourceUrl}
-                      />
-                    ),
-                    story: (
-                      <StoryGridItem
-                        id={d.id}
-                        key={d.id}
-                        name={d.name}
-                        date={d.updatedDate}
-                        viz={<ColoredStoryIcon />}
-                        color={d.backgroundColor}
-                        handleDelete={() => {
-                          setActiveAssetType(d.assetType as AssetType);
-                          handleModal(d.id);
-                        }}
-                        handleDuplicate={() =>
-                          handleDuplicate(d.id, d.assetType as AssetType)
-                        }
-                        heading={
-                          d.heading
-                            ? EditorState.createWithContent(
-                                convertFromRaw(d.heading)
-                              )
-                            : EditorState.createEmpty()
-                        }
-                        owner={d.owner}
-                        ownerName={d.ownerName.split(" ")[0]}
-                      />
-                    ),
-                  }[d.assetType as AssetType]
+                  <RenderAsset
+                    data={d}
+                    handleModal={handleModal}
+                    handleDuplicate={handleDuplicate}
+                    setActiveAssetType={setActiveAssetType}
+                    inChartBuilder={props.inChartBuilder}
+                    activeAssetType={d.assetType as AssetType}
+                  />
                 }
 
                 <Box height={16} />
