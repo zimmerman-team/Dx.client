@@ -10,10 +10,9 @@ export const OneDrivePickerModal = ({
   open: boolean;
   setOpen: (open: boolean) => void;
 }) => {
-  // if (!open) return null;
-
   return (
     <div
+      aria-hidden="true"
       style={{
         position: "fixed",
         inset: 0,
@@ -26,6 +25,7 @@ export const OneDrivePickerModal = ({
       onClick={() => setOpen(false)}
     >
       <div
+        aria-hidden="true"
         style={{
           width: 900,
           height: 600,

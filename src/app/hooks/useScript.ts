@@ -13,7 +13,7 @@ export function useScript(src: string) {
     document.body.appendChild(el);
 
     return () => {
-      document.body.removeChild(el);
+      el.remove();
     };
   }, [src]);
 
