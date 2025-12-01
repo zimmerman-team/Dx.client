@@ -1,8 +1,8 @@
 import React from "react";
 import { Col } from "react-bootstrap";
-import InlineColorPicker from "app/modules/chart-module/routes/customize/components/InlineColorPicker";
-import ChartOptionSelect from "app/modules/chart-module/routes/customize/components/ChartOptionSelect";
-import { IColor } from "app/components/ColorPicker/services/color";
+import InlineColorPicker from "@app/modules/chart-module/routes/customize/components/InlineColorPicker";
+import ChartOptionSelect from "@app/modules/chart-module/routes/customize/components/ChartOptionSelect";
+import { IColor } from "@app/components/ColorPicker/services/color";
 
 interface Props {
   value: string;

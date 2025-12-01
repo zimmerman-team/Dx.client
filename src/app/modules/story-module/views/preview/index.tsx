@@ -7,18 +7,18 @@ import { useAuth0 } from "@auth0/auth0-react";
 import useResizeObserver from "use-resize-observer";
 import Container from "@material-ui/core/Container";
 import { EditorState, convertFromRaw } from "draft-js";
-import { useStoreActions, useStoreState } from "app/state/store/hooks";
-import { StoryModel, emptyStory } from "app/modules/story-module/data";
-import RowFrame from "app/modules/story-module/components/rowStructure";
-import { NotAuthorizedMessageModule } from "app/modules/common/not-authorized-message";
-import { StoryElementsType } from "app/modules/story-module/components/right-panel-create-view";
-import { storyContentContainerWidth } from "app/state/recoil/atoms";
+import { useStoreActions, useStoreState } from "@app/state/store/hooks";
+import { StoryModel, emptyStory } from "@app/modules/story-module/data";
+import RowFrame from "@app/modules/story-module/components/rowStructure";
+import { NotAuthorizedMessageModule } from "@app/modules/common/not-authorized-message";
+import { StoryElementsType } from "@app/modules/story-module/components/right-panel-create-view";
+import { storyContentContainerWidth } from "@app/state/recoil/atoms";
 import { useTitle } from "react-use";
-import StoryUsePanel from "app/modules/story-module/components/use-story-panel";
-import { PageLoader } from "app/modules/common/page-loader";
+import StoryUsePanel from "@app/modules/story-module/components/use-story-panel";
+import { PageLoader } from "@app/modules/common/page-loader";
 import { Typography } from "@material-ui/core";
-import { decorators } from "app/modules/common/RichEditor/decorators";
-import Logo from "app/assets/icons/Logo";
+import { decorators } from "@app/modules/common/RichEditor/decorators";
+import Logo from "@app/assets/icons/Logo";
 
 export function StoryPreviewView(
   props: Readonly<{

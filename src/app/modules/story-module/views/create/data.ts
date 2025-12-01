@@ -1,5 +1,5 @@
-import { ToolbarPluginsType } from "app/modules/story-module/components/storySubHeaderToolbar/staticToolbar";
-import { IHeaderDetails } from "app/modules/story-module/components/right-panel/data";
+import { ToolbarPluginsType } from "@app/modules/story-module/components/storySubHeaderToolbar/staticToolbar";
+import { IHeaderDetails } from "@app/modules/story-module/components/right-panel/data";
 import { Updater } from "use-immer";
 
 interface IRowFrame {

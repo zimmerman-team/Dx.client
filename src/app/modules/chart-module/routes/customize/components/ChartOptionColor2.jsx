@@ -1,7 +1,7 @@
 import React from "react";
 import { Col } from "react-bootstrap";
-import ChartOptionSelect from "app/modules/chart-module/routes/customize/components/ChartOptionSelect";
-import styles from "app/modules/chart-module/routes/customize/components/InlineColorPicker/InlineColorPicker.module.css";
+import ChartOptionSelect from "@app/modules/chart-module/routes/customize/components/ChartOptionSelect";
+import styles from "@app/modules/chart-module/routes/customize/components/InlineColorPicker/InlineColorPicker.module.css";
 import { SketchPicker } from "react-color";
 import { useOnClickOutside } from "usehooks-ts";
 

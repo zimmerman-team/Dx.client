@@ -4,15 +4,15 @@ import get from "lodash/get";
 import find from "lodash/find";
 import filter from "lodash/filter";
 import IconButton from "@material-ui/core/IconButton";
-import { useStoreState, useStoreActions } from "app/state/store/hooks";
+import { useStoreState, useStoreActions } from "@app/state/store/hooks";
 /* project */
-import { CloseIcon } from "app/assets/icons/Close";
-import { TriangleXSIcon } from "app/assets/icons/TriangleXS";
-import { splitStrBasedOnCapitalLetters } from "app/utils/splitStrBasedOnCapitalLetters";
+import { CloseIcon } from "@app/assets/icons/Close";
+import { TriangleXSIcon } from "@app/assets/icons/TriangleXS";
+import { splitStrBasedOnCapitalLetters } from "@app/utils/splitStrBasedOnCapitalLetters";
 import {
   FilterGroupModel,
   FilterGroupOptionModel,
-} from "app/components/ToolBoxPanel/components/filters/data";
+} from "@app/components/ToolBoxPanel/components/filters/data";
 
 interface FilterGroupCompProps extends FilterGroupModel {
   expandGroup: () => void;

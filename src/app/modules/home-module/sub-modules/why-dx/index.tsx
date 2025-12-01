@@ -1,22 +1,22 @@
 import React from "react";
 import Container from "@material-ui/core/Container";
-import HomeFooter from "app/modules/home-module/components/Footer";
-import EllipsesDesktop from "app/modules/home-module/assets/whydx-ellipses.svg";
-import EllipsesTablet from "app/modules/home-module/assets/whydx-ellipses-tablet.svg";
-import EllipsesMobile from "app/modules/home-module/assets/whydx-ellipses-mobile.svg";
-import TryUsBlock from "app/modules/home-module/components/TryUsBlock";
-import KeyFeaturesBlock from "app/modules/home-module/sub-modules/why-dx/components/keyFeaturesBlock";
+import HomeFooter from "@app/modules/home-module/components/Footer";
+import EllipsesDesktop from "@app/modules/home-module/assets/whydx-ellipses.svg";
+import EllipsesTablet from "@app/modules/home-module/assets/whydx-ellipses-tablet.svg";
+import EllipsesMobile from "@app/modules/home-module/assets/whydx-ellipses-mobile.svg";
+import TryUsBlock from "@app/modules/home-module/components/TryUsBlock";
+import KeyFeaturesBlock from "@app/modules/home-module/sub-modules/why-dx/components/keyFeaturesBlock";
 import { useTitle } from "react-use";
 import { useMediaQuery } from "usehooks-ts";
-import Hero from "app/modules/home-module/components/hero";
+import Hero from "@app/modules/home-module/components/hero";
 import { useAuth0 } from "@auth0/auth0-react";
 import { Box } from "@material-ui/core";
-import AddAssetDropdown from "app/modules/home-module/components/AddAssetDropdown";
+import AddAssetDropdown from "@app/modules/home-module/components/AddAssetDropdown";
 import { Link } from "react-router-dom";
-import SignInButtons from "app/modules/home-module/components/SignInButtons";
-import { ctaLinkStyle } from "app/modules/home-module/sub-modules/partners";
-import { useCMSData } from "app/hooks/useCMSData";
-import { getCMSDataField } from "app/utils/getCMSDataField";
+import SignInButtons from "@app/modules/home-module/components/SignInButtons";
+import { ctaLinkStyle } from "@app/modules/home-module/sub-modules/partners";
+import { useCMSData } from "@app/hooks/useCMSData";
+import { getCMSDataField } from "@app/utils/getCMSDataField";
 
 export default function WhyDX() {
   useTitle("Dataxplorer - Why Dataxplorer?");

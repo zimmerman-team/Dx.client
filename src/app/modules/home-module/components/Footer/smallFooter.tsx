@@ -1,8 +1,8 @@
 import React from "react";
 import moment from "moment";
-import { ReactComponent as CopyIcon } from "app/modules/home-module/components/Footer/asset/copy.svg";
+import CopyIcon from "@app/modules/home-module/components/Footer/asset/copy.svg?react";
 import { Container } from "@material-ui/core";
-import { PRIVACY_POLICY_LINK, TERMS_AND_CONDITION_LINK } from "app/constants";
+import { PRIVACY_POLICY_LINK, TERMS_AND_CONDITION_LINK } from "@app/constants";
 
 function SmallFooter() {
   return (

@@ -1,10 +1,10 @@
 import React from "react";
-import styled from "styled-components/macro";
+import styled from "styled-components";
 import Snackbar from "@material-ui/core/Snackbar";
 import SnackbarContent from "@material-ui/core/SnackbarContent";
 import { Message } from "./common/message";
 import { useRecoilState } from "recoil";
-import { planDialogAtom } from "app/state/recoil/atoms";
+import { planDialogAtom } from "@app/state/recoil/atoms";
 
 type SnackBarProps = {
   open: boolean;

@@ -1,15 +1,15 @@
 import React, { useRef } from "react";
 import { Popover, useMediaQuery } from "@material-ui/core";
 import { Link } from "react-router-dom";
-import { ReactComponent as EditIcon } from "app/modules/home-module/assets/edit.svg";
-import { ReactComponent as DuplicateIcon } from "app/modules/home-module/assets/duplicate.svg";
-import { ReactComponent as DeleteIcon } from "app/modules/home-module/assets/delete.svg";
-import { ReactComponent as ShareIcon } from "app/modules/home-module/assets/share-icon.svg";
-import { ReactComponent as MenuIcon } from "app/modules/home-module/assets/menu.svg";
+import EditIcon from "@app/modules/home-module/assets/edit.svg?react";
+import DuplicateIcon from "@app/modules/home-module/assets/duplicate.svg?react";
+import DeleteIcon from "@app/modules/home-module/assets/delete.svg?react";
+import ShareIcon from "@app/modules/home-module/assets/share-icon.svg?react";
+import MenuIcon from "@app/modules/home-module/assets/menu.svg?react";
 import { useAuth0 } from "@auth0/auth0-react";
-import { FOCUS_VISIBLE_STYLE_LIGHT, MOBILE_BREAKPOINT } from "app/theme";
+import { FOCUS_VISIBLE_STYLE_LIGHT, MOBILE_BREAKPOINT } from "@app/theme";
 import ShareModal from "./shareModal";
-import { useMenuNavigation } from "app/hooks/useMenuNavigation";
+import { useMenuNavigation } from "@app/hooks/useMenuNavigation";
 
 type Position = "top" | "bottom" | "center";
 export default function MenuPopover(props: {

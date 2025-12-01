@@ -6,9 +6,9 @@ import { bigAvicss, layoutcss } from "./style";
 import { Box, Container, Grid } from "@material-ui/core";
 import { Route, Switch, useHistory, useParams } from "react-router-dom";
 import { LogOutIcon, RightIcon } from "./component/icons";
-import LogOutDialog from "app/components/Dialogs/logOutDialog";
-import Billing from "app/modules/user-profile-module/sub-module/billing";
-import HomeFooter from "app/modules/home-module/components/Footer";
+import LogOutDialog from "@app/components/Dialogs/logOutDialog";
+import Billing from "@app/modules/user-profile-module/sub-module/billing";
+import HomeFooter from "@app/modules/home-module/components/Footer";
 
 export default function UserProfileLayout() {
   const { user } = useAuth0();

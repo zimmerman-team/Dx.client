@@ -1,5 +1,5 @@
 import React from "react";
-import AssetsGrid from "app/modules/home-module/components/AssetCollection/All/assetsGrid";
+import AssetsGrid from "@app/modules/home-module/components/AssetCollection/All/assetsGrid";
 
 export default function AssetsList() {
   return (

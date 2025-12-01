@@ -3,28 +3,28 @@ import React from "react";
 import Grid from "@material-ui/core/Grid";
 import useTitle from "react-use/lib/useTitle";
 import { useHistory, useLocation, useParams } from "react-router-dom";
-import { useStoreState, useStoreActions } from "app/state/store/hooks";
+import { useStoreState, useStoreActions } from "@app/state/store/hooks";
 import { get } from "lodash";
 /* project */
-import { styles as commonStyles } from "app/modules/chart-module/routes/common/styles";
+import { styles as commonStyles } from "@app/modules/chart-module/routes/common/styles";
 import {
   echartTypes,
   ChartTypeModel,
   ChartBuilderChartTypeProps,
   chartTypesFromMiddleWare,
-} from "app/modules/chart-module/routes/chart-type/data";
-import AISwitch from "app/modules/chart-module/components/switch/AISwitch";
+} from "@app/modules/chart-module/routes/chart-type/data";
+import AISwitch from "@app/modules/chart-module/components/switch/AISwitch";
 import { useRecoilState, useResetRecoilState } from "recoil";
 import {
   chartFromStoryAtom,
   isChartAIAgentActive,
   isChartAutoMappedAtom,
-} from "app/state/recoil/atoms";
-import { charts } from "app/modules/chart-module/data";
-import AILoader from "app/modules/chart-module/routes/chart-type/loader";
-import { handleValidityCheckOfDimensionsToBeMapped } from "app/modules/chart-module/components/toolbox/steps/panels-content/Mapping";
-import { useCheckUserPlan } from "app/hooks/useCheckUserPlan";
-import { IChartType } from "app/state/api/action-reducers/sync/charts";
+} from "@app/state/recoil/atoms";
+import { charts } from "@app/modules/chart-module/data";
+import AILoader from "@app/modules/chart-module/routes/chart-type/loader";
+import { handleValidityCheckOfDimensionsToBeMapped } from "@app/modules/chart-module/components/toolbox/steps/panels-content/Mapping";
+import { useCheckUserPlan } from "@app/hooks/useCheckUserPlan";
+import { IChartType } from "@app/state/api/action-reducers/sync/charts";
 
 function ChartBuilderChartType(props: Readonly<ChartBuilderChartTypeProps>) {
   useTitle("Dataxplorer - Chart Type");
@@ -75,7 +75,7 @@ function ChartBuilderChartType(props: Readonly<ChartBuilderChartTypeProps>) {
       //when landing in chart type step from outside the chart module,
       //load the sample data as data step is skipped
       props.loadDataset(
-        `${process.env.REACT_APP_API}/chart/sample-data${
+        `${import.meta.env.VITE_API}/chart/sample-data${
           token ? "" : "/public"
         }/${datasetId}`
       );

@@ -6,7 +6,7 @@ import { useAuth0 } from "@auth0/auth0-react";
 import { useSessionStorage } from "react-use";
 import Container from "@material-ui/core/Container";
 import { HTML5Backend } from "react-dnd-html5-backend";
-import { useStoreActions, useStoreState } from "app/state/store/hooks";
+import { useStoreActions, useStoreState } from "@app/state/store/hooks";
 import {
   Switch,
   Route,
@@ -20,18 +20,18 @@ import {
   // @ts-ignore
 } from "@rawgraphs/rawgraphs-core";
 /* project */
-import { PageLoader } from "app/modules/common/page-loader";
-import { useChartsRawData } from "app/hooks/useChartsRawData";
-import { NoMatchPage } from "app/modules/common/no-match-page";
-import ChartModuleDataView from "app/modules/chart-module/routes/select-data";
+import { PageLoader } from "@app/modules/common/page-loader";
+import { useChartsRawData } from "@app/hooks/useChartsRawData";
+import { NoMatchPage } from "@app/modules/common/no-match-page";
+import ChartModuleDataView from "@app/modules/chart-module/routes/select-data";
 import { ChartSubheaderToolbar } from "./components/chartSubheaderToolbar";
-import ChartBuilderMapping from "app/modules/chart-module/routes/mapping";
-import ChartBuilderFilters from "app/modules/chart-module/routes/filters";
-import ChartBuilderCustomize from "app/modules/chart-module/routes/customize";
-import { ChartBuilderPreview } from "app/modules/chart-module/routes/preview";
-import ChartBuilderChartType from "app/modules/chart-module/routes/chart-type";
-import { ChartModuleToolBox } from "app/modules/chart-module/components/toolbox";
-import { ChartBuilderPreviewTheme } from "app/modules/chart-module/routes/preview-theme";
+import ChartBuilderMapping from "@app/modules/chart-module/routes/mapping";
+import ChartBuilderFilters from "@app/modules/chart-module/routes/filters";
+import ChartBuilderCustomize from "@app/modules/chart-module/routes/customize";
+import { ChartBuilderPreview } from "@app/modules/chart-module/routes/preview";
+import ChartBuilderChartType from "@app/modules/chart-module/routes/chart-type";
+import { ChartModuleToolBox } from "@app/modules/chart-module/components/toolbox";
+import { ChartBuilderPreviewTheme } from "@app/modules/chart-module/routes/preview-theme";
 import {
   charts,
   ChartAPIModel,
@@ -40,12 +40,12 @@ import {
   defaultChartOptions,
   chartViews,
   chartPaths,
-} from "app/modules/chart-module/data";
-import { NotAuthorizedMessageModule } from "app/modules/common/not-authorized-message";
+} from "@app/modules/chart-module/data";
+import { NotAuthorizedMessageModule } from "@app/modules/common/not-authorized-message";
 import { isEmpty } from "lodash";
 import useResizeObserver from "use-resize-observer";
-import { ChartType } from "app/modules/chart-module/components/common-chart";
-import { getRequiredFieldsAndErrors } from "app/modules/chart-module/routes/mapping/utils";
+import { ChartType } from "@app/modules/chart-module/components/common-chart";
+import { getRequiredFieldsAndErrors } from "@app/modules/chart-module/routes/mapping/utils";
 import axios from "axios";
 import {
   useRecoilState,
@@ -58,13 +58,13 @@ import {
   isChartAIAgentActive,
   isChartAutoMappedAtom,
   planDialogAtom,
-} from "app/state/recoil/atoms";
+} from "@app/state/recoil/atoms";
 import { IDatasetDetails } from "./components/toolbox/steps/panels-content/SelectDataset";
-import { APPLICATION_JSON } from "app/state/api";
-import HomeFooter from "app/modules/home-module/components/Footer";
+import { APPLICATION_JSON } from "@app/state/api";
+import HomeFooter from "@app/modules/home-module/components/Footer";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
-import NotAvailableOnMobile from "app/modules/common/not-available";
-import { MOBILE_BREAKPOINT, TABLET_STARTPOINT } from "app/theme";
+import NotAvailableOnMobile from "@app/modules/common/not-available";
+import { MOBILE_BREAKPOINT, TABLET_STARTPOINT } from "@app/theme";
 
 // eslint-disable-next-line sonarjs/cognitive-complexity
 export default function ChartModule() {
@@ -291,7 +291,7 @@ export default function ChartModule() {
     };
     if (page === "new") {
       try {
-        return await axios.post(`${process.env.REACT_APP_API}/chart/`, chart, {
+        return await axios.post(`${import.meta.env.VITE_API}/chart/`, chart, {
           headers: {
             "Content-Type": APPLICATION_JSON,
             Authorization: `Bearer ${token}`,
@@ -391,7 +391,7 @@ export default function ChartModule() {
         setChartName(loadedChart.name);
       }
       loadDataset(
-        `${process.env.REACT_APP_API}/chart/sample-data${
+        `${import.meta.env.VITE_API}/chart/sample-data${
           token ? "" : "/public"
         }/${loadedChart.datasetId!}`
       );

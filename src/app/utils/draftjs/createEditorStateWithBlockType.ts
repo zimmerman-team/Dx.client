@@ -1,4 +1,4 @@
-import { decorators } from "app/modules/common/RichEditor/decorators";
+import { decorators } from "@app/modules/common/RichEditor/decorators";
 import { EditorState, genKey, convertFromRaw } from "draft-js";
 
 export const createHeadingEditorState = () => {

@@ -10,11 +10,11 @@ import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
 import { Tooltip as SpeechBubble } from "react-tooltip";
 import TableContainer from "@material-ui/core/TableContainer";
-import { PrintIcon } from "app/modules/user-profile-module/component/icons";
-import { ReactComponent as InfoIcon } from "app/modules/user-profile-module/asset/info-icon.svg";
-import { InfoSnackbar } from "app/modules/story-module/components/storySubHeaderToolbar/infosnackbar";
-import { ISnackbarState } from "app/modules/dataset-module/routes/upload-module/style";
-import { FOCUS_VISIBLE_STYLE_LIGHT } from "app/theme";
+import { PrintIcon } from "@app/modules/user-profile-module/component/icons";
+import InfoIcon from "@app/modules/user-profile-module/asset/info-icon.svg?react";
+import { InfoSnackbar } from "@app/modules/story-module/components/storySubHeaderToolbar/infosnackbar";
+import { ISnackbarState } from "@app/modules/dataset-module/routes/upload-module/style";
+import { FOCUS_VISIBLE_STYLE_LIGHT } from "@app/theme";
 
 const dataCols = [
   { key: "date", label: "Date" },

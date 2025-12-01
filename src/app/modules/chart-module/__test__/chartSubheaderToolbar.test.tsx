@@ -20,27 +20,27 @@ import {
   ChartsDatasetState,
   ChartsEnabledFilterOptionGroupsState,
   ChartsMappingState,
-} from "app/state/api/action-reducers/sync/charts";
-import { ChartSubheaderToolbar } from "app/modules/chart-module/components/chartSubheaderToolbar/";
-import { AuthTokenState } from "app/state/api/action-reducers/sync";
+} from "@app/state/api/action-reducers/sync/charts";
+import { ChartSubheaderToolbar } from "@app/modules/chart-module/components/chartSubheaderToolbar/";
+import { AuthTokenState } from "@app/state/api/action-reducers/sync";
 import {
   mockChartList,
   mockMappingValue,
-} from "app/modules/chart-module/__test__/data";
-import { RecoilObserver } from "app/utils/recoilObserver";
+} from "@app/modules/chart-module/__test__/data";
+import { RecoilObserver } from "@app/utils/recoilObserver";
 import {
   chartFromStoryAtom,
   homeDisplayAtom,
   storyRightPanelViewAtom,
-} from "app/state/recoil/atoms";
-import { ChartsAppliedFiltersState } from "app/state/api/action-reducers/sync/charts/filters";
+} from "@app/state/recoil/atoms";
+import { ChartsAppliedFiltersState } from "@app/state/api/action-reducers/sync/charts/filters";
 import {
   ChartCreate,
   ChartGet,
   ChartGetList,
   ChartUpdate,
-} from "app/state/api/action-reducers/charts";
-import { mockUseAuth0 } from "app/utils/mockAuth0";
+} from "@app/state/api/action-reducers/charts";
+import { mockUseAuth0 } from "@app/utils/mockAuth0";
 
 interface MockProps {
   name: string;

@@ -1,12 +1,12 @@
 import React from "react";
-import { BasicSwitch } from "app/components/Switch/BasicSwitch";
+import { BasicSwitch } from "@app/components/Switch/BasicSwitch";
 import ToggleSwitch from "./toggleSwitch";
-import { ReactComponent as DuplicateIcon } from "app/modules/home-module/assets/duplicate.svg";
-import { ReactComponent as FacebookIcon } from "app/modules/home-module/assets/facebook-icon.svg";
-import { ReactComponent as LinkedinIcon } from "app/modules/home-module/assets/linkedin-icon-black.svg";
-import { ReactComponent as InstagramIcon } from "app/modules/home-module/assets/instagram-icon.svg";
-import { ReactComponent as MastodonIcon } from "app/modules/home-module/assets/mastodon-icon.svg";
-import { copyToClipboard } from "app/utils/copyToClipboard";
+import DuplicateIcon from "@app/modules/home-module/assets/duplicate.svg?react";
+import FacebookIcon from "@app/modules/home-module/assets/facebook-icon.svg?react";
+import LinkedinIcon from "@app/modules/home-module/assets/linkedin-icon-black.svg?react";
+import InstagramIcon from "@app/modules/home-module/assets/instagram-icon.svg?react";
+import MastodonIcon from "@app/modules/home-module/assets/mastodon-icon.svg?react";
+import { copyToClipboard } from "@app/utils/copyToClipboard";
 import Snackbar from "@material-ui/core/Snackbar";
 
 const Box = (props: { content: string; height: number; id: string }) => {

@@ -1,11 +1,11 @@
 import React from "react";
 import { subParagraphcss } from "./style";
-import { ReactComponent as MissionImg } from "app/modules/home-module/assets/about-mission.svg";
-import { ReactComponent as DXImg } from "app/modules/home-module/assets/about-dx.svg";
+import MissionImg from "@app/modules/home-module/assets/about-mission.svg?react";
+import DXImg from "@app/modules/home-module/assets/about-dx.svg?react";
 import { Box } from "@material-ui/core";
-import { DESKTOP_BREAKPOINT } from "app/theme";
-import { getCMSDataField } from "app/utils/getCMSDataField";
-import { useCMSData } from "app/hooks/useCMSData";
+import { DESKTOP_BREAKPOINT } from "@app/theme";
+import { getCMSDataField } from "@app/utils/getCMSDataField";
+import { useCMSData } from "@app/hooks/useCMSData";
 
 export default function MissionSection() {
   const cmsData = useCMSData({ returnData: true });

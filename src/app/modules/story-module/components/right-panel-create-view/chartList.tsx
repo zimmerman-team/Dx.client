@@ -1,13 +1,13 @@
 import Skeleton from "@material-ui/lab/Skeleton";
 import SearchIcon from "@material-ui/icons/Search";
-import { useInfinityScroll } from "app/hooks/useInfinityScroll";
-import { TABLET_STARTPOINT } from "app/theme";
+import { useInfinityScroll } from "@app/hooks/useInfinityScroll";
+import { TABLET_STARTPOINT } from "@app/theme";
 import React from "react";
 import { sortByOptions, StoryElementsType } from ".";
-import { IFramesArray } from "app/modules/story-module/views/create/data";
-import { IHeaderDetails } from "app/modules/story-module/components/right-panel/data";
+import { IFramesArray } from "@app/modules/story-module/views/create/data";
+import { IHeaderDetails } from "@app/modules/story-module/components/right-panel/data";
 import { IChartDetail } from "./data";
-import { useStoreActions, useStoreState } from "app/state/store/hooks";
+import { useStoreActions, useStoreState } from "@app/state/store/hooks";
 import get from "lodash/get";
 import { useDebounce } from "react-use";
 import { CreateChartCard } from "./createChartCard";

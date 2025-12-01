@@ -4,12 +4,12 @@ import {
   BudgetsTabCard,
   GrantsTabCard,
   PerformanceTabCard,
-} from "app/modules/home-module/sub-modules/partners/components/tabCard";
+} from "@app/modules/home-module/sub-modules/partners/components/tabCard";
 import {
   DESKTOP_BREAKPOINT,
   FOCUS_VISIBLE_STYLE_LIGHT,
   MOBILE_BREAKPOINT,
-} from "app/theme";
+} from "@app/theme";
 import { ChevronLeft, ChevronRight } from "@material-ui/icons";
 import { StyledTab, StyledTabs } from "./style";
 import SwipeableViews from "react-swipeable-views";

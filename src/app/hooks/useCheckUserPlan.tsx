@@ -1,7 +1,7 @@
 import { useAuth0 } from "@auth0/auth0-react";
-import { APPLICATION_JSON } from "app/state/api";
-import { fetchPlanLoadingAtom, planDialogAtom } from "app/state/recoil/atoms";
-import { useStoreState } from "app/state/store/hooks";
+import { APPLICATION_JSON } from "@app/state/api";
+import { fetchPlanLoadingAtom, planDialogAtom } from "@app/state/recoil/atoms";
+import { useStoreState } from "@app/state/store/hooks";
 import axios from "axios";
 import React from "react";
 import { useSetRecoilState } from "recoil";
@@ -54,7 +54,7 @@ export function useCheckUserPlan() {
     if (!token) return;
     setLoading(true);
     axios
-      .get(`${process.env.REACT_APP_API}/users/plan-data`, {
+      .get(`${import.meta.env.VITE_API}/users/plan-data`, {
         headers: {
           "Content-Type": APPLICATION_JSON,
           Authorization: `Bearer ${token}`,

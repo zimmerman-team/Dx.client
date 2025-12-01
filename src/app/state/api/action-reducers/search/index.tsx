@@ -1,20 +1,20 @@
-import { APIModel } from "app/state/api";
-import { ApiCallModel } from "app/state/api/interfaces";
+import { APIModel } from "@app/state/api";
+import { ApiCallModel } from "@app/state/api/interfaces";
 
 const GlobalSearch: ApiCallModel = {
-  ...APIModel(`${process.env.REACT_APP_API}/global-search`),
+  ...APIModel(`${import.meta.env.VITE_API}/global-search`),
 };
 
 export default GlobalSearch;
 
 export const GlobalSearchCharts: ApiCallModel = {
-  ...APIModel(`${process.env.REACT_APP_API}/charts`),
+  ...APIModel(`${import.meta.env.VITE_API}/charts`),
 };
 
 export const GlobalSearchStories: ApiCallModel = {
-  ...APIModel(`${process.env.REACT_APP_API}/stories`),
+  ...APIModel(`${import.meta.env.VITE_API}/stories`),
 };
 
 export const GlobalSearchDatasets: ApiCallModel = {
-  ...APIModel(`${process.env.REACT_APP_API}/datasets`),
+  ...APIModel(`${import.meta.env.VITE_API}/datasets`),
 };

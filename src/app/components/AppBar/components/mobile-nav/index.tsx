@@ -1,11 +1,11 @@
 import React from "react";
 import MenuIcon from "@material-ui/icons/Menu";
-import { MOBILE_BREAKPOINT } from "app/theme";
+import { MOBILE_BREAKPOINT } from "@app/theme";
 import CloseIcon from "@material-ui/icons/CloseOutlined";
 import { Link, NavLink, useHistory } from "react-router-dom";
 import { useAuth0 } from "@auth0/auth0-react";
-import { logocss } from "app/components/AppBar/style";
-import { NavList } from "app/components/AppBar/components/nav-list";
+import { logocss } from "@app/components/AppBar/style";
+import { NavList } from "@app/components/AppBar/components/nav-list";
 
 export function MobileHeader(props: { navLocation: string }) {
   const history = useHistory();

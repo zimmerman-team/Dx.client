@@ -1,9 +1,9 @@
 import React from "react";
 import { useDrag } from "react-dnd";
-import { ReactComponent as RowFrameHandleAdornment } from "app/modules/story-module/asset/rowFrameHandleAdornment.svg";
-import { StoryElementsType } from "app/modules/story-module/components/right-panel-create-view/";
+import RowFrameHandleAdornment from "@app/modules/story-module/asset/rowFrameHandleAdornment.svg?react";
+import { StoryElementsType } from "@app/modules/story-module/components/right-panel-create-view/";
 import { useRecoilState } from "recoil";
-import { isDividerOrRowFrameDraggingAtom } from "app/state/recoil/atoms";
+import { isDividerOrRowFrameDraggingAtom } from "@app/state/recoil/atoms";
 
 interface ItemComponentProps {
   id: string;

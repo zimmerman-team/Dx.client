@@ -2,8 +2,8 @@
   Keeping this component and its files for possible future usage.
 */
 import { Box } from "@material-ui/core";
-import { SelectWithIcon } from "app/components/Select/selectWithIcon";
-import SimpleSelect from "app/components/Select/simpleSelect";
+import { SelectWithIcon } from "@app/components/Select/selectWithIcon";
+import SimpleSelect from "@app/components/Select/simpleSelect";
 import React from "react";
 import { optionscss, optionFlexcss, inputBoxcss, buttonFlexcss } from "./style";
 

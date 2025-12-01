@@ -1,13 +1,13 @@
 import React from "react";
 import { ErrorOutlineRounded } from "@material-ui/icons";
-import HomeFooter from "app/modules/home-module/components/Footer";
-import { ReactComponent as GoogleIcon } from "app/modules/onboarding-module/asset/google-img.svg";
-import { ReactComponent as LinkedInIcon } from "app/modules/onboarding-module/asset/linkedIn-img.svg";
-import { ReactComponent as MicrosoftIcon } from "app/modules/onboarding-module/asset/microsoft-img.svg";
+import HomeFooter from "@app/modules/home-module/components/Footer";
+import GoogleIcon from "@app/modules/onboarding-module/asset/google-img.svg?react";
+import LinkedInIcon from "@app/modules/onboarding-module/asset/linkedIn-img.svg?react";
+import MicrosoftIcon from "@app/modules/onboarding-module/asset/microsoft-img.svg?react";
 import ArrowBackIosIcon from "@material-ui/icons/ArrowBackIos";
 import { Box, Container, useMediaQuery } from "@material-ui/core";
 import { useAuth0 } from "@auth0/auth0-react";
-import { socialAuth } from "app/utils/socialAuth";
+import { socialAuth } from "@app/utils/socialAuth";
 import { Link, useHistory, useLocation } from "react-router-dom";
 
 export function NotAuthorizedMessageModule(props: {

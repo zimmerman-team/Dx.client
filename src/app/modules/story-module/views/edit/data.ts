@@ -1,8 +1,8 @@
-import { IFramesArray } from "app/modules/story-module/views/create/data";
-import { ToolbarPluginsType } from "app/modules/story-module/components/storySubHeaderToolbar/staticToolbar";
-import { IHeaderDetails } from "app/modules/story-module/components/right-panel/data";
+import { IFramesArray } from "@app/modules/story-module/views/create/data";
+import { ToolbarPluginsType } from "@app/modules/story-module/components/storySubHeaderToolbar/staticToolbar";
+import { IHeaderDetails } from "@app/modules/story-module/components/right-panel/data";
 import { Updater } from "use-immer";
-import { IUniformBlockTypeStyle } from "app/modules/story-module/data";
+import { IUniformBlockTypeStyle } from "@app/modules/story-module/data";
 
 export interface StoryEditViewProps {
   rightPanelOpen: boolean;

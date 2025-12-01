@@ -1,4 +1,4 @@
-import { StoryModel } from "app/modules/story-module/data";
+import { StoryModel } from "@app/modules/story-module/data";
 import moment from "moment";
 
 export const mockStoriesCrudData = [

@@ -1,7 +1,7 @@
 import React from "react";
-import { ReactComponent as TableIcon } from "app/modules/home-module/assets/table-icon.svg";
+import TableIcon from "@app/modules/home-module/assets/table-icon.svg?react";
 import Popover from "@material-ui/core/Popover";
-import { CustomGridIcon } from "app/modules/home-module/components/Filter";
+import { CustomGridIcon } from "@app/modules/home-module/components/Filter";
 
 export default function ActionsMenu(props: {
   setSortValue: (value: "updatedDate" | "createdDate" | "name") => void;

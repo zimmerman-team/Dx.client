@@ -1,8 +1,8 @@
 import { Popover, Tooltip } from "@material-ui/core";
-import { ReactComponent as SortIcon } from "app/modules/home-module/assets/sort-fill.svg";
+import SortIcon from "@app/modules/home-module/assets/sort-fill.svg?react";
 
-import { iconButtonCss, sortByItemCss } from "app/modules/home-module/style";
-import { useMenuNavigation } from "app/hooks/useMenuNavigation";
+import { iconButtonCss, sortByItemCss } from "@app/modules/home-module/style";
+import { useMenuNavigation } from "@app/hooks/useMenuNavigation";
 import React from "react";
 
 export default function SortPopover(

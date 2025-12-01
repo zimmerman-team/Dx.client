@@ -1,6 +1,6 @@
 import React, { useRef } from "react";
-import { styles } from "app/modules/story-module/components/storySubHeaderToolbar/styles";
-import { FOCUS_VISIBLE_STYLE_LIGHT } from "app/theme";
+import { styles } from "@app/modules/story-module/components/storySubHeaderToolbar/styles";
+import { FOCUS_VISIBLE_STYLE_LIGHT } from "@app/theme";
 
 interface InputProps
   extends React.DetailedHTMLProps<
