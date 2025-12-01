@@ -4,21 +4,20 @@ import get from "lodash/get";
 import Box from "@material-ui/core/Box";
 import Grid from "@material-ui/core/Grid";
 import useDebounce from "react-use/lib/useDebounce";
-import { StoryModel } from "app/modules/story-module/data";
-import ColoredStoryIcon from "app/assets/icons/ColoredStoryIcon";
-import { useStoreActions, useStoreState } from "app/state/store/hooks";
-import { HomepageTable } from "app/modules/home-module/components/Table";
-import DeleteStoryDialog from "app/components/Dialogs/deleteStoryDialog";
-import ReformedGridItem from "app/modules/home-module/components/AssetCollection/Stories/gridItem";
+import { StoryModel } from "@app/modules/story-module/data";
+import ColoredStoryIcon from "@app/assets/icons/ColoredStoryIcon";
+import { useStoreActions, useStoreState } from "@app/state/store/hooks";
+import { HomepageTable } from "@app/modules/home-module/components/Table";
+import DeleteStoryDialog from "@app/components/Dialogs/deleteStoryDialog";
+import ReformedGridItem from "@app/modules/home-module/components/AssetCollection/Stories/gridItem";
 import StoryAddnewCard from "./storyAddNewCard";
-import { useInfinityScroll } from "app/hooks/useInfinityScroll";
+import { useInfinityScroll } from "@app/hooks/useInfinityScroll";
 import { EditorState, convertFromRaw } from "draft-js";
 import { useSetRecoilState } from "recoil";
-import { planDialogAtom } from "app/state/recoil/atoms";
-import CircleLoader from "app/modules/home-module/components/Loader";
-import { getLimit } from "app/modules/home-module/components/AssetCollection/Datasets/datasetsGrid";
-import { update } from "lodash";
-import { updateLog } from "app/utils/updateLog";
+import { planDialogAtom } from "@app/state/recoil/atoms";
+import CircleLoader from "@app/modules/home-module/components/Loader";
+import { getLimit } from "@app/modules/home-module/components/AssetCollection/Datasets/datasetsGrid";
+import { updateLog } from "@app/utils/updateLog";
 
 interface Props {
   sortBy: string;
@@ -138,7 +137,7 @@ export default function StoriesGrid(props: Readonly<Props>) {
       return;
     }
     axios
-      .delete(`${process.env.REACT_APP_API}/story/${id}`, {
+      .delete(`${import.meta.env.VITE_API}/story/${id}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -154,7 +153,7 @@ export default function StoriesGrid(props: Readonly<Props>) {
       return;
     }
     axios
-      .get(`${process.env.REACT_APP_API}/story/duplicate/${id}`, {
+      .get(`${import.meta.env.VITE_API}/story/duplicate/${id}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },

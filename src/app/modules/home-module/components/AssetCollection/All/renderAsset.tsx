@@ -1,14 +1,14 @@
 import React from "react";
 import { AssetType } from "./assetsGrid";
 
-import ChartGridItem from "app/modules/home-module/components/AssetCollection/Charts/gridItem";
-import DatasetGridItem from "app/modules/home-module/components/AssetCollection/Datasets/gridItem";
-import StoryGridItem from "app/modules/home-module/components/AssetCollection/Stories/gridItem";
-import ColoredStoryIcon from "app/assets/icons/ColoredStoryIcon";
+import ChartGridItem from "@app/modules/home-module/components/AssetCollection/Charts/gridItem";
+import DatasetGridItem from "@app/modules/home-module/components/AssetCollection/Datasets/gridItem";
+import StoryGridItem from "@app/modules/home-module/components/AssetCollection/Stories/gridItem";
+import ColoredStoryIcon from "@app/assets/icons/ColoredStoryIcon";
 import { EditorState, convertFromRaw } from "draft-js";
-import { coloredEchartTypes } from "app/modules/chart-module/routes/chart-type/data";
+import { coloredEchartTypes } from "@app/modules/chart-module/routes/chart-type/data";
 import { find } from "lodash";
-import { echartTypes } from "app/modules/chart-module/routes/chart-type/data";
+import { echartTypes } from "@app/modules/chart-module/routes/chart-type/data";
 
 export default function RenderAsset(props: {
   data: any;

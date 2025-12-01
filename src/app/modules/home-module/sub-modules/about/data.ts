@@ -1,13 +1,13 @@
-import SiemAvi from "app/modules/home-module/assets/team/siem.png";
-import JohnAvi from "app/modules/home-module/assets/team/john.png";
-import KennyAvi from "app/modules/home-module/assets/team/kenny.png";
-import AylinAvi from "app/modules/home-module/assets/team/aylin.png";
-import SylvanAvi from "app/modules/home-module/assets/team/sylvan.png";
-import VeronikaAvi from "app/modules/home-module/assets/team/veronika.png";
-import StefanosAvi from "app/modules/home-module/assets/team/stefanos.png";
-import EmmanuellaAvi from "app/modules/home-module/assets/team/emmanuella.png";
-import SamuelAvi from "app/modules/home-module/assets/team/samuel.png";
-import AnsonAvi from "app/modules/home-module/assets/team/anson.png";
+import SiemAvi from "@app/modules/home-module/assets/team/siem.png";
+import JohnAvi from "@app/modules/home-module/assets/team/john.png";
+import KennyAvi from "@app/modules/home-module/assets/team/kenny.png";
+import AylinAvi from "@app/modules/home-module/assets/team/aylin.png";
+import SylvanAvi from "@app/modules/home-module/assets/team/sylvan.png";
+import VeronikaAvi from "@app/modules/home-module/assets/team/veronika.png";
+import StefanosAvi from "@app/modules/home-module/assets/team/stefanos.png";
+import EmmanuellaAvi from "@app/modules/home-module/assets/team/emmanuella.png";
+import SamuelAvi from "@app/modules/home-module/assets/team/samuel.png";
+import AnsonAvi from "@app/modules/home-module/assets/team/anson.png";
 
 export const uiUx = "UI/UX Design Intern";
 

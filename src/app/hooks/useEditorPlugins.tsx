@@ -1,16 +1,16 @@
 import { useMemo } from "react";
 
-import createLinkPlugin from "app/modules/common/RichEditor/anchor";
+import createLinkPlugin from "@app/modules/common/RichEditor/anchor";
 import createToolbarPlugin from "@draft-js-plugins/static-toolbar";
 import createUndoPlugin from "@draft-js-plugins/undo";
 import createTextAlignmentPlugin from "@draft-js-plugins/text-alignment";
-import { LinkButton } from "app/modules/common/RichEditor/button/linkButton";
-import { RedoIcon } from "app/assets/icons/Redo";
-import { UndoIcon } from "app/assets/icons/Undo";
+import { LinkButton } from "@app/modules/common/RichEditor/button/linkButton";
+import { RedoIcon } from "@app/assets/icons/Redo";
+import { UndoIcon } from "@app/assets/icons/Undo";
 import Tooltip from "@material-ui/core/Tooltip";
-import buttonStyles from "app/modules/common/RichEditor/style/buttonStyles.module.css";
-import toolbarStyles from "app/modules/common/RichEditor/style/toolbarStyles.module.css";
-import alignmentStyles from "app/modules/common/RichEditor/style/alignmentStyles.module.css";
+import buttonStyles from "@app/modules/common/RichEditor/style/buttonStyles.module.css";
+import toolbarStyles from "@app/modules/common/RichEditor/style/toolbarStyles.module.css";
+import alignmentStyles from "@app/modules/common/RichEditor/style/alignmentStyles.module.css";
 
 export const useEditorPlugins = () => {
   const textAlignmentPlugin = useMemo(

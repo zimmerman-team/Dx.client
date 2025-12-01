@@ -15,8 +15,11 @@
     "noEmit": true,
     "jsx": "react-jsx",
     "baseUrl": "src",
+    "paths": {
+      "@app/*": ["./app/*"]
+    },
     "noFallthroughCasesInSwitch": true,
-     "types": ["cypress", "cypress-axe"]
+    "types": ["cypress", "cypress-axe"]
   },
 
   "include": ["src"],

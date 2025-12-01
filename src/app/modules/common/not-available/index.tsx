@@ -1,9 +1,9 @@
 import React from "react";
-import { PrimaryButton } from "app/components/Styled/button";
-import { ReactComponent as SmileIcon } from "./asset/smile.svg";
+import { PrimaryButton } from "@app/components/Styled/button";
+import SmileIcon from "./asset/smile.svg?react";
 import { useHistory, useLocation } from "react-router-dom";
 import { useRecoilValue } from "recoil";
-import { shareAssetDetailsAtom } from "app/state/recoil/atoms";
+import { shareAssetDetailsAtom } from "@app/state/recoil/atoms";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 
 export default function NotAvailableOnMobile() {

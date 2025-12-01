@@ -2,8 +2,8 @@ import {
   DESKTOP_BREAKPOINT,
   MOBILE_BREAKPOINT,
   TABLET_STARTPOINT,
-} from "app/theme";
-import { css } from "styled-components/macro";
+} from "@app/theme";
+import { css } from "styled-components";
 
 export const benefitscss = css`
   position: relative;

@@ -1,17 +1,20 @@
 import React, { useEffect } from "react";
 import { Box, Grid } from "@material-ui/core";
-import Filter from "app/modules/home-module/components/Filter";
-import ExternalDatasetCard from "app/modules/home-module/components/AssetCollection/Datasets/externalDatasetCard";
-import { useStoreState } from "app/state/store/hooks";
+import Filter from "@app/modules/home-module/components/Filter";
+import ExternalDatasetCard from "@app/modules/home-module/components/AssetCollection/Datasets/externalDatasetCard";
+import { useStoreState } from "@app/state/store/hooks";
 import useDebounce from "react-use/lib/useDebounce";
 import axios from "axios";
-import CircleLoader from "app/modules/home-module/components/Loader";
-import { useInfinityScroll } from "app/hooks/useInfinityScroll";
+import CircleLoader from "@app/modules/home-module/components/Loader";
+import { useInfinityScroll } from "@app/hooks/useInfinityScroll";
 import { useRecoilState, useSetRecoilState } from "recoil";
-import { externalDataSortByAtom, planDialogAtom } from "app/state/recoil/atoms";
-import ExternalSearchTable from "app/modules/dataset-module/routes/upload-module/component/table/externalSearchTable";
-import { useCheckUserPlan } from "app/hooks/useCheckUserPlan";
-import TableSkeleton from "app/modules/dataset-module/routes/upload-module/upload-steps/step2/tableSkeleton";
+import {
+  externalDataSortByAtom,
+  planDialogAtom,
+} from "@app/state/recoil/atoms";
+import ExternalSearchTable from "@app/modules/dataset-module/routes/upload-module/component/table/externalSearchTable";
+import { useCheckUserPlan } from "@app/hooks/useCheckUserPlan";
+import TableSkeleton from "@app/modules/dataset-module/routes/upload-module/upload-steps/step2/tableSkeleton";
 
 export interface IExternalDataset {
   name: string;
@@ -55,7 +58,6 @@ const ExternalSearch = (props: {
   const terminateSearch = () => {
     abortControllerRef.current.abort();
     abortControllerRef.current = new AbortController();
-    setOffset(0);
   };
 
   const { userPlan } = useCheckUserPlan();
@@ -69,14 +71,15 @@ const ExternalSearch = (props: {
   }, [isObserved]);
 
   const loadSearch = async (nextPage: boolean = false) => {
+    const localOffset = nextPage ? offset : 0;
     try {
       setLoading(true);
       const response = await axios.get(
         `${
-          process.env.REACT_APP_API
+          import.meta.env.VITE_API
         }/external-sources/search?q=${searchValue}&source=${
           sources.length ? sources.join(",") : "Kaggle,World Bank,WHO,HDX,TGF"
-        }&offset=${offset}&limit=${limit}&sortBy=${sortValue}`,
+        }&offset=${localOffset}&limit=${limit}&sortBy=${sortValue}`,
         {
           signal: abortControllerRef.current.signal,
           headers: {
@@ -129,7 +132,6 @@ const ExternalSearch = (props: {
 
   useEffect(() => {
     if (token && firstTimeRef.current) {
-      setDatasets([]);
       loadSearch();
     }
   }, [token]);
@@ -156,7 +158,6 @@ const ExternalSearch = (props: {
     setView("table");
     if (token) {
       setIsSearching(true);
-      setDatasets([]);
       loadSearch();
     }
   };

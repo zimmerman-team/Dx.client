@@ -1,11 +1,11 @@
 import React from "react";
 import Checkbox from "@material-ui/core/Checkbox";
-import { socialAuth } from "app/utils/socialAuth";
+import { socialAuth } from "@app/utils/socialAuth";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import { socialloginbuttoncss, termsOfServiceCss } from "./style";
-import { ReactComponent as GoogleIcon } from "app/modules/home-module/components/SignInButtons/assets/google-icon.svg";
-import { ReactComponent as LinkedInIcon } from "app/modules/home-module/components/SignInButtons/assets/linkedin-icon.svg";
-import { ReactComponent as MicrosoftIcon } from "app/modules/home-module/components/SignInButtons/assets/microsoft-icon.svg";
+import GoogleIcon from "@app/modules/home-module/components/SignInButtons/assets/google-icon.svg?react";
+import LinkedInIcon from "@app/modules/home-module/components/SignInButtons/assets/linkedin-icon.svg?react";
+import MicrosoftIcon from "@app/modules/home-module/components/SignInButtons/assets/microsoft-icon.svg?react";
 import { useLocation } from "react-router-dom";
 
 export default function AuthCard(props: { isSignIn?: boolean }) {

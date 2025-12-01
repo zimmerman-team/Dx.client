@@ -1,10 +1,10 @@
 import { IconButton, Modal, createStyles, makeStyles } from "@material-ui/core";
 import { CloseOutlined } from "@material-ui/icons";
-import { ReactComponent as OpenLockIcon } from "app/modules/home-module/assets/open-lock-icon.svg";
-import { ReactComponent as GoogleIcon } from "app/modules/home-module/assets/google-icon-flat.svg";
-import { ReactComponent as LinkedInIcon } from "app/modules/home-module/assets/linkedIn-icon-flat.svg";
-import { ReactComponent as MicrosoftIcon } from "app/modules/home-module/assets/microsoft-icon-flat.svg";
-import { socialAuth } from "app/utils/socialAuth";
+import OpenLockIcon from "@app/modules/home-module/assets/open-lock-icon.svg?react";
+import GoogleIcon from "@app/modules/home-module/assets/google-icon-flat.svg?react";
+import LinkedInIcon from "@app/modules/home-module/assets/linkedIn-icon-flat.svg?react";
+import MicrosoftIcon from "@app/modules/home-module/assets/microsoft-icon-flat.svg?react";
+import { socialAuth } from "@app/utils/socialAuth";
 import React from "react";
 
 interface Props {

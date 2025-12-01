@@ -1,6 +1,6 @@
 import React from "react";
 import { useRecoilValue } from "recoil";
-import { storyContentIsResizingAtom } from "app/state/recoil/atoms";
+import { storyContentIsResizingAtom } from "@app/state/recoil/atoms";
 
 const COLUMN_WIDTH = 40;
 const COLUMN_GAP = 10;

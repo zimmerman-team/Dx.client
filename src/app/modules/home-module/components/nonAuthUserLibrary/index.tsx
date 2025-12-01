@@ -1,13 +1,13 @@
 import React from "react";
 import Container from "@material-ui/core/Container";
 import AssetsList from "./assetsList";
-import { PrimaryButton } from "app/components/Styled/button";
-import { ReactComponent as RightArrow } from "app/modules/home-module/assets/right-arr.svg";
-import { DESKTOP_BREAKPOINT, MOBILE_BREAKPOINT } from "app/theme";
+import { PrimaryButton } from "@app/components/Styled/button";
+import RightArrow from "@app/modules/home-module/assets/right-arr.svg?react";
+import { DESKTOP_BREAKPOINT, MOBILE_BREAKPOINT } from "@app/theme";
 import { useHistory } from "react-router-dom";
-import TryUsBlock from "app/modules/home-module/components/TryUsBlock";
-import { useCMSData } from "app/hooks/useCMSData";
-import { getCMSDataField } from "app/utils/getCMSDataField";
+import TryUsBlock from "@app/modules/home-module/components/TryUsBlock";
+import { useCMSData } from "@app/hooks/useCMSData";
+import { getCMSDataField } from "@app/utils/getCMSDataField";
 
 export default function NonAuthUserLibrary() {
   const cmsData = useCMSData({ returnData: true });

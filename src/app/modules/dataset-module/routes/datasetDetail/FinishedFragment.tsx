@@ -3,14 +3,14 @@ import { Link, useLocation } from "react-router-dom";
 import {
   dataSetsCss,
   mobileDescriptioncss,
-} from "app/modules/dataset-module/routes/upload-module/style";
-import { useStoreActions } from "app/state/store/hooks";
+} from "@app/modules/dataset-module/routes/upload-module/style";
+import { useStoreActions } from "@app/state/store/hooks";
 import { useMediaQuery } from "usehooks-ts";
-import { DatasetListItemAPIModel } from "app/modules/dataset-module/data";
+import { DatasetListItemAPIModel } from "@app/modules/dataset-module/data";
 import moment from "moment";
 import { useAuth0 } from "@auth0/auth0-react";
-import { FOCUS_VISIBLE_STYLE_DARK, MOBILE_BREAKPOINT } from "app/theme";
-import TablePreview from "app/modules/dataset-module/routes/upload-module/upload-steps/step2/TablePreview";
+import { FOCUS_VISIBLE_STYLE_DARK, MOBILE_BREAKPOINT } from "@app/theme";
+import TablePreview from "@app/modules/dataset-module/routes/upload-module/upload-steps/step2/TablePreview";
 
 interface Props {
   data: any[];

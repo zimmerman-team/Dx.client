@@ -8,21 +8,22 @@ import Grid from "@material-ui/core/Grid";
 import useDebounce from "react-use/lib/useDebounce";
 import { useUpdateEffect } from "react-use";
 /* project */
-import { useInfinityScroll } from "app/hooks/useInfinityScroll";
-import CircleLoader from "app/modules/home-module/components/Loader";
-import { useStoreActions, useStoreState } from "app/state/store/hooks";
-import DeleteChartDialog from "app/components/Dialogs/deleteChartDialog";
-import { HomepageTable } from "app/modules/home-module/components/Table";
+import { useInfinityScroll } from "@app/hooks/useInfinityScroll";
+import CircleLoader from "@app/modules/home-module/components/Loader";
+import { useStoreActions, useStoreState } from "@app/state/store/hooks";
+import DeleteChartDialog from "@app/components/Dialogs/deleteChartDialog";
+import { HomepageTable } from "@app/modules/home-module/components/Table";
 import {
   coloredEchartTypes,
   echartTypes,
-} from "app/modules/chart-module/routes/chart-type/data";
-import ChartAddnewCard from "app/modules/home-module/components/AssetCollection/Charts/chartAddNewCard";
-import GridItem from "app/modules/home-module/components/AssetCollection/Charts/gridItem";
+} from "@app/modules/chart-module/routes/chart-type/data";
+import ChartAddnewCard from "@app/modules/home-module/components/AssetCollection/Charts/chartAddNewCard";
+import GridItem from "@app/modules/home-module/components/AssetCollection/Charts/gridItem";
+import { useAuth0 } from "@auth0/auth0-react";
 import { useSetRecoilState } from "recoil";
-import { planDialogAtom } from "app/state/recoil/atoms";
-import { getLimit } from "app/modules/home-module/components/AssetCollection/Datasets/datasetsGrid";
-import { updateLog } from "app/utils/updateLog";
+import { planDialogAtom } from "@app/state/recoil/atoms";
+import { getLimit } from "@app/modules/home-module/components/AssetCollection/Datasets/datasetsGrid";
+import { updateLog } from "@app/utils/updateLog";
 
 interface Props {
   sortBy: string;
@@ -164,7 +165,7 @@ export default function ChartsGrid(props: Props) {
       return;
     }
     axios
-      .delete(`${process.env.REACT_APP_API}/chart/${id}`, {
+      .delete(`${import.meta.env.VITE_API}/chart/${id}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -182,7 +183,7 @@ export default function ChartsGrid(props: Props) {
 
     try {
       const response = await axios.get(
-        `${process.env.REACT_APP_API}/chart/duplicate/${id}`,
+        `${import.meta.env.VITE_API}/chart/duplicate/${id}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,

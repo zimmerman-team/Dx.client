@@ -3,7 +3,7 @@ import {
   Attendee,
   getWebinarEvents,
   GoogleEvent,
-} from "app/state/api/action-reducers/events";
+} from "@app/state/api/action-reducers/events";
 import React, { useEffect } from "react";
 
 export const useGetEvents = () => {

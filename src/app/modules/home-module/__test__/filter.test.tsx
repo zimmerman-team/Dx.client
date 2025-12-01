@@ -1,5 +1,5 @@
 import { render, screen } from "@testing-library/react";
-import Filter from "app/modules/home-module/components/Filter";
+import Filter from "@app/modules/home-module/components/Filter";
 import userEvent from "@testing-library/user-event";
 
 interface MockProps {

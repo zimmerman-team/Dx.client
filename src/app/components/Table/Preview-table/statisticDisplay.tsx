@@ -3,7 +3,7 @@ import {
   ProgressBar,
   TotalValues,
   BarChartRepresentation,
-} from "app/components/Table/Preview-table/StatisticalRepresentations";
+} from "@app/components/Table/Preview-table/StatisticalRepresentations";
 
 interface Props {
   type: "bar" | "percentage" | "unique";

@@ -5,8 +5,8 @@ import { StaticToolBarPlugin } from "@draft-js-plugins/static-toolbar";
 import { TextAlignmentPlugin } from "@draft-js-plugins/text-alignment";
 import { UndoRedoButtonProps } from "@draft-js-plugins/undo";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
-import ColorModal from "app/modules/common/RichEditor/ColorModal";
-import FontSizeController from "app/modules/common/RichEditor/fontSizeHandler";
+import ColorModal from "@app/modules/common/RichEditor/ColorModal";
+import FontSizeController from "@app/modules/common/RichEditor/fontSizeHandler";
 import {
   HiglightPicker,
   BGHiglightPicker,
@@ -21,21 +21,21 @@ import {
   BlockquoteButton,
   UndoButton,
   RedoButton,
-} from "app/modules/common/RichEditor/button/basicButtons";
-import { styles as commonstyles } from "app/modules/story-module/components/storySubHeaderToolbar/styles";
-import { ReactComponent as MoreIcon } from "app/modules/story-module/asset/more-icon.svg";
+} from "@app/modules/common/RichEditor/button/basicButtons";
+import { styles as commonstyles } from "@app/modules/story-module/components/storySubHeaderToolbar/styles";
+import MoreIcon from "@app/modules/story-module/asset/more-icon.svg?react";
 import React from "react";
-import { FontStyleHandler } from "app/modules/common/RichEditor/fontStyleHandler/fontStyleHandler";
-import { FontFamilyHandler } from "app/modules/common/RichEditor/fontStyleHandler/fontFamilyHandler";
+import { FontStyleHandler } from "@app/modules/common/RichEditor/fontStyleHandler/fontStyleHandler";
+import { FontFamilyHandler } from "@app/modules/common/RichEditor/fontStyleHandler/fontFamilyHandler";
 import {
   DecreaseIndentButton,
   IncreaseIndentButton,
-} from "app/modules/common/RichEditor/button/indentButtons";
+} from "@app/modules/common/RichEditor/button/indentButtons";
 import Tooltip from "@material-ui/core/Tooltip";
-import { useUndoRedo } from "app/hooks/useUndoRedo";
-import { IFramesArray } from "app/modules/story-module/views/create/data";
+import { useUndoRedo } from "@app/hooks/useUndoRedo";
+import { IFramesArray } from "@app/modules/story-module/views/create/data";
 import { Updater } from "use-immer";
-import { IUniformBlockTypeStyle } from "app/modules/story-module/data";
+import { IUniformBlockTypeStyle } from "@app/modules/story-module/data";
 
 type UndoRedoType = {
   UndoButton: React.ComponentType<UndoRedoButtonProps>;

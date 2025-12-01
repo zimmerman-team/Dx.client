@@ -7,19 +7,19 @@ import Grid, { GridSize } from "@material-ui/core/Grid";
 import useDebounce from "react-use/lib/useDebounce";
 import { useUpdateEffect } from "react-use";
 /* project */
-import { useInfinityScroll } from "app/hooks/useInfinityScroll";
-import CircleLoader from "app/modules/home-module/components/Loader";
-import { useStoreActions, useStoreState } from "app/state/store/hooks";
-import DeleteChartDialog from "app/components/Dialogs/deleteChartDialog";
-import DeleteDatasetDialog from "app/components/Dialogs/deleteDatasetDialog";
-import DeleteStoryDialog from "app/components/Dialogs/deleteStoryDialog";
-import { getLimit } from "app/modules/home-module/components/AssetCollection/Datasets/datasetsGrid";
-import { HomepageTable } from "app/modules/home-module/components/Table/";
-import { planDialogAtom } from "app/state/recoil/atoms";
+import { useInfinityScroll } from "@app/hooks/useInfinityScroll";
+import CircleLoader from "@app/modules/home-module/components/Loader";
+import { useStoreActions, useStoreState } from "@app/state/store/hooks";
+import DeleteChartDialog from "@app/components/Dialogs/deleteChartDialog";
+import DeleteDatasetDialog from "@app/components/Dialogs/deleteDatasetDialog";
+import DeleteStoryDialog from "@app/components/Dialogs/deleteStoryDialog";
+import { getLimit } from "@app/modules/home-module/components/AssetCollection/Datasets/datasetsGrid";
+import { HomepageTable } from "@app/modules/home-module/components/Table/";
+import { planDialogAtom } from "@app/state/recoil/atoms";
 import { useSetRecoilState } from "recoil";
-import { getColumns } from "app/modules/home-module/components/AssetCollection/All/data";
+import { getColumns } from "@app/modules/home-module/components/AssetCollection/All/data";
 import RenderAsset, { renderAssetTableData } from "./renderAsset";
-import { updateLog } from "app/utils/updateLog";
+import { updateLog } from "@app/utils/updateLog";
 
 interface Props {
   sortBy: string;
@@ -178,9 +178,9 @@ export default function AssetsGrid(props: Props) {
     }
 
     const url = {
-      chart: `${process.env.REACT_APP_API}/chart/${id}`,
-      dataset: `${process.env.REACT_APP_API}/datasets/${id}`,
-      story: `${process.env.REACT_APP_API}/story/${id}`,
+      chart: `${import.meta.env.VITE_API}/chart/${id}`,
+      dataset: `${import.meta.env.VITE_API}/datasets/${id}`,
+      story: `${import.meta.env.VITE_API}/story/${id}`,
     }[activeAssetType as AssetType];
 
     axios
@@ -201,9 +201,9 @@ export default function AssetsGrid(props: Props) {
       return;
     }
     const url = {
-      chart: `${process.env.REACT_APP_API}/chart/duplicate/${id}`,
-      dataset: `${process.env.REACT_APP_API}/dataset/duplicate/${id}`,
-      story: `${process.env.REACT_APP_API}/story/duplicate/${id}`,
+      chart: `${import.meta.env.VITE_API}/chart/duplicate/${id}`,
+      dataset: `${import.meta.env.VITE_API}/dataset/duplicate/${id}`,
+      story: `${import.meta.env.VITE_API}/story/duplicate/${id}`,
     }[assettype];
     axios
       .get(url, {

@@ -1,5 +1,5 @@
-import { APIModel } from "app/state/api";
-import { ApiCallModel } from "app/state/api/interfaces";
+import { APIModel } from "@app/state/api";
+import { ApiCallModel } from "@app/state/api/interfaces";
 
 export const LoggingState: ApiCallModel = {
   ...APIModel(`${process.env.REACT_APP_API}/logging`),

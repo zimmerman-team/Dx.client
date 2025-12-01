@@ -4,25 +4,25 @@ import axios from "axios";
 import Container from "@material-ui/core/Container";
 import { useAuth0 } from "@auth0/auth0-react";
 /** project */
-import { useStoreActions, useStoreState } from "app/state/store/hooks";
-import { useChartsRawData } from "app/hooks/useChartsRawData";
-import { stepcss } from "app/modules/dataset-module/routes/upload-module/style";
-import ObjectId from "app/utils/ObjectId";
-import { useUploadProgress } from "app/hooks/useOnUploadProgress";
-import { IExternalDataset } from "app/modules/dataset-module/routes/upload-module/upload-steps/step1/externalSearch";
-import Stepper from "app/modules/dataset-module/routes/upload-module/component/stepper";
+import { useStoreActions, useStoreState } from "@app/state/store/hooks";
+import { useChartsRawData } from "@app/hooks/useChartsRawData";
+import { stepcss } from "@app/modules/dataset-module/routes/upload-module/style";
+import ObjectId from "@app/utils/ObjectId";
+import { useUploadProgress } from "@app/hooks/useOnUploadProgress";
+import { IExternalDataset } from "@app/modules/dataset-module/routes/upload-module/upload-steps/step1/externalSearch";
+import Stepper from "@app/modules/dataset-module/routes/upload-module/component/stepper";
 import { useTitle } from "react-use";
-import { DatasetListItemAPIModel } from "app/modules/dataset-module/data";
+import { DatasetListItemAPIModel } from "@app/modules/dataset-module/data";
 import { useLocation } from "react-router-dom";
 import { useRecoilState } from "recoil";
-import { dataUploadTabAtom, planDialogAtom } from "app/state/recoil/atoms";
-import { APPLICATION_JSON } from "app/state/api";
-import HomeFooter from "app/modules/home-module/components/Footer";
+import { dataUploadTabAtom, planDialogAtom } from "@app/state/recoil/atoms";
+import { APPLICATION_JSON } from "@app/state/api";
+import HomeFooter from "@app/modules/home-module/components/Footer";
 import UploadYourData from "./step1";
-import useBackgroundColor from "app/hooks/useBackgroundColor";
+import useBackgroundColor from "@app/hooks/useBackgroundColor";
 import PrepareForUse from "./step2";
 import DescribeAndSave from "./step3";
-import { MOBILE_BREAKPOINT } from "app/theme";
+import { MOBILE_BREAKPOINT } from "@app/theme";
 import NoMobileInfoScreen from "./NoMobileInfoScreen";
 
 interface Props {
@@ -136,7 +136,7 @@ function DatasetUploadSteps(props: Props) {
     //Post the dataset
     await axios
       .post(
-        `${process.env.REACT_APP_API}/datasets`,
+        `${import.meta.env.VITE_API}/datasets`,
         { ...formDetails, authId: user?.sub, id: props.datasetId },
         {
           headers: {
@@ -183,7 +183,7 @@ function DatasetUploadSteps(props: Props) {
     formData.append(fieldname, file as File);
 
     axios
-      .post(`${process.env.REACT_APP_API}/files`, formData, {
+      .post(`${import.meta.env.VITE_API}/files`, formData, {
         headers: {
           "Content-Type": "multipart/form-data",
           Authorization: `Bearer ${token}`,
@@ -195,7 +195,7 @@ function DatasetUploadSteps(props: Props) {
         if (!response.data.error) {
           setProcessed(true);
           loadSampleDataset(
-            `${process.env.REACT_APP_API}/chart/sample-data/connect-data/${id}`
+            `${import.meta.env.VITE_API}/chart/sample-data/connect-data/${id}`
           );
           return;
         }
@@ -242,7 +242,7 @@ function DatasetUploadSteps(props: Props) {
     } as File);
     axios
       .post(
-        `${process.env.REACT_APP_API}/external-sources/download`,
+        `${import.meta.env.VITE_API}/external-sources/download`,
         { ...externalDataset, id },
         {
           headers: {
@@ -260,7 +260,7 @@ function DatasetUploadSteps(props: Props) {
           console.debug(dataUploadError, response.data.error);
         } else {
           loadSampleDataset(
-            `${process.env.REACT_APP_API}/chart/sample-data/connect-data/${id}`
+            `${import.meta.env.VITE_API}/chart/sample-data/connect-data/${id}`
           );
 
           setFormDetails({

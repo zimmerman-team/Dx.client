@@ -7,16 +7,16 @@ import Box from "@material-ui/core/Box";
 import Container from "@material-ui/core/Container";
 import IconButton from "@material-ui/core/IconButton";
 import { useLocation, useParams } from "react-router-dom";
-import { storyRightPanelViewAtom } from "app/state/recoil/atoms";
-import { RichEditor } from "app/modules/common/RichEditor";
-import { ReactComponent as EditIcon } from "app/modules/story-module/asset/editIcon.svg";
-import { ReactComponent as DeleteIcon } from "app/modules/story-module/asset/deleteIcon.svg";
-import { headerBlockcss } from "app/modules/story-module/components/headerBlock/style";
+import { storyRightPanelViewAtom } from "@app/state/recoil/atoms";
+import { RichEditor } from "@app/modules/common/RichEditor";
+import EditIcon from "@app/modules/story-module/asset/editIcon.svg?react";
+import DeleteIcon from "@app/modules/story-module/asset/deleteIcon.svg?react";
+import { headerBlockcss } from "@app/modules/story-module/components/headerBlock/style";
 import { Tooltip } from "@material-ui/core";
 import useDebounce from "react-use/lib/useDebounce";
-import { ToolbarPluginsType } from "app/modules/story-module/components/storySubHeaderToolbar/staticToolbar";
-import { IHeaderDetails } from "app/modules/story-module/components/right-panel/data";
-import { getComplexSelectionLength } from "app/utils/draftjs/getComplexSelectionLength";
+import { ToolbarPluginsType } from "@app/modules/story-module/components/storySubHeaderToolbar/staticToolbar";
+import { IHeaderDetails } from "@app/modules/story-module/components/right-panel/data";
+import { getComplexSelectionLength } from "@app/utils/draftjs/getComplexSelectionLength";
 
 interface Props {
   isToolboxOpen: boolean;

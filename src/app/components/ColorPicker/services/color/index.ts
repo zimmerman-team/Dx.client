@@ -1,4 +1,4 @@
-import { clamp } from "app/components/ColorPicker/utils";
+import { clamp } from "@app/components/ColorPicker/utils";
 
 export interface IColor {
   readonly hex: string;

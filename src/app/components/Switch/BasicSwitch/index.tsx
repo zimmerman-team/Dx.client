@@ -1,5 +1,5 @@
 import React from "react";
-import { HeadlessSwitch, Tab } from "app/components/Switch/headless";
+import { HeadlessSwitch, Tab } from "@app/components/Switch/headless";
 
 interface StyledSwitchProps {
   tabs: Tab[];

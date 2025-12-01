@@ -2,19 +2,19 @@ import React from "react";
 import Modal from "@material-ui/core/Modal";
 import { CloseOutlined } from "@material-ui/icons";
 import LinkIcon from "@material-ui/icons/Link";
-import { ReactComponent as ShareIconLight } from "app/modules/dataset-module/assets/share-icon.svg";
-import { ReactComponent as CopyIconLight } from "app/modules/dataset-module/assets/copy-icon.svg";
-import { ReactComponent as FacebookIcon } from "app/components/Dialogs/EmbedChartDialog/assets/facebook.svg";
-import { ReactComponent as TwitterIcon } from "app/components/Dialogs/EmbedChartDialog/assets/twitter.svg";
-import { ReactComponent as LinkedinIcon } from "app/components/Dialogs/EmbedChartDialog/assets/linkedIn.svg";
-import { ReactComponent as PNGIcon } from "app/components/Dialogs/EmbedChartDialog/assets/png-icon.svg";
-import { ReactComponent as SVGIcon } from "app/components/Dialogs/EmbedChartDialog/assets/svg-icon.svg";
-import { ReactComponent as PDFIcon } from "app/components/Dialogs/EmbedChartDialog/assets/pdf-icon.svg";
-import { shareModalcss } from "app/modules/story-module/components/storySubHeaderToolbar/infosnackbar";
+import ShareIconLight from "@app/modules/dataset-module/assets/share-icon.svg?react";
+import CopyIconLight from "@app/modules/dataset-module/assets/copy-icon.svg?react";
+import FacebookIcon from "@app/components/Dialogs/EmbedChartDialog/assets/facebook.svg?react";
+import TwitterIcon from "@app/components/Dialogs/EmbedChartDialog/assets/twitter.svg?react";
+import LinkedinIcon from "@app/components/Dialogs/EmbedChartDialog/assets/linkedIn.svg?react";
+import PNGIcon from "@app/components/Dialogs/EmbedChartDialog/assets/png-icon.svg?react";
+import SVGIcon from "@app/components/Dialogs/EmbedChartDialog/assets/svg-icon.svg?react";
+import PDFIcon from "@app/components/Dialogs/EmbedChartDialog/assets/pdf-icon.svg?react";
+import { shareModalcss } from "@app/modules/story-module/components/storySubHeaderToolbar/infosnackbar";
 import SaveAlt from "@material-ui/icons/SaveAlt";
 import { makeStyles, createStyles } from "@material-ui/core";
 import CopyToClipboard from "react-copy-to-clipboard";
-import { exportPage } from "app/utils/exportPage";
+import { exportPage } from "@app/utils/exportPage";
 
 const useStyles = makeStyles(() =>
   createStyles({

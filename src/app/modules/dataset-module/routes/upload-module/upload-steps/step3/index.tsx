@@ -1,13 +1,13 @@
-import { PrimaryButton } from "app/components/Styled/button";
+import { PrimaryButton } from "@app/components/Styled/button";
 import React from "react";
 import MetaData, { MetadataProps } from "./metaData";
 import TablePreview, {
   FinishedFragmentProps,
-} from "app/modules/dataset-module/routes/upload-module/upload-steps/step2/TablePreview";
-import { isValidUrl } from "app/utils/emailValidation";
+} from "@app/modules/dataset-module/routes/upload-module/upload-steps/step2/TablePreview";
+import { isValidUrl } from "@app/utils/emailValidation";
 import { useHistory, useLocation } from "react-router-dom";
-import { useStoreActions } from "app/state/store/hooks";
-import { updateLog } from "app/utils/updateLog";
+import { useStoreActions } from "@app/state/store/hooks";
+import { updateLog } from "@app/utils/updateLog";
 
 interface DescribeAndSaveProps {
   metadata: Omit<

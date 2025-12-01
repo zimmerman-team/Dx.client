@@ -1,4 +1,4 @@
-import { APPLICATION_JSON } from "app/state/api";
+import { APPLICATION_JSON } from "@app/state/api";
 import axios from "axios";
 import React from "react";
 
@@ -9,7 +9,7 @@ export function useCheckPricingActive() {
   React.useEffect(() => {
     setLoading(true);
     axios
-      .get(`${process.env.REACT_APP_API}/users/check-pricing-active`, {
+      .get(`${import.meta.env.VITE_API}/users/check-pricing-active`, {
         headers: {
           "Content-Type": APPLICATION_JSON,
         },

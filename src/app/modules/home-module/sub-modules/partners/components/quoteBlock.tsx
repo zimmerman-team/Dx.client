@@ -1,10 +1,10 @@
 import { Grid } from "@material-ui/core";
 
-import { quotecss } from "app/modules/home-module/sub-modules/partners/style";
-import Quote from "app/modules/home-module/assets/quote-icon.svg";
-import InlineLogo from "app/modules/home-module/assets/inline-logo";
-import { useCMSData } from "app/hooks/useCMSData";
-import { getCMSDataField } from "app/utils/getCMSDataField";
+import { quotecss } from "@app/modules/home-module/sub-modules/partners/style";
+import Quote from "@app/modules/home-module/assets/quote-icon.svg";
+import InlineLogo from "@app/modules/home-module/assets/inline-logo";
+import { useCMSData } from "@app/hooks/useCMSData";
+import { getCMSDataField } from "@app/utils/getCMSDataField";
 
 export default function QuoteBlock() {
   const cmsData = useCMSData({ returnData: true });

@@ -1,8 +1,8 @@
 import React from "react";
-import { ReactComponent as PlugIcon } from "app/modules/dataset-module/routes/upload-module/assets/plug.svg";
-import { copyTextToClipboard } from "app/utils/copyToClipboard";
+import PlugIcon from "@app/modules/dataset-module/routes/upload-module/assets/plug.svg?react";
+import { copyTextToClipboard } from "@app/utils/copyToClipboard";
 import { Snackbar } from "@material-ui/core";
-import { updateLog } from "app/utils/updateLog";
+import { updateLog } from "@app/utils/updateLog";
 
 export default function NoMobileInfoScreen() {
   const [copyAlert, setCopyAlert] = React.useState<boolean>(false);

@@ -1,4 +1,4 @@
-import NumberInput from "app/components/Inputs/NumberInput";
+import NumberInput from "@app/components/Inputs/NumberInput";
 import React from "react";
 import ShareLinkContent from "./shareContent";
 import CopyButton from "./copyButton";

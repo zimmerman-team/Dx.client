@@ -1,11 +1,11 @@
 import React from "react";
-import AboutCard from "app/modules/home-module/assets/about-card.png";
-import GrantsCard from "app/modules/home-module/assets/grants-card.png";
-import BudgetsCard from "app/modules/home-module/assets/budgets-card.png";
-import PerfomanceCard from "app/modules/home-module/assets/targets-result.png";
-import { FOCUS_VISIBLE_STYLE_LIGHT } from "app/theme";
-import { useCMSData } from "app/hooks/useCMSData";
-import { getCMSDataField } from "app/utils/getCMSDataField";
+import AboutCard from "@app/modules/home-module/assets/about-card.png";
+import GrantsCard from "@app/modules/home-module/assets/grants-card.png";
+import BudgetsCard from "@app/modules/home-module/assets/budgets-card.png";
+import PerfomanceCard from "@app/modules/home-module/assets/targets-result.png";
+import { FOCUS_VISIBLE_STYLE_LIGHT } from "@app/theme";
+import { useCMSData } from "@app/hooks/useCMSData";
+import { getCMSDataField } from "@app/utils/getCMSDataField";
 
 function TabCard(props: {
   src: string;

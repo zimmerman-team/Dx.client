@@ -1,13 +1,13 @@
-import { homeDisplayAtom } from "app/state/recoil/atoms";
+import { homeDisplayAtom } from "@app/state/recoil/atoms";
 import React from "react";
 import SwipeableViews from "react-swipeable-views";
 import { useRecoilState } from "recoil";
-import AddAssetDropdown from "app/modules/home-module/components/AddAssetDropdown";
+import AddAssetDropdown from "@app/modules/home-module/components/AddAssetDropdown";
 import {
   SearchInput,
   SearchInputProps,
-} from "app/modules/home-module/components/Filter/SearchInput";
-import { ReactComponent as MenuIcon } from "app/modules/home-module/assets/menu.svg";
+} from "@app/modules/home-module/components/Filter/SearchInput";
+import MenuIcon from "@app/modules/home-module/assets/menu.svg?react";
 
 import { useOnClickOutside } from "usehooks-ts";
 import Popover from "@material-ui/core/Popover";

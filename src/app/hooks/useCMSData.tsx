@@ -1,8 +1,8 @@
 import React from "react";
 import get from "lodash/get";
 import { useUpdateEffect } from "react-use";
-import { useStoreActions, useStoreState } from "app/state/store/hooks";
-import { CMSDataValueModel } from "app/state/api/action-reducers/sync";
+import { useStoreActions, useStoreState } from "@app/state/store/hooks";
+import { CMSDataValueModel } from "@app/state/api/action-reducers/sync";
 
 interface UseCMSDataProps {
   loadData?: boolean;

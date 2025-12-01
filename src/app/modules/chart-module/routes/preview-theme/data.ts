@@ -1,4 +1,4 @@
-import { ChartAPIModel } from "app/modules/chart-module/data";
+import { ChartAPIModel } from "@app/modules/chart-module/data";
 
 export interface ChartBuilderPreviewThemeProps {
   editable: any;

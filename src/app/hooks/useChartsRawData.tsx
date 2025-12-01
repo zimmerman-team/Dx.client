@@ -5,13 +5,13 @@ import isEmpty from "lodash/isEmpty";
 import { useLocation, useParams } from "react-router-dom";
 import axios, { AxiosError, AxiosResponse } from "axios";
 /* project */
-import { useStoreActions, useStoreState } from "app/state/store/hooks";
+import { useStoreActions, useStoreState } from "@app/state/store/hooks";
 import {
   ChartAPIModel,
   ChartRenderedItem,
-} from "app/modules/chart-module/data";
+} from "@app/modules/chart-module/data";
 import { isEqual } from "lodash";
-import { APPLICATION_JSON } from "app/state/api";
+import { APPLICATION_JSON } from "@app/state/api";
 
 const getValidMapping = (
   chartFromAPI: ChartRenderedItem | null,
@@ -224,7 +224,7 @@ export function useChartsRawData(props: {
     }
     await axios
       .post(
-        `${process.env.REACT_APP_API}/chart/${chartId ?? page}/render${
+        `${import.meta.env.VITE_API}/chart/${chartId ?? page}/render${
           token === "" ? "/public" : ""
         }`,
         body,

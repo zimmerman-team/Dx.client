@@ -1,4 +1,4 @@
-import { DatasetListItemAPIModel } from "app/modules/dataset-module/data";
+import { DatasetListItemAPIModel } from "@app/modules/dataset-module/data";
 
 const modifiedSourceUrl = (url: string) => {
   if (!url) {

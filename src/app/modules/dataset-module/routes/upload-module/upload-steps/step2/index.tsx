@@ -1,10 +1,10 @@
 import React from "react";
-import { PrimaryButton } from "app/components/Styled/button";
+import { PrimaryButton } from "@app/components/Styled/button";
 import Processing, { ProcessingMetaDataProps } from "./processing";
 import TableSkeleton from "./tableSkeleton";
-import { FinishedFragmentProps } from "app/modules/dataset-module/routes/upload-module/upload-steps/step2/TablePreview";
-import TablePreview from "app/modules/dataset-module/routes/upload-module/upload-steps/step2/TablePreview";
-import { TABLET_STARTPOINT, DESKTOP_BREAKPOINT } from "app/theme";
+import { FinishedFragmentProps } from "@app/modules/dataset-module/routes/upload-module/upload-steps/step2/TablePreview";
+import TablePreview from "@app/modules/dataset-module/routes/upload-module/upload-steps/step2/TablePreview";
+import { TABLET_STARTPOINT, DESKTOP_BREAKPOINT } from "@app/theme";
 
 export default function PrepareForUse(props: {
   processing: ProcessingMetaDataProps;

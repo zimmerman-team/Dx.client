@@ -1,5 +1,5 @@
-import { DESKTOP_BREAKPOINT, MOBILE_BREAKPOINT } from "app/theme";
-import { css } from "styled-components/macro";
+import { DESKTOP_BREAKPOINT, MOBILE_BREAKPOINT } from "@app/theme";
+import { css } from "styled-components";
 
 export const subParagraphcss = css`
   color: #231d2c;

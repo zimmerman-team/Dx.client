@@ -1,25 +1,24 @@
 import React from "react";
-import { useStoreState } from "app/state/store/hooks";
-import { styles as commonStyles } from "app/modules/chart-module/routes/common/styles";
-import { ReactComponent as GeomapChartPlaceholderImage } from "app/modules/chart-module/assets/geomapPlaceholder.svg";
-import { ReactComponent as LinechartPlaceholderImage } from "app/modules/chart-module/assets/lineChartPlaceholder.svg";
-import { ReactComponent as BigNumberPlaceholderImage } from "app/modules/chart-module/assets/bigNumberPlaceholder.svg";
-import { ReactComponent as BarChartPlaceholderImage } from "app/modules/chart-module/assets/barChartPlaceholder.svg";
-import { ReactComponent as SankeyPlaceholderImage } from "app/modules/chart-module/assets/sankeyPlaceholder.svg";
-import { ReactComponent as TreemapPlaceholderImage } from "app/modules/chart-module/assets/treemapPlaceholder.svg";
-
-import { ReactComponent as SunburstPlaceholderImage } from "app/modules/chart-module/assets/sunburstPlaceholder.svg";
-import { ReactComponent as PieChartPlaceholderImage } from "app/modules/chart-module/assets/pieChartPlaceholder.svg";
-import { ReactComponent as CirclepackingPlaceholderImage } from "app/modules/chart-module/assets/circlepackingPlaceholder.svg";
-import { ReactComponent as ForcegraphPlaceholderImage } from "app/modules/chart-module/assets/forcegraphPlaceholder.svg";
-import { ReactComponent as CirculargraphPlaceholderImage } from "app/modules/chart-module/assets/circulargraphPlaceholder.svg";
-import { ReactComponent as RadarChartPlaceholderImage } from "app/modules/chart-module/assets/radarChartPlaceholder.svg";
-import { ReactComponent as ScatterChartPlaceholderImage } from "app/modules/chart-module/assets/scatterChartPlaceholder.svg";
-import { ReactComponent as GraphglPlaceholderImage } from "app/modules/chart-module/assets/graphglPlaceholder.svg";
-import { ReactComponent as HeatmapPlaceholderImage } from "app/modules/chart-module/assets/heatmapPlaceholder.svg";
-import { ReactComponent as AreatimeaxisPlaceholderImage } from "app/modules/chart-module/assets/areatimeaxisPlaceholder.svg";
-import { ReactComponent as AreastackedPlaceholderImage } from "app/modules/chart-module/assets/areastackedPlaceholder.svg";
-import { CHART_DEFAULT_HEIGHT } from "app/modules/chart-module/data";
+import { useStoreState } from "@app/state/store/hooks";
+import { styles as commonStyles } from "@app/modules/chart-module/routes/common/styles";
+import GeomapChartPlaceholderImage from "@app/modules/chart-module/assets/geomapPlaceholder.svg?react";
+import LinechartPlaceholderImage from "@app/modules/chart-module/assets/lineChartPlaceholder.svg?react";
+import BigNumberPlaceholderImage from "@app/modules/chart-module/assets/bigNumberPlaceholder.svg?react";
+import BarChartPlaceholderImage from "@app/modules/chart-module/assets/barChartPlaceholder.svg?react";
+import SankeyPlaceholderImage from "@app/modules/chart-module/assets/sankeyPlaceholder.svg?react";
+import TreemapPlaceholderImage from "@app/modules/chart-module/assets/treemapPlaceholder.svg?react";
+import SunburstPlaceholderImage from "@app/modules/chart-module/assets/sunburstPlaceholder.svg?react";
+import PieChartPlaceholderImage from "@app/modules/chart-module/assets/pieChartPlaceholder.svg?react";
+import CirclepackingPlaceholderImage from "@app/modules/chart-module/assets/circlepackingPlaceholder.svg?react";
+import ForcegraphPlaceholderImage from "@app/modules/chart-module/assets/forcegraphPlaceholder.svg?react";
+import CirculargraphPlaceholderImage from "@app/modules/chart-module/assets/circulargraphPlaceholder.svg?react";
+import RadarChartPlaceholderImage from "@app/modules/chart-module/assets/radarChartPlaceholder.svg?react";
+import ScatterChartPlaceholderImage from "@app/modules/chart-module/assets/scatterChartPlaceholder.svg?react";
+import GraphglPlaceholderImage from "@app/modules/chart-module/assets/graphglPlaceholder.svg?react";
+import HeatmapPlaceholderImage from "@app/modules/chart-module/assets/heatmapPlaceholder.svg?react";
+import AreatimeaxisPlaceholderImage from "@app/modules/chart-module/assets/areatimeaxisPlaceholder.svg?react";
+import AreastackedPlaceholderImage from "@app/modules/chart-module/assets/areastackedPlaceholder.svg?react";
+import { CHART_DEFAULT_HEIGHT } from "@app/modules/chart-module/data";
 
 export default function ChartPlaceholder(props: { loading?: boolean }) {
   const chartType = useStoreState((state) => state.charts.chartType.value);
