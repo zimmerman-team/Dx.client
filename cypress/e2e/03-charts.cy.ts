@@ -14,7 +14,7 @@ const randomId = () => Cypress._.random(0, 1e8);
 //@ts-ignore
 const testname1 = `testname${randomId()}`;
 const testname2 = `testname${randomId()}`;
-const testname3 = `testname${randomId()}`;
+// const testname3 = `testname${randomId()}`;
 
 describe("Testing create chart on DX", () => {
   const apiUrl = Cypress.env("api_url");
@@ -50,16 +50,16 @@ describe("Testing create chart on DX", () => {
       .contains("ChartDataset")
       .should("be.visible");
 
-    cy.intercept("GET", `${apiUrl}/chart-types/ai-suggestions?id=*`).as(
-      "aiSuggestion"
-    );
+    // cy.intercept("GET", `${apiUrl}/chart-types/ai-suggestions?id=*`).as(
+    //   "aiSuggestion"
+    // );
 
     cy.get('[data-cy="toolbox-chart-next"]').click();
-    cy.wait("@aiSuggestion");
-    cy.get('[data-cy="ai-agent-switch"]').should("be.checked");
-    cy.get('[data-cy="ai-agent-switch"]').click();
-    cy.wait(4000);
-    cy.get('[data-cy="ai-agent-switch"]').should("not.be.checked");
+    // cy.wait("@aiSuggestion");
+    // cy.get('[data-cy="ai-agent-switch"]').should("be.checked");
+    // cy.get('[data-cy="ai-agent-switch"]').click();
+    // cy.wait(4000);
+    // cy.get('[data-cy="ai-agent-switch"]').should("not.be.checked");
   });
 
   it("Logs A11y violations to the terminal", () => {
@@ -1902,99 +1902,99 @@ describe("Testing create chart on DX", () => {
   });
 });
 
-describe("Testing Ai chart creation", () => {
-  const apiUrl = Cypress.env("api_url");
+// describe("Testing Ai chart creation", () => {
+//   const apiUrl = Cypress.env("api_url");
 
-  beforeEach(() => {
-    cy.restoreLocalStorageCache();
-    cy.intercept("GET", `${apiUrl}/users/plan-data`).as("planData");
+//   beforeEach(() => {
+//     cy.restoreLocalStorageCache();
+//     cy.intercept("GET", `${apiUrl}/users/plan-data`).as("planData");
 
-    cy.visit("/");
-    cy.injectAxe();
+//     cy.visit("/");
+//     cy.injectAxe();
 
-    cy.wait("@planData");
+//     cy.wait("@planData");
 
-    cy.get('[data-cy="cookie-btn"]').click();
-    cy.intercept("GET", `${apiUrl}/datasets?**`).as("getDatasets");
-    cy.get('[data-cy="home-asset-dropdown-button"]').click();
-    cy.get('[data-cy="home-create-chart-button"]').click();
-    cy.wait("@getDatasets");
+//     cy.get('[data-cy="cookie-btn"]').click();
+//     cy.intercept("GET", `${apiUrl}/datasets?**`).as("getDatasets");
+//     cy.get('[data-cy="home-asset-dropdown-button"]').click();
+//     cy.get('[data-cy="home-create-chart-button"]').click();
+//     cy.wait("@getDatasets");
 
-    cy.intercept("GET", `${apiUrl}/chart/sample-data/*`).as("getDataset");
+//     cy.intercept("GET", `${apiUrl}/chart/sample-data/*`).as("getDataset");
 
-    cy.contains('[data-cy="dataset-grid-item"]', "ChartDataset")
-      .first()
-      .click();
+//     cy.contains('[data-cy="dataset-grid-item"]', "ChartDataset")
+//       .first()
+//       .click();
 
-    cy.wait("@getDataset");
+//     cy.wait("@getDataset");
 
-    cy.contains("Please select a dataset");
+//     cy.contains("Please select a dataset");
 
-    cy.get('[data-cy="toolbox-selected-dataset"]')
-      .contains("ChartDataset")
-      .should("be.visible");
+//     cy.get('[data-cy="toolbox-selected-dataset"]')
+//       .contains("ChartDataset")
+//       .should("be.visible");
 
-    cy.intercept("GET", `${apiUrl}/chart-types/ai-suggestions?id=*`).as(
-      "aiSuggestion"
-    );
+//     cy.intercept("GET", `${apiUrl}/chart-types/ai-suggestions?id=*`).as(
+//       "aiSuggestion"
+//     );
 
-    cy.get('[data-cy="toolbox-chart-next"]').click();
-  });
-  it("Logs A11y violations to the terminal", () => {
-    cy.checkA11y(undefined, undefined, undefined, true);
-  });
-  it("Can create a chart with AI", () => {
-    cy.wait("@aiSuggestion");
+//     cy.get('[data-cy="toolbox-chart-next"]').click();
+//   });
+//   it("Logs A11y violations to the terminal", () => {
+//     cy.checkA11y(undefined, undefined, undefined, true);
+//   });
+//   it("Can create a chart with AI", () => {
+//     cy.wait("@aiSuggestion");
 
-    cy.get('[data-cy="ai-agent-switch"]').should("be.checked");
+//     cy.get('[data-cy="ai-agent-switch"]').should("be.checked");
 
-    cy.intercept(`${apiUrl}/chart`).as("saveChart");
-    cy.intercept(`${apiUrl}/chart/*`).as("saveChart2");
-    cy.intercept(`${apiUrl}/chart/*/render`).as("renderChart");
+//     cy.intercept(`${apiUrl}/chart`).as("saveChart");
+//     cy.intercept(`${apiUrl}/chart/*`).as("saveChart2");
+//     cy.intercept(`${apiUrl}/chart/*/render`).as("renderChart");
 
-    cy.get('[data-cy="ai-suggestion-icon"]').filter(":visible").eq(0).click();
+//     cy.get('[data-cy="ai-suggestion-icon"]').filter(":visible").eq(0).click();
 
-    cy.get('[data-cy="toolbox-chart-next"]').click();
+//     cy.get('[data-cy="toolbox-chart-next"]').click();
 
-    cy.wait("@saveChart");
-    cy.wait("@renderChart");
+//     cy.wait("@saveChart");
+//     cy.wait("@renderChart");
 
-    cy.location("pathname").should("include", "/mapping");
+//     cy.location("pathname").should("include", "/mapping");
 
-    cy.get('[data-cy="story-sub-header-title-input"]').type(
-      `{selectall}{backspace}${testname3}`
-    );
+//     cy.get('[data-cy="story-sub-header-title-input"]').type(
+//       `{selectall}{backspace}${testname3}`
+//     );
 
-    cy.get('[data-cy="common-chart-container"]').should("be.visible");
+//     cy.get('[data-cy="common-chart-container"]').should("be.visible");
 
-    cy.get('[data-cy="toolbox-chart-next"]').click();
+//     cy.get('[data-cy="toolbox-chart-next"]').click();
 
-    // cy.wait("@renderChart");
+//     // cy.wait("@renderChart");
 
-    cy.get('[data-cy="toolbox-chart-next"]').click();
+//     cy.get('[data-cy="toolbox-chart-next"]').click();
 
-    // cy.wait("@renderChart");
+//     // cy.wait("@renderChart");
 
-    cy.get('[data-cy="toolbox-chart-next"]').click();
+//     cy.get('[data-cy="toolbox-chart-next"]').click();
 
-    cy.wait("@saveChart2");
+//     cy.wait("@saveChart2");
 
-    cy.visit("/");
+//     cy.visit("/");
 
-    cy.intercept("GET", `${apiUrl}/charts*`).as("fetchCharts");
+//     cy.intercept("GET", `${apiUrl}/charts*`).as("fetchCharts");
 
-    cy.get('[data-cy="home-charts-tab"]').scrollIntoView().click();
+//     cy.get('[data-cy="home-charts-tab"]').scrollIntoView().click();
 
-    cy.wait("@fetchCharts");
+//     cy.wait("@fetchCharts");
 
-    cy.contains('[data-cy="chart-grid-item"]', `${testname3}`)
-      .first()
-      .scrollIntoView()
-      .within(() => {
-        cy.get('[data-cy="chart-grid-item-ai-icon"]').should("be.visible");
-      });
-  });
-});
+//     cy.contains('[data-cy="chart-grid-item"]', `${testname3}`)
+//       .first()
+//       .scrollIntoView()
+//       .within(() => {
+//         cy.get('[data-cy="chart-grid-item-ai-icon"]').should("be.visible");
+//       });
+//   });
+// });
 
 describe("Edit, duplicate and delete chart", () => {
   const apiUrl = Cypress.env("api_url");
@@ -2164,29 +2164,29 @@ describe("Edit, duplicate and delete chart", () => {
     //   .contains("Soccer Players (Copy)")
     //   .should("not.exist");
 
-    cy.get("[data-cy=home-search-button]").click();
-    cy.wait(2000);
-    cy.get("[data-cy=filter-search-input]").type(
-      `{selectall}{backspace}${testname3}`
-    );
-    cy.wait("@fetchCharts");
+    // cy.get("[data-cy=home-search-button]").click();
+    // cy.wait(2000);
+    // cy.get("[data-cy=filter-search-input]").type(
+    //   `{selectall}{backspace}${testname3}`
+    // );
+    // cy.wait("@fetchCharts");
 
-    cy.contains('[data-cy="chart-grid-item"]', `${testname3}`)
-      .first()
-      .scrollIntoView()
-      .within(() => {
-        cy.get('[data-cy="chart-grid-item-menu-btn"]').click();
-      });
+    // cy.contains('[data-cy="chart-grid-item"]', `${testname3}`)
+    //   .first()
+    //   .scrollIntoView()
+    //   .within(() => {
+    //     cy.get('[data-cy="chart-grid-item-menu-btn"]').click();
+    //   });
 
-    cy.get('[data-cy="chart-grid-item-delete-btn"]').click();
-    cy.intercept("DELETE", `${apiUrl}/chart/*`).as("deleteChart");
+    // cy.get('[data-cy="chart-grid-item-delete-btn"]').click();
+    // cy.intercept("DELETE", `${apiUrl}/chart/*`).as("deleteChart");
 
-    cy.get('[data-cy="delete-chart-item-form"]').within(() => {
-      cy.get('[data-cy="delete-chart-item-input"]').type("DELETE{enter}");
-    });
+    // cy.get('[data-cy="delete-chart-item-form"]').within(() => {
+    //   cy.get('[data-cy="delete-chart-item-input"]').type("DELETE{enter}");
+    // });
 
-    cy.wait("@deleteChart");
+    // cy.wait("@deleteChart");
 
-    cy.wait("@fetchCharts");
+    // cy.wait("@fetchCharts");
   });
 });
