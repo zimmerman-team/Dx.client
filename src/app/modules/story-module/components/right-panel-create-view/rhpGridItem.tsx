@@ -2,12 +2,12 @@
 import React from "react";
 import moment from "moment";
 /* project */
-import { ReactComponent as ClockIcon } from "app/modules/story-module/asset/clock-img.svg";
-import { ReactComponent as ExpandIcon } from "app/modules/story-module/asset/expand-icon.svg";
+import ClockIcon from "@app/modules/story-module/asset/clock-img.svg?react";
+import ExpandIcon from "@app/modules/story-module/asset/expand-icon.svg?react";
 import { IconButton } from "@material-ui/core";
-import { StoryChartWrapper } from "app/modules/story-module/components/chart-wrapper/";
-import AIIcon from "app/assets/icons/AIIcon";
-import { TABLET_STARTPOINT } from "app/theme";
+import { StoryChartWrapper } from "@app/modules/story-module/components/chart-wrapper/";
+import AIIcon from "@app/assets/icons/AIIcon";
+import { TABLET_STARTPOINT } from "@app/theme";
 
 interface Props {
   id: string;

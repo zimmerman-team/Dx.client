@@ -1,13 +1,13 @@
 import React from "react";
 import SwipeableViews from "react-swipeable-views";
 import { autoPlay } from "react-swipeable-views-utils";
-import CardA from "app/modules/home-module/assets/dashboard-card-a.png";
-import CardB from "app/modules/home-module/assets/dashboard-card-b.png";
-import CardC from "app/modules/home-module/assets/dashboard-card-c.png";
-import CardD from "app/modules/home-module/assets/dashboard-card-d.png";
+import CardA from "@app/modules/home-module/assets/dashboard-card-a.png";
+import CardB from "@app/modules/home-module/assets/dashboard-card-b.png";
+import CardC from "@app/modules/home-module/assets/dashboard-card-c.png";
+import CardD from "@app/modules/home-module/assets/dashboard-card-d.png";
 
-import { DESKTOP_BREAKPOINT, MOBILE_BREAKPOINT } from "app/theme";
-import { Pagination } from "app/modules/home-module/sub-modules/partners/components/partnerCarousel/partnerCarousel";
+import { DESKTOP_BREAKPOINT, MOBILE_BREAKPOINT } from "@app/theme";
+import { Pagination } from "@app/modules/home-module/sub-modules/partners/components/partnerCarousel/partnerCarousel";
 
 const AutoPlaySwipeableViews = autoPlay(SwipeableViews);
 export default function DashboardCarousel() {

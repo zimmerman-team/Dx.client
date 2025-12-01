@@ -1,11 +1,11 @@
 import Popover from "@material-ui/core/Popover";
-import { useCheckUserPlan } from "app/hooks/useCheckUserPlan";
-import { useMenuNavigation } from "app/hooks/useMenuNavigation";
+import { useCheckUserPlan } from "@app/hooks/useCheckUserPlan";
+import { useMenuNavigation } from "@app/hooks/useMenuNavigation";
 import {
   FOCUS_VISIBLE_STYLE_DARK,
   FOCUS_VISIBLE_STYLE_LIGHT,
   MOBILE_BREAKPOINT,
-} from "app/theme";
+} from "@app/theme";
 import React from "react";
 import { useHistory } from "react-router-dom";
 

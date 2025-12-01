@@ -1,17 +1,17 @@
 /* third-party */
 import React from "react";
 import find from "lodash/find";
-import { useStoreState } from "app/state/store/hooks";
+import { useStoreState } from "@app/state/store/hooks";
 /* project */
 import {
   echartTypes,
   ChartTypeModel,
-} from "app/modules/chart-module/routes/chart-type/data";
-import ToolboxSubHeader from "app/modules/chart-module/components/toolbox/steps/sub-header";
-import { ReactComponent as InfoIcon } from "app/modules/chart-module/assets/info-icon.svg";
-import { ReactComponent as DateIcon } from "app/modules/chart-module/assets/dateIcon.svg";
-import { ReactComponent as NumberIcon } from "app/modules/chart-module/assets/numberIcon.svg";
-import { ReactComponent as StringIcon } from "app/modules/chart-module/assets/stringIcon.svg";
+} from "@app/modules/chart-module/routes/chart-type/data";
+import ToolboxSubHeader from "@app/modules/chart-module/components/toolbox/steps/sub-header";
+import InfoIcon from "@app/modules/chart-module/assets/info-icon.svg?react";
+import DateIcon from "@app/modules/chart-module/assets/dateIcon.svg?react";
+import NumberIcon from "@app/modules/chart-module/assets/numberIcon.svg?react";
+import StringIcon from "@app/modules/chart-module/assets/stringIcon.svg?react";
 import { Box, Grid } from "@material-ui/core";
 import {
   echartsBarchart,

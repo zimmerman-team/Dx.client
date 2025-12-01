@@ -6,30 +6,30 @@ import { useRecoilState } from "recoil";
 import Box from "@material-ui/core/Box";
 import Container from "@material-ui/core/Container";
 /* project */
-import ChartsGrid from "app/modules/home-module/components/AssetCollection/Charts/chartsGrid";
-import StoriesGrid from "app/modules/home-module/components/AssetCollection/Stories/storiesGrid";
-import DatasetsGrid from "app/modules/home-module/components/AssetCollection/Datasets/datasetsGrid";
+import ChartsGrid from "@app/modules/home-module/components/AssetCollection/Charts/chartsGrid";
+import StoriesGrid from "@app/modules/home-module/components/AssetCollection/Stories/storiesGrid";
+import DatasetsGrid from "@app/modules/home-module/components/AssetCollection/Datasets/datasetsGrid";
 import {
   homeDisplayAtom,
   allAssetsViewAtom,
   allAssetsSortBy,
   allAssetsFilterBy,
-} from "app/state/recoil/atoms";
-import { featuredAssetsCss } from "app/modules/home-module/style";
-import DatasetCategoryList from "app/modules/home-module/components/AssetCollection/Datasets/datasetCategoryList";
-import { datasetCategories } from "app/modules/dataset-module/routes/upload-module/upload-steps/step3/metaData";
-import AssetsGrid from "app/modules/home-module/components/AssetCollection/All/assetsGrid";
-import Filter from "app/modules/home-module/components/Filter";
+} from "@app/state/recoil/atoms";
+import { featuredAssetsCss } from "@app/modules/home-module/style";
+import DatasetCategoryList from "@app/modules/home-module/components/AssetCollection/Datasets/datasetCategoryList";
+import { datasetCategories } from "@app/modules/dataset-module/routes/upload-module/upload-steps/step3/metaData";
+import AssetsGrid from "@app/modules/home-module/components/AssetCollection/All/assetsGrid";
+import Filter from "@app/modules/home-module/components/Filter";
 import {
   DESKTOP_BREAKPOINT,
   FOCUS_VISIBLE_STYLE_LIGHT,
   MOBILE_BREAKPOINT,
   TABLET_STARTPOINT,
-} from "app/theme";
-import { MultiSwitch } from "app/modules/home-module/components/TabSwitch";
-import { useStoreActions, useStoreState } from "app/state/store/hooks";
+} from "@app/theme";
+import { MultiSwitch } from "@app/modules/home-module/components/TabSwitch";
+import { useStoreActions, useStoreState } from "@app/state/store/hooks";
 import get from "lodash/get";
-import MobileControls from "app/modules/home-module/components/MobileAssetsControls";
+import MobileControls from "@app/modules/home-module/components/MobileAssetsControls";
 import { useMediaQuery } from "@material-ui/core";
 import { useDebounce } from "react-use";
 

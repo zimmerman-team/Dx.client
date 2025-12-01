@@ -1,18 +1,18 @@
 import React from "react";
 import { Checkbox, Container, FormControlLabel } from "@material-ui/core";
-import { DESKTOP_BREAKPOINT, MOBILE_BREAKPOINT } from "app/theme";
-import { CalendarIcon3 } from "app/modules/home-module/sub-modules/webinar/assets/CalendarIcon";
-import { ClockIcon2 } from "app/modules/home-module/sub-modules/webinar/assets/ClockIcon";
-import InfoIcon from "app/modules/home-module/sub-modules/webinar/assets/InfoIcon";
-import InputField from "app/modules/home-module/sub-modules/contact/components/input";
-import { PrimaryButton } from "app/components/Styled/button";
-import HomeFooter from "app/modules/home-module/components/Footer";
-import TryUsBlock from "app/modules/home-module/components/TryUsBlock";
-import { useAddAttendee, useGetEvents } from "app/hooks/useEvents";
+import { DESKTOP_BREAKPOINT, MOBILE_BREAKPOINT } from "@app/theme";
+import { CalendarIcon3 } from "@app/modules/home-module/sub-modules/webinar/assets/CalendarIcon";
+import { ClockIcon2 } from "@app/modules/home-module/sub-modules/webinar/assets/ClockIcon";
+import InfoIcon from "@app/modules/home-module/sub-modules/webinar/assets/InfoIcon";
+import InputField from "@app/modules/home-module/sub-modules/contact/components/input";
+import { PrimaryButton } from "@app/components/Styled/button";
+import HomeFooter from "@app/modules/home-module/components/Footer";
+import TryUsBlock from "@app/modules/home-module/components/TryUsBlock";
+import { useAddAttendee, useGetEvents } from "@app/hooks/useEvents";
 import moment from "moment";
-import CircleLoader from "app/modules/home-module/components/Loader";
-import { useCMSData } from "app/hooks/useCMSData";
-import { getCMSDataField } from "app/utils/getCMSDataField";
+import CircleLoader from "@app/modules/home-module/components/Loader";
+import { useCMSData } from "@app/hooks/useCMSData";
+import { getCMSDataField } from "@app/utils/getCMSDataField";
 
 const ReserveYourSpot = () => {
   const cmsData = useCMSData({ returnData: true });

@@ -1,4 +1,4 @@
-import { css } from "styled-components/macro";
+import { css } from "styled-components";
 
 export const container = (focused: boolean, withCatMenu: boolean) => css`
   display: flex;

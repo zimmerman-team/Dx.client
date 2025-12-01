@@ -5,33 +5,33 @@ import Tooltip from "@material-ui/core/Tooltip";
 import IconButton from "@material-ui/core/IconButton";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { useLocation, useParams } from "react-router-dom";
-import { ReactComponent as EditIcon } from "app/modules/story-module/asset/editIcon.svg";
-import { ReactComponent as RedoIcon } from "app/modules/story-module/asset/redo-icon.svg";
-import { ReactComponent as DeleteIcon } from "app/modules/story-module/asset/deleteIcon.svg";
+import EditIcon from "@app/modules/story-module/asset/editIcon.svg?react";
+import RedoIcon from "@app/modules/story-module/asset/redo-icon.svg?react";
+import DeleteIcon from "@app/modules/story-module/asset/deleteIcon.svg?react";
 import {
   storyContentContainerWidth,
   storyContentIsResizingAtom,
-} from "app/state/recoil/atoms";
-import { IFramesArray } from "app/modules/story-module/views/create/data";
-import { ToolbarPluginsType } from "app/modules/story-module/components/storySubHeaderToolbar/staticToolbar";
+} from "@app/state/recoil/atoms";
+import { IFramesArray } from "@app/modules/story-module/views/create/data";
+import { ToolbarPluginsType } from "@app/modules/story-module/components/storySubHeaderToolbar/staticToolbar";
 import { Updater } from "use-immer";
 import { useMediaQuery } from "@material-ui/core";
 import { rowStructureHeights } from "./data";
 import { calculateWidths } from ".";
 import Box, { ContentType } from "./box";
-import { usehandleRowFrameItemResize } from "app/hooks/useHandleRowFrameItemResize";
+import { usehandleRowFrameItemResize } from "@app/hooks/useHandleRowFrameItemResize";
 import {
   DESKTOP_BREAKPOINT,
   FOCUS_VISIBLE_STYLE_DARK,
   MOBILE_BREAKPOINT,
-} from "app/theme";
+} from "@app/theme";
 import { NumberSize, Resizable } from "re-resizable";
 import { Direction } from "re-resizable/lib/resizer";
 import {
   MIN_BOX_HEIGHT,
   MIN_BOX_WIDTH,
-} from "app/modules/story-module/components/rowStructure/data";
-import { useUndoRedo } from "app/hooks/useUndoRedo";
+} from "@app/modules/story-module/components/rowStructure/data";
+import { useUndoRedo } from "@app/hooks/useUndoRedo";
 import { isEqual } from "lodash";
 
 interface RowStructureDisplayProps {

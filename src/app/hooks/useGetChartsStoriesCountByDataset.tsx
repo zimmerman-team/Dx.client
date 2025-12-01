@@ -1,5 +1,5 @@
-import { APPLICATION_JSON } from "app/state/api";
-import { useStoreState } from "app/state/store/hooks";
+import { APPLICATION_JSON } from "@app/state/api";
+import { useStoreState } from "@app/state/store/hooks";
 import axios from "axios";
 import { get } from "lodash";
 import React, { useEffect } from "react";
@@ -16,7 +16,9 @@ const useGetChartsStoriesCountByDataset = (datasetId: string) => {
     setLoading(true);
     return await axios
       .get(
-        `${process.env.REACT_APP_API}/datasets/${datasetId}/charts-stories/count`,
+        `${
+          import.meta.env.VITE_API
+        }/datasets/${datasetId}/charts-stories/count`,
         {
           headers: {
             "Content-Type": APPLICATION_JSON,

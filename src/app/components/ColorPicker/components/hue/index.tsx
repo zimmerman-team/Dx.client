@@ -1,11 +1,11 @@
 import React, { memo, useCallback, useMemo } from "react";
 
-import { Interactive } from "app/components/ColorPicker/components/interactive";
-import { useBoundingClientRect } from "app/components/ColorPicker/hooks/useBoundingClientRect";
+import { Interactive } from "@app/components/ColorPicker/components/interactive";
+import { useBoundingClientRect } from "@app/components/ColorPicker/hooks/useBoundingClientRect";
 import {
   ColorService,
   IColor,
-} from "app/components/ColorPicker/services/color";
+} from "@app/components/ColorPicker/services/color";
 
 interface IHueProps {
   readonly color: IColor;

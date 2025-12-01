@@ -1,13 +1,13 @@
 import React, { memo, useCallback, useMemo } from "react";
 
-import { useBoundingClientRect } from "app/components/ColorPicker/hooks/useBoundingClientRect";
+import { useBoundingClientRect } from "@app/components/ColorPicker/hooks/useBoundingClientRect";
 
 import {
   ColorService,
   type IColor,
-} from "app/components/ColorPicker/services/color";
+} from "@app/components/ColorPicker/services/color";
 
-import { Interactive } from "app/components/ColorPicker/components/interactive";
+import { Interactive } from "@app/components/ColorPicker/components/interactive";
 
 interface IAlphaProps {
   readonly color: IColor;

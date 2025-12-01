@@ -1,4 +1,4 @@
-import { InfoSnackbarDuplicateContentcss } from "app/modules/story-module/components/storySubHeaderToolbar/infosnackbar";
+import { InfoSnackbarDuplicateContentcss } from "@app/modules/story-module/components/storySubHeaderToolbar/infosnackbar";
 import React from "react";
 import { CloseOutlined } from "@material-ui/icons";
 

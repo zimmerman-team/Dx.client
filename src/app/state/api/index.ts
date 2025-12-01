@@ -7,7 +7,7 @@ import {
   Errors,
   RequestValues,
   ResponseData,
-} from "app/state/api/interfaces";
+} from "@app/state/api/interfaces";
 
 export const APPLICATION_JSON = "application/json";
 
@@ -84,9 +84,8 @@ export const APIModel = <QueryModel, ResponseModel>(
     }
 
     let Authorization: string | undefined = `Bearer ${
-      process.env.REACT_APP_CMS_API &&
-      url.includes(process.env.REACT_APP_CMS_API)
-        ? process.env.REACT_APP_CMS_TOKEN
+      import.meta.env.VITE_CMS_API && url.includes(import.meta.env.VITE_CMS_API)
+        ? import.meta.env.VITE_CMS_TOKEN
         : get(query, "token", undefined)
     }`;
     if (query.nonAuthCall) {

@@ -1,7 +1,7 @@
-import { ReactComponent as AITemplateImg } from "app/modules/story-module/asset/aiTemplate-img.svg";
-import { ReactComponent as BlankTemplateImg } from "app/modules/story-module/asset/blankTemplate-img.svg";
-import { ReactComponent as AdvancedTemplateImg } from "app/modules/story-module/asset/advancedTemplate-img.svg";
-import { PrimaryButton } from "app/components/Styled/button";
+import AITemplateImg from "@app/modules/story-module/asset/aiTemplate-img.svg?react";
+import BlankTemplateImg from "@app/modules/story-module/asset/blankTemplate-img.svg?react";
+import AdvancedTemplateImg from "@app/modules/story-module/asset/advancedTemplate-img.svg?react";
+import { PrimaryButton } from "@app/components/Styled/button";
 
 export interface StoryInitialViewProps {
   resetStory: () => void;

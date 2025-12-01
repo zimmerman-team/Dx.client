@@ -1,8 +1,8 @@
 import React from "react";
 import { Button, StyledMenu, StyledMenuItem } from "./elementItem";
 import KeyboardArrowDownIcon from "@material-ui/icons/KeyboardArrowDown";
-import { FOCUS_VISIBLE_STYLE_DARK, TABLET_STARTPOINT } from "app/theme";
-import { useMenuNavigation } from "app/hooks/useMenuNavigation";
+import { FOCUS_VISIBLE_STYLE_DARK, TABLET_STARTPOINT } from "@app/theme";
+import { useMenuNavigation } from "@app/hooks/useMenuNavigation";
 
 export default function MenuPopover(props: {
   menuItem: { value: string; label: string };

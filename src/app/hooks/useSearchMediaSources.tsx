@@ -1,5 +1,5 @@
-import { APPLICATION_JSON } from "app/state/api";
-import { useStoreState } from "app/state/store/hooks";
+import { APPLICATION_JSON } from "@app/state/api";
+import { useStoreState } from "@app/state/store/hooks";
 import axios from "axios";
 import { get } from "lodash";
 import React from "react";
@@ -24,7 +24,7 @@ export function useSearchMediaSources(source: string, elementType: string) {
     await axios
       .get(
         `${
-          process.env.REACT_APP_API
+          import.meta.env.VITE_API
         }/youtube/search?q=${q}&maxResults=${pageSize}&pageToken=${
           nextPage ? pageToken : ""
         }`,
@@ -64,7 +64,7 @@ export function useSearchMediaSources(source: string, elementType: string) {
     await axios
       .get(
         `${
-          process.env.REACT_APP_API
+          import.meta.env.VITE_API
         }/vimeo/search?q=${q}&perPage=${pageSize}&page=${
           nextPage ? page + 1 : "1"
         }`,
@@ -104,7 +104,7 @@ export function useSearchMediaSources(source: string, elementType: string) {
     await axios
       .get(
         `${
-          process.env.REACT_APP_API
+          import.meta.env.VITE_API
         }/shutterstock/image/search?q=${q}&perPage=${pageSize}&page=${
           nextPage ? page + 1 : "1"
         }`,
@@ -146,7 +146,7 @@ export function useSearchMediaSources(source: string, elementType: string) {
     await axios
       .get(
         `${
-          process.env.REACT_APP_API
+          import.meta.env.VITE_API
         }/unsplash/image/search?q=${q}&perPage=${pageSize}&page=${
           nextPage ? page + 1 : "1"
         }`,

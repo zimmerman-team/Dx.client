@@ -1,7 +1,7 @@
 import { Container } from "@material-ui/core";
-import { ReactComponent as GoogleIcon } from "app/modules/onboarding-module/asset/google-img.svg";
-import { ReactComponent as LinkedInIcon } from "app/modules/onboarding-module/asset/linkedIn-img.svg";
-import { socialAuth } from "app/utils/socialAuth";
+import GoogleIcon from "@app/modules/onboarding-module/asset/google-img.svg?react";
+import LinkedInIcon from "@app/modules/onboarding-module/asset/linkedIn-img.svg?react";
+import { socialAuth } from "@app/utils/socialAuth";
 import React from "react";
 import { useParams } from "react-router-dom";
 

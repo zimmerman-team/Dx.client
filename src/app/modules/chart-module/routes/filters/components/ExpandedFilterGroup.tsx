@@ -10,25 +10,25 @@ import findIndex from "lodash/findIndex";
 import Checkbox from "@material-ui/core/Checkbox";
 import IconButton from "@material-ui/core/IconButton";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
-import { useStoreState, useStoreActions } from "app/state/store/hooks";
+import { useStoreState, useStoreActions } from "@app/state/store/hooks";
 /* project */
-import { ResetIcon } from "app/assets/icons/Reset";
-import { SearchIcon } from "app/assets/icons/Search";
-import { TriangleXSIcon } from "app/assets/icons/TriangleXS";
-import { splitStrBasedOnCapitalLetters } from "app/utils/splitStrBasedOnCapitalLetters";
+import { ResetIcon } from "@app/assets/icons/Reset";
+import { SearchIcon } from "@app/assets/icons/Search";
+import { TriangleXSIcon } from "@app/assets/icons/TriangleXS";
+import { splitStrBasedOnCapitalLetters } from "@app/utils/splitStrBasedOnCapitalLetters";
 import {
   FilterGroupModel,
   FilterGroupOptionModel,
   FilterGroupProps,
   FilterOptionProps,
-} from "app/components/ToolBoxPanel/components/filters/data";
+} from "@app/components/ToolBoxPanel/components/filters/data";
 import {
   getAllOptionsCount,
   multiCheckFilterOptions,
   multiUnCheckFilterOptions,
-} from "app/modules/chart-module/routes/filters/utils";
+} from "@app/modules/chart-module/routes/filters/utils";
 import { isEmpty } from "lodash";
-import { PrimaryButton } from "app/components/Styled/button";
+import { PrimaryButton } from "@app/components/Styled/button";
 
 interface ExpandedFilterGroupProps extends FilterGroupModel, FilterGroupProps {
   goBack: () => void;

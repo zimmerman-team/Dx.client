@@ -1,5 +1,5 @@
-import { PrimaryButton, TertiaryButton } from "app/components/Styled/button";
-import { TABLET_STARTPOINT } from "app/theme";
+import { PrimaryButton, TertiaryButton } from "@app/components/Styled/button";
+import { TABLET_STARTPOINT } from "@app/theme";
 import { useHistory } from "react-router-dom";
 
 export const UpgradeCard = (props: { onClose: () => void }) => {

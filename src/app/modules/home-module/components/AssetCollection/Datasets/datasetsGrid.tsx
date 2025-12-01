@@ -7,15 +7,15 @@ import Grid, { GridSize } from "@material-ui/core/Grid";
 import { useRecoilState, useSetRecoilState } from "recoil";
 import useDebounce from "react-use/lib/useDebounce";
 /** project */
-import { useInfinityScroll } from "app/hooks/useInfinityScroll";
-import { useStoreActions, useStoreState } from "app/state/store/hooks";
-import { HomepageTable } from "app/modules/home-module/components/Table";
-import DeleteDatasetDialog from "app/components/Dialogs/deleteDatasetDialog";
-import GridItem from "app/modules/home-module/components/AssetCollection/Datasets/gridItem";
-import DatasetAddnewCard from "app/modules/home-module/components/AssetCollection/Datasets/datasetAddNewCard";
-import CircleLoader from "app/modules/home-module/components/Loader";
-import { loadedDatasetsAtom, planDialogAtom } from "app/state/recoil/atoms";
-import { DatasetListItemAPIModel } from "app/modules/dataset-module/data";
+import { useInfinityScroll } from "@app/hooks/useInfinityScroll";
+import { useStoreActions, useStoreState } from "@app/state/store/hooks";
+import { HomepageTable } from "@app/modules/home-module/components/Table";
+import DeleteDatasetDialog from "@app/components/Dialogs/deleteDatasetDialog";
+import GridItem from "@app/modules/home-module/components/AssetCollection/Datasets/gridItem";
+import DatasetAddnewCard from "@app/modules/home-module/components/AssetCollection/Datasets/datasetAddNewCard";
+import CircleLoader from "@app/modules/home-module/components/Loader";
+import { loadedDatasetsAtom, planDialogAtom } from "@app/state/recoil/atoms";
+import { DatasetListItemAPIModel } from "@app/modules/dataset-module/data";
 import { useHistory, useLocation } from "react-router-dom";
 
 interface Props {
@@ -185,7 +185,7 @@ export default function DatasetsGrid(props: Readonly<Props>) {
       return;
     }
     axios
-      .get(`${process.env.REACT_APP_API}/dataset/duplicate/${id}`, {
+      .get(`${import.meta.env.VITE_API}/dataset/duplicate/${id}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -219,7 +219,7 @@ export default function DatasetsGrid(props: Readonly<Props>) {
 
   function deleteDataset(id: string) {
     axios
-      .delete(`${process.env.REACT_APP_API}/datasets/${id}`, {
+      .delete(`${import.meta.env.VITE_API}/datasets/${id}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },

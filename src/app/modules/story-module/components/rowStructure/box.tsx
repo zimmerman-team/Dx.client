@@ -1,12 +1,12 @@
 import React, { useRef, useState } from "react";
 import { debounce, IconButton } from "@material-ui/core";
-import { RichEditor } from "app/modules/common/RichEditor";
+import { RichEditor } from "@app/modules/common/RichEditor";
 import {
   isChartDraggingAtom,
   chartFromStoryAtom,
   storyContentContainerWidth,
   storyContentIsResizingAtom,
-} from "app/state/recoil/atoms";
+} from "@app/state/recoil/atoms";
 import { EditorState } from "draft-js";
 import get from "lodash/get";
 import { NumberSize, Resizable } from "re-resizable";
@@ -18,20 +18,20 @@ import { useRecoilValue, useRecoilState } from "recoil";
 import { css } from "styled-components";
 import { Updater } from "use-immer";
 import { useMediaQuery } from "usehooks-ts";
-import { IFramesArray } from "app/modules/story-module/views/create/data";
-import { StoryChartWrapper } from "app/modules/story-module/components/chart-wrapper";
-import { StoryElementsType } from "app/modules/story-module/components/right-panel-create-view";
-import { ToolbarPluginsType } from "app/modules/story-module/components/storySubHeaderToolbar/staticToolbar";
+import { IFramesArray } from "@app/modules/story-module/views/create/data";
+import { StoryChartWrapper } from "@app/modules/story-module/components/chart-wrapper";
+import { StoryElementsType } from "@app/modules/story-module/components/right-panel-create-view";
+import { ToolbarPluginsType } from "@app/modules/story-module/components/storySubHeaderToolbar/staticToolbar";
 import { useDrop } from "react-dnd";
-import { useStoreActions } from "app/state/store/hooks";
-import { ReactComponent as EditIcon } from "app/modules/story-module/asset/editIcon.svg";
-import { ReactComponent as DeleteIcon } from "app/modules/story-module/asset/deleteIcon.svg";
-import { decorators } from "app/modules/common/RichEditor/decorators";
+import { useStoreActions } from "@app/state/store/hooks";
+import EditIcon from "@app/modules/story-module/asset/editIcon.svg?react";
+import DeleteIcon from "@app/modules/story-module/asset/deleteIcon.svg?react";
+import { decorators } from "@app/modules/common/RichEditor/decorators";
 import { MIN_BOX_WIDTH } from "./data";
-import { useUndoRedo } from "app/hooks/useUndoRedo";
-import { compareEditorStates } from "app/modules/story-module/views/edit/compareStates";
-import { FOCUS_VISIBLE_STYLE_DARK, MOBILE_BREAKPOINT } from "app/theme";
-import { updateDynamicStylesOnRender } from "app/utils/draftjs/getStyleEl";
+import { useUndoRedo } from "@app/hooks/useUndoRedo";
+import { compareEditorStates } from "@app/modules/story-module/views/edit/compareStates";
+import { FOCUS_VISIBLE_STYLE_DARK, MOBILE_BREAKPOINT } from "@app/theme";
+import { updateDynamicStylesOnRender } from "@app/utils/draftjs/getStyleEl";
 
 // Types
 interface BoxProps {

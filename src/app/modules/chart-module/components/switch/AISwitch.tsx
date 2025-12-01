@@ -1,4 +1,4 @@
-import { useStoreActions, useStoreState } from "app/state/store/hooks";
+import { useStoreActions, useStoreState } from "@app/state/store/hooks";
 import React from "react";
 import styled from "styled-components";
 interface Props {

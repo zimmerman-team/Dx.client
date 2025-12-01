@@ -9,11 +9,11 @@ import {
   SelectionState,
 } from "draft-js";
 import { fontFamilies, fontStyles } from "./data";
-import { IFramesArray } from "app/modules/story-module/views/create/data";
+import { IFramesArray } from "@app/modules/story-module/views/create/data";
 import { Updater } from "use-immer";
-import { IUniformBlockTypeStyle } from "app/modules/story-module/data";
-import { setBlockData } from "app/utils/draftjs/setBlockData";
-import { registerDynamicStyle } from "app/utils/draftjs/getStyleEl";
+import { IUniformBlockTypeStyle } from "@app/modules/story-module/data";
+import { setBlockData } from "@app/utils/draftjs/setBlockData";
+import { registerDynamicStyle } from "@app/utils/draftjs/getStyleEl";
 
 type FontStyleType = {
   key: string;

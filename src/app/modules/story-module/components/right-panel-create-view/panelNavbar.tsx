@@ -1,11 +1,11 @@
 import IconButton from "@material-ui/core/IconButton";
-import { ReactComponent as ActiveElementsIcon } from "app/modules/story-module/asset/active-elements-icon.svg";
-import { ReactComponent as ActiveChartIcon } from "app/modules/story-module/asset/active-chart-icon.svg";
-import { ReactComponent as ActiveMediaIcon } from "app/modules/story-module/asset/active-media-icon.svg";
-import { ReactComponent as ChartIcon } from "app/modules/story-module/asset/chart-icon.svg";
-import { ReactComponent as MediaIcon } from "app/modules/story-module/asset/media-icon.svg";
-import { ReactComponent as ElementsIcon } from "app/modules/story-module/asset/elements-icon.svg";
-import { HeadlessSwitch } from "app/components/Switch/headless";
+import ActiveElementsIcon from "@app/modules/story-module/asset/active-elements-icon.svg?react";
+import ActiveChartIcon from "@app/modules/story-module/asset/active-chart-icon.svg?react";
+import ActiveMediaIcon from "@app/modules/story-module/asset/active-media-icon.svg?react";
+import ChartIcon from "@app/modules/story-module/asset/chart-icon.svg?react";
+import MediaIcon from "@app/modules/story-module/asset/media-icon.svg?react";
+import ElementsIcon from "@app/modules/story-module/asset/elements-icon.svg?react";
+import { HeadlessSwitch } from "@app/components/Switch/headless";
 
 type ViewType = "elements" | "charts" | "media" | "editHeader";
 interface PanelNavbarProps {

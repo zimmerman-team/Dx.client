@@ -1,15 +1,15 @@
 /** third party */
 import React from "react";
 /** project */
-import WHOLogo from "app/modules/home-module/assets/WHO-logo.svg";
-import KaggleLogo from "app/modules/home-module/assets/kaggle-logo.svg";
-import WorldBankLogo from "app/modules/home-module/assets/world-bank-logo.svg";
-import HDXLogo from "app/modules/home-module/assets/hdx-logo.svg";
-import TGFLogo from "app/modules/home-module/assets/tgf-logo.svg";
-import { ReactComponent as ClockIcon } from "app/modules/home-module/assets/clock-icon.svg";
+import WHOLogo from "@app/modules/home-module/assets/WHO-logo.svg";
+import KaggleLogo from "@app/modules/home-module/assets/kaggle-logo.svg";
+import WorldBankLogo from "@app/modules/home-module/assets/world-bank-logo.svg";
+import HDXLogo from "@app/modules/home-module/assets/hdx-logo.svg";
+import TGFLogo from "@app/modules/home-module/assets/tgf-logo.svg";
+import ClockIcon from "@app/modules/home-module/assets/clock-icon.svg?react";
 
 import moment from "moment";
-import { IExternalDataset } from "app/modules/dataset-module/routes/upload-module/upload-steps/step1/externalSearch";
+import { IExternalDataset } from "@app/modules/dataset-module/routes/upload-module/upload-steps/step1/externalSearch";
 export default function ExternalDatasetCard(
   props: Readonly<{
     name: string;

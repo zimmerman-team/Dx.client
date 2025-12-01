@@ -1,8 +1,8 @@
 import React from "react";
 import { useTitle } from "react-use";
 import { Box, Container } from "@material-ui/core";
-import Hero from "app/modules/home-module/components/hero";
-import HomeFooter from "app/modules/home-module/components/Footer";
+import Hero from "@app/modules/home-module/components/hero";
+import HomeFooter from "@app/modules/home-module/components/Footer";
 
 export default function PrivacyPolicyModule() {
   useTitle("Dataxplorer - Privacy Policy");

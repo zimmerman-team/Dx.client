@@ -2,7 +2,7 @@ import React from "react";
 import { Tooltip } from "react-tooltip";
 import SettingsBackupRestoreIcon from "@material-ui/icons/SettingsBackupRestore";
 import IconButton from "@material-ui/core/IconButton";
-import { ReactComponent as InfoIcon } from "app/modules/chart-module/assets/info-icon.svg";
+import InfoIcon from "@app/modules/chart-module/assets/info-icon.svg?react";
 
 export default function ToolboxSubHeader(
   props: Readonly<{

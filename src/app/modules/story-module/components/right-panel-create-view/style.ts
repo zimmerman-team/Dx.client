@@ -1,4 +1,4 @@
-import { FOCUS_VISIBLE_STYLE_LIGHT } from "app/theme";
+import { FOCUS_VISIBLE_STYLE_LIGHT } from "@app/theme";
 import { css } from "styled-components";
 
 export const elementItemcss = (

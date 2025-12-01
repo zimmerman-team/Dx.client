@@ -3,7 +3,7 @@ import { CloseOutlined } from "@material-ui/icons";
 import React from "react";
 import { useStyles } from "./deleteChartDialog";
 import { useRecoilState } from "recoil";
-import { untitledStoryAtom } from "app/state/recoil/atoms";
+import { untitledStoryAtom } from "@app/state/recoil/atoms";
 
 function rand() {
   return Math.round(Math.random() * 20) - 10;

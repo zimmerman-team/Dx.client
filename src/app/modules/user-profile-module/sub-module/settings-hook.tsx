@@ -1,6 +1,6 @@
 import { useAuth0 } from "@auth0/auth0-react";
-import { APPLICATION_JSON } from "app/state/api";
-import { useStoreActions } from "app/state/store/hooks";
+import { APPLICATION_JSON } from "@app/state/api";
+import { useStoreActions } from "@app/state/store/hooks";
 import axios from "axios";
 import React from "react";
 
@@ -34,7 +34,7 @@ export default function useProfileSettings() {
   const deleteUserAccount = async () => {
     return getAccessTokenSilently().then(async (newToken) => {
       return await axios.post(
-        `${process.env.REACT_APP_API}/users/delete-account`,
+        `${import.meta.env.VITE_API}/users/delete-account`,
         {},
         {
           headers: {

@@ -1,9 +1,9 @@
 import React from "react";
-import { useInfinityScroll } from "app/hooks/useInfinityScroll";
-import { useSearchMediaSources } from "app/hooks/useSearchMediaSources";
+import { useInfinityScroll } from "@app/hooks/useInfinityScroll";
+import { useSearchMediaSources } from "@app/hooks/useSearchMediaSources";
 import { useDrag } from "react-dnd";
 import { useRecoilState } from "recoil";
-import { isDividerOrRowFrameDraggingAtom } from "app/state/recoil/atoms";
+import { isDividerOrRowFrameDraggingAtom } from "@app/state/recoil/atoms";
 import { StoryElementsType } from ".";
 import {
   Menu,
@@ -12,7 +12,7 @@ import {
   Tooltip,
   withStyles,
 } from "@material-ui/core";
-import { elementItemcss } from "app/modules/story-module/components/right-panel-create-view/style";
+import { elementItemcss } from "@app/modules/story-module/components/right-panel-create-view/style";
 import { useDebounce } from "react-use";
 import { css } from "styled-components";
 import ArrowDropDownIcon from "@material-ui/icons/ArrowDropDown";

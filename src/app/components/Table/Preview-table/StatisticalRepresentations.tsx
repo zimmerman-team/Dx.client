@@ -1,8 +1,8 @@
 import React from "react";
 import maxBy from "lodash/maxBy";
 import isEqual from "lodash/isEqual";
-import { useDataThemesEchart } from "app/hooks/useDataThemesEchart";
-import { formatFinancialValue } from "app/utils/formatFinancialValue";
+import { useDataThemesEchart } from "@app/hooks/useDataThemesEchart";
+import { formatFinancialValue } from "@app/utils/formatFinancialValue";
 
 interface ChartRepresentationProps {
   data: any;

@@ -1,7 +1,7 @@
 import React from "react";
 import { useHistory, useLocation, matchPath } from "react-router-dom";
 import { useAuth0 } from "@auth0/auth0-react";
-import { PageLoader } from "app/modules/common/page-loader";
+import { PageLoader } from "@app/modules/common/page-loader";
 
 interface AuthProtectedRouteProps {
   element?: React.ReactNode;
