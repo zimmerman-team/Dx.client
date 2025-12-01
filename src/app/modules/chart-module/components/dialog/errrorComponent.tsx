@@ -1,9 +1,9 @@
 import React from "react";
-import { styles as commonStyles } from "app/modules/chart-module/routes/common/styles";
+import { styles as commonStyles } from "@app/modules/chart-module/routes/common/styles";
 import ErrorOutlineIcon from "@material-ui/icons/ErrorOutline";
 import { Link, useHistory, useLocation } from "react-router-dom";
 import GuidelinesDialog from "./guidelinesDialog";
-import ChartArea from "app/modules/chart-module/components/chart-area";
+import ChartArea from "@app/modules/chart-module/components/chart-area";
 
 export default function ErrorComponent(props: {
   page: string;

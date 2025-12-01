@@ -5,15 +5,15 @@ import React, {
   useCallback,
   useRef,
 } from "react";
-import InilineColorPicker from "app/modules/chart-module/routes/customize/components/InlineColorPicker";
-import ColorSchemesDropDown from "app/modules/chart-module/routes/customize/components/ColorSchemesDropDown";
+import InilineColorPicker from "@app/modules/chart-module/routes/customize/components/InlineColorPicker";
+import ColorSchemesDropDown from "@app/modules/chart-module/routes/customize/components/ColorSchemesDropDown";
 import { Row, Col, Dropdown } from "react-bootstrap";
 import {
   ResetBtn,
   InvertBtn,
   LockBtn,
-} from "app/modules/chart-module/routes/customize/components/ColorScaleUtils";
-import { SCALES_LABELS } from "app/modules/chart-module/routes/customize/constants";
+} from "@app/modules/chart-module/routes/customize/components/ColorScaleUtils";
+import { SCALES_LABELS } from "@app/modules/chart-module/routes/customize/constants";
 import get from "lodash/get";
 import keyBy from "lodash/keyBy";
 import {
@@ -25,7 +25,7 @@ import {
   getAvailableScaleTypes,
   getValueType,
 } from "@rawgraphs/rawgraphs-core";
-import usePrevious from "app/hooks/usePrevious";
+import usePrevious from "@app/hooks/usePrevious";
 
 function getDatePickerValue(userValue) {
   if (userValue.userDomain === 0) {

@@ -1,9 +1,9 @@
 import React from "react";
-import { ReactComponent as GoogleIcon } from "./assets/google-icon.svg";
-import { ReactComponent as LinkedInIcon } from "./assets/linkedin-icon.svg";
-import { ReactComponent as MicrosoftIcon } from "./assets/microsoft-icon.svg";
-import { socialAuth } from "app/utils/socialAuth";
-import { FOCUS_VISIBLE_STYLE_LIGHT } from "app/theme";
+import GoogleIcon from "./assets/google-icon.svg?react";
+import LinkedInIcon from "./assets/linkedin-icon.svg?react";
+import MicrosoftIcon from "./assets/microsoft-icon.svg?react";
+import { socialAuth } from "@app/utils/socialAuth";
+import { FOCUS_VISIBLE_STYLE_LIGHT } from "@app/theme";
 
 const SignInButtons = () => {
   return (

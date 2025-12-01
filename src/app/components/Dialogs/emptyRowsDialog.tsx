@@ -3,7 +3,7 @@ import { useRecoilState } from "recoil";
 import { useStyles } from "./deleteChartDialog";
 import { CloseOutlined } from "@material-ui/icons";
 import { IconButton, Modal } from "@material-ui/core";
-import { emptyRowsAtom } from "app/state/recoil/atoms";
+import { emptyRowsAtom } from "@app/state/recoil/atoms";
 
 function rand() {
   return Math.round(Math.random() * 20) - 10;

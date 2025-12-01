@@ -1,24 +1,24 @@
 /* third-party */
 import React from "react";
 
-import { useStoreState } from "app/state/store/hooks";
+import { useStoreState } from "@app/state/store/hooks";
 
 import { useHistory, useLocation, useParams } from "react-router-dom";
 import useUpdateEffect from "react-use/lib/useUpdateEffect";
 
 /* project */
-import { FilterGroupModel } from "app/components/ToolBoxPanel/components/filters/data";
-import { ChartToolBoxMapping } from "app/modules/chart-module/components/toolbox/steps/panels-content/Mapping";
-import { ChartToolBoxFilters } from "app/modules/chart-module/components/toolbox/steps/panels-content/Filters";
-import { ChartToolBoxChartType } from "app/modules/chart-module/components/toolbox/steps/panels-content/ChartType";
-import { ChartToolBoxCustomize } from "app/modules/chart-module/components/toolbox/steps/panels-content/Customize";
-import { DatasetPanel } from "app/modules/chart-module/components/toolbox/steps/panels-content/SelectDataset";
+import { FilterGroupModel } from "@app/components/ToolBoxPanel/components/filters/data";
+import { ChartToolBoxMapping } from "@app/modules/chart-module/components/toolbox/steps/panels-content/Mapping";
+import { ChartToolBoxFilters } from "@app/modules/chart-module/components/toolbox/steps/panels-content/Filters";
+import { ChartToolBoxChartType } from "@app/modules/chart-module/components/toolbox/steps/panels-content/ChartType";
+import { ChartToolBoxCustomize } from "@app/modules/chart-module/components/toolbox/steps/panels-content/Customize";
+import { DatasetPanel } from "@app/modules/chart-module/components/toolbox/steps/panels-content/SelectDataset";
 
 import { isEmpty } from "lodash";
-import { ToolboxNavType } from "app/modules/chart-module/components/toolbox/data";
+import { ToolboxNavType } from "@app/modules/chart-module/components/toolbox/data";
 
-import { ChartRenderedItem } from "app/modules/chart-module/data";
-import { chartFromStoryAtom } from "app/state/recoil/atoms";
+import { ChartRenderedItem } from "@app/modules/chart-module/data";
+import { chartFromStoryAtom } from "@app/state/recoil/atoms";
 import { useRecoilState } from "recoil";
 
 interface ChartToolBoxStepsProps {

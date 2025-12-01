@@ -1,9 +1,9 @@
 import { IconButton, Modal, createStyles, makeStyles } from "@material-ui/core";
 import { CloseOutlined } from "@material-ui/icons";
-import useGetChartsStoriesCountByDataset from "app/hooks/useGetChartsStoriesCountByDataset";
-import CircleLoader from "app/modules/home-module/components/Loader";
+import useGetChartsStoriesCountByDataset from "@app/hooks/useGetChartsStoriesCountByDataset";
+import CircleLoader from "@app/modules/home-module/components/Loader";
 import React from "react";
-import { PrimaryButton } from "app/components/Styled/button";
+import { PrimaryButton } from "@app/components/Styled/button";
 
 interface Props {
   modalDisplay: boolean;

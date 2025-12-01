@@ -1,5 +1,5 @@
 import React from "react";
-import { ReactComponent as Icon } from "app/modules/chart-module/assets/ai-icon.svg";
+import Icon from "@app/modules/chart-module/assets/ai-icon.svg?react";
 import { Tooltip } from "react-tooltip";
 
 export default function AIIcon() {

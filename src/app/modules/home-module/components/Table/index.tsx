@@ -7,12 +7,15 @@ import TableHead from "@material-ui/core/TableHead";
 import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
 import TableContainer from "@material-ui/core/TableContainer";
-import { isValidDate } from "app/utils/isValidDate";
-import MenuPopover from "app/modules/home-module/components/AssetCollection/All/menuPopover";
-import { AssetType } from "app/modules/home-module/components/AssetCollection/All/assetsGrid";
-import { ReactComponent as AddIcon } from "app/modules/home-module/assets/add-icon.svg";
-import { ReactComponent as RemoveIcon } from "app/modules/home-module/assets/remove-icon.svg";
-import { FOCUS_VISIBLE_STYLE_DARK, FOCUS_VISIBLE_STYLE_LIGHT } from "app/theme";
+import { isValidDate } from "@app/utils/isValidDate";
+import MenuPopover from "@app/modules/home-module/components/AssetCollection/All/menuPopover";
+import { AssetType } from "@app/modules/home-module/components/AssetCollection/All/assetsGrid";
+import AddIcon from "@app/modules/home-module/assets/add-icon.svg?react";
+import RemoveIcon from "@app/modules/home-module/assets/remove-icon.svg?react";
+import {
+  FOCUS_VISIBLE_STYLE_DARK,
+  FOCUS_VISIBLE_STYLE_LIGHT,
+} from "@app/theme";
 import { capitalize } from "lodash";
 
 interface IData {

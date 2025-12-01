@@ -1,13 +1,13 @@
 import {
   isChartAIAgentActive,
   chartFromStoryAtom,
-} from "app/state/recoil/atoms";
+} from "@app/state/recoil/atoms";
 import { useHistory, useParams } from "react-router-dom";
 import { useSetRecoilState, useRecoilState } from "recoil";
-import { IFramesArray } from "app/modules/story-module/views/create/data";
-import { IHeaderDetails } from "app/modules/story-module/components/right-panel/data";
-import { useStoreActions } from "app/state/store/hooks";
-import { ReactComponent as AddNewImage } from "app/modules/home-module/assets/add-img.svg";
+import { IFramesArray } from "@app/modules/story-module/views/create/data";
+import { IHeaderDetails } from "@app/modules/story-module/components/right-panel/data";
+import { useStoreActions } from "@app/state/store/hooks";
+import AddNewImage from "@app/modules/home-module/assets/add-img.svg?react";
 
 export function CreateChartCard(props: {
   storyName: string;

@@ -1,15 +1,15 @@
 import React from "react";
 import { GridSpacing } from "@material-ui/core/Grid";
-import { ReactComponent as AIPoweredImg } from "app/modules/home-module/assets/whydx-ai-powered-illustration.svg";
-import { ReactComponent as CharVizImg } from "app/modules/home-module/assets/whydx-chartviz-illustration.svg";
-import { ReactComponent as OpenSourceImg } from "app/modules/home-module/assets/whydx-opensource-illustration.svg";
-import { ReactComponent as StoriesImg } from "app/modules/home-module/assets/whydx-stories-illustration.svg";
-import { ReactComponent as SearchImg } from "app/modules/home-module/assets/whydx-search-illustration.svg";
-import { keyfeaturescss } from "app/modules/home-module/sub-modules/why-dx/style";
+import AIPoweredImg from "@app/modules/home-module/assets/whydx-ai-powered-illustration.svg?react";
+import CharVizImg from "@app/modules/home-module/assets/whydx-chartviz-illustration.svg?react";
+import OpenSourceImg from "@app/modules/home-module/assets/whydx-opensource-illustration.svg?react";
+import StoriesImg from "@app/modules/home-module/assets/whydx-stories-illustration.svg?react";
+import SearchImg from "@app/modules/home-module/assets/whydx-search-illustration.svg?react";
+import { keyfeaturescss } from "@app/modules/home-module/sub-modules/why-dx/style";
 import { useMediaQuery } from "@material-ui/core";
-import { MOBILE_BREAKPOINT } from "app/theme";
-import { useCMSData } from "app/hooks/useCMSData";
-import { getCMSDataField } from "app/utils/getCMSDataField";
+import { MOBILE_BREAKPOINT } from "@app/theme";
+import { useCMSData } from "@app/hooks/useCMSData";
+import { getCMSDataField } from "@app/utils/getCMSDataField";
 
 export default function KeyFeaturesBlock() {
   const isTablet = useMediaQuery("(max-width:1024px)");

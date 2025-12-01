@@ -4,19 +4,19 @@ import userEvent, {
   PointerEventsCheckLevel,
 } from "@testing-library/user-event";
 import { screen } from "@testing-library/react";
-import { mockUseAuth0 } from "app/utils/mockAuth0";
+import { mockUseAuth0 } from "@app/utils/mockAuth0";
 import { Router } from "react-router-dom";
 import { createMemoryHistory } from "history";
-import GridItem from "app/modules/home-module/components/AssetCollection/Charts/gridItem";
-import StoriesGrid from "app/modules/home-module/components/AssetCollection/Stories/storiesGrid";
+import GridItem from "@app/modules/home-module/components/AssetCollection/Charts/gridItem";
+import StoriesGrid from "@app/modules/home-module/components/AssetCollection/Stories/storiesGrid";
 import { StoreProvider, createStore } from "easy-peasy";
 import {
   StoryGetList,
   StoriesCount,
-} from "app/state/api/action-reducers/stories";
-import { AuthTokenState } from "app/state/api/action-reducers/sync";
+} from "@app/state/api/action-reducers/stories";
+import { AuthTokenState } from "@app/state/api/action-reducers/sync";
 import { mockStoriesCrudData } from "./data";
-import { setupIntersectionObserverMock } from "app/modules/story-module/__test__/setupIntersectionObserver";
+import { setupIntersectionObserverMock } from "@app/modules/story-module/__test__/setupIntersectionObserver";
 import axios, { AxiosResponse } from "axios";
 interface MockProps {
   sortBy: string;

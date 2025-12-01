@@ -1,6 +1,6 @@
 import React from "react";
-import { ReactComponent as PlugIcon } from "app/modules/dataset-module/routes/upload-module/assets/plug.svg";
-import { copyTextToClipboard } from "app/utils/copyToClipboard";
+import PlugIcon from "@app/modules/dataset-module/routes/upload-module/assets/plug.svg?react";
+import { copyTextToClipboard } from "@app/utils/copyToClipboard";
 import { Snackbar } from "@material-ui/core";
 
 export default function NoMobileInfoScreen() {

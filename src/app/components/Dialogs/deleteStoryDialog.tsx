@@ -1,7 +1,7 @@
 import React from "react";
 import CloseOutlined from "@material-ui/icons/ClearOutlined";
 import { createStyles, IconButton, makeStyles, Modal } from "@material-ui/core";
-import { PrimaryButton } from "app/components/Styled/button";
+import { PrimaryButton } from "@app/components/Styled/button";
 
 interface Props {
   cardId?: string;

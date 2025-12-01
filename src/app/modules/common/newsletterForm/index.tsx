@@ -1,6 +1,6 @@
 import { yupResolver } from "@hookform/resolvers/yup";
-import { APPLICATION_JSON } from "app/state/api";
-import { emailSchema } from "app/utils/emailValidation";
+import { APPLICATION_JSON } from "@app/state/api";
+import { emailSchema } from "@app/utils/emailValidation";
 import axios, { AxiosResponse, AxiosError } from "axios";
 import React from "react";
 import { FieldErrors, useForm } from "react-hook-form";
@@ -50,7 +50,7 @@ export default function NewsletterForm(
     props.setIsSubscriptionFailed(false);
     axios
       .post(
-        `${process.env.REACT_APP_API}/users/subscribe-to-newsletter`,
+        `${import.meta.env.VITE_API}/users/subscribe-to-newsletter`,
         {
           email: formValues.email,
         },

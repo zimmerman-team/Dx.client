@@ -1,30 +1,30 @@
-import { APIModel } from "app/state/api";
-import { ApiCallModel } from "app/state/api/interfaces";
+import { APIModel } from "@app/state/api";
+import { ApiCallModel } from "@app/state/api/interfaces";
 
 export const StoryGet: ApiCallModel = {
-  ...APIModel(`${process.env.REACT_APP_API}/story`),
+  ...APIModel(`${import.meta.env.VITE_API}/story`),
 };
 
 export const StoryCreate: ApiCallModel = {
-  ...APIModel(`${process.env.REACT_APP_API}/story`),
+  ...APIModel(`${import.meta.env.VITE_API}/story`),
 };
 
 export const StoryUpdate: ApiCallModel = {
-  ...APIModel(`${process.env.REACT_APP_API}/story`),
+  ...APIModel(`${import.meta.env.VITE_API}/story`),
 };
 
 export const StoryDelete: ApiCallModel = {
-  ...APIModel(`${process.env.REACT_APP_API}/story`),
+  ...APIModel(`${import.meta.env.VITE_API}/story`),
 };
 
 export const StoryDuplicate: ApiCallModel = {
-  ...APIModel(`${process.env.REACT_APP_API}/story/duplicate`),
+  ...APIModel(`${import.meta.env.VITE_API}/story/duplicate`),
 };
 
 export const StoryGetList: ApiCallModel = {
-  ...APIModel(`${process.env.REACT_APP_API}/stories`),
+  ...APIModel(`${import.meta.env.VITE_API}/stories`),
 };
 
 export const StoriesCount: ApiCallModel = {
-  ...APIModel(`${process.env.REACT_APP_API}/stories/count`),
+  ...APIModel(`${import.meta.env.VITE_API}/stories/count`),
 };

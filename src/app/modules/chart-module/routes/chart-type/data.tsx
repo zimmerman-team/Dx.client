@@ -1,86 +1,85 @@
-import BarChartIcon from "app/assets/icons/data-themes-chart-types/bar";
-import ColoredBarChartIcon from "app/assets/icons/data-themes-chart-types/coloredBarChart";
+import BarChartIcon from "@app/assets/icons/data-themes-chart-types/bar";
+import ColoredBarChartIcon from "@app/assets/icons/data-themes-chart-types/coloredBarChart";
 
-import MultisetBarChartIcon from "app/assets/icons/data-themes-chart-types/multisetBarChart";
-import ColoredMultisetBarChartIcon from "app/assets/icons/data-themes-chart-types/coloredBarChart";
+import MultisetBarChartIcon from "@app/assets/icons/data-themes-chart-types/multisetBarChart";
+import ColoredMultisetBarChartIcon from "@app/assets/icons/data-themes-chart-types/coloredBarChart";
 
-import StackedBarChartIcon from "app/assets/icons/data-themes-chart-types/stackedBarChart";
-import ColoredStackedBarChartIcon from "app/assets/icons/data-themes-chart-types/coloredBarChart";
+import StackedBarChartIcon from "@app/assets/icons/data-themes-chart-types/stackedBarChart";
+import ColoredStackedBarChartIcon from "@app/assets/icons/data-themes-chart-types/coloredBarChart";
 
-import GeomapChartIcon from "app/assets/icons/data-themes-chart-types/geomap";
-import ColoredGeomapChartIcon from "app/assets/icons/data-themes-chart-types/coloredGeomap";
+import GeomapChartIcon from "@app/assets/icons/data-themes-chart-types/geomap";
+import ColoredGeomapChartIcon from "@app/assets/icons/data-themes-chart-types/coloredGeomap";
 
-import LineChartIcon from "app/assets/icons/data-themes-chart-types/line";
-import ColoredLineChartIcon from "app/assets/icons/data-themes-chart-types/coloredLineChart";
+import LineChartIcon from "@app/assets/icons/data-themes-chart-types/line";
+import ColoredLineChartIcon from "@app/assets/icons/data-themes-chart-types/coloredLineChart";
 
-import SankeyChartIcon from "app/assets/icons/data-themes-chart-types/sankeydiagram";
-import ColoredSankeyChartIcon from "app/assets/icons/data-themes-chart-types/coloredSankeyDiagram";
+import SankeyChartIcon from "@app/assets/icons/data-themes-chart-types/sankeydiagram";
+import ColoredSankeyChartIcon from "@app/assets/icons/data-themes-chart-types/coloredSankeyDiagram";
 
-import TreeMapIcon from "app/assets/icons/data-themes-chart-types/treemap";
-import ColoredTreeMapIcon from "app/assets/icons/data-themes-chart-types/coloredTreemap";
+import TreeMapIcon from "@app/assets/icons/data-themes-chart-types/treemap";
+import ColoredTreeMapIcon from "@app/assets/icons/data-themes-chart-types/coloredTreemap";
 
-import BigNumberIcon from "app/assets/icons/data-themes-chart-types/bigNumber";
-import ColoredBigNumberIcon from "app/assets/icons/data-themes-chart-types/coloredBigNumber";
+import BigNumberIcon from "@app/assets/icons/data-themes-chart-types/bigNumber";
+import ColoredBigNumberIcon from "@app/assets/icons/data-themes-chart-types/coloredBigNumber";
 
-import SunburstIcon from "app/assets/icons/data-themes-chart-types/sunburst";
-import ColoredSunburstIcon from "app/assets/icons/data-themes-chart-types/coloredSunburst";
+import SunburstIcon from "@app/assets/icons/data-themes-chart-types/sunburst";
+import ColoredSunburstIcon from "@app/assets/icons/data-themes-chart-types/coloredSunburst";
 
-import PieIcon from "app/assets/icons/data-themes-chart-types/pie";
-import ColoredPieIcon from "app/assets/icons/data-themes-chart-types/coloredPie";
+import PieIcon from "@app/assets/icons/data-themes-chart-types/pie";
+import ColoredPieIcon from "@app/assets/icons/data-themes-chart-types/coloredPie";
 
-import CirclePackingIcon from "app/assets/icons/data-themes-chart-types/circlepacking";
-import ColoredCirclePackingIcon from "app/assets/icons/data-themes-chart-types/coloredCirclepacking";
+import CirclePackingIcon from "@app/assets/icons/data-themes-chart-types/circlepacking";
+import ColoredCirclePackingIcon from "@app/assets/icons/data-themes-chart-types/coloredCirclepacking";
 
-import ColoredForceGraphIcon from "app/assets/icons/data-themes-chart-types/coloredForcegraph";
-import ForceGraphIcon from "app/assets/icons/data-themes-chart-types/forcegraph";
+import ColoredForceGraphIcon from "@app/assets/icons/data-themes-chart-types/coloredForcegraph";
+import ForceGraphIcon from "@app/assets/icons/data-themes-chart-types/forcegraph";
 
-import ColoredCircularGraphIcon from "app/assets/icons/data-themes-chart-types/coloredCirculargraph";
-import CircularGraphIcon from "app/assets/icons/data-themes-chart-types/circulargraph";
+import ColoredCircularGraphIcon from "@app/assets/icons/data-themes-chart-types/coloredCirculargraph";
+import CircularGraphIcon from "@app/assets/icons/data-themes-chart-types/circulargraph";
 
-import AreastackedIcon from "app/assets/icons/data-themes-chart-types/areastacked";
-import ColoredAreastackedIcon from "app/assets/icons/data-themes-chart-types/coloredAreastacked";
+import AreastackedIcon from "@app/assets/icons/data-themes-chart-types/areastacked";
+import ColoredAreastackedIcon from "@app/assets/icons/data-themes-chart-types/coloredAreastacked";
 
-import BubblechartIcon from "app/assets/icons/data-themes-chart-types/bubble";
-import ColoredBubblechartIcon from "app/assets/icons/data-themes-chart-types/coloredBubbleChart";
+import BubblechartIcon from "@app/assets/icons/data-themes-chart-types/bubble";
+import ColoredBubblechartIcon from "@app/assets/icons/data-themes-chart-types/coloredBubbleChart";
 
-import RadarchartIcon from "app/assets/icons/data-themes-chart-types/radar";
-import ColoredRadarchartIcon from "app/assets/icons/data-themes-chart-types/coloredRadarChart";
+import RadarchartIcon from "@app/assets/icons/data-themes-chart-types/radar";
+import ColoredRadarchartIcon from "@app/assets/icons/data-themes-chart-types/coloredRadarChart";
 
-import HeatmapIcon from "app/assets/icons/data-themes-chart-types/heatmap";
-import ColoredHeatmapIcon from "app/assets/icons/data-themes-chart-types/coloredHeatmap";
+import HeatmapIcon from "@app/assets/icons/data-themes-chart-types/heatmap";
+import ColoredHeatmapIcon from "@app/assets/icons/data-themes-chart-types/coloredHeatmap";
 
-import ScatterIcon from "app/assets/icons/data-themes-chart-types/scatter";
-import ColoredScatterIcon from "app/assets/icons/data-themes-chart-types/coloredScatterChart";
+import ScatterIcon from "@app/assets/icons/data-themes-chart-types/scatter";
+import ColoredScatterIcon from "@app/assets/icons/data-themes-chart-types/coloredScatterChart";
 
-import AreaTimeAxisIcon from "app/assets/icons/data-themes-chart-types/areatimeaxis";
-import ColoredAreaTimeAxisIcon from "app/assets/icons/data-themes-chart-types/coloredAreatimeaxis";
+import AreaTimeAxisIcon from "@app/assets/icons/data-themes-chart-types/areatimeaxis";
+import ColoredAreaTimeAxisIcon from "@app/assets/icons/data-themes-chart-types/coloredAreatimeaxis";
 
-import GraphGLIcon from "app/assets/icons/data-themes-chart-types/graphgl";
-import ColoredGraphGLIcon from "app/assets/icons/data-themes-chart-types/coloredGraphGl";
+import GraphGLIcon from "@app/assets/icons/data-themes-chart-types/graphgl";
+import ColoredGraphGLIcon from "@app/assets/icons/data-themes-chart-types/coloredGraphGl";
 
-import GeomapPreviewImg from "app/modules/chart-module/assets/geomapPreview.svg";
-import { ReactComponent as BigNumberPreviewImg } from "app/modules/chart-module/assets/bigNumberPreview.svg";
-import { ReactComponent as LineChartPreviewImg } from "app/modules/chart-module/assets/lineChartPreview.svg";
-import { ReactComponent as TreeMapPreviewImg } from "app/modules/chart-module/assets/treemapPreview.svg";
-import { ReactComponent as SankeyPreviewImg } from "app/modules/chart-module/assets/sankeyPreview.svg";
-import { ReactComponent as BarChartPreviewImg } from "app/modules/chart-module/assets/barChartPreview.svg";
-import { ReactComponent as MultisetBarChartPreviewImg } from "app/modules/chart-module/assets/multisetBarChartPreview.svg";
-import { ReactComponent as StackedBarChartPreviewImg } from "app/modules/chart-module/assets/stackedBarChartPreview.svg";
-
-import { ReactComponent as SunburstPreviewImg } from "app/modules/chart-module/assets/sunburstPreview.svg";
-import { ReactComponent as PieChartPreviewImg } from "app/modules/chart-module/assets/pieChartPreview.svg";
-import { ReactComponent as CirclepackingPreviewImg } from "app/modules/chart-module/assets/circlepackingPreview.svg";
-import { ReactComponent as ForcegraphPreviewImg } from "app/modules/chart-module/assets/forcegraphPreview.svg";
-import { ReactComponent as CirculargraphPreviewImg } from "app/modules/chart-module/assets/circulargraphPreview.svg";
-import { ReactComponent as AreastackedPreviewImg } from "app/modules/chart-module/assets/areastackedPreview.svg";
-import { ReactComponent as BubbleChartPreviewImg } from "app/modules/chart-module/assets/bubbleChartPreview.svg";
-import { ReactComponent as RadarChartPreviewImg } from "app/modules/chart-module/assets/radarChartPreview.svg";
-import { ReactComponent as HeatmapPreviewImg } from "app/modules/chart-module/assets/heatmapPreview.svg";
-import { ReactComponent as ScatterChartPreviewImg } from "app/modules/chart-module/assets/scatterChartPreview.svg";
-import { ReactComponent as GraphGlPreviewImg } from "app/modules/chart-module/assets/graphglPreview.svg";
-import { ReactComponent as AreatimeaxisPreviewImg } from "app/modules/chart-module/assets/areastackedPreview.svg";
-import { ChartRenderedItem } from "app/modules/chart-module/data";
-import { IChartType } from "app/state/api/action-reducers/sync/charts";
+import GeomapPreviewImg from "@app/modules/chart-module/assets/geomapPreview.svg";
+import BigNumberPreviewImg from "@app/modules/chart-module/assets/bigNumberPreview.svg?react";
+import LineChartPreviewImg from "@app/modules/chart-module/assets/lineChartPreview.svg?react";
+import TreeMapPreviewImg from "@app/modules/chart-module/assets/treemapPreview.svg?react";
+import SankeyPreviewImg from "@app/modules/chart-module/assets/sankeyPreview.svg?react";
+import BarChartPreviewImg from "@app/modules/chart-module/assets/barChartPreview.svg?react";
+import MultisetBarChartPreviewImg from "@app/modules/chart-module/assets/multisetBarChartPreview.svg?react";
+import StackedBarChartPreviewImg from "@app/modules/chart-module/assets/stackedBarChartPreview.svg?react";
+import SunburstPreviewImg from "@app/modules/chart-module/assets/sunburstPreview.svg?react";
+import PieChartPreviewImg from "@app/modules/chart-module/assets/pieChartPreview.svg?react";
+import CirclepackingPreviewImg from "@app/modules/chart-module/assets/circlepackingPreview.svg?react";
+import ForcegraphPreviewImg from "@app/modules/chart-module/assets/forcegraphPreview.svg?react";
+import CirculargraphPreviewImg from "@app/modules/chart-module/assets/circulargraphPreview.svg?react";
+import AreastackedPreviewImg from "@app/modules/chart-module/assets/areastackedPreview.svg?react";
+import BubbleChartPreviewImg from "@app/modules/chart-module/assets/bubbleChartPreview.svg?react";
+import RadarChartPreviewImg from "@app/modules/chart-module/assets/radarChartPreview.svg?react";
+import HeatmapPreviewImg from "@app/modules/chart-module/assets/heatmapPreview.svg?react";
+import ScatterChartPreviewImg from "@app/modules/chart-module/assets/scatterChartPreview.svg?react";
+import GraphGlPreviewImg from "@app/modules/chart-module/assets/graphglPreview.svg?react";
+import AreatimeaxisPreviewImg from "@app/modules/chart-module/assets/areastackedPreview.svg?react";
+import { ChartRenderedItem } from "@app/modules/chart-module/data";
+import { IChartType } from "@app/state/api/action-reducers/sync/charts";
 
 export interface ChartBuilderChartTypeProps {
   loading: boolean;

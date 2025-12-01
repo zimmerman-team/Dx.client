@@ -1,15 +1,15 @@
 import React from "react";
 import Grid from "@material-ui/core/Grid";
 import { FieldErrors } from "react-hook-form";
-import { ReactComponent as MailImg } from "app/modules/story-module/asset/mail-img.svg";
-import { ReactComponent as TopEllipse } from "app/modules/story-module/asset/ai-newsletter-top-ellipse.svg";
-import { ReactComponent as BigEllipse } from "app/modules/story-module/asset/ai-newsletter-big-ellipse.svg";
-import { ReactComponent as MidEllipse } from "app/modules/story-module/asset/ai-newsletter-md-btm-ellipse.svg";
-import { ReactComponent as BtmGreenEllipse } from "app/modules/story-module/asset/ai-newsletter-btm-green-ellipse.svg";
-import { ReactComponent as BtmPurpleEllipse } from "app/modules/story-module/asset/ai-newsletter-sm-purple-ellispe.svg";
-import { ReactComponent as StoryIllustration } from "app/modules/story-module/asset/story-illustration.svg";
-import { ReactComponent as DatasetIllustration } from "app/modules/story-module/asset/dataset-illustration.svg";
-import { ReactComponent as ChartIllustration } from "app/modules/story-module/asset/chart-illustration.svg";
+import MailImg from "@app/modules/story-module/asset/mail-img.svg?react";
+import TopEllipse from "@app/modules/story-module/asset/ai-newsletter-top-ellipse.svg?react";
+import BigEllipse from "@app/modules/story-module/asset/ai-newsletter-big-ellipse.svg?react";
+import MidEllipse from "@app/modules/story-module/asset/ai-newsletter-md-btm-ellipse.svg?react";
+import BtmGreenEllipse from "@app/modules/story-module/asset/ai-newsletter-btm-green-ellipse.svg?react";
+import BtmPurpleEllipse from "@app/modules/story-module/asset/ai-newsletter-sm-purple-ellispe.svg?react";
+import StoryIllustration from "@app/modules/story-module/asset/story-illustration.svg?react";
+import DatasetIllustration from "@app/modules/story-module/asset/dataset-illustration.svg?react";
+import ChartIllustration from "@app/modules/story-module/asset/chart-illustration.svg?react";
 import ErrorOutlineIcon from "@material-ui/icons/ErrorOutline";
 import {
   bigEllipsecss,
@@ -25,7 +25,7 @@ import {
   topEllipsecss,
 } from "./style";
 import SneakPreview from "./sneakPreview";
-import NewsletterForm from "app/modules/common/newsletterForm";
+import NewsletterForm from "@app/modules/common/newsletterForm";
 import { useTitle } from "react-use";
 
 export default function AITemplate() {

@@ -1,7 +1,7 @@
 /* eslint-disable sonarjs/no-duplicate-string */
 /* eslint no-use-before-define: 0 */
 import React from "react";
-import GoodIcon from "app/modules/home-module/sub-modules/pricing/assets/good-icon";
+import GoodIcon from "@app/modules/home-module/sub-modules/pricing/assets/good-icon";
 import { Plan } from "./plan-card";
 
 interface MobilePlanCardProps {

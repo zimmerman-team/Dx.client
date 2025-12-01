@@ -2,7 +2,7 @@ import React from "react";
 import Grid from "@material-ui/core/Grid";
 import { useHistory } from "react-router-dom";
 import IconButton from "@material-ui/core/IconButton";
-import { ReactComponent as AddNewImage } from "app/modules/home-module/assets/add-img-white.svg";
+import AddNewImage from "@app/modules/home-module/assets/add-img-white.svg?react";
 
 export default function DatasetAddnewCard() {
   const history = useHistory();

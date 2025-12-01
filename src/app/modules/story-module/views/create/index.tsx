@@ -4,18 +4,18 @@ import Box from "@material-ui/core/Box";
 import Container from "@material-ui/core/Container";
 import useResizeObserver from "use-resize-observer";
 import { useRecoilState } from "recoil";
-import { GridColumns } from "app/modules/story-module/components/grid-columns";
-import { ItemComponent } from "app/modules/story-module/components/order-container";
-import AddRowFrameButton from "app/modules/story-module/components/rowStructure/addRowFrameButton";
-import RowFrame from "app/modules/story-module/components/rowStructure";
-import { StoryCreateViewProps } from "app/modules/story-module/views/create/data";
+import { GridColumns } from "@app/modules/story-module/components/grid-columns";
+import { ItemComponent } from "@app/modules/story-module/components/order-container";
+import AddRowFrameButton from "@app/modules/story-module/components/rowStructure/addRowFrameButton";
+import RowFrame from "@app/modules/story-module/components/rowStructure";
+import { StoryCreateViewProps } from "@app/modules/story-module/views/create/data";
 import {
   IRowFrameStructure,
   storyContentContainerWidth,
-} from "app/state/recoil/atoms";
-import TourGuide from "app/components/Dialogs/TourGuide";
+} from "@app/state/recoil/atoms";
+import TourGuide from "@app/components/Dialogs/TourGuide";
 import { useTitle } from "react-use";
-import PlaceHolder from "app/modules/story-module/components/placeholder";
+import PlaceHolder from "@app/modules/story-module/components/placeholder";
 
 function StoryCreateView(props: Readonly<StoryCreateViewProps>) {
   useTitle("Dataxplorer - Create Story");

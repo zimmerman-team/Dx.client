@@ -1,14 +1,14 @@
 import React from "react";
-import Hero from "app/modules/home-module/components/hero";
+import Hero from "@app/modules/home-module/components/hero";
 import { Box, Container } from "@material-ui/core";
 import { ClockIcon } from "./assets/ClockIcon";
 import { UsersIcon } from "./assets/UsersIcon";
 import { CalendarIcon } from "./assets/CalendarIcon";
-import { DESKTOP_BREAKPOINT, MOBILE_BREAKPOINT } from "app/theme";
+import { DESKTOP_BREAKPOINT, MOBILE_BREAKPOINT } from "@app/theme";
 import WhatYouLearn from "./components/what-you-learn";
 import ReserveYourSpot from "./components/reserve-your-spot";
-import { getCMSDataField } from "app/utils/getCMSDataField";
-import { useCMSData } from "app/hooks/useCMSData";
+import { getCMSDataField } from "@app/utils/getCMSDataField";
+import { useCMSData } from "@app/hooks/useCMSData";
 
 const WebinarPage = () => {
   const cmsData = useCMSData({ returnData: true });

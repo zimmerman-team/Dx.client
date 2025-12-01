@@ -1,4 +1,4 @@
-import { ColumnDetailsProps } from "app/components/Table/Preview-table/StatisticalTableToolBox";
+import { ColumnDetailsProps } from "@app/components/Table/Preview-table/StatisticalTableToolBox";
 
 export const tableToolBoxData: ColumnDetailsProps = {
   columnName: "Commit date",

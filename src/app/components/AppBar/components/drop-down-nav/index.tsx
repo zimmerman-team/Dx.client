@@ -2,8 +2,8 @@ import React from "react";
 import { KeyboardArrowDown, KeyboardArrowUp } from "@material-ui/icons";
 import { ClickAwayListener } from "@material-ui/core";
 import { NavLink } from "react-router-dom";
-import { FOCUS_VISIBLE_STYLE_LIGHT } from "app/theme";
-import { useMenuNavigation } from "app/hooks/useMenuNavigation";
+import { FOCUS_VISIBLE_STYLE_LIGHT } from "@app/theme";
+import { useMenuNavigation } from "@app/hooks/useMenuNavigation";
 
 type Props = {
   item: {

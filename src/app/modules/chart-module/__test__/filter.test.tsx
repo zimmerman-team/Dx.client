@@ -3,10 +3,10 @@ import { fireEvent, render, screen } from "@testing-library/react";
 import { StoreProvider, createStore } from "easy-peasy";
 import userEvent from "@testing-library/user-event";
 /** project */
-import { FilterGroup } from "app/modules/chart-module/routes/filters/components/FilterGroup";
-import { ChartsAppliedFiltersState } from "app/state/api/action-reducers/sync/charts/filters";
-import { ExpandedFilterGroup } from "app/modules/chart-module/routes/filters/components/ExpandedFilterGroup";
-import { FilterGroupOptionModel } from "app/components/ToolBoxPanel/components/filters/data";
+import { FilterGroup } from "@app/modules/chart-module/routes/filters/components/FilterGroup";
+import { ChartsAppliedFiltersState } from "@app/state/api/action-reducers/sync/charts/filters";
+import { ExpandedFilterGroup } from "@app/modules/chart-module/routes/filters/components/ExpandedFilterGroup";
+import { FilterGroupOptionModel } from "@app/components/ToolBoxPanel/components/filters/data";
 
 interface MockProps {
   key: string;

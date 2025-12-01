@@ -8,22 +8,22 @@ import {
   ChartsDatasetState,
   ChartsMappingState,
   SelectedAIChartState,
-} from "app/state/api/action-reducers/sync/charts";
-import ChartBuilderChartType from "app/modules/chart-module/routes/chart-type";
+} from "@app/state/api/action-reducers/sync/charts";
+import ChartBuilderChartType from "@app/modules/chart-module/routes/chart-type";
 import {
   ChartTypeModel,
   echartTypes,
-} from "app/modules/chart-module/routes/chart-type/data";
+} from "@app/modules/chart-module/routes/chart-type/data";
 import { createMemoryHistory } from "history";
 import { Auth0Provider } from "@auth0/auth0-react";
-import { mockUseAuth0 } from "app/utils/mockAuth0";
+import { mockUseAuth0 } from "@app/utils/mockAuth0";
 import {
   ChartGet,
   ChartTypesSuggest,
-} from "app/state/api/action-reducers/charts";
-import { AuthTokenState } from "app/state/api/action-reducers/sync";
+} from "@app/state/api/action-reducers/charts";
+import { AuthTokenState } from "@app/state/api/action-reducers/sync";
 import { MutableSnapshot, RecoilRoot } from "recoil";
-import { isChartAIAgentActive } from "app/state/recoil/atoms";
+import { isChartAIAgentActive } from "@app/state/recoil/atoms";
 
 interface MockProps {
   loading: boolean;

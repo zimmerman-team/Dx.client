@@ -1,14 +1,14 @@
 /* third-party */
 import React from "react";
 import useTitle from "react-use/lib/useTitle";
-import { useStoreState } from "app/state/store/hooks";
+import { useStoreState } from "@app/state/store/hooks";
 /* project */
-import { PageLoader } from "app/modules/common/page-loader";
-import { styles as commonStyles } from "app/modules/chart-module/routes/common/styles";
-import { FilterGroupModel } from "app/components/ToolBoxPanel/components/filters/data";
-import { DatasetDataTable } from "app/modules/dataset-module/routes/upload-module/component/table/data-table";
+import { PageLoader } from "@app/modules/common/page-loader";
+import { styles as commonStyles } from "@app/modules/chart-module/routes/common/styles";
+import { FilterGroupModel } from "@app/components/ToolBoxPanel/components/filters/data";
+import { DatasetDataTable } from "@app/modules/dataset-module/routes/upload-module/component/table/data-table";
 import { useHistory, useParams } from "react-router-dom";
-import ErrorComponent from "app/modules/chart-module/components/dialog/errrorComponent";
+import ErrorComponent from "@app/modules/chart-module/components/dialog/errrorComponent";
 
 interface ChartBuilderPreviewProps {
   loading: boolean;
@@ -42,7 +42,7 @@ export function ChartBuilderPreview(props: ChartBuilderPreviewProps) {
     } else {
       //loads table data
       props.loadDataset(
-        `${process.env.REACT_APP_API}/chart/sample-data${
+        `${import.meta.env.VITE_API}/chart/sample-data${
           token ? "" : "/public"
         }/${datasetId}`
       );

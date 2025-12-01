@@ -1,16 +1,16 @@
 import React from "react";
 import get from "lodash/get";
 import CloseIcon from "@material-ui/icons/Close";
-import { useStoreState, useStoreActions } from "app/state/store/hooks";
+import { useStoreState, useStoreActions } from "@app/state/store/hooks";
 import { Box } from "@material-ui/core";
 import { useHistory, useParams } from "react-router-dom";
-import ToolboxSubHeader from "app/modules/chart-module/components/toolbox/steps/sub-header";
+import ToolboxSubHeader from "@app/modules/chart-module/components/toolbox/steps/sub-header";
 import { useRecoilValue, useResetRecoilState } from "recoil";
 import {
   chartFromStoryAtom,
   isChartAutoMappedAtom,
-} from "app/state/recoil/atoms";
-import { PrimaryButton } from "app/components/Styled/button";
+} from "@app/state/recoil/atoms";
+import { PrimaryButton } from "@app/components/Styled/button";
 
 export interface IDatasetDetails {
   id: string;

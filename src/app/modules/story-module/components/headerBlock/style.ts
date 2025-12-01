@@ -1,4 +1,4 @@
-import { css } from "styled-components/macro";
+import { css } from "styled-components";
 
 export const headerBlockcss = {
   container: (backgroundColor: string, istoolboxOpen: boolean) => css`

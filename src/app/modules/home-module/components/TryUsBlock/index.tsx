@@ -1,16 +1,16 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { useAuth0 } from "@auth0/auth0-react";
-import { socialAuth } from "app/utils/socialAuth";
-import { ReactComponent as GoogleIcon } from "app/modules/home-module/components/SignInButtons/assets/google-icon.svg";
-import { ReactComponent as LinkedInIcon } from "app/modules/home-module/components/SignInButtons/assets/linkedin-icon.svg";
-import { ReactComponent as MicrosoftIcon } from "app/modules/home-module/components/SignInButtons/assets/microsoft-icon.svg";
+import { socialAuth } from "@app/utils/socialAuth";
+import GoogleIcon from "@app/modules/home-module/components/SignInButtons/assets/google-icon.svg?react";
+import LinkedInIcon from "@app/modules/home-module/components/SignInButtons/assets/linkedin-icon.svg?react";
+import MicrosoftIcon from "@app/modules/home-module/components/SignInButtons/assets/microsoft-icon.svg?react";
 import {
   DESKTOP_BREAKPOINT,
   FOCUS_VISIBLE_STYLE_DARK,
   FOCUS_VISIBLE_STYLE_LIGHT,
   MOBILE_BREAKPOINT,
-} from "app/theme";
+} from "@app/theme";
 import { ChevronRight } from "@material-ui/icons";
 
 interface TryUsBlockProps {

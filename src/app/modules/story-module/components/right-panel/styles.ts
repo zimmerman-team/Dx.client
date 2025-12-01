@@ -1,5 +1,5 @@
-import { TABLET_STARTPOINT } from "app/theme";
-import { css } from "styled-components/macro";
+import { TABLET_STARTPOINT } from "@app/theme";
+import { css } from "styled-components";
 
 export const styles = {
   container: css`

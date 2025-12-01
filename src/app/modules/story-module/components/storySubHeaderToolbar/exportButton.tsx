@@ -5,7 +5,7 @@ import IconButton from "@material-ui/core/IconButton";
 import {
   StyledMenu,
   StyledMenuItem,
-} from "app/modules/chart-module/components/exporter";
+} from "@app/modules/chart-module/components/exporter";
 import { Link, useParams } from "react-router-dom";
 
 export function ExportStoryButton(props: { filename: string }) {

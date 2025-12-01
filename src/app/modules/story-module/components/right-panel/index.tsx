@@ -1,12 +1,12 @@
 import React from "react";
 import Slide from "@material-ui/core/Slide";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
-import { TriangleXSIcon } from "app/assets/icons/TriangleXS";
-import { styles } from "app/modules/story-module/components/right-panel/styles";
-import { StoryRightPanelProps } from "app/modules/story-module/components/right-panel/data";
-import { StoryRightPanelCreateView } from "app/modules/story-module/components/right-panel-create-view";
-import useTogglePanelWithKey from "app/hooks/useTogglePanelWithKey";
-import { MOBILE_BREAKPOINT } from "app/theme";
+import { TriangleXSIcon } from "@app/assets/icons/TriangleXS";
+import { styles } from "@app/modules/story-module/components/right-panel/styles";
+import { StoryRightPanelProps } from "@app/modules/story-module/components/right-panel/data";
+import { StoryRightPanelCreateView } from "@app/modules/story-module/components/right-panel-create-view";
+import useTogglePanelWithKey from "@app/hooks/useTogglePanelWithKey";
+import { MOBILE_BREAKPOINT } from "@app/theme";
 
 export function StoryRightPanel(props: StoryRightPanelProps) {
   const isMobile = useMediaQuery(`(max-width: ${MOBILE_BREAKPOINT})`);

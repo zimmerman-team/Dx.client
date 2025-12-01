@@ -2,25 +2,25 @@ import React from "react";
 import axios from "axios";
 import { useTitle } from "react-use";
 import { useAuth0 } from "@auth0/auth0-react";
-import { useStoreState } from "app/state/store/hooks";
+import { useStoreState } from "@app/state/store/hooks";
 import { Box, Container, useMediaQuery } from "@material-ui/core";
 import PlanCard from "./components/plan-card";
 
-import HomeFooter from "app/modules/home-module/components/Footer";
+import HomeFooter from "@app/modules/home-module/components/Footer";
 import Features from "./components/features";
 import MFALogo from "./assets/mfa-logo";
 import TGFLogo from "./assets/tgf-logo";
 import IATILogo from "./assets/iati-logo";
 import { useHistory, useLocation } from "react-router-dom";
 import MobilePlanCard from "./components/mobile-plan-card";
-import { APPLICATION_JSON } from "app/state/api";
-import { PageLoader } from "app/modules/common/page-loader";
-import { useCheckPricingActive } from "app/hooks/useCheckPricingActive";
-import { DESKTOP_BREAKPOINT } from "app/theme";
-import useBackgroundColor from "app/hooks/useBackgroundColor";
+import { APPLICATION_JSON } from "@app/state/api";
+import { PageLoader } from "@app/modules/common/page-loader";
+import { useCheckPricingActive } from "@app/hooks/useCheckPricingActive";
+import { DESKTOP_BREAKPOINT } from "@app/theme";
+import useBackgroundColor from "@app/hooks/useBackgroundColor";
 import SubscriptionToggle from "./components/subscription-toggle";
-import { useCMSData } from "app/hooks/useCMSData";
-import { getCMSDataField } from "app/utils/getCMSDataField";
+import { useCMSData } from "@app/hooks/useCMSData";
+import { getCMSDataField } from "@app/utils/getCMSDataField";
 
 export default function PricingModule() {
   useTitle("Dataxplorer - Pricing");
@@ -201,7 +201,7 @@ export default function PricingModule() {
 
   const createNewStripeCustomer = async () => {
     const customerCreationResponse = await axios.post(
-      `${process.env.REACT_APP_API}/stripe/new-customer`,
+      `${import.meta.env.VITE_API}/stripe/new-customer`,
       {
         name: user?.name,
         email: user?.email,
@@ -220,7 +220,7 @@ export default function PricingModule() {
   const getCurrentSubscriptionPlan = async () => {
     setLoading(true);
     await axios
-      .get(`${process.env.REACT_APP_API}/stripe/subscription/${user?.sub}`, {
+      .get(`${import.meta.env.VITE_API}/stripe/subscription/${user?.sub}`, {
         headers: {
           "Content-Type": APPLICATION_JSON,
           Authorization: `Bearer ${token}`,
@@ -242,7 +242,7 @@ export default function PricingModule() {
     planName: string
   ) => {
     const checkoutSessionResponse = await axios.post(
-      `${process.env.REACT_APP_API}/stripe/checkout-session`,
+      `${import.meta.env.VITE_API}/stripe/checkout-session`,
       {
         planName,
         customerId,

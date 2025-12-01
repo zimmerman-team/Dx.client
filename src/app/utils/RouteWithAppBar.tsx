@@ -1,8 +1,8 @@
 import React from "react";
 import { Route } from "react-router-dom";
 import { useAuth0 } from "@auth0/auth0-react";
-import { AppBar } from "app/components/AppBar";
-import { useStoreActions, useStoreState } from "app/state/store/hooks";
+import { AppBar } from "@app/components/AppBar";
+import { useStoreActions, useStoreState } from "@app/state/store/hooks";
 
 interface RouteWithAppBarProps {
   path?: string;

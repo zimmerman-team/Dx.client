@@ -2,30 +2,30 @@
 import React from "react";
 import { useAuth0 } from "@auth0/auth0-react";
 import { useHistory, useLocation, useParams } from "react-router-dom";
-import { useStoreActions, useStoreState } from "app/state/store/hooks";
+import { useStoreActions, useStoreState } from "@app/state/store/hooks";
 import { isEmpty } from "lodash";
 import { Slide, Tooltip, useMediaQuery } from "@material-ui/core";
 /* project */
 import {
   snackbarStyle,
   styles,
-} from "app/modules/chart-module/components/toolbox/styles";
-import { ChartExporter } from "app/modules/chart-module/components/exporter";
+} from "@app/modules/chart-module/components/toolbox/styles";
+import { ChartExporter } from "@app/modules/chart-module/components/exporter";
 import {
   ChartToolBoxProps,
   ToolboxNavType,
-} from "app/modules/chart-module/components/toolbox/data";
-import { ChartToolBoxSteps } from "app/modules/chart-module/components/toolbox/steps";
-import { TriangleXSIcon } from "app/assets/icons/TriangleXS";
+} from "@app/modules/chart-module/components/toolbox/data";
+import { ChartToolBoxSteps } from "@app/modules/chart-module/components/toolbox/steps";
+import { TriangleXSIcon } from "@app/assets/icons/TriangleXS";
 import {
   emptyChartAPI,
   ChartAPIModel,
   chartViews,
-} from "app/modules/chart-module/data";
-import ToolboxNav from "app/modules/chart-module/components/toolbox/steps/navbar";
-import { InfoSnackbar } from "app/modules/chart-module/components/chartSubheaderToolbar/infoSnackbar";
-import { PrimaryButton } from "app/components/Styled/button";
-import useTogglePanelWithKey from "app/hooks/useTogglePanelWithKey";
+} from "@app/modules/chart-module/data";
+import ToolboxNav from "@app/modules/chart-module/components/toolbox/steps/navbar";
+import { InfoSnackbar } from "@app/modules/chart-module/components/chartSubheaderToolbar/infoSnackbar";
+import { PrimaryButton } from "@app/components/Styled/button";
+import useTogglePanelWithKey from "@app/hooks/useTogglePanelWithKey";
 
 export function ChartModuleToolBox(props: Readonly<ChartToolBoxProps>) {
   const { page, view } = useParams<{ page: string; view?: string }>();

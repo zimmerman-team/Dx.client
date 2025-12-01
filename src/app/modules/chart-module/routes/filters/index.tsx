@@ -2,14 +2,14 @@
 import React from "react";
 import useTitle from "react-use/lib/useTitle";
 import { useParams } from "react-router-dom";
-import { useStoreState } from "app/state/store/hooks";
+import { useStoreState } from "@app/state/store/hooks";
 /* project */
-import { CommonChart } from "app/modules/chart-module/components/common-chart";
-import { styles as commonStyles } from "app/modules/chart-module/routes/common/styles";
-import { ChartBuilderFiltersProps } from "app/modules/chart-module/routes/filters/data";
-import ErrorComponent from "app/modules/chart-module/components/dialog/errrorComponent";
-import AIIcon from "app/assets/icons/AIIcon";
-import ChartArea from "app/modules/chart-module/components/chart-area";
+import { CommonChart } from "@app/modules/chart-module/components/common-chart";
+import { styles as commonStyles } from "@app/modules/chart-module/routes/common/styles";
+import { ChartBuilderFiltersProps } from "@app/modules/chart-module/routes/filters/data";
+import ErrorComponent from "@app/modules/chart-module/components/dialog/errrorComponent";
+import AIIcon from "@app/assets/icons/AIIcon";
+import ChartArea from "@app/modules/chart-module/components/chart-area";
 
 function ChartBuilderFilters(props: Readonly<ChartBuilderFiltersProps>) {
   useTitle("Dataxplorer - Filters");

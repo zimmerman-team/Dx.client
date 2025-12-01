@@ -1,13 +1,13 @@
 import React from "react";
 import moment from "moment";
 import { Link } from "react-router-dom";
-import { ReactComponent as ClockIcon } from "app/modules/home-module/assets/clock-icon.svg";
-import { ReactComponent as OwnerIcon } from "app/modules/home-module/assets/owner-icon.svg";
-import MenuPopover from "app/modules/home-module/components/AssetCollection/All/menuPopover";
-import AIIcon from "app/assets/icons/AIIcon";
+import ClockIcon from "@app/modules/home-module/assets/clock-icon.svg?react";
+import OwnerIcon from "@app/modules/home-module/assets/owner-icon.svg?react";
+import MenuPopover from "@app/modules/home-module/components/AssetCollection/All/menuPopover";
+import AIIcon from "@app/assets/icons/AIIcon";
 import { useAuth0 } from "@auth0/auth0-react";
-import { FOCUS_VISIBLE_STYLE_LIGHT } from "app/theme";
-import Logo from "app/assets/icons/Logo";
+import { FOCUS_VISIBLE_STYLE_LIGHT } from "@app/theme";
+import Logo from "@app/assets/icons/Logo";
 
 interface Props {
   id: string;

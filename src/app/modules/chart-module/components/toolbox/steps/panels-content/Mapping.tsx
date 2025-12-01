@@ -8,25 +8,25 @@ import {
 } from "@rawgraphs/rawgraphs-core";
 import ArrowDropUpIcon from "@material-ui/icons/ArrowDropUp";
 
-import { useStoreActions, useStoreState } from "app/state/store/hooks";
+import { useStoreActions, useStoreState } from "@app/state/store/hooks";
 import { uniqueId, filter, isEmpty, set } from "lodash";
 import { Box, Button, IconButton } from "@material-ui/core";
-import ToolboxSubheader from "app/modules/chart-module/components/toolbox/steps/sub-header";
-import { ReactComponent as DateIcon } from "app/modules/chart-module/assets/date.svg";
+import ToolboxSubheader from "@app/modules/chart-module/components/toolbox/steps/sub-header";
+import DateIcon from "@app/modules/chart-module/assets/date.svg?react";
 import CloseIcon from "@material-ui/icons/Close";
-import { mappingStyles } from "app/modules/chart-module/components/toolbox/styles";
+import { mappingStyles } from "@app/modules/chart-module/components/toolbox/styles";
 import SearchIcon from "@material-ui/icons/Search";
 import { useDebounce } from "react-use";
 import {
   ChartAPIModel,
   ChartRenderedItem,
   emptyChartAPI,
-} from "app/modules/chart-module/data";
+} from "@app/modules/chart-module/data";
 import { Dropdown } from "react-bootstrap";
-import { areAllRequiredDimensionsMapped } from "app/hooks/useChartsRawData";
+import { areAllRequiredDimensionsMapped } from "@app/hooks/useChartsRawData";
 import Skeleton from "@material-ui/lab/Skeleton";
-import { chartTypesFromMiddleWare } from "app/modules/chart-module/routes/chart-type/data";
-import { isChartAutoMappedAtom } from "app/state/recoil/atoms";
+import { chartTypesFromMiddleWare } from "@app/modules/chart-module/routes/chart-type/data";
+import { isChartAutoMappedAtom } from "@app/state/recoil/atoms";
 import { useRecoilState } from "recoil";
 import axios from "axios";
 import { DndProvider, useDrag, useDrop } from "react-dnd";
@@ -130,7 +130,7 @@ const DimensionContainerSkeleton = () => {
 };
 const fetchAISuggestedChartTypes = async (token: string, datasetId: string) => {
   return await axios.get(
-    `${process.env.REACT_APP_API}/chart-types/ai-suggestions?id=${datasetId}`,
+    `${import.meta.env.VITE_API}/chart-types/ai-suggestions?id=${datasetId}`,
     {
       headers: {
         Authorization: `Bearer ${token}`,
