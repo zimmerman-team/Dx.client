@@ -4,12 +4,12 @@ import {
   CssSnackbar,
   dataSetsCss,
   ISnackbarState,
-} from "app/modules/dataset-module/routes/upload-module/style";
-import { DatasetDataTable } from "app/modules/dataset-module/routes/upload-module/component/table/data-table";
-import { ReactComponent as FullScreenIcon } from "app/modules/dataset-module/routes/upload-module/assets/full-screen.svg";
-import { ReactComponent as CloseFullScreenIcon } from "app/modules/dataset-module/routes/upload-module/assets/close-full-screen.svg";
-import { DatasetListItemAPIModel } from "app/modules/dataset-module/data";
-import { FOCUS_VISIBLE_STYLE_LIGHT } from "app/theme";
+} from "@app/modules/dataset-module/routes/upload-module/style";
+import { DatasetDataTable } from "@app/modules/dataset-module/routes/upload-module/component/table/data-table";
+import FullScreenIcon from "@app/modules/dataset-module/routes/upload-module/assets/full-screen.svg?react";
+import CloseFullScreenIcon from "@app/modules/dataset-module/routes/upload-module/assets/close-full-screen.svg?react";
+import { DatasetListItemAPIModel } from "@app/modules/dataset-module/data";
+import { FOCUS_VISIBLE_STYLE_LIGHT } from "@app/theme";
 
 export interface FinishedFragmentProps {
   data: any[];

@@ -2,10 +2,10 @@ import React from "react";
 import Box from "@material-ui/core/Box";
 import { useHistory, useLocation } from "react-router-dom";
 import { useAuth0 } from "@auth0/auth0-react";
-import { PageLoader } from "app/modules/common/page-loader";
+import { PageLoader } from "@app/modules/common/page-loader";
 import axios from "axios";
 import { useCookie, useTitle } from "react-use";
-import { APPLICATION_JSON } from "app/state/api";
+import { APPLICATION_JSON } from "@app/state/api";
 
 function AuthCallbackModule() {
   useTitle("Dataxplorer - Auth Callback");
@@ -22,7 +22,7 @@ function AuthCallbackModule() {
   const duplicateStory = async (id: string) => {
     getAccessTokenSilently().then(async (newToken) => {
       const response = await axios.get(
-        `${process.env.REACT_APP_API}/users/duplicate-landing-story/${id}`,
+        `${import.meta.env.VITE_API}/users/duplicate-landing-story/${id}`,
         {
           headers: {
             "Content-Type": APPLICATION_JSON,
@@ -42,7 +42,7 @@ function AuthCallbackModule() {
   const duplicateAssets = async () => {
     const newToken = await getAccessTokenSilently();
     await axios.post(
-      `${process.env.REACT_APP_API}/users/duplicate-assets`,
+      `${import.meta.env.VITE_API}/users/duplicate-assets`,
       {},
       {
         headers: {
@@ -52,7 +52,7 @@ function AuthCallbackModule() {
       }
     );
     const response = await axios.get(
-      `${process.env.REACT_APP_API}/users/google-drive/user-token`,
+      `${import.meta.env.VITE_API}/users/google-drive/user-token`,
       {
         headers: {
           Authorization: `Bearer ${newToken}`,

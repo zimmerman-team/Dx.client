@@ -1,8 +1,8 @@
 import React from "react";
-import { styles as commonStyles } from "app/modules/chart-module/routes/common/styles";
-import { useStoreState } from "app/state/store/hooks";
-import { DatasetListItemAPIModel } from "app/modules/dataset-module/data";
-import { getDatasetDetailsSource } from "app/modules/chart-module/util/getDatasetDetailsSource";
+import { styles as commonStyles } from "@app/modules/chart-module/routes/common/styles";
+import { useStoreState } from "@app/state/store/hooks";
+import { DatasetListItemAPIModel } from "@app/modules/dataset-module/data";
+import { getDatasetDetailsSource } from "@app/modules/chart-module/util/getDatasetDetailsSource";
 const ChartArea: React.FC<
   React.PropsWithChildren<{
     hideChartSourceAndTitle?: boolean;

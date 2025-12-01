@@ -33,7 +33,8 @@ describe("Testing create chart on DX", () => {
     cy.intercept("GET", `${apiUrl}/datasets?**`).as("getDatasets");
     cy.get('[data-cy="home-asset-dropdown-button"]').click();
     cy.get('[data-cy="home-create-chart-button"]').click();
-    cy.wait("@getDatasets");
+
+    cy.wait("@getDatasets", { timeout: 10000 });
 
     cy.intercept("GET", `${apiUrl}/chart/sample-data/*`).as("getDataset");
 

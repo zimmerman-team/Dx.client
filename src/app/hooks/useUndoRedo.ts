@@ -1,5 +1,5 @@
 import React from "react";
-import { IFramesArray } from "app/modules/story-module/views/create/data";
+import { IFramesArray } from "@app/modules/story-module/views/create/data";
 import { Updater } from "use-immer";
 import { EditorState } from "draft-js";
 

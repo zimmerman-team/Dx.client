@@ -6,11 +6,11 @@ import MUIAppBar from "@material-ui/core/AppBar";
 import Container from "@material-ui/core/Container";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import { NavLink, useLocation, useHistory, Link } from "react-router-dom";
-import { headercss, logocss } from "app/components/AppBar/style";
+import { headercss, logocss } from "@app/components/AppBar/style";
 import { MobileHeader } from "./components/mobile-nav";
 import { NavList } from "./components/nav-list";
-import { FOCUS_VISIBLE_STYLE_LIGHT } from "app/theme";
-import Logo from "app/assets/icons/Logo";
+import { FOCUS_VISIBLE_STYLE_LIGHT } from "@app/theme";
+import Logo from "@app/assets/icons/Logo";
 
 export function AppBar() {
   const location = useLocation();

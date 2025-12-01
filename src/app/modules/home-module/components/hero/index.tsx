@@ -1,13 +1,13 @@
 import React from "react";
-import HeroEllipses from "app/modules/home-module/assets/hero-ellipses.png";
-import HeroEllipsesTablet from "app/modules/home-module/assets/hero-ellipses-tablet.svg";
-import HeroEllipsesMobile from "app/modules/home-module/assets/hero-ellipses-mobile.svg";
+import HeroEllipses from "@app/modules/home-module/assets/hero-ellipses.png";
+import HeroEllipsesTablet from "@app/modules/home-module/assets/hero-ellipses-tablet.svg";
+import HeroEllipsesMobile from "@app/modules/home-module/assets/hero-ellipses-mobile.svg";
 import { Box, Container } from "@material-ui/core";
 import {
   DESKTOP_BREAKPOINT,
   MOBILE_BREAKPOINT,
   TABLET_STARTPOINT,
-} from "app/theme";
+} from "@app/theme";
 
 interface HeroProps {
   title?: React.ReactNode;

@@ -1,11 +1,11 @@
 import React from "react";
 import { useLocation, useParams } from "react-router-dom";
-import { stepcss } from "app/modules/chart-module/components/toolbox/steps/navbar/style";
-import { useStoreActions, useStoreState } from "app/state/store/hooks";
+import { stepcss } from "@app/modules/chart-module/components/toolbox/steps/navbar/style";
+import { useStoreActions, useStoreState } from "@app/state/store/hooks";
 import {
   ToolboxNavType,
   toolboxNavContent,
-} from "app/modules/chart-module/components/toolbox/data";
+} from "@app/modules/chart-module/components/toolbox/data";
 
 export default function ToolboxNav(
   props: Readonly<{

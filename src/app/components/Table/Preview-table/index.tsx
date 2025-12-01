@@ -8,13 +8,13 @@ import TableCell from "@material-ui/core/TableCell";
 import IconButton from "@material-ui/core/IconButton";
 import TableContainer from "@material-ui/core/TableContainer";
 /** project */
-import { previewTablecss } from "app/components/Table/Preview-table/style";
-import StatisticDisplay from "app/components/Table/Preview-table/statisticDisplay";
-import { ReactComponent as SortIcon } from "app/modules/dataset-module/routes/upload-module/assets/sort.svg";
+import { previewTablecss } from "@app/components/Table/Preview-table/style";
+import StatisticDisplay from "@app/components/Table/Preview-table/statisticDisplay";
+import SortIcon from "@app/modules/dataset-module/routes/upload-module/assets/sort.svg?react";
 import StatisticalTableToolBox, {
   ColumnDetailsProps,
-} from "app/components/Table/Preview-table/StatisticalTableToolBox";
-import CircleLoader from "app/modules/home-module/components/Loader";
+} from "@app/components/Table/Preview-table/StatisticalTableToolBox";
+import CircleLoader from "@app/modules/home-module/components/Loader";
 
 interface PreviewTableProps {
   placeUnderSubHeader?: boolean;

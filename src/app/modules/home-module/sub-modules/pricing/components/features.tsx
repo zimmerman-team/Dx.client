@@ -1,11 +1,11 @@
 import React from "react";
-import BackupIcon from "app/modules/home-module/sub-modules/pricing/assets/backup";
-import AddChartIcon from "app/modules/home-module/sub-modules/pricing/assets/add-chart";
-import GoodIcon from "app/modules/home-module/sub-modules/pricing/assets/good-icon";
-import StoryIcon from "app/modules/home-module/sub-modules/pricing/assets/story";
-import UserShieldIcon from "app/modules/home-module/sub-modules/pricing/assets/user-shied";
-import SupportIcon from "app/modules/home-module/sub-modules/pricing/assets/support";
-import InfoIcon from "app/modules/home-module/sub-modules/pricing/assets/info-icon";
+import BackupIcon from "@app/modules/home-module/sub-modules/pricing/assets/backup";
+import AddChartIcon from "@app/modules/home-module/sub-modules/pricing/assets/add-chart";
+import GoodIcon from "@app/modules/home-module/sub-modules/pricing/assets/good-icon";
+import StoryIcon from "@app/modules/home-module/sub-modules/pricing/assets/story";
+import UserShieldIcon from "@app/modules/home-module/sub-modules/pricing/assets/user-shied";
+import SupportIcon from "@app/modules/home-module/sub-modules/pricing/assets/support";
+import InfoIcon from "@app/modules/home-module/sub-modules/pricing/assets/info-icon";
 import { Tooltip } from "react-tooltip";
 
 const Features = () => {

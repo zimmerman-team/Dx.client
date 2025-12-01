@@ -1,6 +1,6 @@
 import React from "react";
 import Button from "@material-ui/core/Button";
-import { LinkIcon } from "app/assets/icons/Link";
+import { LinkIcon } from "@app/assets/icons/Link";
 
 const CopyButton = ({ handleCopy }: { handleCopy: (link: string) => void }) => {
   const copyButtonRef = React.useRef<HTMLButtonElement>(null);

@@ -1,11 +1,11 @@
 import React from "react";
 import { Container } from "@material-ui/core";
-import { DESKTOP_BREAKPOINT, MOBILE_BREAKPOINT } from "app/theme";
-import FlagIcon from "app/modules/home-module/sub-modules/webinar/assets/FlagIcon";
-import CheckIcon from "app/modules/home-module/sub-modules/webinar/assets/CheckIcon";
-import { CalendarIcon2 } from "app/modules/home-module/sub-modules/webinar/assets/CalendarIcon";
-import { useCMSData } from "app/hooks/useCMSData";
-import { getCMSDataField } from "app/utils/getCMSDataField";
+import { DESKTOP_BREAKPOINT, MOBILE_BREAKPOINT } from "@app/theme";
+import FlagIcon from "@app/modules/home-module/sub-modules/webinar/assets/FlagIcon";
+import CheckIcon from "@app/modules/home-module/sub-modules/webinar/assets/CheckIcon";
+import { CalendarIcon2 } from "@app/modules/home-module/sub-modules/webinar/assets/CalendarIcon";
+import { useCMSData } from "@app/hooks/useCMSData";
+import { getCMSDataField } from "@app/utils/getCMSDataField";
 
 const WhatYouLearn = () => {
   const cmsData = useCMSData({ returnData: true });

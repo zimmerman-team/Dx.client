@@ -1,11 +1,11 @@
-import EmpowerBlock from "app/modules/home-module/sub-modules/partners/components/empowerBlock";
+import EmpowerBlock from "@app/modules/home-module/sub-modules/partners/components/empowerBlock";
 import { Box, Container } from "@material-ui/core";
-import StoryImage from "app/modules/home-module/sub-modules/landing/assets/story.png";
-import InteractImage from "app/modules/home-module/sub-modules/landing/assets/interact.png";
-import Investment from "app/modules/home-module/sub-modules/landing/assets/investment.png";
-import ThePowerImage from "app/modules/home-module/sub-modules/landing/assets/the-power.png";
-import HomeFooter from "app/modules/home-module/components/Footer";
-import Subscribe from "app/modules/home-module/components/Subscribe";
+import StoryImage from "@app/modules/home-module/sub-modules/landing/assets/story.png";
+import InteractImage from "@app/modules/home-module/sub-modules/landing/assets/interact.png";
+import Investment from "@app/modules/home-module/sub-modules/landing/assets/investment.png";
+import ThePowerImage from "@app/modules/home-module/sub-modules/landing/assets/the-power.png";
+import HomeFooter from "@app/modules/home-module/components/Footer";
+import Subscribe from "@app/modules/home-module/components/Subscribe";
 import { useTitle } from "react-use";
 import { Link } from "react-router-dom";
 

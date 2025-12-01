@@ -2,11 +2,11 @@ import {
   TABLET_STARTPOINT,
   DESKTOP_BREAKPOINT,
   MOBILE_BREAKPOINT,
-} from "app/theme";
+} from "@app/theme";
 import React from "react";
 import { Container } from "@material-ui/core";
-import { useCMSData } from "app/hooks/useCMSData";
-import { getCMSDataField } from "app/utils/getCMSDataField";
+import { useCMSData } from "@app/hooks/useCMSData";
+import { getCMSDataField } from "@app/utils/getCMSDataField";
 
 export default function FeaturesSection() {
   const cmsData = useCMSData({ returnData: true });

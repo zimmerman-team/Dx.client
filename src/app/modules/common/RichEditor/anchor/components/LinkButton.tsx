@@ -2,7 +2,7 @@ import React, { ComponentType, MouseEvent, ReactElement } from "react";
 import PropTypes from "prop-types";
 import EditorUtils from "@draft-js-plugins/utils";
 import AddLinkForm, { OverrideContentProps } from "./AddLinkForm";
-import { AnchorPluginTheme } from "app/modules/common/RichEditor/anchor/theme";
+import { AnchorPluginTheme } from "@app/modules/common/RichEditor/anchor/theme";
 import { AnchorPluginStore } from "..";
 import { DefaultLinkButtonProps } from "./DefaultLinkButton";
 

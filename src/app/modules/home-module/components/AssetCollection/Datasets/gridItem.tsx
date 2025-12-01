@@ -1,23 +1,23 @@
 import React from "react";
 import moment from "moment";
-import { ReactComponent as ClockIcon } from "app/modules/home-module/assets/clock-icon.svg";
-import { ReactComponent as OwnerIcon } from "app/modules/home-module/assets/owner-icon.svg";
-import { ReactComponent as MenuIcon } from "app/modules/home-module/assets/menu.svg";
-import { ReactComponent as ChevronRight } from "app/modules/home-module/assets/chevron-right.svg";
+import ClockIcon from "@app/modules/home-module/assets/clock-icon.svg?react";
+import OwnerIcon from "@app/modules/home-module/assets/owner-icon.svg?react";
+import MenuIcon from "@app/modules/home-module/assets/menu.svg?react";
+import ChevronRight from "@app/modules/home-module/assets/chevron-right.svg?react";
 import { useHistory, useLocation } from "react-router-dom";
 import { useAuth0 } from "@auth0/auth0-react";
 import SourceLink from "./sourceLink";
 import { Tooltip as ReactTooltip } from "react-tooltip";
 
-import { useStoreActions } from "app/state/store/hooks";
+import { useStoreActions } from "@app/state/store/hooks";
 import Tooltip from "@material-ui/core/Tooltip";
 
-import { isChartAIAgentActive } from "app/state/recoil/atoms";
+import { isChartAIAgentActive } from "@app/state/recoil/atoms";
 import { useRecoilState } from "recoil";
-import MenuPopover from "app/modules/home-module/components/AssetCollection/All/menuPopover";
+import MenuPopover from "@app/modules/home-module/components/AssetCollection/All/menuPopover";
 
-import { FOCUS_VISIBLE_STYLE_LIGHT } from "app/theme";
-import Logo from "app/assets/icons/Logo";
+import { FOCUS_VISIBLE_STYLE_LIGHT } from "@app/theme";
+import Logo from "@app/assets/icons/Logo";
 
 interface Props {
   editPath: string;

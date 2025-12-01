@@ -1,7 +1,7 @@
 import React from "react";
 import { Tooltip } from "@material-ui/core";
-import { ReactComponent as SearchIcon } from "app/modules/home-module/assets/search-fill.svg";
-import { searchInputCss, iconButtonCss } from "app/modules/home-module/style";
+import SearchIcon from "@app/modules/home-module/assets/search-fill.svg?react";
+import { searchInputCss, iconButtonCss } from "@app/modules/home-module/style";
 
 export interface SearchInputProps {
   searchValue: string;

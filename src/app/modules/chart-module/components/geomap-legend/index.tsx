@@ -1,6 +1,6 @@
 import React from "react";
-import { checkLists } from "app/modules/chart-module/routes/customize/data";
-import { formatFinancialValue } from "app/utils/formatFinancialValue";
+import { checkLists } from "@app/modules/chart-module/routes/customize/data";
+import { formatFinancialValue } from "@app/utils/formatFinancialValue";
 
 const GeomapLegend = ({
   data,

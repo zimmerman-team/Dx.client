@@ -1,17 +1,19 @@
-import ChartContainer from "app/components/Dialogs/EmbedChartDialog/chartContainer";
-import { emptyChartAPI, ChartAPIModel } from "app/modules/chart-module/data";
-import { getDatasetDetailsSource } from "app/modules/chart-module/util/getDatasetDetailsSource";
-import { useLoadDatasetDetails } from "app/modules/story-module/components/chart-wrapper/useLoadDatasetDetailsAPI";
-import { useRenderChartFromAPI } from "app/modules/story-module/components/chart-wrapper/useRenderChartFromAPI";
-import { useStoreActions, useStoreState } from "app/state/store/hooks";
+import ChartContainer from "@app/components/Dialogs/EmbedChartDialog/chartContainer";
+import { emptyChartAPI, ChartAPIModel } from "@app/modules/chart-module/data";
+import { getDatasetDetailsSource } from "@app/modules/chart-module/util/getDatasetDetailsSource";
+import { useLoadDatasetDetails } from "@app/modules/story-module/components/chart-wrapper/useLoadDatasetDetailsAPI";
+import { useRenderChartFromAPI } from "@app/modules/story-module/components/chart-wrapper/useRenderChartFromAPI";
+import { useStoreActions, useStoreState } from "@app/state/store/hooks";
 import { get } from "lodash";
 import React from "react";
 import { useParams } from "react-router-dom";
 import useResizeObserver from "use-resize-observer";
 
 export default function EmbedChartRoute() {
-  const { chartId, datasetId } =
-    useParams<{ chartId: string; datasetId: string }>();
+  const { chartId, datasetId } = useParams<{
+    chartId: string;
+    datasetId: string;
+  }>();
   const { ref } = useResizeObserver<HTMLDivElement>();
 
   const containerRef = React.useRef<HTMLDivElement>(null);

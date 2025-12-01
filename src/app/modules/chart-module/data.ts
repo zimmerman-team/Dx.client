@@ -23,8 +23,8 @@ import {
   echartsPiechart,
   // @ts-ignore
 } from "@rawgraphs/rawgraphs-charts";
-import { FilterGroupModel } from "app/components/ToolBoxPanel/components/filters/data";
-import { IChartType } from "app/state/api/action-reducers/sync/charts";
+import { FilterGroupModel } from "@app/components/ToolBoxPanel/components/filters/data";
+import { IChartType } from "@app/state/api/action-reducers/sync/charts";
 
 export const charts = {
   echartsBarchart,

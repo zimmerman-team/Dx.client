@@ -1,6 +1,6 @@
 import { Snackbar } from "@material-ui/core";
-import { MOBILE_BREAKPOINT } from "app/theme";
-import styled, { css } from "styled-components/macro";
+import { MOBILE_BREAKPOINT } from "@app/theme";
+import styled, { css } from "styled-components";
 
 export const InfoSnackbar = styled((props) => <Snackbar {...props} />)`
   && {

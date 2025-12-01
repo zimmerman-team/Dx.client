@@ -1,6 +1,6 @@
-import { ChartRenderedItem } from "app/modules/chart-module/data";
-import { APPLICATION_JSON } from "app/state/api";
-import { loadedChartsInStoryAtom } from "app/state/recoil/atoms";
+import { ChartRenderedItem } from "@app/modules/chart-module/data";
+import { APPLICATION_JSON } from "@app/state/api";
+import { loadedChartsInStoryAtom } from "@app/state/recoil/atoms";
 import axios from "axios";
 import isEmpty from "lodash/isEmpty";
 import React from "react";
@@ -36,7 +36,7 @@ export const useRenderChartFromAPI = (
     }
     await axios
       .post(
-        `${process.env.REACT_APP_API}/chart/${id}/render${
+        `${import.meta.env.VITE_API}/chart/${id}/render${
           token ? "" : "/public"
         }`,
         body,

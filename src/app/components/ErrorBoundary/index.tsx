@@ -1,9 +1,9 @@
 import React from "react";
 import { ErrorBoundary } from "react-error-boundary";
-import HomeFooter from "app/modules/home-module/components/Footer";
-import { PrimaryButton } from "app/components/Styled/button";
-import { ReactComponent as BgImg } from "app/modules/common/no-match-page/asset/bg-ellipse.svg";
-import { InfoIcon } from "app/modules/user-profile-module/component/icons";
+import HomeFooter from "@app/modules/home-module/components/Footer";
+import { PrimaryButton } from "@app/components/Styled/button";
+import BgImg from "@app/modules/common/no-match-page/asset/bg-ellipse.svg?react";
+import { InfoIcon } from "@app/modules/user-profile-module/component/icons";
 import { Container } from "@material-ui/core";
 
 const ErrorFallback = ({

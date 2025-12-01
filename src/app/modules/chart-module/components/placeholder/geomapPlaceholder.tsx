@@ -1,5 +1,5 @@
 import React from "react";
-import { ReactComponent as GeomapChartPlaceholderImage } from "app/modules/chart-module/assets/geomapPlaceholder.svg";
+import GeomapChartPlaceholderImage from "@app/modules/chart-module/assets/geomapPlaceholder.svg?react";
 
 export default function GeomapPlaceholder() {
   return (

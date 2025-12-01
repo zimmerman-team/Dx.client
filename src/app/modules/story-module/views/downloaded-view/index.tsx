@@ -1,15 +1,15 @@
 import React from "react";
-import { StoryPreviewView } from "app/modules/story-module/views/preview/";
-import { exportPage } from "app/utils/exportPage";
+import { StoryPreviewView } from "@app/modules/story-module/views/preview/";
+import { exportPage } from "@app/utils/exportPage";
 import { Link, useLocation } from "react-router-dom";
-import { useStoreState } from "app/state/store/hooks";
-import { emptyStory, StoryModel } from "app/modules/story-module/data";
+import { useStoreState } from "@app/state/store/hooks";
+import { emptyStory, StoryModel } from "@app/modules/story-module/data";
 import { useRecoilValue } from "recoil";
 import {
   chartsRenderedAtom,
   loadedChartsInStoryAtom,
-} from "app/state/recoil/atoms";
-import Logo from "app/assets/icons/Logo";
+} from "@app/state/recoil/atoms";
+import Logo from "@app/assets/icons/Logo";
 
 export default function DownloadedView(props: {
   setIsPreviewView: React.Dispatch<React.SetStateAction<boolean>>;

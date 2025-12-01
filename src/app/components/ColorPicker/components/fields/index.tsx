@@ -2,9 +2,9 @@ import React, { memo, useCallback, useEffect, useState } from "react";
 import {
   ColorService,
   IColor,
-} from "app/components/ColorPicker/services/color";
+} from "@app/components/ColorPicker/services/color";
 
-import ExpandSelectIcon from "app/components/ColorPicker/assets/expand-select";
+import ExpandSelectIcon from "@app/components/ColorPicker/assets/expand-select";
 import { ClickAwayListener } from "@material-ui/core";
 
 interface ISelectColorTypeProps {

@@ -3,16 +3,16 @@ import React, { useCallback } from "react";
 
 /** project */
 
-import { DropZone } from "app/modules/dataset-module/routes/upload-module/component/dropzone";
-import LocalIcon from "app/modules/dataset-module/routes/upload-module/assets/upload-options-icons/local";
-import GoogleIcon from "app/modules/dataset-module/routes/upload-module/assets/upload-options-icons/google";
-import MicrosoftIcon from "app/modules/dataset-module/routes/upload-module/assets/upload-options-icons/microsoft";
-import UploadOption from "app/modules/dataset-module/routes/upload-module/component/uploadOption";
+import { DropZone } from "@app/modules/dataset-module/routes/upload-module/component/dropzone";
+import LocalIcon from "@app/modules/dataset-module/routes/upload-module/assets/upload-options-icons/local";
+import GoogleIcon from "@app/modules/dataset-module/routes/upload-module/assets/upload-options-icons/google";
+import MicrosoftIcon from "@app/modules/dataset-module/routes/upload-module/assets/upload-options-icons/microsoft";
+import UploadOption from "@app/modules/dataset-module/routes/upload-module/component/uploadOption";
 import { useCookie } from "react-use";
-import useGoogleDrivePicker from "app/hooks/useGoogleDrivePicker";
-import { useOneDrivePicker } from "app/hooks/useOneDrivePicker";
-import { useCheckUserPlan } from "app/hooks/useCheckUserPlan";
-import { DESKTOP_BREAKPOINT, TABLET_STARTPOINT } from "app/theme";
+import useGoogleDrivePicker from "@app/hooks/useGoogleDrivePicker";
+import { useOneDrivePicker } from "@app/hooks/useOneDrivePicker";
+import { useCheckUserPlan } from "@app/hooks/useCheckUserPlan";
+import { DESKTOP_BREAKPOINT, TABLET_STARTPOINT } from "@app/theme";
 
 interface Props {
   disabled: boolean;
@@ -27,6 +27,8 @@ export default function AddDatasetFragment(props: Props) {
   const [googleDriveToken, setGoogleDriveToken, deleteGoogleDriveToken] =
     useCookie("googleDriveToken");
 
+  const isLocalUpload = props.activeOption === "Local upload";
+
   const { userPlan } = useCheckUserPlan();
 
   const { getAccessTokenAndOpenPicker } = useGoogleDrivePicker({
@@ -40,17 +42,18 @@ export default function AddDatasetFragment(props: Props) {
     setGoogleDriveToken,
   });
 
-  const { launchPicker, clearToken, connected } = useOneDrivePicker({
-    onCancel: () => {
-      props.setActiveOption(null);
-    },
-    onFileSubmit: (file: File) => {
-      props.onFileSubmit(file);
-    },
-    onDownloadStart: () => {
-      props.setActiveStep(1);
-    },
-  });
+  const { launchPicker, clearToken, connected, oneDrivePickerModal } =
+    useOneDrivePicker({
+      onCancel: () => {
+        props.setActiveOption(null);
+      },
+      onFileSubmit: (file: File) => {
+        props.onFileSubmit(file);
+      },
+      onDownloadStart: () => {
+        props.setActiveStep(1);
+      },
+    });
 
   const onDrop = useCallback((acceptedFiles: File[]) => {
     if (acceptedFiles.length > 0) {
@@ -59,22 +62,24 @@ export default function AddDatasetFragment(props: Props) {
   }, []);
 
   const renderUploadOptionsList = () => {
-    return uploadOptionsState.map((option) => (
-      <UploadOption
-        key={option.name}
-        name={option.name}
-        type={option.type}
-        formats={option.formats}
-        icon={option.icon}
-        onClick={option.onClick}
-        setActiveOption={props.setActiveOption}
-        canConnect={option.canConnect}
-        connected={option.connected}
-        onLogout={option.onLogout}
-        upgradeRequired={option.upgradeRequired}
-        ariaLabel={option.ariaLabel}
-      />
-    ));
+    return (isLocalUpload ? uploadOptions.slice(1) : uploadOptions).map(
+      (option) => (
+        <UploadOption
+          key={option.name}
+          name={option.name}
+          type={option.type}
+          formats={option.formats}
+          icon={option.icon}
+          onClick={option.onClick}
+          setActiveOption={props.setActiveOption}
+          canConnect={option.canConnect}
+          connected={option.connected}
+          onLogout={option.onLogout}
+          upgradeRequired={option.upgradeRequired}
+          ariaLabel={option.ariaLabel}
+        />
+      )
+    );
   };
 
   const databaseConnection = "DataBase Connection";
@@ -86,11 +91,7 @@ export default function AddDatasetFragment(props: Props) {
       type: "Table Dataset",
       formats: ["CSV", "XSLX", "JSON"],
       icon: <LocalIcon />,
-      onClick: () => {
-        setUploadOptionsState((prev) => {
-          return prev.slice(1);
-        });
-      },
+      onClick: () => {},
       upgradeRequired: false,
       ariaLabel: "Local File Upload",
     },
@@ -178,9 +179,6 @@ export default function AddDatasetFragment(props: Props) {
     // },
   ];
 
-  const [uploadOptionsState, setUploadOptionsState] =
-    React.useState(uploadOptions);
-
   return (
     <>
       <div>
@@ -207,7 +205,7 @@ export default function AddDatasetFragment(props: Props) {
           </p>
         </div>
 
-        {props.activeOption === "Local upload" ? (
+        {isLocalUpload ? (
           <div
             css={`
               display: flex;
@@ -249,6 +247,7 @@ export default function AddDatasetFragment(props: Props) {
           </div>
         )}
       </div>
+      {oneDrivePickerModal}
     </>
   );
 }

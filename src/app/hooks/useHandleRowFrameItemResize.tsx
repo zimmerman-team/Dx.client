@@ -1,5 +1,5 @@
-import { IFramesArray } from "app/modules/story-module/views/create/data";
-import { store } from "app/state/store";
+import { IFramesArray } from "@app/modules/story-module/views/create/data";
+import { store } from "@app/state/store";
 import { Updater } from "use-immer";
 
 export const usehandleRowFrameItemResize = (

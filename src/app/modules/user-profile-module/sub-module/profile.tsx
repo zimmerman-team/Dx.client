@@ -4,20 +4,20 @@ import {
   flexContainercss,
   inputcss,
   profilecss,
-} from "app/modules/user-profile-module/style";
+} from "@app/modules/user-profile-module/style";
 import { useTitle } from "react-use";
 import { useAuth0 } from "@auth0/auth0-react";
 import axios from "axios";
-import { useStoreState } from "app/state/store/hooks";
-import { ReactComponent as GoogleIcon } from "app/modules/onboarding-module/asset/google-img.svg";
-import { ReactComponent as LinkedInIcon } from "app/modules/onboarding-module/asset/linkedIn-img.svg";
-import { ReactComponent as MicrosoftIcon } from "app/modules/onboarding-module/asset/microsoft-img.svg";
-import { InfoIcon } from "app/modules/user-profile-module/component/icons";
-import DeleteAccountDialog from "app/components/Dialogs/deleteAccountDialog";
-import { PrimaryButton } from "app/components/Styled/button";
+import { useStoreState } from "@app/state/store/hooks";
+import GoogleIcon from "@app/modules/onboarding-module/asset/google-img.svg?react";
+import LinkedInIcon from "@app/modules/onboarding-module/asset/linkedIn-img.svg?react";
+import MicrosoftIcon from "@app/modules/onboarding-module/asset/microsoft-img.svg?react";
+import { InfoIcon } from "@app/modules/user-profile-module/component/icons";
+import DeleteAccountDialog from "@app/components/Dialogs/deleteAccountDialog";
+import { PrimaryButton } from "@app/components/Styled/button";
 import useProfileSettings from "./settings-hook";
-import { PageLoader } from "app/modules/common/page-loader";
-import { MOBILE_BREAKPOINT } from "app/theme";
+import { PageLoader } from "@app/modules/common/page-loader";
+import { MOBILE_BREAKPOINT } from "@app/theme";
 
 interface State {
   password: string;
@@ -88,7 +88,7 @@ export default function Profile() {
     setLoading(true);
     try {
       const response = await axios.patch(
-        `${process.env.REACT_APP_API}/users/update-profile`,
+        `${import.meta.env.VITE_API}/users/update-profile`,
         values,
         {
           headers: {

@@ -8,7 +8,7 @@ import EditIcon from "@material-ui/icons/Edit";
 import Tooltip from "@material-ui/core/Tooltip";
 import Popover from "@material-ui/core/Popover";
 import ShareIcon from "@material-ui/icons/Share";
-import { LinkIcon } from "app/assets/icons/Link";
+import { LinkIcon } from "@app/assets/icons/Link";
 import Snackbar from "@material-ui/core/Snackbar";
 import DeleteIcon from "@material-ui/icons/Delete";
 import Container from "@material-ui/core/Container";
@@ -18,8 +18,8 @@ import CopyToClipboard from "react-copy-to-clipboard";
 import FileCopyIcon from "@material-ui/icons/FileCopy";
 import AutorenewIcon from "@material-ui/icons/Autorenew";
 import CloudDoneIcon from "@material-ui/icons/CloudDone";
-import { planDialogAtom, shareAssetDetailsAtom } from "app/state/recoil/atoms";
-import { PageLoader } from "app/modules/common/page-loader";
+import { planDialogAtom, shareAssetDetailsAtom } from "@app/state/recoil/atoms";
+import { PageLoader } from "@app/modules/common/page-loader";
 import MoreIcon from "@material-ui/icons/MoreVert";
 import {
   ClickAwayListener,
@@ -28,28 +28,28 @@ import {
   useMediaQuery,
 } from "@material-ui/core";
 import { Link, useHistory, useParams } from "react-router-dom";
-import { useStoreActions, useStoreState } from "app/state/store/hooks";
-import { StoryModel, emptyStory } from "app/modules/story-module/data";
-import DeleteStoryDialog from "app/components/Dialogs/deleteStoryDialog";
-import { ChartAPIModel, emptyChartAPI } from "app/modules/chart-module/data";
-import { StorySubheaderToolbarProps } from "app/modules/chart-module/components/chartSubheaderToolbar/data";
-import { styles } from "app/modules/story-module/components/storySubHeaderToolbar/styles";
-import StaticToolbar from "app/modules/story-module/components/storySubHeaderToolbar/staticToolbar";
-import AutoSaveSwitch from "app/modules/story-module/components/storySubHeaderToolbar/autoSaveSwitch";
-import AutoResizeInput from "app/modules/story-module/components/storySubHeaderToolbar/autoResizeInput";
-import { InfoSnackbar } from "app/modules/story-module/components/storySubHeaderToolbar/infosnackbar";
-import ShareModal from "app/modules/dataset-module/component/shareModal";
-import DuplicateMessage from "app/modules/common/mobile-duplicate-message";
+import { useStoreActions, useStoreState } from "@app/state/store/hooks";
+import { StoryModel, emptyStory } from "@app/modules/story-module/data";
+import DeleteStoryDialog from "@app/components/Dialogs/deleteStoryDialog";
+import { ChartAPIModel, emptyChartAPI } from "@app/modules/chart-module/data";
+import { StorySubheaderToolbarProps } from "@app/modules/chart-module/components/chartSubheaderToolbar/data";
+import { styles } from "@app/modules/story-module/components/storySubHeaderToolbar/styles";
+import StaticToolbar from "@app/modules/story-module/components/storySubHeaderToolbar/staticToolbar";
+import AutoSaveSwitch from "@app/modules/story-module/components/storySubHeaderToolbar/autoSaveSwitch";
+import AutoResizeInput from "@app/modules/story-module/components/storySubHeaderToolbar/autoResizeInput";
+import { InfoSnackbar } from "@app/modules/story-module/components/storySubHeaderToolbar/infosnackbar";
+import ShareModal from "@app/modules/dataset-module/component/shareModal";
+import DuplicateMessage from "@app/modules/common/mobile-duplicate-message";
 import { ExportStoryButton } from "./exportButton";
-import { PrimaryButton } from "app/components/Styled/button";
+import { PrimaryButton } from "@app/components/Styled/button";
 import { ArrowBack } from "@material-ui/icons";
 import {
   FOCUS_VISIBLE_STYLE_DARK,
   FOCUS_VISIBLE_STYLE_LIGHT,
   MOBILE_BREAKPOINT,
   TABLET_STARTPOINT,
-} from "app/theme";
-import { ISnackbarState } from "app/modules/dataset-module/routes/upload-module/style";
+} from "@app/theme";
+import { ISnackbarState } from "@app/modules/dataset-module/routes/upload-module/style";
 import CopyButton from "./copyButton";
 
 export const useStyles = makeStyles(() =>
@@ -218,7 +218,7 @@ export function StorySubheaderToolbar(
     setShowDeleteDialog(false);
 
     axios
-      .delete(`${process.env.REACT_APP_API}/story/${page}`, {
+      .delete(`${import.meta.env.VITE_API}/story/${page}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -238,7 +238,7 @@ export function StorySubheaderToolbar(
 
   const handleDuplicate = () => {
     axios
-      .get(`${process.env.REACT_APP_API}/story/duplicate/${page}`, {
+      .get(`${import.meta.env.VITE_API}/story/duplicate/${page}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },

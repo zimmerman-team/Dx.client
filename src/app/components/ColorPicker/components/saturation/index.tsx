@@ -1,10 +1,10 @@
 import React, { memo, useCallback, useMemo } from "react";
-import { Interactive } from "app/components/ColorPicker/components/interactive";
+import { Interactive } from "@app/components/ColorPicker/components/interactive";
 import {
   ColorService,
   IColor,
-} from "app/components/ColorPicker/services/color";
-import { useBoundingClientRect } from "app/components/ColorPicker/hooks/useBoundingClientRect";
+} from "@app/components/ColorPicker/services/color";
+import { useBoundingClientRect } from "@app/components/ColorPicker/hooks/useBoundingClientRect";
 
 interface ISaturationProps {
   readonly height: number;

@@ -2,7 +2,7 @@ import { IconButton, Modal } from "@material-ui/core";
 import { CloseOutlined } from "@material-ui/icons";
 import React from "react";
 import { useStyles } from "./deleteChartDialog";
-import { PrimaryButton } from "app/components/Styled/button";
+import { PrimaryButton } from "@app/components/Styled/button";
 
 interface Props {
   modalDisplay: boolean;

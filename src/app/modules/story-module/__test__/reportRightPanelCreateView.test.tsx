@@ -11,8 +11,8 @@ import {
   isChartDraggingAtom,
   isDividerOrRowFrameDraggingAtom,
   storyRightPanelViewAtom,
-} from "app/state/recoil/atoms";
-import { RecoilObserver } from "app/utils/recoilObserver";
+} from "@app/state/recoil/atoms";
+import { RecoilObserver } from "@app/utils/recoilObserver";
 import { createMemoryHistory } from "history";
 
 import { DndProvider, useDrag, useDrop } from "react-dnd";
@@ -23,24 +23,24 @@ import { MutableSnapshot, RecoilRoot } from "recoil";
 import {
   StoryElementsType,
   StoryRightPanelCreateView,
-} from "app/modules/story-module/components/right-panel-create-view/";
+} from "@app/modules/story-module/components/right-panel-create-view/";
 import { StoreProvider, createStore } from "easy-peasy";
-import { AuthTokenState } from "app/state/api/action-reducers/sync";
+import { AuthTokenState } from "@app/state/api/action-reducers/sync";
 import {
   ChartCreate,
   ChartGet,
   ChartGetInStory,
   ChartGetList,
-} from "app/state/api/action-reducers/charts";
+} from "@app/state/api/action-reducers/charts";
 import {
   ChartsChartTypeState,
   ChartsDatasetState,
   ChartsEnabledFilterOptionGroupsState,
   ChartsMappingState,
-} from "app/state/api/action-reducers/sync/charts";
-import { mockChartList } from "app/modules/story-module/__test__/data";
+} from "@app/state/api/action-reducers/sync/charts";
+import { mockChartList } from "@app/modules/story-module/__test__/data";
 import axios, { AxiosResponse } from "axios";
-import { ChartsAppliedFiltersState } from "app/state/api/action-reducers/sync/charts/filters";
+import { ChartsAppliedFiltersState } from "@app/state/api/action-reducers/sync/charts/filters";
 import { setupIntersectionObserverMock } from "./setupIntersectionObserver";
 setupIntersectionObserverMock();
 

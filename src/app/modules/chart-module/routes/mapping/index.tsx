@@ -2,22 +2,22 @@
 import React from "react";
 import isEmpty from "lodash/isEmpty";
 import useTitle from "react-use/lib/useTitle";
-import { useStoreState } from "app/state/store/hooks";
+import { useStoreState } from "@app/state/store/hooks";
 /* project */
-import { CommonChart } from "app/modules/chart-module/components/common-chart";
-import { styles as commonStyles } from "app/modules/chart-module/routes/common/styles";
-import { getRequiredFieldsAndErrors } from "app/modules/chart-module/routes/mapping/utils";
+import { CommonChart } from "@app/modules/chart-module/components/common-chart";
+import { styles as commonStyles } from "@app/modules/chart-module/routes/common/styles";
+import { getRequiredFieldsAndErrors } from "@app/modules/chart-module/routes/mapping/utils";
 import {
   ChartBuilderMappingMessageProps,
   ChartBuilderMappingProps,
-} from "app/modules/chart-module/routes/mapping/data";
-import ChartPlaceholder from "app/modules/chart-module/components/placeholder";
+} from "@app/modules/chart-module/routes/mapping/data";
+import ChartPlaceholder from "@app/modules/chart-module/components/placeholder";
 import { useRecoilState } from "recoil";
-import { chartFromStoryAtom } from "app/state/recoil/atoms";
+import { chartFromStoryAtom } from "@app/state/recoil/atoms";
 import { useLocation, useParams } from "react-router-dom";
-import MappingErrorComponent from "app/modules/chart-module/routes/mapping/error";
-import AIIcon from "app/assets/icons/AIIcon";
-import ChartArea from "app/modules/chart-module/components/chart-area";
+import MappingErrorComponent from "@app/modules/chart-module/routes/mapping/error";
+import AIIcon from "@app/assets/icons/AIIcon";
+import ChartArea from "@app/modules/chart-module/components/chart-area";
 
 function ChartBuilderMapping(props: Readonly<ChartBuilderMappingProps>) {
   useTitle("Dataxplorer - Mapping");

@@ -1,14 +1,14 @@
 import React from "react";
-import { IFramesArray } from "app/modules/story-module/views/create/data";
+import { IFramesArray } from "@app/modules/story-module/views/create/data";
 import { useRecoilState, useRecoilValue } from "recoil";
 import find from "lodash/find";
 import {
   chartFromStoryAtom,
   isChartDraggingAtom,
-} from "app/state/recoil/atoms";
+} from "@app/state/recoil/atoms";
 import { useDrag } from "react-dnd";
 import { Charts } from "./data";
-import GridItem from "app/modules/story-module/components/right-panel-create-view/rhpGridItem";
+import GridItem from "@app/modules/story-module/components/right-panel-create-view/rhpGridItem";
 
 export default function ChartItem(
   props: Readonly<{

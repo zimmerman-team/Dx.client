@@ -1,11 +1,11 @@
 import React from "react";
 import Box from "@material-ui/core/Box";
-import styled from "styled-components/macro";
+import styled from "styled-components";
 import Typography from "@material-ui/core/Typography";
 import { useRecoilState } from "recoil";
-import { planDialogAtom } from "app/state/recoil/atoms";
+import { planDialogAtom } from "@app/state/recoil/atoms";
 import { useHistory } from "react-router-dom";
-import { PrimaryButton, TertiaryButton } from "app/components/Styled/button";
+import { PrimaryButton, TertiaryButton } from "@app/components/Styled/button";
 
 const MessageContainer = styled((props) => <Box {...props} />)`
   align-items: center;

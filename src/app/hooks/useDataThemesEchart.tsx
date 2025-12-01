@@ -3,7 +3,7 @@ import uniqBy from "lodash/uniqBy";
 import sortBy from "lodash/sortBy";
 import * as echarts from "echarts/core";
 import { CanvasRenderer } from "echarts/renderers";
-import { formatFinancialValue } from "app/utils/formatFinancialValue";
+import { formatFinancialValue } from "@app/utils/formatFinancialValue";
 import {
   MapChart,
   BarChart,
@@ -29,13 +29,13 @@ import {
   VisualMapComponent,
   DataZoomComponent,
 } from "echarts/components";
-import { charts } from "app/modules/chart-module/data";
-import { drillDown } from "app/utils/getCirclePackingOption";
-import { checkLists } from "app/modules/chart-module/routes/customize/data";
+import { charts } from "@app/modules/chart-module/data";
+import { drillDown } from "@app/utils/getCirclePackingOption";
+import { checkLists } from "@app/modules/chart-module/routes/customize/data";
 //@ts-ignore
 import { transform } from "echarts-stat";
 import { useSetRecoilState } from "recoil";
-import { chartsRenderedAtom } from "app/state/recoil/atoms";
+import { chartsRenderedAtom } from "@app/state/recoil/atoms";
 import { debounce } from "lodash";
 
 echarts.use([

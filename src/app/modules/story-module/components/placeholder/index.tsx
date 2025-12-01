@@ -1,11 +1,11 @@
 import React from "react";
-import { PlaceholderProps } from "app/modules/story-module/views/create/data";
-import { StoryElementsType } from "app/modules/story-module/components/right-panel-create-view";
+import { PlaceholderProps } from "@app/modules/story-module/views/create/data";
+import { StoryElementsType } from "@app/modules/story-module/components/right-panel-create-view";
 import { useDrop } from "react-dnd";
-import { isDividerOrRowFrameDraggingAtom } from "app/state/recoil/atoms";
+import { isDividerOrRowFrameDraggingAtom } from "@app/state/recoil/atoms";
 import { useRecoilValue } from "recoil";
 import { v4 } from "uuid";
-import { useUndoRedo } from "app/hooks/useUndoRedo";
+import { useUndoRedo } from "@app/hooks/useUndoRedo";
 
 const PlaceHolder = (props: PlaceholderProps) => {
   const { store } = useUndoRedo(

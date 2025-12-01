@@ -1,4 +1,4 @@
-import { css } from "styled-components/macro";
+import { css } from "styled-components";
 
 export const previewTablecss = css`
   width: max-content;
