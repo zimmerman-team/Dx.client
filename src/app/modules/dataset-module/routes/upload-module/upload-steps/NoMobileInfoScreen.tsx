@@ -9,7 +9,7 @@ export default function NoMobileInfoScreen() {
   const handleCopyToClipboard = async () => {
     updateLog({
       level: "info",
-      message: `Copying link to clipboard: ${window.location.href}`,
+      message: `Copying link to clipboard: ${window.location.href}`, // NOSONAR
     });
     copyTextToClipboard(window.location.href) // NOSONAR
       .then(() => {
