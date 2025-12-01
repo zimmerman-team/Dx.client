@@ -79,6 +79,8 @@ export default function AssetsGrid(props: Props) {
       updateLog({
         level: "info",
         message: "Getting filter string for assets grid",
+      }).catch((err) => {
+        console.error("Logging error:", err);
       });
       const value =
         props.searchStr?.length > 0
@@ -104,6 +106,8 @@ export default function AssetsGrid(props: Props) {
       updateLog({
         level: "info",
         message: "Getting where string for assets grid",
+      }).catch((err) => {
+        console.error("Logging error:", err);
       });
       const value =
         props.searchStr?.length > 0

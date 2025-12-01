@@ -6,18 +6,22 @@ import DatasetGridItem from "@app/modules/home-module/components/AssetCollection
 import StoryGridItem from "@app/modules/home-module/components/AssetCollection/Stories/gridItem";
 import ColoredStoryIcon from "@app/assets/icons/ColoredStoryIcon";
 import { EditorState, convertFromRaw } from "draft-js";
-import { coloredEchartTypes } from "@app/modules/chart-module/routes/chart-type/data";
+import {
+  coloredEchartTypes,
+  echartTypes,
+} from "@app/modules/chart-module/routes/chart-type/data";
 import { find } from "lodash";
-import { echartTypes } from "@app/modules/chart-module/routes/chart-type/data";
 
-export default function RenderAsset(props: {
-  data: any;
-  activeAssetType: AssetType;
-  handleModal: (id: string) => void;
-  handleDuplicate: (id: string, assetType: AssetType) => void;
-  setActiveAssetType: (assetType: AssetType) => void;
-  inChartBuilder?: boolean;
-}) {
+export default function RenderAsset(
+  props: Readonly<{
+    data: any;
+    activeAssetType: AssetType;
+    handleModal: (id: string) => void;
+    handleDuplicate: (id: string, assetType: AssetType) => void;
+    setActiveAssetType: (assetType: AssetType) => void;
+    inChartBuilder?: boolean;
+  }>
+) {
   const {
     data,
     activeAssetType,

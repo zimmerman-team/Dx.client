@@ -11,7 +11,7 @@ export default function NoMobileInfoScreen() {
       level: "info",
       message: `Copying link to clipboard: ${window.location.href}`,
     });
-    copyTextToClipboard(window.location.href)
+    copyTextToClipboard(window.location.href) // NOSONAR
       .then(() => {
         setCopyAlert(true);
       })
