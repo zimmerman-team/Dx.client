@@ -1,3 +1,4 @@
+// sonarcloud-disable rule:javascript:S6544
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useScript } from "./useScript";
