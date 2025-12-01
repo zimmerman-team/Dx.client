@@ -317,7 +317,7 @@ function ChartBuilderChartType(props: Readonly<ChartBuilderChartTypeProps>) {
           padding: 40px 0px 0 0;
         `}
       >
-        <div
+        {/* <div
           css={`
             display: flex;
             justify-content: space-between;
@@ -388,7 +388,7 @@ function ChartBuilderChartType(props: Readonly<ChartBuilderChartTypeProps>) {
               disabled={userPlan?.planData?.name === "Free"}
             />
           </div>
-        </div>
+        </div> */}
         <div
           css={`
             height: 40px;
