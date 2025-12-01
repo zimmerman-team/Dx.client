@@ -106,7 +106,7 @@ export const isDividerOrRowFrameDraggingAtom = atom<{
 });
 export const isChartAIAgentActive = atom<boolean>({
   key: "isChartAIAgentActiveAtom",
-  default: true,
+  default: false,
 });
 
 export const isChartAutoMappedAtom = atom<boolean>({
