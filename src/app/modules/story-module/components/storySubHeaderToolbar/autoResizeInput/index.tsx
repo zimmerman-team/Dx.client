@@ -9,7 +9,7 @@ interface InputProps
   > {
   autoResize: boolean;
   minWidth: number;
-  maxWidth: number;
+  maxWidth?: number;
   name: string;
   setName: (name: string) => void;
   spanVisibility: boolean;
@@ -34,6 +34,9 @@ export default function AutoResizeInput(props: InputProps) {
     React.useState<number>(100);
 
   const handleAutoResize = () => {
+    if (!props.maxWidth) {
+      return;
+    }
     let spanAutoResizeWidth = 0;
     if (spanRef) {
       spanAutoResizeWidth = spanRef.current ? spanRef.current.offsetWidth : 0;
