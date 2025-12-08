@@ -46,6 +46,7 @@ import { ArrowBack } from "@material-ui/icons";
 import { MOBILE_BREAKPOINT } from "@app/theme";
 import { ClickAwayListener } from "@material-ui/core";
 import { ISnackbarState } from "@app/modules/dataset-module/routes/upload-module/style";
+import { ExportChartButton } from "./exportButton";
 
 // eslint-disable-next-line sonarjs/cognitive-complexity
 export function ChartSubheaderToolbar(
@@ -552,7 +553,7 @@ export function ChartSubheaderToolbar(
               )}
               {page !== "new" && !view && !isSmallScreen && (
                 <React.Fragment>
-                  {/* <ExportChartButton filename={props.name} /> */}
+                  <ExportChartButton filename={props.name} />
                   {isAuthenticated && (
                     <Tooltip title="Duplicate">
                       <IconButton

@@ -2106,6 +2106,26 @@ describe("Edit, duplicate and delete chart", () => {
       .should("be.visible");
   });
 
+  it("Can download a chart as an image", () => {
+    cy.get("[data-cy=home-search-button]").click();
+    cy.wait(2000);
+    cy.get("[data-cy=filter-search-input]").type(
+      `{selectall}{backspace}${testname1}`
+    );
+    cy.wait("@fetchCharts");
+
+    cy.intercept("POST", `${apiUrl}/chart/*/render`).as("renderChart");
+
+    cy.contains('[data-cy="chart-grid-item"]', testname1)
+      .first()
+      .scrollIntoView()
+      .click();
+
+    cy.wait("@renderChart");
+
+    cy.get('[data-cy="export-chart-button"]').should("be.visible").click();
+  });
+
   it("Can Delete a chart", () => {
     cy.get("[data-cy=home-search-button]").click();
     cy.wait(2000);
