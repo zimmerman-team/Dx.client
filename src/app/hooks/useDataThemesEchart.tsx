@@ -978,7 +978,6 @@ export function useDataThemesEchart({
           item.y,
           (item.size / maxSize) * 50, // making the symbol size relative to the max value but max at 50,
           item.label,
-          item.color,
         ]),
         type: "scatter",
         symbolSize: function (singleData: any) {
@@ -1027,12 +1026,12 @@ export function useDataThemesEchart({
       yAxisName,
     } = visualOptions;
 
+    const groups = Object.keys(data);
+
     const list = checkLists.find((item) => item.label === palette)?.value ?? [];
-    const splicedCheckLists = [...list];
-    splicedCheckLists.splice(1, 0, "#000000");
 
     return {
-      color: splicedCheckLists,
+      color: list,
       grid: {
         top: marginTop,
         left: marginLeft,
@@ -1070,7 +1069,6 @@ export function useDataThemesEchart({
         axisPointer: {
           type: "cross",
         },
-        // trigger: showTooltip ? "item" : "none",
         confine: true,
         extraCssText: "border-radius: 20px;",
         valueFormatter: (value: number | string) =>
@@ -1078,9 +1076,15 @@ export function useDataThemesEchart({
       },
 
       dataset: [
-        {
-          source: data.map((d: any) => [d.x, d.y]),
-        },
+        ...groups.map((group) => ({
+          source: data[group].map((d: any) => [
+            d.x,
+            d.y,
+            symbolSize ?? 4,
+            d.color,
+            d.color,
+          ]),
+        })),
         {
           transform: {
             type: "ecStat:regression",
@@ -1095,19 +1099,20 @@ export function useDataThemesEchart({
         },
       ],
       series: [
-        {
+        ...groups.map((group, groupIndex) => ({
           symbolSize: symbolSize ?? 4,
           type: "scatter",
-          name: "scatter",
-          datasetIndex: 0,
-        },
-        trendline === "None" || data.length === 0
+          name: group,
+          datasetIndex: groupIndex,
+        })),
+
+        trendline === "None" || groups.length === 0
           ? {}
           : {
               name: "line",
               type: "line",
               smooth: true,
-              datasetIndex: 1,
+              datasetIndex: groups.length,
               symbolSize: 0.1,
               symbol: "circle",
               labelLayout: { dx: -20 },
