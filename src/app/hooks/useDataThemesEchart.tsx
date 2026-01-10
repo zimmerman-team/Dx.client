@@ -761,15 +761,16 @@ export function useDataThemesEchart({
             },
           ]
         : null,
-      series: [
-        {
-          type: "line",
-          smooth: true,
-          symbol: "none",
-          areaStyle: {},
-          data: convertedData,
-        },
-      ],
+      series: data.series.map((d: any) => ({
+        type: "line",
+        smooth: true,
+        symbol: "none",
+        areaStyle: {},
+        data: data.xAxisValues.map((x: any) => [
+          +new Date(x),
+          d.values[x] || 0,
+        ]),
+      })),
     };
   }
 
