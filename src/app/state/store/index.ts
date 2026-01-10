@@ -61,6 +61,7 @@ import pagesPricing from "@app/state/api/action-reducers/cms/pagesPricing";
 import pagesPartners from "@app/state/api/action-reducers/cms/pagesPartners";
 import pagesContact from "@app/state/api/action-reducers/cms/pagesContact";
 import pagesWebinar from "@app/state/api/action-reducers/cms/pagesWebinar";
+import { LoggingState } from "@app/state/api/action-reducers/logging";
 
 const storeContent: StoreModel = {
   // global search
@@ -126,6 +127,7 @@ const storeContent: StoreModel = {
     pagesContact: persist(pagesContact),
     pagesWebinar: persist(pagesWebinar),
   },
+  logging: persist(LoggingState),
   CMSData: persist(CMSData),
 };
 

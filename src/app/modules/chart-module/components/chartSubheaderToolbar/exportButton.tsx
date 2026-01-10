@@ -43,7 +43,11 @@ export function ExportChartButton(props: { filename: string }) {
   return (
     <>
       <Tooltip title="Export">
-        <IconButton onClick={handleClick} aria-label="export-button">
+        <IconButton
+          onClick={handleClick}
+          aria-label="export-button"
+          data-cy="export-chart-button"
+        >
           <SaveAlt htmlColor="#262c34" />
         </IconButton>
       </Tooltip>

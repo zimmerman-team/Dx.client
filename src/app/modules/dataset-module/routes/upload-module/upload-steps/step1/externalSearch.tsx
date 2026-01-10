@@ -32,7 +32,6 @@ const ExternalSearch = (props: {
   const [view, setView] = React.useState<"grid" | "table">("table");
   const [searchValue, setSearchValue] = React.useState<string | undefined>("");
   const [sources, setSources] = React.useState<string[]>([]);
-  // const [sortValue, setSortValue] = React.useState("name");
   const [sortValue, setSortValue] = useRecoilState(externalDataSortByAtom);
   const token = useStoreState((state) => state.AuthToken.value);
   const [loading, setLoading] = React.useState(false);

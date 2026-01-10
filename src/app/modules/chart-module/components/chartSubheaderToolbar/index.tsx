@@ -48,6 +48,7 @@ import { ClickAwayListener } from "@material-ui/core";
 import ShareComponent from "@app/components/ShareComponent";
 import { APPLICATION_JSON } from "@app/state/api";
 import { ISnackbarState } from "@app/modules/dataset-module/routes/upload-module/style";
+import { ExportChartButton } from "./exportButton";
 
 // eslint-disable-next-line sonarjs/cognitive-complexity
 export function ChartSubheaderToolbar(
@@ -568,7 +569,7 @@ export function ChartSubheaderToolbar(
               )}
               {page !== "new" && !view && !isSmallScreen && (
                 <React.Fragment>
-                  {/* <ExportChartButton filename={props.name} /> */}
+                  <ExportChartButton filename={props.name} />
                   {isAuthenticated && (
                     <Tooltip title="Duplicate">
                       <IconButton

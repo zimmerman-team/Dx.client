@@ -20,6 +20,9 @@ export default defineConfig({
   resolve: {
     alias: [{ find: "@app", replacement: path.resolve(__dirname, "src/app") }],
   },
+  build: {
+    outDir: "build",
+  },
   optimizeDeps: {
     esbuildOptions: {
       define: {

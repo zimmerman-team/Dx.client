@@ -17,6 +17,7 @@ import { useSetRecoilState } from "recoil";
 import { planDialogAtom } from "@app/state/recoil/atoms";
 import CircleLoader from "@app/modules/home-module/components/Loader";
 import { getLimit } from "@app/modules/home-module/components/AssetCollection/Datasets/datasetsGrid";
+import { updateLog } from "@app/utils/updateLog";
 
 interface Props {
   sortBy: string;
@@ -197,6 +198,10 @@ export default function StoriesGrid(props: Readonly<Props>) {
       return;
     }
     //update the loaded stories
+    updateLog({
+      level: "info",
+      message: `Updating loaded stories in stories grid `,
+    });
     setLoadedStories((prevStories) => {
       const prevStoriesIds = prevStories.map((r) => r.id);
       const f = stories.filter((story) => !prevStoriesIds.includes(story.id));

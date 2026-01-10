@@ -11,7 +11,6 @@ import ObjectId from "@app/utils/ObjectId";
 import { useUploadProgress } from "@app/hooks/useOnUploadProgress";
 import { IExternalDataset } from "@app/modules/dataset-module/routes/upload-module/upload-steps/step1/externalSearch";
 import Stepper from "@app/modules/dataset-module/routes/upload-module/component/stepper";
-import { Box } from "@material-ui/core";
 import { useTitle } from "react-use";
 import { DatasetListItemAPIModel } from "@app/modules/dataset-module/data";
 import { useLocation } from "react-router-dom";
@@ -67,17 +66,10 @@ function DatasetUploadSteps(props: Props) {
   const [processingMessage, setProcessingMessage] = React.useState("");
   const [processed, setProcessed] = React.useState(false);
   const [selectedFile, setSelectedFile] = React.useState<File | null>(null);
-  const [openSearch, setOpenSearch] = React.useState(false);
-
   const [activeTab, setActiveTab] = useRecoilState(dataUploadTabAtom);
   const [activeOption, setActiveOption] = React.useState<string | null>(null);
-
   const defaultProcessingError =
     "Data could not be processed, please try again or contact your administrator";
-
-  const loadDatasets = useStoreActions(
-    (actions) => actions.dataThemes.DatasetGetList.fetch
-  );
   const loadDatasetDetails = useStoreActions(
     (actions) => actions.dataThemes.DatasetGet.fetch
   );
@@ -124,28 +116,14 @@ function DatasetUploadSteps(props: Props) {
     chartFromAPI: null,
   });
 
-  const handleNext = () => {
-    //handles stepper navigation
+  const moveToNextStep = () => {
     const newActiveStep = activeStep + 1;
-    //if last step, set active step to first step
     if (newActiveStep > steps.length - 1) {
       setActiveStep(0);
     }
-    //set active step to next step
     setActiveStep(newActiveStep);
   };
 
-  const handleBack = () => {
-    //handles stepper navigation
-    if (activeStep > 0) {
-      //go back to previous step
-      const newActiveStep = activeStep - 1;
-      setActiveStep(newActiveStep);
-    }
-  };
-  const handleTabSwitch = (tab: string) => {
-    setActiveTab(tab as "search" | "file");
-  };
   React.useEffect(() => {
     if (activeStep === 0) {
       setProcessingError("");
@@ -168,11 +146,6 @@ function DatasetUploadSteps(props: Props) {
         }
       )
       .then((response) => {
-        //load dataset and datasets on upload success
-        //we do this to load data to populate the table
-        // loadSampleDataset(response.data.data.id);
-        //we do this to update the dataset list with the new dataset
-        // loadDatasets({ token, storeInCrudData: true });
         if (response?.data.error && response?.data.errorType === "planError") {
           return setPlanDialog({
             open: true,
@@ -189,7 +162,6 @@ function DatasetUploadSteps(props: Props) {
             onTryAgain: () => {},
           });
         }
-        //set active step to finished
       })
       .catch((error) => {
         console.debug("Dataset creation error", error);
@@ -202,16 +174,14 @@ function DatasetUploadSteps(props: Props) {
   const onFileSubmit = (file: File) => {
     setSelectedFile(file);
     const formData = new FormData();
-    //set active step to processing
-    handleNext();
+    moveToNextStep();
 
     const id = ObjectId();
-    //expose file id to datasetId state; to be used in dataset upload
-    //this is used to link the file to the dataset
-    props.setDatasetId(id);
-    //append file to form data
+
+    props.setDatasetId(id); //expose file id to datasetId state; to be used in dataset upload. this is used to link the file to the dataset
     let fieldname = "dx" + id;
     formData.append(fieldname, file as File);
+
     axios
       .post(`${import.meta.env.VITE_API}/files`, formData, {
         headers: {
@@ -223,7 +193,6 @@ function DatasetUploadSteps(props: Props) {
       .then((response) => {
         //go to next step - metadata
         if (!response.data.error) {
-          // setActiveStep(2);
           setProcessed(true);
           loadSampleDataset(
             `${import.meta.env.VITE_API}/chart/sample-data/connect-data/${id}`
@@ -262,11 +231,10 @@ function DatasetUploadSteps(props: Props) {
 
   const handleDownloadExternalDataset = (externalDataset: IExternalDataset) => {
     const id = ObjectId();
-    //expose file id to datasetId state; to be used in dataset upload
-    props.setDatasetId(id);
-    //set active step to processing
+    props.setDatasetId(id); //expose file id to datasetId state; to be used in dataset upload
     setActiveStep(1);
     resetProgress();
+
     setSelectedFile({
       name: externalDataset.name,
       type: "",
