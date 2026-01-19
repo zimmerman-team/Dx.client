@@ -10,9 +10,9 @@ import ShareIcon from "@material-ui/icons/Share";
 import CopyToClipboard from "react-copy-to-clipboard";
 import CloseIcon from "./assets/close-icon";
 import ResetIcon from "./assets/reset-icon";
-import { PrimaryButton } from "app/components/Styled/button";
+import { PrimaryButton } from "@app/components/Styled/button";
 import { CustomSwitch } from "./components/custom-switch";
-import { MOBILE_BREAKPOINT } from "app/theme";
+import { MOBILE_BREAKPOINT } from "@app/theme";
 import Tabs from "./components/tabs";
 import CopyIcon from "./assets/copy-icon";
 

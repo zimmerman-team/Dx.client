@@ -113,7 +113,7 @@ export default function DatasetSubHeaderToolbar(
 
   const onSetIsPublic = async (isPublic: boolean) => {
     await axios.patch(
-      `${process.env.REACT_APP_API}/datasets/${page}`,
+      `${import.meta.env.VITE_API}/datasets/${page}`,
       { public: isPublic },
       {
         headers: {

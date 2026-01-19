@@ -216,7 +216,7 @@ export function ChartSubheaderToolbar(
 
   const onSetIsPublic = async (isPublic: boolean) => {
     await axios.patch(
-      `${process.env.REACT_APP_API}/chart/${page}`,
+      `${import.meta.env.VITE_API}/chart/${page}`,
       { public: isPublic },
       {
         headers: {
