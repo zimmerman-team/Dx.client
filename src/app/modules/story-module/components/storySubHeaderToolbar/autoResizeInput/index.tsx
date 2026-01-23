@@ -9,7 +9,7 @@ interface InputProps
   > {
   autoResize: boolean;
   minWidth: number;
-  maxWidth: number;
+  maxWidth?: number;
   name: string;
   setName: (name: string) => void;
   spanVisibility: boolean;
@@ -34,6 +34,9 @@ export default function AutoResizeInput(props: InputProps) {
     React.useState<number>(100);
 
   const handleAutoResize = () => {
+    if (!props.maxWidth) {
+      return;
+    }
     let spanAutoResizeWidth = 0;
     if (spanRef) {
       spanAutoResizeWidth = spanRef.current ? spanRef.current.offsetWidth : 0;
@@ -91,10 +94,9 @@ export default function AutoResizeInput(props: InputProps) {
           opacity: ${spanVisibility ? "0" : "1"};
           ${!autoResize ? "width: 100% !important;" : ""};
           max-width: 100% !important;
+          border: 2px solid transparent;
           &:focus-visible {
-            ${spanVisibility
-              ? ""
-              : "border: 1.5px solid #6061E5;border-radius: 4px;"}
+            border-color: ${!spanVisibility ? "#6061E5" : "transparent"};
           }
         `}
         value={name}
@@ -112,13 +114,12 @@ export default function AutoResizeInput(props: InputProps) {
           visibility: ${spanVisibility ? "visible" : "hidden"};
           max-width: ${autoResize ? `calc(100% - ${spanBuffer}px)` : "100%"};
           margin-left: -0.8px;
+          border: 2px solid transparent;
           @media (max-width: 1200px) {
             max-width: 100%;
           }
           &:focus-visible {
-            ${spanVisibility
-              ? "border: 1.5px solid #6061E5;border-radius: 4px;"
-              : ""}
+            border-color: ${spanVisibility ? "#6061E5" : "transparent"};
           }
         `}
       >
