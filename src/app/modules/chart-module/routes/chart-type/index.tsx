@@ -400,7 +400,7 @@ function ChartBuilderChartType(props: Readonly<ChartBuilderChartTypeProps>) {
           >
             <>
               Select a chart to communicate your dataset. <br /> Feel free to
-              pick another chart type.
+              pick any chart type.
             </>
           </p>
         </>
