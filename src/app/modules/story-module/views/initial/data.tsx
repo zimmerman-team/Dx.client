@@ -53,11 +53,14 @@ export const TemplateItem = ({
   return (
     <div
       css={`
-        height: 125px;
         width: 296px;
+        height: 161px;
         position: relative;
-        padding: 12px 16px;
-        background: #f2f7fd;
+        border-radius: 10px;
+        background: #f1f3f5;
+        padding: 16px 16px 12px 16px;
+        box-shadow: 0 0 10px 0 rgba(152, 161, 170, 0.05);
+
         &:hover {
           cursor: pointer;
 
@@ -88,24 +91,23 @@ export const TemplateItem = ({
           <p
             css={`
               margin: 0px;
-              font-size: 14px;
-              color: #262c34;
+              font-size: 18px;
+              color: #6061e5;
             `}
           >
             <b>{name}</b>
           </p>
           <p
             css={`
-              font-size: 10px;
-              margin-top: -3px;
+              font-size: 12px;
+              margin-bottom: 14px;
               font-weight: normal;
-              color: #495057;
+              color: #231d2c;
             `}
           >
             {description}
           </p>
         </div>
-
         <div />
         <div>{templateImg}</div>
       </div>
@@ -128,16 +130,17 @@ export const TemplateItem = ({
           </div>
         )}
         <PrimaryButton
-          size="xs"
-          bg="dark"
+          size="small"
+          bg="light"
           data-cy="use-story-template-button"
           css={`
-            bottom: 16px;
             right: 14px;
+            bottom: 16px;
+            padding: 8px 16px;
             position: absolute;
           `}
         >
-          {value === "ai" ? "Want to try it?" : " Use template"}
+          {value === "ai" ? "Want to try it?" : "Create Story"}
         </PrimaryButton>
       </div>
     </div>
