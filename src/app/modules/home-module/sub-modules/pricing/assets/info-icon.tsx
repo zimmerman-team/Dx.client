@@ -10,7 +10,6 @@ const InfoIcon = () => {
       xmlns="http://www.w3.org/2000/svg"
       role="presentation"
       aria-label="more info"
-      style={{ marginTop: "4px" }}
     >
       <path
         fill-rule="evenodd"
