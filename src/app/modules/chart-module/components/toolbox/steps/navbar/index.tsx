@@ -6,6 +6,7 @@ import {
   ToolboxNavType,
   toolboxNavContent,
 } from "@app/modules/chart-module/components/toolbox/data";
+import { FOCUS_VISIBLE_STYLE_LIGHT } from "@app/theme";
 
 export default function ToolboxNav(
   props: Readonly<{
@@ -63,6 +64,7 @@ export default function ToolboxNav(
         background: #f5f5f7;
         display: flex;
         height: 67px;
+
         @media (min-width: 768px) {
           @media (max-width: 881px) {
             height: 50px;
@@ -73,6 +75,9 @@ export default function ToolboxNav(
       {navContentState.map((item, index) => (
         <button
           css={`
+            :focus-visible {
+              ${FOCUS_VISIBLE_STYLE_LIGHT}
+            }
             ${stepcss(
               item.name === activePanelStep || index === activePanelStepIndex
             )}
