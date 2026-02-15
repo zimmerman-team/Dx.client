@@ -7,12 +7,13 @@ export default function useBackgroundColor(
   useEffect(() => {
     const rootElement = document.getElementById("root");
     if (rootElement) {
-      rootElement.style.backgroundColor = backgroundColor;
+      rootElement.style.background = backgroundColor;
     }
 
     return () => {
       if (rootElement) {
-        rootElement.style.backgroundColor = "#f2f7fd"; // Default fallback color
+        rootElement.style.background =
+          "linear-gradient(180deg, rgba(255, 255, 255, 0) 0%, #f2f7fd 100%)"; // Default fallback color
       }
     };
   }, [backgroundColor, ...deps]);

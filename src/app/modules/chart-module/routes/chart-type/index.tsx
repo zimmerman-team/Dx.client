@@ -389,6 +389,21 @@ function ChartBuilderChartType(props: Readonly<ChartBuilderChartTypeProps>) {
             />
           </div>
         </div> */}
+        <>
+          <p
+            css={`
+              font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
+              font-size: 18px;
+              color: #231d2c;
+              margin-bottom: 0px;
+            `}
+          >
+            <>
+              Select a chart to communicate your dataset. <br /> Feel free to
+              pick any chart type.
+            </>
+          </p>
+        </>
         <div
           css={`
             height: 40px;
