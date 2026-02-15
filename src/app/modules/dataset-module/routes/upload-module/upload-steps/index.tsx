@@ -179,7 +179,7 @@ function DatasetUploadSteps(props: Props) {
     const id = ObjectId();
 
     props.setDatasetId(id); //expose file id to datasetId state; to be used in dataset upload. this is used to link the file to the dataset
-    let fieldname = "dx" + id;
+    let fieldname = id;
     formData.append(fieldname, file as File);
 
     axios
