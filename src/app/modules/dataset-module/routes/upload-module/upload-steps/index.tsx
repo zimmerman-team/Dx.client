@@ -57,7 +57,7 @@ function DatasetUploadSteps(props: Props) {
     category: "",
     public: false,
     source: "",
-    sourceUrl: "",
+    sourceUrl: "https://",
   });
   const [activeStep, setActiveStep] = React.useState<number>(0);
   const [processingError, setProcessingError] = React.useState<string | null>(
