@@ -170,6 +170,7 @@ export function ChartModuleToolBox(props: Readonly<ChartToolBoxProps>) {
               <div
                 role="button"
                 tabIndex={-1}
+                aria-label="Toggle toolbox arrow"
                 css={`
                   top: calc((100% - 205px) / 2);
                   left: -16px;

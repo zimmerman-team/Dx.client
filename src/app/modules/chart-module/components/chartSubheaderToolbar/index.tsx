@@ -43,7 +43,7 @@ import { InfoSnackbar } from "@app/modules/story-module/components/storySubHeade
 import ShareModal from "@app/modules/dataset-module/component/shareModal";
 import { PrimaryButton } from "@app/components/Styled/button";
 import { ArrowBack } from "@material-ui/icons";
-import { MOBILE_BREAKPOINT } from "@app/theme";
+import { FOCUS_VISIBLE_STYLE_LIGHT, MOBILE_BREAKPOINT } from "@app/theme";
 import { ClickAwayListener } from "@material-ui/core";
 import { ISnackbarState } from "@app/modules/dataset-module/routes/upload-module/style";
 import { ExportChartButton } from "./exportButton";
@@ -319,8 +319,12 @@ export function ChartSubheaderToolbar(
                 color: #231d2c;
                 text-decoration: none;
                 cursor: pointer;
+                :focus-visible {
+                  ${FOCUS_VISIBLE_STYLE_LIGHT}
+                }
               `}
               data-cy="chart-back-to-library-btn"
+              aria-label="Back to Dashboard"
             >
               <Tooltip title="Back to Dashboard">
                 {isSmallScreen ? (

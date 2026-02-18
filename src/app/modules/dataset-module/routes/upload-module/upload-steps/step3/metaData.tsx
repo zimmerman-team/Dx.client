@@ -470,6 +470,7 @@ export default function MetaData(props: Readonly<MetadataProps>) {
               data-cy="dataset-metadata-link"
               data-testid="Link-to-data-source"
               value={props.formDetails.sourceUrl}
+              placeholder="https://"
               // ref={}
               css={`
                 border-radius: 10px;

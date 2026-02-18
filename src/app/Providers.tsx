@@ -35,7 +35,7 @@ function Providers(props: ProviderProps) {
                     <meta property="og:image" content={`${siteUrl}/logo.png`} />
                   </Helmet>
                   <Router>
-                    <div>{props.children}</div>
+                    <main>{props.children}</main>
                   </Router>
                 </AppContainer>
               </HelmetProvider>
