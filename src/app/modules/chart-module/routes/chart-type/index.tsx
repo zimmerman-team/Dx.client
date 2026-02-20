@@ -25,6 +25,7 @@ import AILoader from "@app/modules/chart-module/routes/chart-type/loader";
 import { handleValidityCheckOfDimensionsToBeMapped } from "@app/modules/chart-module/components/toolbox/steps/panels-content/Mapping";
 import { useCheckUserPlan } from "@app/hooks/useCheckUserPlan";
 import { IChartType } from "@app/state/api/action-reducers/sync/charts";
+import { FOCUS_VISIBLE_STYLE_LIGHT } from "@app/theme";
 
 function ChartBuilderChartType(props: Readonly<ChartBuilderChartTypeProps>) {
   useTitle("Dataxplorer - Chart Type");
@@ -249,6 +250,9 @@ function ChartBuilderChartType(props: Readonly<ChartBuilderChartTypeProps>) {
                 fill: ${aIChartSuggestions(ct.id) ? "#fff" : "#262C34"};
               }
             }
+            :focus-visible {
+              ${FOCUS_VISIBLE_STYLE_LIGHT}
+            }
           `}
           data-testid={ct.id}
         >
@@ -389,6 +393,21 @@ function ChartBuilderChartType(props: Readonly<ChartBuilderChartTypeProps>) {
             />
           </div>
         </div> */}
+        <>
+          <p
+            css={`
+              font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
+              font-size: 18px;
+              color: #231d2c;
+              margin-bottom: 0px;
+            `}
+          >
+            <>
+              Select a chart to communicate your dataset. <br /> Feel free to
+              pick any chart type.
+            </>
+          </p>
+        </>
         <div
           css={`
             height: 40px;

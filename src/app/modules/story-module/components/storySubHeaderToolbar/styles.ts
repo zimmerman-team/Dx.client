@@ -117,7 +117,7 @@ export const styles = {
     display: flex;
     gap: 22px;
     align-items: center;
-    width: 30%;
+    /* width: 30%; */
     justify-content: flex-end;
     flex-shrink: 0;
     @media (min-width: ${TABLET_STARTPOINT}) {

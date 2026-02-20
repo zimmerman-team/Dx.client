@@ -302,7 +302,7 @@ export function StorySubheaderToolbar(
                 align-items: center;
                 gap: 28px;
                 position: relative;
-                width: 70%;
+                width: 96%;
                 @media (min-width: ${TABLET_STARTPOINT}) {
                   @media (max-width: 1199px) {
                     width: 100%;
@@ -314,8 +314,7 @@ export function StorySubheaderToolbar(
                 name={props.name}
                 setName={props.setName}
                 placeholder="Title"
-                autoResize={true}
-                maxWidth={(titleRef.current?.offsetWidth ?? 1000) - 100}
+                autoResize={false}
                 spanBuffer={isMobile ? 0 : 150}
                 minWidth={200}
                 spanVisibility={inputSpanVisibiltiy}
