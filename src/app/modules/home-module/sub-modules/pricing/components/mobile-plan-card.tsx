@@ -4,7 +4,7 @@ import React from "react";
 import GoodIcon from "@app/modules/home-module/sub-modules/pricing/assets/good-icon";
 import { Plan } from "./plan-card";
 import { features } from "./data";
-import InfoIcon from "app/modules/home-module/sub-modules/pricing/assets/info-icon";
+import InfoIcon from "@app/modules/home-module/sub-modules/pricing/assets/info-icon";
 import { Tooltip } from "react-tooltip";
 import { MOBILE_BREAKPOINT } from "@app/theme";
 
