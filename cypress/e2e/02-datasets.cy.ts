@@ -406,7 +406,7 @@ describe("Testing connecting data on DX", () => {
     );
     cy.get('[data-cy="dataset-metadata-source"]').type("Rawgraphs");
     cy.get('[data-cy="dataset-metadata-link"]').type(
-      "https://notavailabledata.com"
+      "{selectall}{backspace}https://notavailabledata.com"
     );
     cy.get('[data-cy="dataset-metadata-category"]').click();
     cy.contains(
@@ -439,7 +439,7 @@ describe("Testing connecting data on DX", () => {
     );
     cy.get('[data-cy="dataset-metadata-source"]').type("Rawgraphs");
     cy.get('[data-cy="dataset-metadata-link"]').type(
-      "https://notavailabledataset.com"
+      "{selectall}{backspace}https://notavailabledataset.com"
     );
     cy.get('[data-cy="dataset-metadata-category"]').click();
     cy.contains(
@@ -454,7 +454,45 @@ describe("Testing connecting data on DX", () => {
     cy.get('[data-cy="home-data-tab"]').click();
     cy.contains("ChartDataset").should("be.visible");
   });
+
+
+    it("Can import a third dataset through local upload", () => {
+    cy.get('[data-cy="upload-option-button"').first().click();
+    cy.get('[data-cy="local-upload-input"]').as("fileInput");
+    cy.fixture("simple-series.csv").then((fileContent) => {
+      cy.get("@fileInput").attachFile({
+        fileContent: fileContent.toString(),
+        fileName: "simple-series.csv",
+        mimeType: "text/csv",
+      });
+    });
+    cy.get('[data-cy="describe-and-save-button"]').click();
+    cy.get('[data-cy="dataset-metadata-title"]').type("TimeCharset");
+    cy.get('[data-cy="dataset-metadata-description"]').type(
+      "TimeCharset Data"
+    );
+    cy.get('[data-cy="dataset-metadata-source"]').type("Rawgraphs");
+    cy.get('[data-cy="dataset-metadata-link"]').type(
+      "{selectall}{backspace}https://notavailabledataset.com"
+    );
+    cy.get('[data-cy="dataset-metadata-category"]').click();
+    cy.contains(
+      '[data-cy="dataset-metadata-category-option"]',
+      "Social"
+    ).click();
+    cy.get('[data-cy="dataset-metadata-submit"]').scrollIntoView();
+    cy.intercept(`${apiUrl}/datasets`).as("submitData");
+    cy.get('[data-cy="dataset-metadata-submit"]').click();
+
+    cy.wait("@submitData");
+    cy.get('[data-cy="home-data-tab"]').click();
+    cy.contains("TimeCharset").should("be.visible");
+  });
 });
+
+
+
+
 
 describe("Edit, Delete and Duplicate Dataset", () => {
   const apiUrl = Cypress.env("api_url");
