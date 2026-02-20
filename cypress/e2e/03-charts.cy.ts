@@ -58,6 +58,7 @@ describe("Testing area time axis chart on DX", () => {
     // cy.get('[data-cy="ai-agent-switch"]').click();
     // cy.wait(4000);
     // cy.get('[data-cy="ai-agent-switch"]').should("not.be.checked");
+    cy.intercept(`${apiUrl}/chart/*/render`).as("renderChart");
   });
 
   it("Can create a Area Time Axis Chart", () => {
@@ -88,7 +89,6 @@ describe("Testing area time axis chart on DX", () => {
       },
     );
 
-    cy.intercept(`${apiUrl}/chart/*/render`).as("renderChart");
     cy.contains('[data-cy="nonstatic-dimension-container"]', "Y Axis").within(
       () => {
         cy.get('[data-cy="chart-dimension-select"]').first().click();
@@ -193,6 +193,8 @@ describe("Testing create chart on DX", () => {
     // cy.get('[data-cy="ai-agent-switch"]').click();
     // cy.wait(4000);
     // cy.get('[data-cy="ai-agent-switch"]').should("not.be.checked");
+
+    cy.intercept(`${apiUrl}/chart/*/render`).as("renderChart");
   });
 
   it("Logs A11y violations to the terminal", () => {
@@ -228,8 +230,6 @@ describe("Testing create chart on DX", () => {
         cy.get('[data-cy="chart-dimension-select"]').click();
       },
     );
-
-    cy.intercept(`${apiUrl}/chart/*/render`).as("renderChart");
 
     cy.get('[data-cy="chart-dimension-mapping-item"]').first().click();
 
@@ -310,7 +310,6 @@ describe("Testing create chart on DX", () => {
       },
     );
 
-    cy.intercept(`${apiUrl}/chart/*/render`).as("renderChart");
     cy.contains('[data-cy="nonstatic-dimension-container"]', "Y Axis").within(
       () => {
         cy.get('[data-cy="chart-dimension-select"]').first().click();
@@ -397,7 +396,6 @@ describe("Testing create chart on DX", () => {
       },
     );
 
-    cy.intercept(`${apiUrl}/chart/*/render`).as("renderChart");
     cy.contains('[data-cy="nonstatic-dimension-container"]', "Value").within(
       () => {
         cy.get('[data-cy="chart-dimension-select"]').first().click();
@@ -485,7 +483,6 @@ describe("Testing create chart on DX", () => {
       },
     );
 
-    cy.intercept(`${apiUrl}/chart/*/render`).as("renderChart");
     cy.contains('[data-cy="nonstatic-dimension-container"]', "Y Axis").within(
       () => {
         cy.get('[data-cy="chart-dimension-select"]').first().click();
@@ -572,7 +569,6 @@ describe("Testing create chart on DX", () => {
       },
     );
 
-    cy.intercept(`${apiUrl}/chart/*/render`).as("renderChart");
     cy.contains('[data-cy="nonstatic-dimension-container"]', "Size").within(
       () => {
         cy.get('[data-cy="chart-dimension-select"]').first().click();
@@ -670,7 +666,6 @@ describe("Testing create chart on DX", () => {
       },
     );
 
-    cy.intercept(`${apiUrl}/chart/*/render`).as("renderChart");
     cy.contains('[data-cy="nonstatic-dimension-container"]', "Size").within(
       () => {
         cy.get('[data-cy="chart-dimension-select"]').first().click();
@@ -768,7 +763,7 @@ describe("Testing create chart on DX", () => {
         cy.get('[data-cy="chart-dimension-mapping-item"]').first().click();
       },
     );
-    cy.intercept(`${apiUrl}/chart/*/render`).as("renderChart");
+
     cy.wait("@renderChart");
 
     cy.contains('[data-cy="nonstatic-dimension-container"]', "Sizes").within(
@@ -778,7 +773,6 @@ describe("Testing create chart on DX", () => {
       },
     );
 
-    cy.intercept(`${apiUrl}/chart/*/render`).as("renderChart");
     cy.wait("@renderChart");
 
     cy.get('[data-cy="common-chart-container"]').should("be.visible");
@@ -865,7 +859,7 @@ describe("Testing create chart on DX", () => {
         cy.get('[data-cy="chart-dimension-mapping-item"]').first().click();
       },
     );
-    cy.intercept(`${apiUrl}/chart/*/render`).as("renderChart");
+
     cy.wait("@renderChart");
 
     cy.contains('[data-cy="nonstatic-dimension-container"]', "Sizes").within(
@@ -875,7 +869,6 @@ describe("Testing create chart on DX", () => {
       },
     );
 
-    cy.intercept(`${apiUrl}/chart/*/render`).as("renderChart");
     cy.wait("@renderChart");
 
     cy.get('[data-cy="common-chart-container"]').should("be.visible");
@@ -955,7 +948,6 @@ describe("Testing create chart on DX", () => {
       },
     );
 
-    cy.intercept(`${apiUrl}/chart/*/render`).as("renderChart");
     cy.contains('[data-cy="nonstatic-dimension-container"]', "Y Axis").within(
       () => {
         cy.get('[data-cy="chart-dimension-select"]').first().click();
@@ -1042,6 +1034,7 @@ describe("Testing create chart on DX", () => {
       cy.get('[data-cy="chart-dimension-mapping-item"]').first().click();
     });
     cy.wait(500);
+    cy.wait("@renderChart");
     cy.contains(
       '[data-cy="nonstatic-dimension-container"]',
       "Hierarchy",
@@ -1051,7 +1044,7 @@ describe("Testing create chart on DX", () => {
       cy.get('[data-cy="chart-dimension-mapping-item"]').eq(3).click();
     });
     cy.wait(500);
-    cy.intercept(`${apiUrl}/chart/*/render`).as("renderChart");
+
     cy.contains('[data-cy="nonstatic-dimension-container"]', "Size").within(
       () => {
         cy.get('[data-cy="chart-dimension-select"]').first().click();
@@ -1137,6 +1130,7 @@ describe("Testing create chart on DX", () => {
       cy.get('[data-cy="chart-dimension-mapping-item"]').first().click();
     });
     cy.wait(500);
+    cy.wait("@renderChart");
     cy.contains(
       '[data-cy="nonstatic-dimension-container"]',
       "Hierarchy",
@@ -1145,7 +1139,7 @@ describe("Testing create chart on DX", () => {
       cy.get('[data-cy="chart-dimension-mapping-item"]').eq(3).click();
     });
     cy.wait(500);
-    cy.intercept(`${apiUrl}/chart/*/render`).as("renderChart");
+    cy.wait("@renderChart");
     cy.contains('[data-cy="nonstatic-dimension-container"]', "Size").within(
       () => {
         cy.get('[data-cy="chart-dimension-select"]').first().click();
@@ -1225,7 +1219,6 @@ describe("Testing create chart on DX", () => {
     cy.get('[data-cy="story-sub-header-title-input"]').type(
       `{selectall}{backspace}${testname2}`,
     );
-    cy.intercept(`${apiUrl}/chart/*/render`).as("renderChart");
     cy.contains('[data-cy="nonstatic-dimension-container"]', "Node").within(
       () => {
         cy.get('[data-cy="chart-dimension-select"]').first().click();
@@ -1309,7 +1302,7 @@ describe("Testing create chart on DX", () => {
     cy.get('[data-cy="story-sub-header-title-input"]').type(
       `{selectall}{backspace}${testname2}`,
     );
-    cy.intercept(`${apiUrl}/chart/*/render`).as("renderChart");
+
     cy.contains('[data-cy="nonstatic-dimension-container"]', "Node").within(
       () => {
         cy.get('[data-cy="chart-dimension-select"]').first().click();
@@ -1393,7 +1386,7 @@ describe("Testing create chart on DX", () => {
     cy.get('[data-cy="story-sub-header-title-input"]').type(
       `{selectall}{backspace}${testname2}`,
     );
-    cy.intercept(`${apiUrl}/chart/*/render`).as("renderChart");
+
     cy.contains('[data-cy="nonstatic-dimension-container"]', "Node").within(
       () => {
         cy.get('[data-cy="chart-dimension-select"]').first().click();
@@ -1477,7 +1470,7 @@ describe("Testing create chart on DX", () => {
     cy.get('[data-cy="story-sub-header-title-input"]').type(
       `{selectall}{backspace}${testname2}`,
     );
-    cy.intercept(`${apiUrl}/chart/*/render`).as("renderChart");
+
     cy.contains('[data-cy="nonstatic-dimension-container"]', "Metric").within(
       () => {
         cy.wait(500);
@@ -1597,6 +1590,7 @@ describe("Testing create chart on DX", () => {
       cy.get('[data-cy="chart-dimension-mapping-item"]').first().click();
     });
     cy.wait(500);
+    cy.wait("@renderChart");
     cy.contains(
       '[data-cy="nonstatic-dimension-container"]',
       "Hierarchy",
@@ -1606,8 +1600,8 @@ describe("Testing create chart on DX", () => {
       cy.get('[data-cy="chart-dimension-mapping-item"]').eq(3).click();
     });
 
-    cy.intercept(`${apiUrl}/chart/*/render`).as("renderChart");
     cy.wait(500);
+    cy.wait("@renderChart");
     cy.contains('[data-cy="nonstatic-dimension-container"]', "Size").within(
       () => {
         cy.get('[data-cy="chart-dimension-select"]').first().click();
@@ -1693,7 +1687,6 @@ describe("Testing create chart on DX", () => {
       },
     );
 
-    cy.intercept(`${apiUrl}/chart/*/render`).as("renderChart");
     cy.contains('[data-cy="nonstatic-dimension-container"]', "Y Axis").within(
       () => {
         cy.get('[data-cy="chart-dimension-select"]').first().click();
@@ -1778,7 +1771,6 @@ describe("Testing create chart on DX", () => {
       },
     );
 
-    cy.intercept(`${apiUrl}/chart/*/render`).as("renderChart");
     cy.contains('[data-cy="nonstatic-dimension-container"]', "Y Axis").within(
       () => {
         cy.get('[data-cy="chart-dimension-select"]').first().click();
@@ -1859,7 +1851,7 @@ describe("Testing create chart on DX", () => {
     cy.get('[data-cy="story-sub-header-title-input"]').type(
       `{selectall}{backspace}${testname2}`,
     );
-    cy.intercept(`${apiUrl}/chart/*/render`).as("renderChart");
+
     cy.contains(
       '[data-cy="nonstatic-dimension-container"]',
       "Dimensions",
@@ -1887,7 +1879,7 @@ describe("Testing create chart on DX", () => {
 
     cy.wait("@renderChart");
 
-    // cy.intercept(`${apiUrl}/chart/*/render`).as("renderChart");
+    //
     cy.contains('[data-cy="nonstatic-dimension-container"]', "Category").within(
       () => {
         cy.get('[data-cy="chart-dimension-select"]').first().click();
@@ -1996,7 +1988,7 @@ describe("Testing create chart on DX", () => {
 
 //     cy.intercept(`${apiUrl}/chart`).as("saveChart");
 //     cy.intercept(`${apiUrl}/chart/*`).as("saveChart2");
-//     cy.intercept(`${apiUrl}/chart/*/render`).as("renderChart");
+//
 
 //     cy.get('[data-cy="ai-suggestion-icon"]').filter(":visible").eq(0).click();
 
