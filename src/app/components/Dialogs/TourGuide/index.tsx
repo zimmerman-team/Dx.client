@@ -1,10 +1,10 @@
 import React from "react";
-import TourStart from "app/components/Dialogs/TourGuide/tourStart";
-import RowFrameIntro from "app/components/Dialogs/TourGuide/rowFrameIntro";
+import TourStart from "@app/components/Dialogs/TourGuide/tourStart";
+import RowFrameIntro from "@app/components/Dialogs/TourGuide/rowFrameIntro";
 import SelectStructure from "./selectStructure";
 import TourEnd from "./tourEnd";
 import { useRecoilState } from "recoil";
-import { storyCreationTourStepAtom } from "app/state/recoil/atoms";
+import { storyCreationTourStepAtom } from "@app/state/recoil/atoms";
 import useCookie from "@devhammed/use-cookie";
 
 export default function TourGuide(props: {

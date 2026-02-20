@@ -1,15 +1,16 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { useAuth0 } from "@auth0/auth0-react";
-import { socialAuth } from "app/utils/socialAuth";
-import { ReactComponent as GoogleIcon } from "app/modules/home-module/components/SignInButtons/assets/google-icon.svg";
-import { ReactComponent as LinkedInIcon } from "app/modules/home-module/components/SignInButtons/assets/linkedin-icon.svg";
-import { ReactComponent as MicrosoftIcon } from "app/modules/home-module/components/SignInButtons/assets/microsoft-icon.svg";
+import { socialAuth } from "@app/utils/socialAuth";
+import GoogleIcon from "@app/modules/home-module/components/SignInButtons/assets/google-icon.svg?react";
+import LinkedInIcon from "@app/modules/home-module/components/SignInButtons/assets/linkedin-icon.svg?react";
+import MicrosoftIcon from "@app/modules/home-module/components/SignInButtons/assets/microsoft-icon.svg?react";
 import {
   DESKTOP_BREAKPOINT,
+  FOCUS_VISIBLE_STYLE_DARK,
+  FOCUS_VISIBLE_STYLE_LIGHT,
   MOBILE_BREAKPOINT,
-  TABLET_STARTPOINT,
-} from "app/theme";
+} from "@app/theme";
 import { ChevronRight } from "@material-ui/icons";
 
 interface TryUsBlockProps {
@@ -82,9 +83,6 @@ export default function TryUsBlock(props: TryUsBlockProps) {
                 text-align: ${props.center ? "center" : "left"};
                 font-size: 36px;
               }
-              @media (max-width: ${MOBILE_BREAKPOINT}) {
-                font-size: 24px;
-              }
             `}
           >
             {props.title}
@@ -149,11 +147,17 @@ export default function TryUsBlock(props: TryUsBlockProps) {
                 display: flex;
                 align-items: center;
                 justify-content: space-between;
+                :focus-visible {
+                  ${FOCUS_VISIBLE_STYLE_LIGHT}
+                }
               }
 
               a:nth-child(2) {
                 background: #dadaf8;
                 color: #231d2c;
+                :focus-visible {
+                  ${FOCUS_VISIBLE_STYLE_DARK}
+                }
               }
 
               @media (max-width: ${DESKTOP_BREAKPOINT}) {
@@ -225,6 +229,9 @@ export default function TryUsBlock(props: TryUsBlockProps) {
                   font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
                   font-size: 18px;
                   text-decoration: none;
+                  :focus-visible {
+                    ${FOCUS_VISIBLE_STYLE_DARK}
+                  }
                   @media (max-width: ${MOBILE_BREAKPOINT}) {
                     width: 210px;
                   }
@@ -264,6 +271,9 @@ export default function TryUsBlock(props: TryUsBlockProps) {
                     :hover {
                       opacity: 0.8;
                       cursor: pointer;
+                    }
+                    :focus-visible {
+                      ${FOCUS_VISIBLE_STYLE_LIGHT}
                     }
                   }
                   @media (max-width: ${DESKTOP_BREAKPOINT}) {

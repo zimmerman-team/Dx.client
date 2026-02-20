@@ -5,13 +5,13 @@ import isEmpty from "lodash/isEmpty";
 import { useLocation, useParams } from "react-router-dom";
 import axios, { AxiosError, AxiosResponse } from "axios";
 /* project */
-import { useStoreActions, useStoreState } from "app/state/store/hooks";
+import { useStoreActions, useStoreState } from "@app/state/store/hooks";
 import {
   ChartAPIModel,
   ChartRenderedItem,
-} from "app/modules/chart-module/data";
+} from "@app/modules/chart-module/data";
 import { isEqual } from "lodash";
-import { APPLICATION_JSON } from "app/state/api";
+import { APPLICATION_JSON } from "@app/state/api";
 
 const getValidMapping = (
   chartFromAPI: ChartRenderedItem | null,
@@ -144,7 +144,7 @@ export function useChartsRawData(props: {
     props.dimensions,
     mapping
   );
-  async function loadDataset(id: string) {
+  async function loadDataset(path: string) {
     const extraLoader = document.getElementById("extra-loader");
     if (extraLoader) {
       extraLoader.style.display = "block";
@@ -152,17 +152,12 @@ export function useChartsRawData(props: {
     setLoading(true);
     setDataError(false);
     return await axios
-      .get(
-        `${process.env.REACT_APP_API}/chart/sample-data${
-          token ? "" : "/public"
-        }/${id}`,
-        {
-          headers: {
-            "Content-Type": APPLICATION_JSON,
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      )
+      .get(path, {
+        headers: {
+          "Content-Type": APPLICATION_JSON,
+          Authorization: `Bearer ${token}`,
+        },
+      })
       .then((response: AxiosResponse) => {
         if (extraLoader) {
           extraLoader.style.display = "none";
@@ -229,7 +224,7 @@ export function useChartsRawData(props: {
     }
     await axios
       .post(
-        `${process.env.REACT_APP_API}/chart/${chartId ?? page}/render${
+        `${import.meta.env.VITE_API}/chart/${chartId ?? page}/render${
           token === "" ? "/public" : ""
         }`,
         body,

@@ -1,9 +1,8 @@
-import { ToolbarPluginsType } from "app/modules/story-module/components/storySubHeaderToolbar/staticToolbar";
-import { IHeaderDetails } from "app/modules/story-module/components/right-panel/data";
+import { ToolbarPluginsType } from "@app/modules/story-module/components/storySubHeaderToolbar/staticToolbar";
+import { IHeaderDetails } from "@app/modules/story-module/components/right-panel/data";
 import { Updater } from "use-immer";
 
 interface IRowFrame {
-  rowIndex: number;
   rowId: string;
   forceSelectedType?: string;
   type: "rowFrame" | "divider";
@@ -14,7 +13,6 @@ export interface IFramesArray {
   frame: IRowFrame;
   contentWidths: number[];
   contentHeights: number[];
-  textEditorHeights: (number | null)[];
   content: (object | string | null)[];
   contentTypes: ("text" | "divider" | "chart" | "video" | "image" | null)[];
   structure:
@@ -40,12 +38,20 @@ export interface StoryCreateViewProps {
   headerDetails: IHeaderDetails;
   setHeaderDetails: React.Dispatch<React.SetStateAction<IHeaderDetails>>;
   onSave: (type: "create" | "edit") => Promise<void>;
-  setPlugins: React.Dispatch<React.SetStateAction<ToolbarPluginsType>>;
+  setPluginsState: React.Dispatch<React.SetStateAction<ToolbarPluginsType>>;
+  undoStack: IFramesArray[][];
+  setUndoStack: React.Dispatch<React.SetStateAction<IFramesArray[][]>>;
+  redoStack: IFramesArray[][];
+  setRedoStack: React.Dispatch<React.SetStateAction<IFramesArray[][]>>;
 }
 
 export interface PlaceholderProps {
   updateFramesArray: Updater<IFramesArray[]>;
   framesArray: IFramesArray[];
+  undoStack: IFramesArray[][];
+  setUndoStack: React.Dispatch<React.SetStateAction<IFramesArray[][]>>;
+  redoStack: IFramesArray[][];
+  setRedoStack: React.Dispatch<React.SetStateAction<IFramesArray[][]>>;
   index?: number;
   disableAddrowStructureButton?: boolean;
   deleteFrame: (id: string) => void;

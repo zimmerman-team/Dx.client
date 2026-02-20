@@ -8,6 +8,7 @@ const GoogleIcon = () => {
       height="31"
       viewBox="0 0 35 31"
       fill="none"
+      role="presentation"
     >
       <g clipPath="url(#clip0_15369_10908)">
         <path

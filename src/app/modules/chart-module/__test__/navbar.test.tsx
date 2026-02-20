@@ -4,8 +4,8 @@ import { StoreProvider, createStore } from "easy-peasy";
 import userEvent from "@testing-library/user-event";
 import Router from "react-router-dom";
 /** project */
-import ToolboxNav from "app/modules/chart-module/components/toolbox/steps/navbar";
-import { ChartsActivePanelsState } from "app/state/api/action-reducers/sync/charts";
+import ToolboxNav from "@app/modules/chart-module/components/toolbox/steps/navbar";
+import { ChartsActivePanelsState } from "@app/state/api/action-reducers/sync/charts";
 
 interface MockProps {
   onNavBtnClick: jest.Mock<any, any, any>;

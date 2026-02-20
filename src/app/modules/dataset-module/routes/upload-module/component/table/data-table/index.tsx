@@ -2,11 +2,11 @@ import React from "react";
 import orderBy from "lodash/orderBy";
 import { useUpdateEffect } from "react-use";
 import { SortColumn } from "react-data-grid";
-import PreviewTable from "app/components/Table/Preview-table";
-import { tableToolBoxData } from "app/components/Table/Preview-table/data";
-import { DataThemesDataTableProps } from "app/modules/dataset-module/routes/upload-module/component/table/data-table/data";
-import useGetDatasetContent from "app/hooks/useGetDatasetContent";
-import { useInfinityScroll } from "app/hooks/useInfinityScroll";
+import PreviewTable from "@app/components/Table/Preview-table";
+import { tableToolBoxData } from "@app/components/Table/Preview-table/data";
+import { DataThemesDataTableProps } from "@app/modules/dataset-module/routes/upload-module/component/table/data-table/data";
+import useGetDatasetContent from "@app/hooks/useGetDatasetContent";
+import { useInfinityScroll } from "@app/hooks/useInfinityScroll";
 
 const getColumns = (
   data: {
@@ -43,7 +43,7 @@ export function DatasetDataTable(props: DataThemesDataTableProps) {
     data: tableData,
     loading,
     refetch,
-  } = useGetDatasetContent(props.datasetId, 10);
+  } = useGetDatasetContent(props.datasetId, 20);
 
   React.useEffect(() => {
     //load data if intersection observer is triggered

@@ -37,3 +37,39 @@ export const AuthTokenState: AuthTokenModel = {
     state.value = payload;
   }),
 };
+
+export interface CMSDataValueModel {
+  componentsFooter: any | null;
+  componentsHeader: any | null;
+  pagesHome: any | null;
+  pagesDashboard: any | null;
+  pagesAbout: any | null;
+  pagesWhyDataxplorer: any | null;
+  pagesPricing: any | null;
+  pagesPartners: any | null;
+  pagesContact: any | null;
+  pagesWebinar: any | null;
+}
+
+export interface CMSDataModel {
+  value: CMSDataValueModel;
+  setValue: Action<CMSDataModel, CMSDataValueModel>;
+}
+
+export const CMSData: CMSDataModel = {
+  value: {
+    componentsFooter: null,
+    componentsHeader: null,
+    pagesHome: null,
+    pagesDashboard: null,
+    pagesAbout: null,
+    pagesWhyDataxplorer: null,
+    pagesPricing: null,
+    pagesPartners: null,
+    pagesContact: null,
+    pagesWebinar: null,
+  },
+  setValue: action((state, payload: CMSDataValueModel) => {
+    state.value = payload;
+  }),
+};

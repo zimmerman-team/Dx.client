@@ -4,10 +4,10 @@ import userEvent, {
   PointerEventsCheckLevel,
 } from "@testing-library/user-event";
 import { screen } from "@testing-library/react";
-import { mockUseAuth0 } from "app/utils/mockAuth0";
+import { mockUseAuth0 } from "@app/utils/mockAuth0";
 import { Router } from "react-router-dom";
 import { createMemoryHistory } from "history";
-import GridItem from "app/modules/home-module/components/AssetCollection/Charts/gridItem";
+import GridItem from "@app/modules/home-module/components/AssetCollection/Charts/gridItem";
 
 interface MockProps {
   id: string;

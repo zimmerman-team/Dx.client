@@ -1,4 +1,4 @@
-import { DatasetListItemAPIModel } from "app/modules/dataset-module/data";
+import { DatasetListItemAPIModel } from "@app/modules/dataset-module/data";
 
 const modifiedSourceUrl = (url: string) => {
   if (!url) {
@@ -16,20 +16,18 @@ export const getDatasetDetailsSource = (
 ) => {
   let sourceUrl;
   let filename;
-  if (datasetDetailsProps) {
+  if (datasetDetailsProps && Object.keys(datasetDetailsProps).length > 0) {
     sourceUrl =
       datasetDetailsProps.sourceUrl ||
       `${window.location.origin}/dataset/${datasetDetailsProps.id}`;
+    filename = datasetDetailsProps.sourceUrl || datasetDetailsProps.name;
   } else {
     sourceUrl =
       datasetDetails.sourceUrl ||
       `${window.location.origin}/dataset/${datasetDetails.id}`;
-  }
-  if (datasetDetailsProps) {
-    filename = datasetDetailsProps.sourceUrl || datasetDetailsProps.name;
-  } else {
     filename = datasetDetails.sourceUrl || datasetDetails.name;
   }
+
   sourceUrl = modifiedSourceUrl(sourceUrl);
   return { sourceUrl, filename };
 };

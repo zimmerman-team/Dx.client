@@ -3,13 +3,13 @@ import Grid from "@material-ui/core/Grid";
 import { useAuth0 } from "@auth0/auth0-react";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import { Route, Switch, useHistory, useLocation } from "react-router-dom";
-import AuthCard from "app/modules/onboarding-module/component/card";
-import MainImage from "app/modules/onboarding-module/asset/main-image.png";
-import Ellipsis from "app/modules/onboarding-module/asset/ellipses.svg";
+import AuthCard from "@app/modules/onboarding-module/component/card";
+import MainImage from "@app/modules/onboarding-module/asset/main-image.png";
+import Ellipsis from "@app/modules/onboarding-module/asset/ellipses.svg";
 import { useTitle } from "react-use";
-import HomeFooter from "app/modules/home-module/components/Footer";
-import InlineLogo from "app/modules/home-module/assets/inline-logo";
-import { DESKTOP_BREAKPOINT, MOBILE_BREAKPOINT } from "app/theme";
+import HomeFooter from "@app/modules/home-module/components/Footer";
+import InlineLogo from "@app/modules/home-module/assets/inline-logo";
+import { DESKTOP_BREAKPOINT, MOBILE_BREAKPOINT } from "@app/theme";
 
 export default function Onboarding() {
   useTitle("Dataxplorer - Onboarding");
@@ -101,7 +101,7 @@ export default function Onboarding() {
                 }
               `}
             >
-              Welcome to <InlineLogo width={"239.968px"} height={"25.669px"} />
+              Welcome to Dataxplorer
             </h1>
 
             <h2
@@ -175,7 +175,7 @@ export default function Onboarding() {
                 margin-top: 104px;
               `}
             >
-              Welcome to <InlineLogo width={"239.968px"} height={"25.669px"} />
+              Welcome to Dataxplorer
             </h1>
             <p
               css={`

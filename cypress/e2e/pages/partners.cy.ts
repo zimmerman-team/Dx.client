@@ -5,11 +5,15 @@ describe("Testing the Partners page logged in", () => {
 
   beforeEach(() => {
     cy.visit("/");
-
+    cy.injectAxe();
     cy.get('[data-cy="cookie-btn"]').click();
     cy.get('[data-cy="app-bar"]').within(() => {
+      cy.get('[data-cy="nav-about-group"]').click();
       cy.contains("a", "Partners").click();
     });
+  });
+  it("Logs A11y violations to the terminal", () => {
+    cy.checkA11y(undefined, undefined, undefined, true);
   });
 
   it("Can switch between the different tabs", () => {
@@ -65,7 +69,7 @@ describe("Testing the Partners page logged in", () => {
 
         cy.origin("https://data.theglobalfund.org", () => {
           cy.location("hostname").should("eq", "data.theglobalfund.org");
-          cy.location("pathname").should("include", "/geography");
+          cy.location("pathname").should("include", "/overview");
         });
       });
 

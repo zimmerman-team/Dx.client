@@ -1,17 +1,17 @@
 import React from "react";
 import CloseOutlined from "@material-ui/icons/ClearOutlined";
 import Modal from "@material-ui/core/Modal";
-import { useStyles } from "app/components/Dialogs/deleteChartDialog";
-import { useRenderChartFromAPI } from "app/modules/story-module/components/chart-wrapper/useRenderChartFromAPI";
+import { useStyles } from "@app/components/Dialogs/deleteChartDialog";
+import { useRenderChartFromAPI } from "@app/modules/story-module/components/chart-wrapper/useRenderChartFromAPI";
 import IconButton from "@material-ui/core/IconButton";
 import Snackbar from "@material-ui/core/Snackbar";
 import get from "lodash/get";
-import { useLoadDatasetDetails } from "app/modules/story-module/components/chart-wrapper/useLoadDatasetDetailsAPI";
+import { useLoadDatasetDetails } from "@app/modules/story-module/components/chart-wrapper/useLoadDatasetDetailsAPI";
 import ChartContainer from "./chartContainer";
-import { copyToClipboard } from "app/utils/copyToClipboard";
-import { useStoreActions, useStoreState } from "app/state/store/hooks";
+import { copyToClipboard } from "@app/utils/copyToClipboard";
+import { useStoreActions, useStoreState } from "@app/state/store/hooks";
 import LinkOptions from "./linkOptions";
-import BasicSwitch from "app/components/Switch/BasicSwitch";
+import { BasicSwitch } from "@app/components/Switch/BasicSwitch";
 import EmbedOptions from "./embedOptions";
 
 export default function EmbedChartDialog(props: {
@@ -156,8 +156,12 @@ export default function EmbedChartDialog(props: {
             >
               <BasicSwitch
                 activeTab={activeSwitchTab}
-                handleSwitch={handleSwitchTab}
-                setActiveTab={setActiveSwitchTab}
+                onTabChange={handleSwitchTab}
+                style={{
+                  radius: 20,
+                  paddingX: 16,
+                  backgroundActive: "#6061e5",
+                }}
                 tabs={switchTabs}
               />
             </div>

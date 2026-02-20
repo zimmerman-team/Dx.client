@@ -1,10 +1,10 @@
 import React from "react";
 import Box from "@material-ui/core/Box";
-import { ReactComponent as ConnectImg } from "app/modules/home-module/assets/connect-seamlessly-illustration.svg";
-import { ReactComponent as VisualiseImg } from "app/modules/home-module/assets/visualise-illustration.svg";
-import { ReactComponent as CreateReportImg } from "app/modules/home-module/assets/creat-report-illustration.svg";
-import { ReactComponent as CollaborateImg } from "app/modules/home-module/assets/collaborate-illustration.svg";
-import { ReactComponent as SaveTimeImg } from "app/modules/home-module/assets/saveTime-illustration.svg";
+import ConnectImg from "@app/modules/home-module/assets/connect-seamlessly-illustration.svg?react";
+import VisualiseImg from "@app/modules/home-module/assets/visualise-illustration.svg?react";
+import CreateReportImg from "@app/modules/home-module/assets/creat-report-illustration.svg?react";
+import CollaborateImg from "@app/modules/home-module/assets/collaborate-illustration.svg?react";
+import SaveTimeImg from "@app/modules/home-module/assets/saveTime-illustration.svg?react";
 
 export default function ExtraFeaturesCard(props: { handleClose: () => void }) {
   const data = [

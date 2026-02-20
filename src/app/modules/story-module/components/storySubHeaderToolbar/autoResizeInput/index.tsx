@@ -1,5 +1,6 @@
 import React, { useRef } from "react";
-import { styles } from "app/modules/story-module/components/storySubHeaderToolbar/styles";
+import { styles } from "@app/modules/story-module/components/storySubHeaderToolbar/styles";
+import { FOCUS_VISIBLE_STYLE_LIGHT } from "@app/theme";
 
 interface InputProps
   extends React.DetailedHTMLProps<
@@ -8,7 +9,7 @@ interface InputProps
   > {
   autoResize: boolean;
   minWidth: number;
-  maxWidth: number;
+  maxWidth?: number;
   name: string;
   setName: (name: string) => void;
   spanVisibility: boolean;
@@ -33,6 +34,9 @@ export default function AutoResizeInput(props: InputProps) {
     React.useState<number>(100);
 
   const handleAutoResize = () => {
+    if (!props.maxWidth) {
+      return;
+    }
     let spanAutoResizeWidth = 0;
     if (spanRef) {
       spanAutoResizeWidth = spanRef.current ? spanRef.current.offsetWidth : 0;
@@ -90,6 +94,10 @@ export default function AutoResizeInput(props: InputProps) {
           opacity: ${spanVisibility ? "0" : "1"};
           ${!autoResize ? "width: 100% !important;" : ""};
           max-width: 100% !important;
+          border: 2px solid transparent;
+          &:focus-visible {
+            border-color: ${!spanVisibility ? "#6061E5" : "transparent"};
+          }
         `}
         value={name}
         onChange={(e) => onChange(e.target.value)}
@@ -106,8 +114,12 @@ export default function AutoResizeInput(props: InputProps) {
           visibility: ${spanVisibility ? "visible" : "hidden"};
           max-width: ${autoResize ? `calc(100% - ${spanBuffer}px)` : "100%"};
           margin-left: -0.8px;
+          border: 2px solid transparent;
           @media (max-width: 1200px) {
             max-width: 100%;
+          }
+          &:focus-visible {
+            border-color: ${spanVisibility ? "#6061E5" : "transparent"};
           }
         `}
       >

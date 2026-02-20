@@ -1,14 +1,19 @@
 import React from "react";
 import { v4 } from "uuid";
 import IconButton from "@material-ui/core/IconButton";
-import { IFramesArray } from "app/modules/story-module/views/create/data";
-import { ReactComponent as PlusIcon } from "app/modules/story-module/asset/addButton.svg";
-import { IRowFrameStructure } from "app/state/recoil/atoms";
+import { IFramesArray } from "@app/modules/story-module/views/create/data";
+import PlusIcon from "@app/modules/story-module/asset/addButton.svg?react";
+import { IRowFrameStructure } from "@app/state/recoil/atoms";
 import { Updater } from "use-immer";
-import { TABLET_STARTPOINT } from "app/theme";
+import { FOCUS_VISIBLE_STYLE_LIGHT } from "@app/theme";
+import { useUndoRedo } from "@app/hooks/useUndoRedo";
 interface Props {
   updateFramesArray: Updater<IFramesArray[]>;
   framesArray: IFramesArray[];
+  undoStack: IFramesArray[][];
+  setUndoStack: React.Dispatch<React.SetStateAction<IFramesArray[][]>>;
+  redoStack: IFramesArray[][];
+  setRedoStack: React.Dispatch<React.SetStateAction<IFramesArray[][]>>;
   rowStructureType: IRowFrameStructure;
   setRowStructureType: React.Dispatch<React.SetStateAction<IRowFrameStructure>>;
   endTour: () => void;
@@ -16,22 +21,29 @@ interface Props {
 }
 
 export default function AddRowFrameButton(props: Props) {
+  const { store } = useUndoRedo(
+    props.framesArray,
+    props.updateFramesArray,
+    props.undoStack,
+    props.setUndoStack,
+    props.redoStack,
+    props.setRedoStack
+  );
   const [displayTooltip, setDisplayTooltip] = React.useState<boolean>(false);
   const handleAddrowStructureBlock = () => {
     props.endTour();
     const id = v4();
+    store();
     props.updateFramesArray((draft) => {
       const newRowFrame = {
         id,
         frame: {
           rowId: id,
-          rowIndex: draft.length,
           type: "rowFrame" as "rowFrame",
         },
         content: [],
         contentWidths: [],
         contentHeights: [],
-        textEditorHeights: [],
         contentTypes: [],
         structure: null,
       };
@@ -68,6 +80,9 @@ export default function AddRowFrameButton(props: Props) {
           disabled={props.rowStructureType.disableAddRowStructureButton}
           css={`
             padding: 4px;
+            :focus-visible {
+              ${FOCUS_VISIBLE_STYLE_LIGHT}
+            }
           `}
           data-cy="add-row-frame-button"
         >

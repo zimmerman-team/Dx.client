@@ -1,10 +1,10 @@
 import {
   ChartType,
   CommonChart,
-} from "app/modules/chart-module/components/common-chart";
+} from "@app/modules/chart-module/components/common-chart";
 import ErrorOutlineIcon from "@material-ui/icons/ErrorOutline";
-import { ChartRenderedItem } from "app/modules/chart-module/data";
-import { DatasetListItemAPIModel } from "app/modules/dataset-module/data";
+import { ChartRenderedItem } from "@app/modules/chart-module/data";
+import { DatasetListItemAPIModel } from "@app/modules/dataset-module/data";
 import React from "react";
 
 export default function ChartContainer(props: {
@@ -106,6 +106,7 @@ export default function ChartContainer(props: {
             inChartWrapper={true}
             mapping={props.chartFromAPI?.mapping}
             datasetDetails={props.datasetDetails}
+            readOnly
           />
         </div>
       )}

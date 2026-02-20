@@ -1,21 +1,22 @@
 import { createStore, persist } from "easy-peasy";
-import { StoreModel } from "app/state/api/interfaces";
+import { StoreModel } from "@app/state/api/interfaces";
 
 import {
   AuthTokenState,
+  CMSData,
   DataSourceSnackbarVisibilityState,
   DataSourceState,
-} from "app/state/api/action-reducers/sync";
+} from "@app/state/api/action-reducers/sync";
 import GlobalSearch, {
   GlobalSearchCharts,
   GlobalSearchDatasets,
   GlobalSearchStories,
-} from "app/state/api/action-reducers/search";
+} from "@app/state/api/action-reducers/search";
 import {
   DatasetGetList,
   DatasetCount,
   DatasetGet,
-} from "app/state/api/action-reducers/data-themes";
+} from "@app/state/api/action-reducers/data-themes";
 import {
   ChartsActivePanelsState,
   ChartsChartTypeState,
@@ -23,8 +24,8 @@ import {
   ChartsEnabledFilterOptionGroupsState,
   ChartsMappingState,
   SelectedAIChartState,
-} from "app/state/api/action-reducers/sync/charts";
-import { ChartsAppliedFiltersState } from "app/state/api/action-reducers/sync/charts/filters";
+} from "@app/state/api/action-reducers/sync/charts";
+import { ChartsAppliedFiltersState } from "@app/state/api/action-reducers/sync/charts/filters";
 import {
   ChartCreate,
   ChartDelete,
@@ -35,7 +36,7 @@ import {
   ChartTypesSuggest,
   ChartUpdate,
   ChartsCount,
-} from "app/state/api/action-reducers/charts";
+} from "@app/state/api/action-reducers/charts";
 import {
   StoryCreate,
   StoryDelete,
@@ -44,12 +45,23 @@ import {
   StoryGetList,
   StoryUpdate,
   StoriesCount,
-} from "app/state/api/action-reducers/stories";
+} from "@app/state/api/action-reducers/stories";
 import {
   AssetGetList,
   AssetsCount,
-} from "app/state/api/action-reducers/assets";
-import { UserProfile } from "app/state/api/action-reducers/user";
+} from "@app/state/api/action-reducers/assets";
+import { UserProfile } from "@app/state/api/action-reducers/user";
+import componentsFooter from "@app/state/api/action-reducers/cms/componentsFooter";
+import componentsHeader from "@app/state/api/action-reducers/cms/componentsHeader";
+import pagesHome from "@app/state/api/action-reducers/cms/pagesHome";
+import pagesDashboard from "@app/state/api/action-reducers/cms/pagesDashboard";
+import pagesAbout from "@app/state/api/action-reducers/cms/pagesAbout";
+import pagesWhyDataxplorer from "@app/state/api/action-reducers/cms/pagesWhyDataxplorer";
+import pagesPricing from "@app/state/api/action-reducers/cms/pagesPricing";
+import pagesPartners from "@app/state/api/action-reducers/cms/pagesPartners";
+import pagesContact from "@app/state/api/action-reducers/cms/pagesContact";
+import pagesWebinar from "@app/state/api/action-reducers/cms/pagesWebinar";
+import { LoggingState } from "@app/state/api/action-reducers/logging";
 
 const storeContent: StoreModel = {
   // global search
@@ -103,6 +115,20 @@ const storeContent: StoreModel = {
     stories: persist(GlobalSearchStories),
     datasets: persist(GlobalSearchDatasets),
   },
+  cms: {
+    componentsFooter: persist(componentsFooter),
+    componentsHeader: persist(componentsHeader),
+    pagesHome: persist(pagesHome),
+    pagesDashboard: persist(pagesDashboard),
+    pagesAbout: persist(pagesAbout),
+    pagesWhyDataxplorer: persist(pagesWhyDataxplorer),
+    pagesPricing: persist(pagesPricing),
+    pagesPartners: persist(pagesPartners),
+    pagesContact: persist(pagesContact),
+    pagesWebinar: persist(pagesWebinar),
+  },
+  logging: persist(LoggingState),
+  CMSData: persist(CMSData),
 };
 
 export const store = createStore(storeContent);

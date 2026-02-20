@@ -2,8 +2,8 @@ import React from "react";
 import MenuItem from "@material-ui/core/MenuItem";
 import { withStyles } from "@material-ui/core/styles";
 import Menu, { MenuProps } from "@material-ui/core/Menu";
-import { TriangleXSIcon } from "app/assets/icons/TriangleXS";
-import { styles } from "app/modules/chart-module/components/exporter/styles";
+import { TriangleXSIcon } from "@app/assets/icons/TriangleXS";
+import { styles } from "@app/modules/chart-module/components/exporter/styles";
 
 export const StyledMenu = withStyles({
   paper: {
@@ -42,13 +42,32 @@ export const StyledMenuItem = withStyles(() => ({
     "&:hover": {
       color: "#fff",
       backgroundColor: "#262C34",
+      "& a": {
+        color: "#fff",
+      },
     },
     "&:not(:last-child)": {
       borderBottom: "1px solid #C0C7D2",
     },
+    // ✅ Correct way to style focus visible state
+    "&.Mui-focusVisible": {
+      backgroundColor: "#262C34",
+      color: "#fff",
+      "& a": {
+        color: "#fff",
+      },
+    },
+    "& a": {
+      textDecoration: "none",
+      color: "#373D43",
+    },
   },
   selected: {
     backgroundColor: "#262C34 !important",
+    color: "#fff !important",
+    "& a": {
+      color: "#fff !important",
+    },
   },
 }))(MenuItem);
 

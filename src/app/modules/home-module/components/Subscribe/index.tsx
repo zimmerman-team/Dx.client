@@ -1,6 +1,6 @@
 import React from "react";
 import { FieldErrors } from "react-hook-form";
-import NewsletterForm from "app/modules/common/newsletterForm";
+import NewsletterForm from "@app/modules/common/newsletterForm";
 
 export default function Subscribe() {
   const [isSubscribed, setIsSubscribed] = React.useState(false);

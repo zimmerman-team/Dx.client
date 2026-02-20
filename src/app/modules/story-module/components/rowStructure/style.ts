@@ -1,17 +1,23 @@
-import { css } from "styled-components/macro";
+import { FOCUS_VISIBLE_STYLE_LIGHT } from "@app/theme";
+import { css } from "styled-components";
 
 export const blockcss = css`
   display: flex;
   cursor: pointer;
   align-items: center;
   flex-direction: column;
-
+  border: none;
+  outline: none;
+  background: none;
   &:hover {
     > div {
       > div {
         background: #231d2c;
       }
     }
+  }
+  :focus-visible {
+    ${FOCUS_VISIBLE_STYLE_LIGHT}
   }
 
   p {

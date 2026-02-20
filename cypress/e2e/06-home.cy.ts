@@ -1,0 +1,80 @@
+describe("Home page tests", () => {
+  const apiUrl = Cypress.env("api_url");
+
+  beforeEach(() => {
+    cy.restoreLocalStorageCache();
+    cy.visit("/");
+    cy.injectAxe();
+    cy.get('[data-cy="cookie-btn"]').click();
+  });
+
+  it("Logs A11y violations to the terminal", () => {
+    cy.checkA11y(undefined, undefined, undefined, true);
+  });
+
+  it("Can go to explore stories page and create story from the about page", () => {
+    cy.get('[data-cy="nav-about-group"]').click();
+    cy.get('[data-cy="nav-about"]').click();
+    cy.wait(2000);
+    cy.location("pathname").should("include", "/about");
+    cy.get('[data-cy="home-asset-dropdown-button"]').click();
+    cy.get('[data-cy="home-create-story-button"]').click();
+    cy.wait(2000);
+    cy.location("pathname").should("include", "/");
+    cy.get('[data-cy="nav-about-group"]').click();
+    cy.get('[data-cy="nav-about"]').click();
+    cy.wait(2000);
+
+    cy.get('[data-cy="home-asset-dropdown-button"]').click();
+    cy.get('[data-cy="home-create-story-button"]').click();
+    cy.wait(2000);
+    cy.location("pathname").should("include", "/story/new/initial");
+
+    cy.visit("/");
+
+    cy.get('[data-cy="app-bar"]').within(() => {
+      cy.contains("a", "Dashboard").click();
+      cy.location("pathname").should("include", "/");
+    });
+
+    cy.visit("/");
+
+    cy.get('[data-cy="app-bar"]').within(() => {
+      cy.get('[data-cy="nav-about-group"]').click();
+      cy.contains("a", "Why").click();
+      cy.location("pathname").should("include", "/why-dataxplorer");
+    });
+
+    cy.visit("/");
+
+    cy.get('[data-cy="app-bar"]').within(() => {
+      cy.get('[data-cy="nav-about-group"]').click();
+      cy.contains("a", "Who We Are").click();
+      cy.location("pathname").should("include", "/about");
+    });
+
+    cy.visit("/");
+
+    cy.get('[data-cy="app-bar"]').within(() => {
+      cy.get('[data-cy="nav-about-group"]').click();
+      cy.contains("a", "Partners").click();
+      cy.location("pathname").should("include", "/partners");
+    });
+
+    cy.visit("/");
+
+    cy.get('[data-cy="app-bar"]').within(() => {
+      cy.get('[data-cy="nav-about-group"]').click();
+      cy.contains("a", "Contact").click();
+      cy.location("pathname").should("include", "/contact");
+    });
+
+    cy.visit("/");
+
+    cy.get('[data-cy="app-bar"]').within(() => {
+      cy.get('[data-cy="nav-about-group"]').click();
+      cy.contains("a", "Pricing").click();
+      cy.location("pathname").should("include", "/pricing");
+    });
+  });
+});

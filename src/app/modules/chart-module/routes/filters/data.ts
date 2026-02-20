@@ -1,4 +1,4 @@
-import { ChartType } from "app/modules/chart-module/components/common-chart";
+import { ChartType } from "@app/modules/chart-module/components/common-chart";
 
 export interface ChartBuilderFiltersProps {
   loading: boolean;

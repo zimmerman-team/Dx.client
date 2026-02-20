@@ -1,13 +1,13 @@
 import React from "react";
 import { useTitle } from "react-use";
-import DatasetUploadSteps from "app/modules/dataset-module/routes/upload-module/upload-steps";
+import DatasetUploadSteps from "@app/modules/dataset-module/routes/upload-module/upload-steps";
 import { Route, Switch, useHistory, useParams } from "react-router-dom";
-import DatasetDetail from "app/modules/dataset-module/routes/datasetDetail";
-import EditMetaData from "app/modules/dataset-module/routes/edit";
-import { NoMatchPage } from "app/modules/common/no-match-page";
+import DatasetDetail from "@app/modules/dataset-module/routes/datasetDetail";
+import EditMetaData from "@app/modules/dataset-module/routes/edit";
+import { NoMatchPage } from "@app/modules/common/no-match-page";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
-import NotAvailableOnMobile from "app/modules/common/not-available";
-import { MOBILE_BREAKPOINT } from "app/theme";
+import NotAvailableOnMobile from "@app/modules/common/not-available";
+import { MOBILE_BREAKPOINT } from "@app/theme";
 
 export default function DatasetDetailModule() {
   useTitle("Dataxplorer - Datasets");
@@ -16,11 +16,11 @@ export default function DatasetDetailModule() {
   const [datasetId, setDatasetId] = React.useState("");
   const isSmallScreen = useMediaQuery(`(max-width:${MOBILE_BREAKPOINT})`); //at this breakpoint, we limit user creation abilities
   const history = useHistory();
-  React.useEffect(() => {
-    if (isSmallScreen && view !== undefined) {
-      history.push(`/dataset/${page}/not-available`);
-    }
-  }, [isSmallScreen]);
+  // React.useEffect(() => {
+  //   if (isSmallScreen && view !== undefined) {
+  //     history.push(`/dataset/${page}/not-available`);
+  //   }
+  // }, [isSmallScreen]);
   return (
     <Switch>
       <Route exact path="/dataset/:page">

@@ -7,7 +7,7 @@ export const useRouteListener = () => {
 
   React.useEffect(() => {
     if (window.location.hostname === "dataxplorer.org") {
-      ls.init(process.env.REACT_APP_LIVE_SESSION_ID as string);
+      ls.init(import.meta.env.VITE_LIVE_SESSION_ID as string);
       ls.newPageView();
     }
   }, [location.pathname]);

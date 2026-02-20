@@ -1,6 +1,6 @@
-import { MOBILE_BREAKPOINT, TABLET_STARTPOINT } from "app/theme";
-import { getContrastColor } from "app/utils/getContrastColor";
-import { css } from "styled-components/macro";
+import { MOBILE_BREAKPOINT, TABLET_STARTPOINT } from "@app/theme";
+import { getContrastColor } from "@app/utils/getContrastColor";
+import { css } from "styled-components";
 
 export const styles = {
   container: (toolbarVisible: boolean) => css`
@@ -117,7 +117,7 @@ export const styles = {
     display: flex;
     gap: 22px;
     align-items: center;
-    width: 30%;
+    /* width: 30%; */
     justify-content: flex-end;
     flex-shrink: 0;
     @media (min-width: ${TABLET_STARTPOINT}) {
@@ -169,6 +169,7 @@ export const styles = {
     color: #70777e;
     font-size: 18px;
     height: 35px;
+    width: 28px;
     border-radius: 8px;
     display: flex;
     align-items: center;

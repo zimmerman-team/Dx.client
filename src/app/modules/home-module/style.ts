@@ -1,4 +1,5 @@
-import { css } from "styled-components/macro";
+import { FOCUS_VISIBLE_STYLE_LIGHT } from "@app/theme";
+import { css } from "styled-components";
 
 export const turnsDataCss = css`
   @media (max-width: 1276px) {
@@ -97,30 +98,30 @@ export const rowFlexCss = css`
   align-items: center;
 `;
 
-export const searchInputCss = (
-  openSearch: boolean,
-  width: string = "385px"
-) => css`
-  background: #dadaf8;
+export const searchInputCss = (openSearch: boolean, isFocused: boolean) => css`
+  background: #f1f3f5;
   display: flex;
   align-items: center;
-  width: ${openSearch ? width ?? "385px" : "0px"};
-  height: 32px;
-  border-radius: 20px;
+  flex: 1;
+  height: ${openSearch ? "40px" : "0px"};
+  width: ${openSearch ? "auto" : "0px"};
+  border-radius: 10px;
+  border-bottom: 1px solid #8d8d8d;
   opacity: ${openSearch ? 1 : 0};
-  transition: opacity 0.5s ease-in-out 0s;
+  transition: opacity 0.2s ease-in-out 0s;
   overflow: hidden;
+  ${isFocused && "border: 2px solid #6061e5; background: #F1F3F5;"}
+
   input {
     outline: none;
     height: 100%;
-    width: 92%;
+    width: 100%;
     color: #231d2c;
     font-size: 14px;
     background: inherit;
     border-style: none;
-    border-radius: 20px;
-
-    padding: 6px 16px !important;
+    border-radius: 10px;
+    padding: 6px 0px !important;
   }
   @media (min-width: 768px) {
     @media (max-width: 900px) {
@@ -133,31 +134,14 @@ export const searchInputCss = (
 `;
 
 export const iconButtonCss = (active?: boolean) => css`
-  padding: 3px;
-  ${active
-    ? ` svg > circle, rect {
-      fill:  #231d2c;
-    }
-    svg > path,
-    svg > g > path,
-    svg > g > rect {
-      fill: #fff;
-    }`
-    : ""}
+  border: none;
+  background: transparent;
+  outline: none;
+  cursor: pointer;
+  padding: 0;
 
-  &:hover {
-    background: transparent;
-    padding: none;
-
-    svg > circle,
-    rect {
-      fill: #231d2c;
-    }
-    svg > path,
-    svg > g > path,
-    svg > g > rect {
-      fill: #fff;
-    }
+  :focus-visible {
+    ${FOCUS_VISIBLE_STYLE_LIGHT}
   }
 `;
 
@@ -167,7 +151,7 @@ export const sortByItemCss = (active: boolean) => css`
   padding: 8px 22px;
   font-family: "GothamNarrow-Book", "Helvetica Neue", sans-serif;
   background: ${active ? "#DFE3E5" : "transparent"};
-
+  white-space: nowrap;
   &:hover {
     cursor: pointer;
     background: #dfe3e5;

@@ -1,8 +1,8 @@
 import React from "react";
 import maxBy from "lodash/maxBy";
 import isEqual from "lodash/isEqual";
-import { useDataThemesEchart } from "app/hooks/useDataThemesEchart";
-import { formatFinancialValue } from "app/utils/formatFinancialValue";
+import { useDataThemesEchart } from "@app/hooks/useDataThemesEchart";
+import { formatFinancialValue } from "@app/utils/formatFinancialValue";
 
 interface ChartRepresentationProps {
   data: any;
@@ -64,7 +64,7 @@ export const ProgressBar = (props: { progress: string; label: string }) => {
 };
 
 export const BarChartRepresentation = (props: ChartRepresentationProps) => {
-  const { render } = useDataThemesEchart();
+  const { render } = useDataThemesEchart({ readOnly: true });
   const domRef = React.useRef<HTMLDivElement>(null);
 
   React.useEffect(() => {

@@ -1,13 +1,13 @@
 import React from "react";
 import moment from "moment";
 import { Link } from "react-router-dom";
+import ClockIcon from "@app/modules/home-module/assets/clock-icon.svg?react";
+import OwnerIcon from "@app/modules/home-module/assets/owner-icon.svg?react";
+import MenuPopover from "@app/modules/home-module/components/AssetCollection/All/menuPopover";
+import AIIcon from "@app/assets/icons/AIIcon";
 import { useAuth0 } from "@auth0/auth0-react";
-import { IconButton, useMediaQuery } from "@material-ui/core";
-import { ReactComponent as MenuIcon } from "app/modules/home-module/assets/menu.svg";
-import { ReactComponent as ClockIcon } from "app/modules/home-module/assets/clock-icon.svg";
-import { ReactComponent as OwnerIcon } from "app/modules/home-module/assets/owner-icon.svg";
-import MenuItems from "app/modules/home-module/components/AssetCollection/Datasets/menuItems";
-import AIIcon from "app/assets/icons/AIIcon";
+import { FOCUS_VISIBLE_STYLE_LIGHT } from "@app/theme";
+import Logo from "@app/assets/icons/Logo";
 
 interface Props {
   id: string;
@@ -24,12 +24,7 @@ interface Props {
 }
 
 export default function GridItem(props: Props) {
-  const [menuOptionsDisplay, setMenuOptionsDisplay] = React.useState(false);
-  const showMenuOptions = (e: React.MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault();
-    e.stopPropagation();
-    setMenuOptionsDisplay(!menuOptionsDisplay);
-  };
+  const { isAuthenticated } = useAuth0();
 
   return (
     <div
@@ -50,16 +45,73 @@ export default function GridItem(props: Props) {
           text-decoration: none;
           flex-direction: column;
           border: 1px solid #fff;
-          padding: 12px 8px 4px 12px;
-          justify-content: space-between;
-          box-shadow: 0px 4px 16px 0px rgba(0, 0, 0, 0.05);
+          transition: box-shadow 0.2s ease-in-out;
+          padding: 10px;
+          box-shadow: 0px 1px 14px 0px rgba(0, 0, 0, 0.12);
+          border-radius: 10px;
 
           &:hover {
             box-shadow: 0px 7px 22px 0px rgba(0, 0, 0, 0.1);
           }
+          &:focus-visible {
+            ${FOCUS_VISIBLE_STYLE_LIGHT}
+          }
         `}
         data-cy={`chart-grid-item`}
+        aria-label={`chart-card`}
       >
+        <div
+          css={`
+            display: flex;
+            align-items: center;
+            height: 20px;
+            margin-bottom: 5px;
+            p {
+              border-radius: 5px;
+              background: #ededff;
+              box-shadow: 0px 0px 10px 0px rgba(152, 161, 170, 0.05);
+              display: flex;
+              padding: 0px 6px;
+              justify-content: center;
+              align-items: center;
+              gap: 10px;
+              color: #231d2c;
+              font-family: "GothamNarrow-Book", "Helvetica Neue", sans-serif;
+              font-size: 12px;
+              width: fit-content;
+              margin: 0;
+              height: 20px;
+              text-transform: capitalize;
+            }
+          `}
+        >
+          <div
+            css={`
+              display: flex;
+              align-items: center;
+              gap: 5px;
+            `}
+          >
+            <p>chart</p>
+            {props.isAIAssisted ? <AIIcon /> : null}
+          </div>
+
+          <MenuPopover
+            handleDelete={() => props.handleDelete?.(props.id as string)}
+            handleDuplicate={() => props.handleDuplicate?.(props.id as string)}
+            id={props.id as string}
+            owner={props.owner}
+            path={
+              props.isMappingValid
+                ? `/chart/${props.id}/customize`
+                : `/chart/${props.id}/mapping`
+            }
+            type="chart"
+            dataCy="chart-grid-item-menu-btn"
+            dataTestId="chart-grid-item-menu-btn"
+            menuId="chart-grid-item-menu"
+          />
+        </div>
         <div
           css={`
             display: flex;
@@ -93,96 +145,73 @@ export default function GridItem(props: Props) {
             >
               {props.title}
             </p>
-            {props.isAIAssisted ? <AIIcon /> : null}
           </div>
-          <IconButton
-            css={`
-              position: absolute;
-              right: -2px;
-              top: 0px;
-              cursor: pointer;
-              &:hover {
-                background: transparent;
-              }
-            `}
-            onClick={showMenuOptions}
-            data-cy="chart-grid-item-menu-btn"
-            data-testid="chart-grid-item-menu-btn"
-          >
-            <MenuIcon />
-          </IconButton>
         </div>
+
         <div
           css={`
             display: flex;
-            flex-direction: row;
             align-items: flex-end;
             justify-content: space-between;
+            height: 100%;
+            gap: 7px;
+            p {
+              margin: 0;
+              font-size: 10px;
+              line-height: normal;
+            }
           `}
         >
           <div
             css={`
-              margin-top: 2px;
+              display: flex;
+              align-items: flex-end;
+              svg {
+                width: 73px;
+                height: 40px;
+              }
             `}
           >
             {props.viz}
           </div>
           <div
             css={`
-              height: 10px;
+              display: flex;
+              align-items: center;
+              gap: 5px;
             `}
-          />
+          >
+            <div
+              css={`
+                display: flex;
+                align-items: center;
+                gap: 3px;
+                > svg:nth-child(2) {
+                  height: 8px;
+                  width: 72px;
+                }
+              `}
+            >
+              <OwnerIcon role="presentation" />
+              {isAuthenticated ? (
+                <p>{props.ownerName}</p>
+              ) : (
+                <Logo main width="72px" height=" 7.702px" />
+              )}
+            </div>
+            <div
+              css={`
+                display: flex;
+                align-items: center;
+                gap: 3px;
+              `}
+            >
+              <ClockIcon width={12} height={12} role="presentation" />
+              <p>{moment(props.date).format("DD-MM-YYYY")}</p>
+            </div>
+          </div>
         </div>
       </Link>
-      {menuOptionsDisplay && (
-        <MenuItems
-          handleClose={() => setMenuOptionsDisplay(false)}
-          handleDelete={() => props.handleDelete?.(props.id as string)}
-          handleDuplicate={() => props.handleDuplicate?.(props.id as string)}
-          id={props.id as string}
-          owner={props.owner}
-          path={
-            props.isMappingValid
-              ? `/chart/${props.id}/customize`
-              : `/chart/${props.id}/mapping`
-          }
-          type="chart"
-        />
-      )}
-
-      <div
-        css={`
-          position: absolute;
-          bottom: 12px;
-          right: 16px;
-          p {
-            margin: 0;
-            font-size: 10px;
-            line-height: normal;
-          }
-        `}
-      >
-        <div
-          css={`
-            display: flex;
-            align-items: center;
-            gap: 3px;
-          `}
-        >
-          <OwnerIcon />
-          <p>{props.ownerName?.split(" ")?.[0]}</p>
-        </div>
-        <div
-          css={`
-            display: flex;
-            align-items: center;
-            gap: 3px;
-          `}
-        >
-          <ClockIcon width={12} height={12} />
-          <p>{moment(props.date).format("MMMM YYYY")}</p>
-        </div>
-      </div>
     </div>
   );
 }

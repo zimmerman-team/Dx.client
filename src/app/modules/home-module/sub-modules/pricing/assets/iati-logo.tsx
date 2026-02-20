@@ -9,6 +9,7 @@ const IATILogo = () => {
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
       xmlnsXlink="http://www.w3.org/1999/xlink"
+      aria-label="International Aid Transparency Initiative"
     >
       <rect
         y="0.144592"

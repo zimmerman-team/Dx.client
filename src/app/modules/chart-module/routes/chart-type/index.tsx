@@ -3,28 +3,29 @@ import React from "react";
 import Grid from "@material-ui/core/Grid";
 import useTitle from "react-use/lib/useTitle";
 import { useHistory, useLocation, useParams } from "react-router-dom";
-import { useStoreState, useStoreActions } from "app/state/store/hooks";
+import { useStoreState, useStoreActions } from "@app/state/store/hooks";
 import { get } from "lodash";
 /* project */
-import { styles as commonStyles } from "app/modules/chart-module/routes/common/styles";
+import { styles as commonStyles } from "@app/modules/chart-module/routes/common/styles";
 import {
   echartTypes,
   ChartTypeModel,
   ChartBuilderChartTypeProps,
   chartTypesFromMiddleWare,
-} from "app/modules/chart-module/routes/chart-type/data";
-import AISwitch from "app/modules/chart-module/components/switch/AISwitch";
+} from "@app/modules/chart-module/routes/chart-type/data";
+import AISwitch from "@app/modules/chart-module/components/switch/AISwitch";
 import { useRecoilState, useResetRecoilState } from "recoil";
 import {
   chartFromStoryAtom,
   isChartAIAgentActive,
   isChartAutoMappedAtom,
-} from "app/state/recoil/atoms";
-import { charts } from "app/modules/chart-module/data";
-import AILoader from "app/modules/chart-module/routes/chart-type/loader";
-import { handleValidityCheckOfDimensionsToBeMapped } from "app/modules/chart-module/components/toolbox/steps/panels-content/Mapping";
-import { useCheckUserPlan } from "app/hooks/useCheckUserPlan";
-import { IChartType } from "app/state/api/action-reducers/sync/charts";
+} from "@app/state/recoil/atoms";
+import { charts } from "@app/modules/chart-module/data";
+import AILoader from "@app/modules/chart-module/routes/chart-type/loader";
+import { handleValidityCheckOfDimensionsToBeMapped } from "@app/modules/chart-module/components/toolbox/steps/panels-content/Mapping";
+import { useCheckUserPlan } from "@app/hooks/useCheckUserPlan";
+import { IChartType } from "@app/state/api/action-reducers/sync/charts";
+import { FOCUS_VISIBLE_STYLE_LIGHT } from "@app/theme";
 
 function ChartBuilderChartType(props: Readonly<ChartBuilderChartTypeProps>) {
   useTitle("Dataxplorer - Chart Type");
@@ -74,7 +75,11 @@ function ChartBuilderChartType(props: Readonly<ChartBuilderChartTypeProps>) {
     } else if (loadDatasetParamValue) {
       //when landing in chart type step from outside the chart module,
       //load the sample data as data step is skipped
-      props.loadDataset(datasetId!);
+      props.loadDataset(
+        `${import.meta.env.VITE_API}/chart/sample-data${
+          token ? "" : "/public"
+        }/${datasetId}`
+      );
       if (isAiActive) {
         loadChartTypesSuggestions({
           token,
@@ -245,6 +250,9 @@ function ChartBuilderChartType(props: Readonly<ChartBuilderChartTypeProps>) {
                 fill: ${aIChartSuggestions(ct.id) ? "#fff" : "#262C34"};
               }
             }
+            :focus-visible {
+              ${FOCUS_VISIBLE_STYLE_LIGHT}
+            }
           `}
           data-testid={ct.id}
         >
@@ -313,7 +321,7 @@ function ChartBuilderChartType(props: Readonly<ChartBuilderChartTypeProps>) {
           padding: 40px 0px 0 0;
         `}
       >
-        <div
+        {/* <div
           css={`
             display: flex;
             justify-content: space-between;
@@ -384,7 +392,22 @@ function ChartBuilderChartType(props: Readonly<ChartBuilderChartTypeProps>) {
               disabled={userPlan?.planData?.name === "Free"}
             />
           </div>
-        </div>
+        </div> */}
+        <>
+          <p
+            css={`
+              font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
+              font-size: 18px;
+              color: #231d2c;
+              margin-bottom: 0px;
+            `}
+          >
+            <>
+              Select a chart to communicate your dataset. <br /> Feel free to
+              pick any chart type.
+            </>
+          </p>
+        </>
         <div
           css={`
             height: 40px;

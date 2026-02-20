@@ -8,28 +8,30 @@ import Grid from "@material-ui/core/Grid";
 import useDebounce from "react-use/lib/useDebounce";
 import { useUpdateEffect } from "react-use";
 /* project */
-import { useInfinityScroll } from "app/hooks/useInfinityScroll";
-import CircleLoader from "app/modules/home-module/components/Loader";
-import { useStoreActions, useStoreState } from "app/state/store/hooks";
-import DeleteChartDialog from "app/components/Dialogs/deleteChartDialog";
-import { HomepageTable } from "app/modules/home-module/components/Table";
+import { useInfinityScroll } from "@app/hooks/useInfinityScroll";
+import CircleLoader from "@app/modules/home-module/components/Loader";
+import { useStoreActions, useStoreState } from "@app/state/store/hooks";
+import DeleteChartDialog from "@app/components/Dialogs/deleteChartDialog";
+import { HomepageTable } from "@app/modules/home-module/components/Table";
 import {
   coloredEchartTypes,
   echartTypes,
-} from "app/modules/chart-module/routes/chart-type/data";
-import ChartAddnewCard from "app/modules/home-module/components/AssetCollection/Charts/chartAddNewCard";
-import GridItem from "app/modules/home-module/components/AssetCollection/Charts/gridItem";
+} from "@app/modules/chart-module/routes/chart-type/data";
+import ChartAddnewCard from "@app/modules/home-module/components/AssetCollection/Charts/chartAddNewCard";
+import GridItem from "@app/modules/home-module/components/AssetCollection/Charts/gridItem";
 import { useAuth0 } from "@auth0/auth0-react";
 import { useSetRecoilState } from "recoil";
-import { planDialogAtom } from "app/state/recoil/atoms";
-import { getLimit } from "app/modules/home-module/components/AssetCollection/Datasets/datasetsGrid";
+import { planDialogAtom } from "@app/state/recoil/atoms";
+import { getLimit } from "@app/modules/home-module/components/AssetCollection/Datasets/datasetsGrid";
+import { updateLog } from "@app/utils/updateLog";
 
 interface Props {
   sortBy: string;
   searchStr: string;
-  userOnly?: boolean;
+  filterValue?: "allAssets" | "myAssets" | "dataxplorerAssets";
   view: "grid" | "table";
   addCard?: boolean;
+  gridId: string;
 }
 
 export interface IChartAsset {
@@ -79,12 +81,16 @@ export default function ChartsGrid(props: Props) {
   );
 
   const getFilterString = (fromZeroOffset?: boolean) => {
+    updateLog({
+      level: "info",
+      message: `Getting filter string for charts grid `,
+    });
     const value =
       props.searchStr?.length > 0
         ? `"where":{"name":{"like":"${props.searchStr}.*","options":"i"}},`
         : "";
 
-    return `${props.userOnly ? "userOnly=true&" : ""}filter={${value}"order":"${
+    return `filterValue=${props.filterValue}&filter={${value}"order":"${
       props.sortBy
     } ${props.sortBy === "name" ? "asc" : "desc"}","limit":${limit},"offset":${
       fromZeroOffset ? 0 : offset
@@ -92,11 +98,15 @@ export default function ChartsGrid(props: Props) {
   };
 
   const getWhereString = () => {
+    updateLog({
+      level: "info",
+      message: `Getting where string for charts grid `,
+    });
     const value =
       props.searchStr?.length > 0
         ? `where={"name":{"like":"${props.searchStr}.*","options":"i"}}`
         : "";
-    return `${props.userOnly ? "userOnly=true&" : ""}${value}`;
+    return `filterValue=${props.filterValue}&${value}`;
   };
 
   const loadData = (fromZeroOffset?: boolean) => {
@@ -155,7 +165,7 @@ export default function ChartsGrid(props: Props) {
       return;
     }
     axios
-      .delete(`${process.env.REACT_APP_API}/chart/${id}`, {
+      .delete(`${import.meta.env.VITE_API}/chart/${id}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -166,36 +176,43 @@ export default function ChartsGrid(props: Props) {
       .catch((error) => console.log(error));
   };
 
-  const handleDuplicate = (id: string) => {
+  const handleDuplicate = async (id: string) => {
     if (!id) {
       return;
     }
-    axios
-      .get(`${process.env.REACT_APP_API}/chart/duplicate/${id}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      })
-      .then((response) => {
-        if (response?.data.error && response?.data.errorType === "planError") {
-          return setPlanDialog({
-            open: true,
-            message: response?.data.error,
-            tryAgain: "",
-            onTryAgain: () => {},
-          });
+
+    try {
+      const response = await axios.get(
+        `${import.meta.env.VITE_API}/chart/duplicate/${id}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
         }
-        if (response.data.planWarning) {
-          setPlanDialog({
-            open: true,
-            message: response.data.planWarning,
-            tryAgain: "",
-            onTryAgain: () => {},
-          });
-        }
-        reloadData();
-      })
-      .catch((error) => console.log(error));
+      );
+
+      if (response?.data.error && response?.data.errorType === "planError") {
+        return setPlanDialog({
+          open: true,
+          message: response?.data.error,
+          tryAgain: "",
+          onTryAgain: () => {},
+        });
+      }
+
+      if (response.data.planWarning) {
+        setPlanDialog({
+          open: true,
+          message: response.data.planWarning,
+          tryAgain: "",
+          onTryAgain: () => {},
+        });
+      }
+
+      reloadData();
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -224,6 +241,10 @@ export default function ChartsGrid(props: Props) {
       return;
     }
     //update the loaded stories
+    updateLog({
+      level: "info",
+      message: `Updating loaded charts in charts grid `,
+    });
     setLoadedCharts((prevCharts) => {
       const prevChartsIds = prevCharts.map((c) => c.id);
       const f = charts.filter((chart) => !prevChartsIds.includes(chart.id));
@@ -233,7 +254,7 @@ export default function ChartsGrid(props: Props) {
 
   React.useEffect(() => {
     reloadData();
-  }, [props.sortBy, token, props.userOnly]);
+  }, [props.sortBy, token, props.filterValue]);
 
   const [,] = useDebounce(
     () => {
@@ -250,48 +271,57 @@ export default function ChartsGrid(props: Props) {
   return (
     <>
       {props.view === "grid" && (
-        <Grid container spacing={2}>
-          {props.addCard ? <ChartAddnewCard /> : null}
-          {loadedCharts.map((c, index) => (
-            <Grid item key={c.id} xs={12} sm={6} md={4} lg={3}>
-              <GridItem
-                id={c.id}
-                title={c.name}
-                date={c.updatedDate}
-                viz={getIcon(c.vizType)}
-                vizType={c.vizType}
-                isMappingValid={c.isMappingValid}
-                handleDelete={() => handleModal(c.id)}
-                handleDuplicate={() => handleDuplicate(c.id)}
-                owner={c.owner}
-                isAIAssisted={c.isAIAssisted}
-                ownerName={c.ownerName}
-              />
-              <div
-                css={`
-                  height: 16px;
-                  @media (max-width: 600px) {
-                    height: 8px;
-                  }
-                `}
-              />
-            </Grid>
-          ))}
-        </Grid>
+        <div id={props.gridId}>
+          <Grid container spacing={2}>
+            {props.addCard ? <ChartAddnewCard /> : null}
+            {loadedCharts.map((c, index) => (
+              <Grid item key={c.id} xs={12} sm={6} md={4} lg={3}>
+                <GridItem
+                  id={c.id}
+                  title={c.name}
+                  date={c.updatedDate}
+                  viz={getIcon(c.vizType)}
+                  vizType={c.vizType}
+                  isMappingValid={c.isMappingValid}
+                  handleDelete={() => handleModal(c.id)}
+                  handleDuplicate={() => handleDuplicate(c.id)}
+                  owner={c.owner}
+                  isAIAssisted={c.isAIAssisted}
+                  ownerName={c.ownerName.split(" ")[0]}
+                />
+                <div
+                  css={`
+                    height: 16px;
+                    @media (max-width: 600px) {
+                      height: 8px;
+                    }
+                  `}
+                />
+              </Grid>
+            ))}
+          </Grid>
+        </div>
       )}
       {props.view === "table" && (
         <HomepageTable
           handleDelete={handleModal}
           handleDuplicate={handleDuplicate}
+          cellWidths={[50, 450, 142, 142, 142, 142, 200, 50]}
           tableData={{
             columns: [
-              { key: "name", label: "Name" },
+              { key: "name", label: "File Name" },
+
+              { key: "type", label: "File Type" },
               { key: "vizType", label: "Chart Type" },
+
               { key: "updatedDate", label: "Last modified" },
+              { key: "createdDate", label: "Date Created" },
+              { key: "ownerName", label: "Creator" },
             ],
             data: loadedCharts.map((data) => ({
               ...data,
               type: "chart",
+              ownerName: data.ownerName.split(" ")[0],
               vizType: echartTypes(false).find((e) => e.id === data.vizType)
                 ?.label,
             })),

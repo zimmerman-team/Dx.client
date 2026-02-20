@@ -19,25 +19,22 @@ import { Link, useHistory, useLocation, useParams } from "react-router-dom";
 import { useAuth0 } from "@auth0/auth0-react";
 import axios from "axios";
 /** Project */
-import { LinkIcon } from "app/assets/icons/Link";
-import { useStoreActions, useStoreState } from "app/state/store/hooks";
-import { styles } from "app/modules/dataset-module/component/styles";
-import DeleteDatasetDialog from "app/components/Dialogs/deleteDatasetDialog";
-import { ISnackbarState } from "app/modules/dataset-module/routes/upload-module/upload-steps/previewFragment";
-import { InfoSnackbar } from "app/modules/story-module/components/storySubHeaderToolbar/infosnackbar";
-import { DatasetListItemAPIModel } from "app/modules/dataset-module/data";
+import { LinkIcon } from "@app/assets/icons/Link";
+import { useStoreActions, useStoreState } from "@app/state/store/hooks";
+import { styles } from "@app/modules/dataset-module/component/styles";
+import DeleteDatasetDialog from "@app/components/Dialogs/deleteDatasetDialog";
+import { InfoSnackbar } from "@app/modules/story-module/components/storySubHeaderToolbar/infosnackbar";
+import { DatasetListItemAPIModel } from "@app/modules/dataset-module/data";
 import { useRecoilState, useSetRecoilState } from "recoil";
-import { planDialogAtom, shareAssetDetailsAtom } from "app/state/recoil/atoms";
+import { planDialogAtom, shareAssetDetailsAtom } from "@app/state/recoil/atoms";
 import ShareModal from "./shareModal";
-import DuplicateMessage from "app/modules/common/mobile-duplicate-message";
-import { PrimaryButton } from "app/components/Styled/button";
+import DuplicateMessage from "@app/modules/common/mobile-duplicate-message";
+import { PrimaryButton } from "@app/components/Styled/button";
 import { ArrowBack } from "@material-ui/icons";
 import ArrowBackIosIcon from "@material-ui/icons/ArrowBackIos";
-import {
-  DESKTOP_BREAKPOINT,
-  MOBILE_BREAKPOINT,
-  TABLET_STARTPOINT,
-} from "app/theme";
+import { FOCUS_VISIBLE_STYLE_LIGHT, MOBILE_BREAKPOINT } from "@app/theme";
+import { ISnackbarState } from "@app/modules/dataset-module/routes/upload-module/style";
+import CopyButton from "@app/modules/story-module/components/storySubHeaderToolbar/copyButton";
 
 export default function DatasetSubHeaderToolbar(
   props: Readonly<{ name: string }>
@@ -119,7 +116,7 @@ export default function DatasetSubHeaderToolbar(
 
   const handleDuplicate = () => {
     axios
-      .get(`${process.env.REACT_APP_API}/dataset/duplicate/${page}`, {
+      .get(`${import.meta.env.VITE_API}/dataset/duplicate/${page}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -158,8 +155,9 @@ export default function DatasetSubHeaderToolbar(
     }
   };
 
-  const handleCopy = (text: string, result: boolean) => {
-    setOpenSnackbar(result);
+  const handleCopy = (text: string) => {
+    navigator.clipboard.writeText(text);
+    setOpenSnackbar(true);
   };
 
   const handleModal = () => {
@@ -168,7 +166,7 @@ export default function DatasetSubHeaderToolbar(
 
   function handleDelete() {
     axios
-      .delete(`${process.env.REACT_APP_API}/datasets/${page}`, {
+      .delete(`${import.meta.env.VITE_API}/datasets/${page}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -276,8 +274,12 @@ export default function DatasetSubHeaderToolbar(
                 color: #231d2c;
                 text-decoration: none;
                 cursor: pointer;
+                :focus-visible {
+                  ${FOCUS_VISIBLE_STYLE_LIGHT}
+                }
               `}
               data-cy="dataset-back-to-library-btn"
+              aria-label="back to dashboard"
             >
               <Tooltip title="Back to Dashboard">
                 {isSmallScreen ? (
@@ -338,12 +340,7 @@ export default function DatasetSubHeaderToolbar(
                     `}
                   >
                     <div css={styles.sharePopup}>
-                      <CopyToClipboard
-                        text={window.location.href}
-                        onCopy={handleCopy}
-                      >
-                        <Button startIcon={<LinkIcon />}>Copy link</Button>
-                      </CopyToClipboard>
+                      <CopyButton handleCopy={handleCopy} />
                     </div>
                   </Popover>
                   {canDatasetEditDelete && (

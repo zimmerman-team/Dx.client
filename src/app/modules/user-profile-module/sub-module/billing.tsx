@@ -2,12 +2,12 @@ import React from "react";
 import axios from "axios";
 import { useAuth0 } from "@auth0/auth0-react";
 import { useHistory } from "react-router-dom";
-import { useStoreState } from "app/state/store/hooks";
-import { PageLoader } from "app/modules/common/page-loader";
-import { billingcss } from "app/modules/user-profile-module/style";
-import { InvoiceTable } from "app/modules/user-profile-module/component/table";
-import { APPLICATION_JSON } from "app/state/api";
-import { PrimaryButton } from "app/components/Styled/button";
+import { useStoreState } from "@app/state/store/hooks";
+import { PageLoader } from "@app/modules/common/page-loader";
+import { billingcss } from "@app/modules/user-profile-module/style";
+import { InvoiceTable } from "@app/modules/user-profile-module/component/table";
+import { APPLICATION_JSON } from "@app/state/api";
+import { PrimaryButton } from "@app/components/Styled/button";
 
 export default function Billing() {
   const { user } = useAuth0();
@@ -45,7 +45,7 @@ export default function Billing() {
   const getStripePaymentMethod = async () => {
     setLoading(true);
     const response = await axios.get(
-      `${process.env.REACT_APP_API}/stripe/payment-method/${user?.sub}`,
+      `${import.meta.env.VITE_API}/stripe/payment-method/${user?.sub}`,
       {
         headers: {
           "Content-Type": APPLICATION_JSON,
@@ -60,7 +60,7 @@ export default function Billing() {
   const getStripeBillingInfo = async () => {
     setLoading(true);
     const response = await axios.get(
-      `${process.env.REACT_APP_API}/stripe/${user?.sub}/billing`,
+      `${import.meta.env.VITE_API}/stripe/${user?.sub}/billing`,
       {
         headers: {
           "Content-Type": APPLICATION_JSON,
@@ -75,7 +75,7 @@ export default function Billing() {
   const changePaymentMethod = async () => {
     setLoading(true);
     const response = await axios.post(
-      `${process.env.REACT_APP_API}/stripe/portal-session`,
+      `${import.meta.env.VITE_API}/stripe/portal-session`,
       {
         userId: user?.sub,
         flowDataType: "payment_method_update",
@@ -100,7 +100,7 @@ export default function Billing() {
     }
     setLoading(true);
     const response = await axios.post(
-      `${process.env.REACT_APP_API}/stripe/portal-session`,
+      `${import.meta.env.VITE_API}/stripe/portal-session`,
       {
         userId: user?.sub,
         returnUrl: `${window.location.origin}/stripe-return`,
@@ -121,7 +121,7 @@ export default function Billing() {
   const getStripeInvoices = async () => {
     setLoading(true);
     const response = await axios.get(
-      `${process.env.REACT_APP_API}/stripe/invoices/${user?.sub}`,
+      `${import.meta.env.VITE_API}/stripe/invoices/${user?.sub}`,
       {
         headers: {
           "Content-Type": APPLICATION_JSON,
@@ -135,7 +135,7 @@ export default function Billing() {
 
   const getCurrentSubscriptionPlan = async () => {
     await axios
-      .get(`${process.env.REACT_APP_API}/stripe/subscription/${user?.sub}`, {
+      .get(`${import.meta.env.VITE_API}/stripe/subscription/${user?.sub}`, {
         headers: {
           "Content-Type": APPLICATION_JSON,
           Authorization: `Bearer ${token}`,
@@ -165,7 +165,7 @@ export default function Billing() {
     <React.Fragment>
       {loading && <PageLoader />}
       <div>
-        <h4 css={billingcss.heading}>Billing</h4>
+        <h1 css={billingcss.heading}>Billing</h1>
         <div css={billingcss.section}>
           <p>Dataxplorer Plan</p>
 

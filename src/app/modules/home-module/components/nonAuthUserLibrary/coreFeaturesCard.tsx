@@ -1,9 +1,9 @@
 import React from "react";
 import Box from "@material-ui/core/Box";
-import { ReactComponent as UploadDataImg } from "app/modules/home-module/assets/upload-data-illustration.svg";
-import { ReactComponent as CreateChartImg } from "app/modules/home-module/assets/create-charts-illustration.svg";
-import { ReactComponent as BuildReportImg } from "app/modules/home-module/assets/build-reports-illustration.svg";
-import { ReactComponent as ShareInsightsImg } from "app/modules/home-module/assets/share-insights-illustration.svg";
+import UploadDataImg from "@app/modules/home-module/assets/upload-data-illustration.svg?react";
+import CreateChartImg from "@app/modules/home-module/assets/create-charts-illustration.svg?react";
+import BuildReportImg from "@app/modules/home-module/assets/build-reports-illustration.svg?react";
+import ShareInsightsImg from "@app/modules/home-module/assets/share-insights-illustration.svg?react";
 
 export default function CoreFeaturesCard(props: { handleClose: () => void }) {
   const data = [

@@ -1,4 +1,8 @@
-import styled from "styled-components/macro";
+import {
+  FOCUS_VISIBLE_STYLE_DARK,
+  FOCUS_VISIBLE_STYLE_LIGHT,
+} from "@app/theme";
+import styled from "styled-components";
 
 interface Props {
   bg: "light" | "dark";
@@ -50,6 +54,9 @@ export const PrimaryButton = styled.button<Props>`
     background: #dfe3e6;
     pointer-events: none;
     color: #70777e;
+  }
+  :focus-visible {
+    ${FOCUS_VISIBLE_STYLE_DARK}
   }
 `;
 

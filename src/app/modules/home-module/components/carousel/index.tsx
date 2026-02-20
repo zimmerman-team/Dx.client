@@ -1,13 +1,16 @@
-import { PrimaryButton } from "app/components/Styled/button";
-import { ReactComponent as Logo } from "app/modules/home-module/assets/logo.svg";
-import { ReactComponent as RightArrow } from "app/modules/home-module/assets/right-arr.svg";
+import { PrimaryButton } from "@app/components/Styled/button";
+import Logo from "@app/modules/home-module/assets/logo.svg?react";
+import RightArrow from "@app/modules/home-module/assets/right-arr.svg?react";
 import DashboardCarousel from "./carousel";
 import { Container } from "@material-ui/core";
-import { DESKTOP_BREAKPOINT, MOBILE_BREAKPOINT } from "app/theme";
+import { DESKTOP_BREAKPOINT, MOBILE_BREAKPOINT } from "@app/theme";
 import { useHistory } from "react-router-dom";
+import { useCMSData } from "@app/hooks/useCMSData";
+import { getCMSDataField } from "@app/utils/getCMSDataField";
 
 export default function Card() {
   const history = useHistory();
+  const cmsData = useCMSData({ returnData: true });
   return (
     <Container maxWidth="lg">
       <div
@@ -95,8 +98,18 @@ export default function Card() {
       >
         <div>
           <h2>
-            Meet <Logo />, all-in-one workspace for{" "}
-            <span>data storytelling</span>{" "}
+            {getCMSDataField(
+              cmsData,
+              "pagesHome.meetDataxplorerTitle",
+              "Meet Dataxplorer, all-in-one workspace for "
+            )}
+            <span>
+              {getCMSDataField(
+                cmsData,
+                "pagesHome.meetDataxplorerColorTitle",
+                "data storytelling"
+              )}
+            </span>
           </h2>
           <div
             css={`
@@ -104,12 +117,16 @@ export default function Card() {
             `}
           />
           <p>
-            DataXplorer aims to help governments, nonprofits, and communities
+            {getCMSDataField(
+              cmsData,
+              "pagesHome.meetDataxplorerDescription",
+              `DataXplorer aims to help governments, nonprofits, and communities
             work with data in a single place. Upload datasets, create
             visualisations, and share insights without needing extra tools or
             technical expertise. No more patchwork solutions. Just a single,
             open-source platform that fits your workflow and scales with your
-            mission.
+            mission.`
+            )}
           </p>
           <div
             css={`
@@ -117,8 +134,12 @@ export default function Card() {
             `}
           />
           <p>
-            Currently in Beta – try it out now for free and help shape what
-            comes next. Your feedback will influence the next steps.
+            {getCMSDataField(
+              cmsData,
+              "pagesHome.meetDataxplorerDescription2",
+              `Currently in Beta – try it out now for free and help shape what
+            comes next. Your feedback will influence the next steps.`
+            )}
           </p>
           <div
             css={`
@@ -127,27 +148,46 @@ export default function Card() {
               margin-top: 16px;
               align-items: center;
               width: 100%;
+              max-width: 305px;
               justify-content: flex-start;
               button {
                 height: 41px;
-                gap: 28px;
+                justify-content: space-between;
+                padding: 0 16px;
+                :nth-child(2) {
+                  flex: 1;
+                }
+                @media (max-width: ${DESKTOP_BREAKPOINT}) {
+                  font-size: 16px;
+                }
+                @media (max-width: ${MOBILE_BREAKPOINT}) {
+                  font-size: 14px;
+                }
               }
             `}
           >
             <PrimaryButton
               bg="light"
               size="small"
-              onClick={() => history.push("/about")}
+              onClick={() => history.push("/why-dataxplorer")}
             >
-              Learn More
+              {getCMSDataField(
+                cmsData,
+                "pagesHome.meetDataxplorerLearnMoreButton",
+                "Learn More"
+              )}
             </PrimaryButton>
             <PrimaryButton
               bg="light"
               size="small"
               onClick={() => history.push("/onboarding/signin")}
             >
-              Sign in to try
-              <RightArrow />
+              {getCMSDataField(
+                cmsData,
+                "pagesHome.meetDataxplorerSignInButton",
+                "Sign in to try"
+              )}
+              <RightArrow role="presentation" />
             </PrimaryButton>
           </div>
         </div>

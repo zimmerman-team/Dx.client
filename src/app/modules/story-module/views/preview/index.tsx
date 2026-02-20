@@ -7,19 +7,18 @@ import { useAuth0 } from "@auth0/auth0-react";
 import useResizeObserver from "use-resize-observer";
 import Container from "@material-ui/core/Container";
 import { EditorState, convertFromRaw } from "draft-js";
-import { useStoreActions, useStoreState } from "app/state/store/hooks";
-import { StoryModel, emptyStory } from "app/modules/story-module/data";
-import RowFrame from "app/modules/story-module/components/rowStructure";
-import HeaderBlock from "app/modules/story-module/components/headerBlock";
-import { NotAuthorizedMessageModule } from "app/modules/common/not-authorized-message";
-import { StoryElementsType } from "app/modules/story-module/components/right-panel-create-view";
-import { storyContentContainerWidth } from "app/state/recoil/atoms";
+import { useStoreActions, useStoreState } from "@app/state/store/hooks";
+import { StoryModel, emptyStory } from "@app/modules/story-module/data";
+import RowFrame from "@app/modules/story-module/components/rowStructure";
+import { NotAuthorizedMessageModule } from "@app/modules/common/not-authorized-message";
+import { StoryElementsType } from "@app/modules/story-module/components/right-panel-create-view";
+import { storyContentContainerWidth } from "@app/state/recoil/atoms";
 import { useTitle } from "react-use";
-import StoryUsePanel from "app/modules/story-module/components/use-story-panel";
-import { PageLoader } from "app/modules/common/page-loader";
-import { ReactComponent as LogoIcon } from "app/modules/home-module/components/Footer/asset/logo.svg";
+import StoryUsePanel from "@app/modules/story-module/components/use-story-panel";
+import { PageLoader } from "@app/modules/common/page-loader";
 import { Typography } from "@material-ui/core";
-import { decorators } from "app/modules/common/RichEditor/decorators";
+import { decorators } from "@app/modules/common/RichEditor/decorators";
+import Logo from "@app/assets/icons/Logo";
 
 export function StoryPreviewView(
   props: Readonly<{
@@ -146,14 +145,13 @@ export function StoryPreviewView(
       </>
     );
   }
-
   return (
     <div
       css={`
         background: white;
       `}
     >
-      <HeaderBlock
+      {/* <HeaderBlock
         isToolboxOpen={false}
         previewMode={true}
         headerDetails={{
@@ -172,10 +170,10 @@ export function StoryPreviewView(
           descriptionColor: storyData.descriptionColor,
           dateColor: storyData.dateColor,
         }}
-        setPlugins={() => {}}
+        setPluginsState={() => {}}
         setHeaderDetails={() => {}}
         handleRightPanelOpen={() => {}}
-      />
+      /> */}
       <Container id="content-container" maxWidth="lg" ref={ref}>
         <Box height={45} />
 
@@ -220,21 +218,27 @@ export function StoryPreviewView(
                 type="rowFrame"
                 rowIndex={index}
                 framesArray={[]}
-                setPlugins={() => {}}
+                redoStack={[]}
+                setRedoStack={() => {}}
+                undoStack={[]}
+                setUndoStack={() => {}}
+                setPluginsState={() => {}}
                 updateFramesArray={() => {}}
                 key={`rowframe${index}`}
                 endStoryTour={() => {}}
                 onSave={async () => {}}
                 forceSelectedType={rowFrame.structure ?? undefined}
-                previewItems={rowFrame.items.map((item, index) => {
-                  return contentTypes[index] === "text"
-                    ? EditorState.createWithContent(
-                        convertFromRaw(item as any),
-                        // linkDecorator
-                        decorators()
-                      )
-                    : item;
-                })}
+                previewItems={{
+                  items: rowFrame.items.map((item, index) => {
+                    return contentTypes[index] === "text"
+                      ? EditorState.createWithContent(
+                          convertFromRaw(item as any),
+                          // linkDecorator
+                          decorators()
+                        )
+                      : item;
+                  }),
+                }}
                 rowContentHeights={
                   rowFrame.contentHeights?.heights ?? rowFrame.contentHeights
                 }
@@ -260,7 +264,7 @@ export function StoryPreviewView(
                 line-height: normal;
               `}
             >
-              <LogoIcon width={224} height={24} />
+              <Logo width={"224px"} height={"24px"} />
             </Link>
             <div
               css={`

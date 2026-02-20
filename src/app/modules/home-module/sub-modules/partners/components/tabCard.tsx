@@ -1,8 +1,11 @@
 import React from "react";
-import AboutCard from "app/modules/home-module/assets/about-card.png";
-import GrantsCard from "app/modules/home-module/assets/grants-card.png";
-import BudgetsCard from "app/modules/home-module/assets/budgets-card.png";
-import PerfomanceCard from "app/modules/home-module/assets/targets-result.png";
+import AboutCard from "@app/modules/home-module/assets/about-card.png";
+import GrantsCard from "@app/modules/home-module/assets/grants-card.png";
+import BudgetsCard from "@app/modules/home-module/assets/budgets-card.png";
+import PerfomanceCard from "@app/modules/home-module/assets/targets-result.png";
+import { FOCUS_VISIBLE_STYLE_LIGHT } from "@app/theme";
+import { useCMSData } from "@app/hooks/useCMSData";
+import { getCMSDataField } from "@app/utils/getCMSDataField";
 
 function TabCard(props: {
   src: string;
@@ -32,6 +35,9 @@ function TabCard(props: {
           color: #ffffff;
           border-bottom: 1px solid #ffffff;
           cursor: pointer;
+          :focus-visible {
+            ${FOCUS_VISIBLE_STYLE_LIGHT}
+          }
         }
 
         img {
@@ -84,22 +90,36 @@ function TabCard(props: {
 }
 
 export const AboutTabCard = () => {
+  const cmsData = useCMSData({ returnData: true });
   const description = (
     <p>
-      The Global Fund&apos;s Data Explorer is one of the key transparency tools
-      of the organization.
+      {getCMSDataField(
+        cmsData,
+        "pagesPartners.aboutCardDescription1",
+        `The Global Fund's Data Explorer is one of the key transparency tools
+      of the organization.`
+      )}
       <br />
-      <br /> The Data Explorer visualizes where investments come from, where
+      <br />{" "}
+      {getCMSDataField(
+        cmsData,
+        "pagesPartners.aboutCardDescription2",
+        `The Data Explorer visualizes where investments come from, where
       they are and what they achieve by providing pledge and contribution data,
       grant financial data, and results data at global, regional and country
-      levels.
+      levels.`
+      )}
       <br /> <br />
       <a
         href="https://data.theglobalfund.org/"
         rel="noreferrer noopener"
         target="_blank"
       >
-        Visit the Global Fund Data Explorer
+        {getCMSDataField(
+          cmsData,
+          "pagesPartners.aboutCardLinkText",
+          "Visit the Global Fund Data Explorer"
+        )}
       </a>
     </p>
   );
@@ -107,7 +127,11 @@ export const AboutTabCard = () => {
     <TabCard
       src={AboutCard}
       alt="about_snippet"
-      title="The Global Fund Data Explorer"
+      title={getCMSDataField(
+        cmsData,
+        "pagesPartners.aboutCardTitle",
+        "The Global Fund Data Explorer"
+      )}
       description={description}
       reverse
     />
@@ -115,11 +139,16 @@ export const AboutTabCard = () => {
 };
 
 export const GrantsTabCard = () => {
+  const cmsData = useCMSData({ returnData: true });
   const description = (
     <p>
-      The effective implementation and monitoring of thousands of grants is at
+      {getCMSDataField(
+        cmsData,
+        "pagesPartners.grantsCardDescription1",
+        `The effective implementation and monitoring of thousands of grants is at
       the core of the Global Funds work to end HIV, TB and malaria as epidemics.
-      All collected grant data is presented via the Data Explorer.
+      All collected grant data is presented via the Data Explorer.`
+      )}
       <br />
       <br />
       <a
@@ -127,32 +156,54 @@ export const GrantsTabCard = () => {
         href="https://data.theglobalfund.org/location/KEN/grants"
         rel="noreferrer"
       >
-        LiveView
+        {getCMSDataField(
+          cmsData,
+          "pagesPartners.grantsCardLinkText",
+          "LiveView"
+        )}
       </a>{" "}
-      of the Grant Implementation on the Global Fund Data Explorer
+      {getCMSDataField(
+        cmsData,
+        "pagesPartners.grantsCardDescription2",
+        " of the Grant Implementation on the Global Fund Data Explorer"
+      )}
     </p>
   );
   return (
     <TabCard
       src={GrantsCard}
       alt="grants_snippet"
-      title="Grant Implementation Period"
+      title={getCMSDataField(
+        cmsData,
+        "pagesPartners.grantsCardTitle",
+        "Grant Implementation Period"
+      )}
       description={description}
     />
   );
 };
 
 export const BudgetsTabCard = () => {
+  const cmsData = useCMSData({ returnData: true });
   const description = (
     <p>
-      The Global Fund applies strict budget requirements during the development,
+      {getCMSDataField(
+        cmsData,
+        "pagesPartners.budgetsCardDescription1",
+        `The Global Fund applies strict budget requirements during the development,
       review and implementation of Global Fund-supported programs. It
       establishes clear eligibility criteria for grant expenditures and
-      requirements for monitoring and financial storytelling obligations.
+      requirements for monitoring and financial storytelling obligations.`
+      )}
       <br />
-      <br /> All collected financial storytelling data on budgets including
+      <br />{" "}
+      {getCMSDataField(
+        cmsData,
+        "pagesPartners.budgetsCardDescription2",
+        `All collected financial storytelling data on budgets including
       investment landscapes and corresponding cost categories is presented via
-      the Data Explorer.
+      the Data Explorer.`
+      )}
       <br />
       <br />
       <a
@@ -160,9 +211,17 @@ export const BudgetsTabCard = () => {
         href="https://data.theglobalfund.org/location/KEN/budgets/flow"
         rel="noreferrer"
       >
-        LiveView
-      </a>{" "}
-      of the Budget Flow on the Global Fund Data Explorer
+        {getCMSDataField(
+          cmsData,
+          "pagesPartners.budgetsCardLinkText",
+          "LiveView"
+        )}
+      </a>
+      {getCMSDataField(
+        cmsData,
+        "pagesPartners.budgetsCardDescription3",
+        " of the Budget Flow on the Global Fund Data Explorer"
+      )}
     </p>
   );
   return (
@@ -177,16 +236,25 @@ export const BudgetsTabCard = () => {
 };
 
 export const PerformanceTabCard = () => {
+  const cmsData = useCMSData({ returnData: true });
   const description = (
     <p>
-      The Global Fund requires countries to story grant performance indicators
+      {getCMSDataField(
+        cmsData,
+        "pagesPartners.performanceCardDescription1",
+        `The Global Fund requires countries to story grant performance indicators
       on funded programs. The data provided by national monitoring and
       evaluation systems is critical to informing decision-making on the part of
-      both implementers and funders.
+      both implementers and funders.`
+      )}
       <br />
       <br />
-      All collected performance data on funded programs is presented via the
-      Data Explorer.
+      {getCMSDataField(
+        cmsData,
+        "pagesPartners.performanceCardDescription2",
+        `All collected performance data on funded programs is presented via the
+      Data Explorer.`
+      )}
       <br />
       <br />
       <a
@@ -194,16 +262,28 @@ export const PerformanceTabCard = () => {
         href="https://data.theglobalfund.org/grant/KEN-H-TNT/3/targets-results"
         rel="noreferrer"
       >
-        LiveView
+        {getCMSDataField(
+          cmsData,
+          "pagesPartners.performanceCardLinkText",
+          "LiveView"
+        )}
       </a>{" "}
-      of the Performance Framework
+      {getCMSDataField(
+        cmsData,
+        "pagesPartners.performanceCardDescription3",
+        " of the Performance Framework"
+      )}
     </p>
   );
   return (
     <TabCard
       src={PerfomanceCard}
       alt="performance_snippet"
-      title="Targets & results"
+      title={getCMSDataField(
+        cmsData,
+        "pagesPartners.performanceCardTitle",
+        "Targets & results"
+      )}
       description={description}
     />
   );

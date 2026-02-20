@@ -1,11 +1,11 @@
 import React from "react";
-import BackupIcon from "app/modules/home-module/sub-modules/pricing/assets/backup";
-import AddChartIcon from "app/modules/home-module/sub-modules/pricing/assets/add-chart";
-import GoodIcon from "app/modules/home-module/sub-modules/pricing/assets/good-icon";
-import StoryIcon from "app/modules/home-module/sub-modules/pricing/assets/story";
-import UserShieldIcon from "app/modules/home-module/sub-modules/pricing/assets/user-shied";
-import SupportIcon from "app/modules/home-module/sub-modules/pricing/assets/support";
-import InfoIcon from "app/modules/home-module/sub-modules/pricing/assets/info-icon";
+import BackupIcon from "@app/modules/home-module/sub-modules/pricing/assets/backup";
+import AddChartIcon from "@app/modules/home-module/sub-modules/pricing/assets/add-chart";
+import GoodIcon from "@app/modules/home-module/sub-modules/pricing/assets/good-icon";
+import StoryIcon from "@app/modules/home-module/sub-modules/pricing/assets/story";
+import UserShieldIcon from "@app/modules/home-module/sub-modules/pricing/assets/user-shied";
+import SupportIcon from "@app/modules/home-module/sub-modules/pricing/assets/support";
+import InfoIcon from "@app/modules/home-module/sub-modules/pricing/assets/info-icon";
 import { Tooltip } from "react-tooltip";
 
 const Features = () => {
@@ -41,27 +41,27 @@ const Features = () => {
         {
           name: "Connect Data",
           info: "Bring your own data via CSV, SQL, noSQL or connect your REST services",
-          values: [true, true, true, true],
+          values: ["available", "available", "available", "available"],
         },
         {
           name: "Data export (CSV)",
           info: "Export your view in a nice CSV file",
-          values: ["", true, true, true],
+          values: ["", "available", "available", "available"],
         },
         {
           name: "Connect your own data source",
           info: "Connect data from your database",
-          values: ["", true, true, true],
+          values: ["", "available", "available", "available"],
         },
         {
           name: "Microsoft Drive data connect",
           info: "Connect data from your Microsoft Drive",
-          values: ["", true, true, true],
+          values: ["", "available", "available", "available"],
         },
         {
           name: "Google Drive data connect",
           info: "Connect data from your Google Drive",
-          values: ["", true, true, true],
+          values: ["", "available", "available", "available"],
         },
       ],
     },
@@ -80,32 +80,32 @@ const Features = () => {
         {
           name: "Access to the Chartbuilder",
           info: "Create charts from your datasets",
-          values: [true, true, true, true],
+          values: ["available", "available", "available", "available"],
         },
         {
           name: "Share Chart Powered by\n Dataxplorer",
           info: "Sharing charts standalone as link AND embed code",
-          values: [true, true, true, true],
+          values: ["available", "available", "available", "available"],
         },
         {
           name: "Basic Charting",
-          values: [true, true, true, true],
+          values: ["available", "available", "available", "available"],
         },
         {
           name: "Advanced Charting",
           info: "Advanced charting all CB charting features",
-          values: ["", true, true, true],
+          values: ["", "available", "available", "available"],
         },
         {
           name: "AI Agent",
           info: "Use AI Agent to help you chart",
-          values: ["", true, true, true],
+          values: ["", "available", "available", "available"],
         },
         {
           name: "Custom Charting",
           info: "",
           button: true,
-          values: ["", true, true, true],
+          values: ["", "available", "available", "available"],
         },
       ],
     },
@@ -124,29 +124,29 @@ const Features = () => {
         {
           name: "Basic Templates",
           info: "Access to Basic templates",
-          values: [true, true, true, true],
+          values: ["available", "available", "available", "available"],
         },
         {
           name: "Advanced Templates",
           info: "Access to Advanced templates",
-          values: [true, true, true, true],
+          values: ["available", "available", "available", "available"],
         },
         {
           name: "Media / Video support",
           info: "Add images and video",
-          values: ["", true, true, true],
+          values: ["", "available", "available", "available"],
         },
         {
           name: "Story AI Chat",
           info: "Talk to your data",
           button: true,
-          values: ["", true, true, true],
+          values: ["", "available", "available", "available"],
         },
         {
           name: "Story AI Builder",
           info: "Use AI Agent to draft your Story",
           button: true,
-          values: ["", true, true, true],
+          values: ["", "available", "available", "available"],
         },
       ],
     },
@@ -163,11 +163,11 @@ const Features = () => {
         },
         {
           name: "Pricing Management",
-          values: [true, true, true, true],
+          values: ["available", "available", "available", "available"],
         },
         {
           name: "Team Management",
-          values: ["", true, true, true],
+          values: ["", "available", "available", "available"],
         },
       ],
     },
@@ -181,17 +181,17 @@ const Features = () => {
         {
           name: "Ticketing support",
           info: "Access to a ticketing system",
-          values: ["", true, true, true],
+          values: ["", "available", "available", "available"],
         },
         {
           name: "Webinars",
           info: "Access to monthly webinars",
-          values: ["", true, true, true],
+          values: ["", "available", "available", "available"],
         },
         {
           name: "Live chat",
           info: "Chat with support",
-          values: ["", true, true, true],
+          values: ["", "available", "available", "available"],
         },
         {
           name: "Dedicated support",
@@ -206,6 +206,12 @@ const Features = () => {
       ],
     },
   ];
+  const planMap = {
+    1: "Free plan",
+    2: "Pro plan",
+    3: "Team plan",
+    4: "Enterprise plan",
+  };
 
   const renderFeatureOptions = (
     option: {
@@ -241,7 +247,7 @@ const Features = () => {
           font-style: normal;
           font-weight: 325;
           white-space: pre-line;
-          button {
+          span {
             border: none;
             background: none;
             outline: none;
@@ -257,18 +263,25 @@ const Features = () => {
             font-size: 10px;
             font-family: "GothamNarrow-Book", "Helvetica Neue", sans-serif;
           }
+          button {
+            all: unset;
+          }
         `}
       >
         {option.name}{" "}
-        <div
+        <button
           css={`
             flex-shrink: 0;
             cursor: pointer;
           `}
           className={`feature-${idx}-option-${optionIndex}`}
         >
-          {option.button ? <button>Coming soon!</button> : <InfoIcon />}
-        </div>
+          {option.button ? (
+            <span aria-label="coming Soon!">Coming soon!</span>
+          ) : (
+            <InfoIcon />
+          )}
+        </button>
         <Tooltip
           anchorSelect={`.feature-${idx}-option-${optionIndex}`}
           place="right"
@@ -297,8 +310,8 @@ const Features = () => {
           column-gap: 24px;
         `}
       >
-        {option.values.map((value) => (
-          <p
+        {option.values.map((value, index) => (
+          <div
             css={`
               margin: 0;
               line-height: normal;
@@ -316,34 +329,42 @@ const Features = () => {
               @media (max-width: 1300px) {
                 width: 179px;
               }
+              p {
+                all: unset;
+              }
             `}
+            aria-label={
+              value + "for the" + planMap[(index + 1) as keyof typeof planMap]
+            }
           >
-            {value === ">" || value === "<" ? (
-              <span
-                css={`
-                  position: absolute;
-                  width: 24px;
-                  height: 100%;
-                  top: 0;
-                  ${value === ">" ? "right" : "left"}: -24px;
-                  background: rgba(202, 202, 202, 0.1);
-                `}
-              />
-            ) : value === true ? (
-              <GoodIcon />
-            ) : value === false ? (
-              "-"
-            ) : (
-              value
-            )}
-          </p>
+            <p aria-hidden="true">
+              {value === ">" || value === "<" ? (
+                <span
+                  css={`
+                    position: absolute;
+                    width: 24px;
+                    height: 100%;
+                    top: 0;
+                    ${value === ">" ? "right" : "left"}: -24px;
+                    background: rgba(202, 202, 202, 0.1);
+                  `}
+                />
+              ) : value === "available" ? (
+                <GoodIcon />
+              ) : value === false ? (
+                "-"
+              ) : (
+                value
+              )}
+            </p>
+          </div>
         ))}
       </div>
     </div>
   );
 
   return (
-    <section>
+    <section aria-label="Feature comparison table">
       {features.map((feature, idx) => (
         <>
           <div key={feature.title}>

@@ -1,13 +1,13 @@
 import React from "react";
-import HeroEllipses from "app/modules/home-module/assets/hero-ellipses.png";
-import HeroEllipsesTablet from "app/modules/home-module/assets/hero-ellipses-tablet.svg";
-import HeroEllipsesMobile from "app/modules/home-module/assets/hero-ellipses-mobile.svg";
+import HeroEllipses from "@app/modules/home-module/assets/hero-ellipses.png";
+import HeroEllipsesTablet from "@app/modules/home-module/assets/hero-ellipses-tablet.svg";
+import HeroEllipsesMobile from "@app/modules/home-module/assets/hero-ellipses-mobile.svg";
 import { Box, Container } from "@material-ui/core";
 import {
   DESKTOP_BREAKPOINT,
   MOBILE_BREAKPOINT,
   TABLET_STARTPOINT,
-} from "app/theme";
+} from "@app/theme";
 
 interface HeroProps {
   title?: React.ReactNode;
@@ -16,7 +16,8 @@ interface HeroProps {
 
 export default function Hero({ title, children }: HeroProps) {
   return (
-    <div
+    <section
+      aria-label="hero-section"
       css={`
         position: relative;
         background: url(${HeroEllipses}),
@@ -50,11 +51,8 @@ export default function Hero({ title, children }: HeroProps) {
             line-height: normal;
             margin: 0px;
             @media (max-width: ${DESKTOP_BREAKPOINT}) {
-            }
-            ) {
               font-size: 64px;
             }
-
             @media (max-width: ${MOBILE_BREAKPOINT}) {
               font-size: 48px;
             }
@@ -69,8 +67,6 @@ export default function Hero({ title, children }: HeroProps) {
             margin: 0;
             line-height: normal;
             @media (max-width: ${DESKTOP_BREAKPOINT}) {
-            }
-            ) {
               font-size: 18px;
               line-height: normal;
             }
@@ -102,10 +98,17 @@ export default function Hero({ title, children }: HeroProps) {
           `}
         >
           <h1>{title}</h1>
-          <Box height={"40px"} />
+          <div
+            css={`
+              height: 40px;
+              @media (max-width: ${MOBILE_BREAKPOINT}) {
+                height: 30px;
+              }
+            `}
+          />
           {children}
         </div>
       </Container>
-    </div>
+    </section>
   );
 }

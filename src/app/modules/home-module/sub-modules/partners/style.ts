@@ -1,5 +1,5 @@
-import { css } from "styled-components/macro";
-import styled from "styled-components/macro";
+import { css } from "styled-components";
+import styled from "styled-components";
 
 export const empowercss = (view: string) => css`
   height: ${view === "landing" ? "533px" : "418px"};

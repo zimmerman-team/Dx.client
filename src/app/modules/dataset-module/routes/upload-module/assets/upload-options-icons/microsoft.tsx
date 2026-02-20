@@ -8,6 +8,7 @@ const MicrosoftIcon = () => {
       height="31"
       viewBox="0 0 30 31"
       fill="none"
+      role="presentation"
     >
       <path d="M14.2579 14.755H0V0.49707H14.2579V14.755Z" fill="#F1511B" />
       <path

@@ -5,8 +5,10 @@ import { useOnClickOutside } from "usehooks-ts";
 import {
   ColorService,
   IColor,
-} from "app/components/ColorPicker/services/color";
-import { ColorPicker } from "app/components/ColorPicker";
+} from "@app/components/ColorPicker/services/color";
+import { ColorPicker } from "@app/components/ColorPicker";
+import { setBlockData } from "@app/utils/draftjs/setBlockData";
+import { registerDynamicStyle } from "@app/utils/draftjs/getStyleEl";
 
 interface Props {
   getEditorState: () => EditorState;
@@ -14,7 +16,7 @@ interface Props {
   theme: any;
   id: "color-popover" | "bg-popover" | undefined;
   open: boolean;
-  anchorEl: HTMLDivElement | null;
+  anchorEl: HTMLButtonElement | null;
   handleClose: () => void;
   hex: string;
   setHex: (color: string) => void;
@@ -75,28 +77,35 @@ export default function ColorModal(props: Props) {
       const editorState = props.getEditorState();
       const selection = editorState.getSelection();
 
-      // Check if there's actually text selected
       if (selection.isCollapsed()) {
-        return;
+        return; // don’t apply if nothing selected
       }
 
-      //Remove all existing color styles
       let newEditorState = editorState;
       const currentStyles = editorState.getCurrentInlineStyle();
-
       currentStyles.forEach((style) => {
         if (style && style.startsWith(props.prefix)) {
           newEditorState = RichUtils.toggleInlineStyle(newEditorState, style);
         }
       });
 
-      //Apply the new color style
       const colorStyleName = `${props.prefix}${color.hex}`;
       newEditorState = RichUtils.toggleInlineStyle(
         newEditorState,
         colorStyleName
       );
 
+      newEditorState = setBlockData(
+        editorState,
+        newEditorState,
+        "color",
+        color.hex
+      );
+
+      registerDynamicStyle(
+        `COLOR-${color.hex.replace("#", "")}`,
+        `color: ${color.hex};`
+      );
       props.setEditorState(newEditorState);
     },
     [props.hex, props.getEditorState, props.setEditorState]

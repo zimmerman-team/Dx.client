@@ -3,13 +3,13 @@
 // base
 
 import React, { Suspense, lazy } from "react";
-import { socialAuth } from "app/utils/socialAuth";
-import { useScrollToTop } from "app/hooks/useScrollToTop";
-import { useRouteListener } from "app/hooks/useRouteListener";
-import { PageLoader } from "app/modules/common/page-loader";
-import { RouteWithAppBar } from "app/utils/RouteWithAppBar";
+import { socialAuth } from "@app/utils/socialAuth";
+import { useScrollToTop } from "@app/hooks/useScrollToTop";
+import { useRouteListener } from "@app/hooks/useRouteListener";
+import { PageLoader } from "@app/modules/common/page-loader";
+import { RouteWithAppBar } from "@app/utils/RouteWithAppBar";
 import { Route, Switch, useHistory, useLocation } from "react-router-dom";
-import { NoMatchPage } from "app/modules/common/no-match-page";
+import { NoMatchPage } from "@app/modules/common/no-match-page";
 import { useGoogleOneTapLogin } from "react-google-one-tap-login";
 import {
   AppState,
@@ -24,44 +24,57 @@ import { AuthProtectedRoute } from "./utils/AuthProtectedRoute";
 import {
   PaymentSuccessCallbackModule,
   PaymentCanceledCallbackModule,
-} from "app/modules/callback-module/payment";
+} from "@app/modules/callback-module/payment";
 import { useRecoilValue } from "recoil";
 import { fetchPlanLoadingAtom } from "./state/recoil/atoms";
 import { APPLICATION_JSON } from "./state/api";
+import { useCMSData } from "./hooks/useCMSData";
 
 const LandingModule = lazy(
-  () => import("app/modules/home-module/sub-modules/landing")
+  () => import("@app/modules/home-module/sub-modules/landing")
 );
-const HomeModule = lazy(() => import("app/modules/home-module"));
+const HomeModule = lazy(() => import("@app/modules/home-module"));
 const PartnersModule = lazy(
-  () => import("app/modules/home-module/sub-modules/partners")
+  () => import("@app/modules/home-module/sub-modules/partners")
 );
 const ContactModule = lazy(
-  () => import("app/modules/home-module/sub-modules/contact")
+  () => import("@app/modules/home-module/sub-modules/contact")
 );
 const AboutModule = lazy(
-  () => import("app/modules/home-module/sub-modules/about")
+  () => import("@app/modules/home-module/sub-modules/about")
 );
 const WhyDXModule = lazy(
-  () => import("app/modules/home-module/sub-modules/why-dx")
+  () => import("@app/modules/home-module/sub-modules/why-dx")
+);
+const PrivacyPolicyModule = lazy(
+  () => import("@app/modules/home-module/sub-modules/privacy-policy")
+);
+const TermsAndConditionsModule = lazy(
+  () => import("@app/modules/home-module/sub-modules/terms-and-conditions")
 );
 
 const PricingModule = lazy(
-  () => import("app/modules/home-module/sub-modules/pricing")
+  () => import("@app/modules/home-module/sub-modules/pricing")
 );
 const EmbedChartModule = lazy(
-  () => import("app/modules/embed-module/embedChart")
+  () => import("@app/modules/embed-module/embedChart")
 );
 
-const ChartModule = lazy(() => import("app/modules/chart-module"));
-const StoryModule = lazy(() => import("app/modules/story-module"));
+const WebinarModule = lazy(
+  () => import("@app/modules/home-module/sub-modules/webinar")
+);
 
-const AuthCallbackModule = lazy(() => import("app/modules/callback-module"));
-const OnboardingModule = lazy(() => import("app/modules/onboarding-module"));
-const UserProfileModule = lazy(() => import("app/modules/user-profile-module"));
-const DatasetModule = lazy(() => import("app/modules/dataset-module"));
+const ChartModule = lazy(() => import("@app/modules/chart-module"));
+const StoryModule = lazy(() => import("@app/modules/story-module"));
+
+const AuthCallbackModule = lazy(() => import("@app/modules/callback-module"));
+const OnboardingModule = lazy(() => import("@app/modules/onboarding-module"));
+const UserProfileModule = lazy(
+  () => import("@app/modules/user-profile-module")
+);
+const DatasetModule = lazy(() => import("@app/modules/dataset-module"));
 const DashboardModule = lazy(
-  () => import("app/modules/home-module/sub-modules/dashboard")
+  () => import("@app/modules/home-module/sub-modules/dashboard")
 );
 
 const ProtectedRoute = (props: {
@@ -95,9 +108,7 @@ const Auth0ProviderWithRedirectCallback = (props: {
   return (
     <Auth0Provider
       cacheLocation={
-        process.env.REACT_APP_CYPRESS_TEST === "true"
-          ? "localstorage"
-          : "memory"
+        import.meta.env.VITE_CYPRESS_TEST === "true" ? "localstorage" : "memory"
       }
       onRedirectCallback={onRedirectCallback}
       {...props}
@@ -145,7 +156,7 @@ const OneTapLoginComponent = () => {
     onError: (error) => console.log(error),
     onSuccess: (response) => socialAuth("google-oauth2", response.email),
     googleAccountConfigs: {
-      client_id: process.env.REACT_APP_GOOGLE_API_CLIENT_ID!,
+      client_id: import.meta.env.VITE_GOOGLE_API_CLIENT_ID!,
       cancel_on_tap_outside: false,
       // @ts-ignore
       use_fedcm_for_prompt: true,
@@ -182,7 +193,7 @@ const IntercomBootupComponent = () => {
   const getIntercomHash = async () => {
     return getAccessTokenSilently().then(async (newToken) => {
       return await axios.get(
-        `${process.env.REACT_APP_API}/users/intercom-hash`,
+        `${import.meta.env.VITE_API}/users/intercom-hash`,
         {
           headers: {
             "Content-Type": APPLICATION_JSON,
@@ -204,7 +215,7 @@ const IntercomBootupComponent = () => {
               // @ts-ignore
               window.Intercom("boot", {
                 api_base: "https://api-iam.intercom.io",
-                app_id: process.env.REACT_APP_INTERCOM_APP_ID,
+                app_id: import.meta.env.VITE_INTERCOM_APP_ID,
                 name: user?.name, // Full name
                 email: user?.email, // the email for your user
                 user_id: user?.sub, // user_id as a string
@@ -220,7 +231,7 @@ const IntercomBootupComponent = () => {
         // @ts-ignore
         window.Intercom("boot", {
           api_base: "https://api-iam.intercom.io",
-          app_id: process.env.REACT_APP_INTERCOM_APP_ID,
+          app_id: import.meta.env.VITE_INTERCOM_APP_ID,
         });
       }
   }, [isAuthenticated]);
@@ -241,22 +252,23 @@ const StripeReturn = () => {
 };
 
 export function MainRoutes() {
+  useCMSData({ loadData: true });
   useScrollToTop();
   useRouteListener();
 
   return (
     <Auth0ProviderWithRedirectCallback
-      domain={process.env.REACT_APP_AUTH0_DOMAIN!}
-      clientId={process.env.REACT_APP_AUTH0_CLIENT!}
+      domain={import.meta.env.VITE_AUTH0_DOMAIN!}
+      clientId={import.meta.env.VITE_AUTH0_CLIENT!}
       authorizationParams={{
-        audience: process.env.REACT_APP_AUTH0_AUDIENCE!,
+        audience: import.meta.env.VITE_AUTH0_AUDIENCE!,
         redirect_uri: `${window.location.origin}/callback`,
       }}
     >
       <AuthLoader />
       <PlanLoader />
       <OneTapLoginComponent />
-      {process.env.REACT_APP_ENV_TYPE === "prod" ? (
+      {import.meta.env.VITE_ENV_TYPE === "prod" ? (
         <IntercomBootupComponent />
       ) : null}
       <Suspense fallback={<PageLoader />}>
@@ -297,6 +309,9 @@ export function MainRoutes() {
           <RouteWithAppBar exact path="/about">
             <AboutModule />
           </RouteWithAppBar>
+          <RouteWithAppBar exact path="/webinar">
+            <WebinarModule />
+          </RouteWithAppBar>
           <RouteWithAppBar exact path="/pricing">
             <PricingModule />
           </RouteWithAppBar>
@@ -307,6 +322,12 @@ export function MainRoutes() {
             <AuthProtectedRoute>
               <ChartModule />
             </AuthProtectedRoute>
+          </RouteWithAppBar>
+          <RouteWithAppBar exact path="/privacy-policy">
+            <PrivacyPolicyModule />
+          </RouteWithAppBar>
+          <RouteWithAppBar exact path="/terms-and-conditions">
+            <TermsAndConditionsModule />
           </RouteWithAppBar>
 
           <Route exact path="/chart-embed/:chartId/:datasetId">

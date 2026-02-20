@@ -1,13 +1,13 @@
 import { fireEvent, render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import HeaderBlock from "app/modules/story-module/components/headerBlock";
+import HeaderBlock from "@app/modules/story-module/components/headerBlock";
 import { ContentState, EditorState } from "draft-js";
-import { ToolbarPluginsType } from "app/modules/story-module/components/storySubHeaderToolbar/staticToolbar";
+import { ToolbarPluginsType } from "@app/modules/story-module/components/storySubHeaderToolbar/staticToolbar";
 import Router from "react-router-dom";
 import { MutableSnapshot, RecoilRoot } from "recoil";
-import { RecoilObserver } from "app/utils/recoilObserver";
+import { RecoilObserver } from "@app/utils/recoilObserver";
 import { createMemoryHistory } from "history";
-import { storyRightPanelViewAtom } from "app/state/recoil/atoms";
+import { storyRightPanelViewAtom } from "@app/state/recoil/atoms";
 import { DndProvider, useDrag } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 
@@ -19,7 +19,7 @@ interface MockProps {
   setStoryName?: React.Dispatch<React.SetStateAction<string>>;
   storyName?: string;
   handleRightPanelOpen: () => void;
-  setPlugins: React.Dispatch<React.SetStateAction<ToolbarPluginsType>>;
+  setPluginsState: React.Dispatch<React.SetStateAction<ToolbarPluginsType>>;
   headerDetails: {
     title: string;
     showHeader: boolean;
@@ -67,7 +67,7 @@ const defaultProps = (props: Partial<MockProps>): MockProps => {
     setHasSubHeaderTitleFocused: jest.fn(),
     setStoryName: jest.fn(),
     storyName: "Test Story",
-    setPlugins: jest.fn(),
+    setPluginsState: jest.fn(),
     headerDetails: {
       title: "Test Title",
       showHeader: true,

@@ -1,21 +1,21 @@
 import React from "react";
-import Grid, { GridSpacing } from "@material-ui/core/Grid";
-import { ReactComponent as AIPoweredImg } from "app/modules/home-module/assets/whydx-ai-powered-illustration.svg";
-import { ReactComponent as CharVizImg } from "app/modules/home-module/assets/whydx-chartviz-illustration.svg";
-import { ReactComponent as OpenSourceImg } from "app/modules/home-module/assets/whydx-opensource-illustration.svg";
-import { ReactComponent as StoriesImg } from "app/modules/home-module/assets/whydx-stories-illustration.svg";
-import { ReactComponent as SearchImg } from "app/modules/home-module/assets/whydx-search-illustration.svg";
-import { keyfeaturescss } from "app/modules/home-module/sub-modules/why-dx/style";
+import { GridSpacing } from "@material-ui/core/Grid";
+import AIPoweredImg from "@app/modules/home-module/assets/whydx-ai-powered-illustration.svg?react";
+import CharVizImg from "@app/modules/home-module/assets/whydx-chartviz-illustration.svg?react";
+import OpenSourceImg from "@app/modules/home-module/assets/whydx-opensource-illustration.svg?react";
+import StoriesImg from "@app/modules/home-module/assets/whydx-stories-illustration.svg?react";
+import SearchImg from "@app/modules/home-module/assets/whydx-search-illustration.svg?react";
+import { keyfeaturescss } from "@app/modules/home-module/sub-modules/why-dx/style";
 import { useMediaQuery } from "@material-ui/core";
-import {
-  DESKTOP_BREAKPOINT,
-  MOBILE_BREAKPOINT,
-  TABLET_STARTPOINT,
-} from "app/theme";
+import { MOBILE_BREAKPOINT } from "@app/theme";
+import { useCMSData } from "@app/hooks/useCMSData";
+import { getCMSDataField } from "@app/utils/getCMSDataField";
 
 export default function KeyFeaturesBlock() {
   const isTablet = useMediaQuery("(max-width:1024px)");
   const isMobile = useMediaQuery(`(max-width:${MOBILE_BREAKPOINT})`);
+
+  const cmsData = useCMSData({ returnData: true });
 
   let spacing: GridSpacing = 8;
   if (isTablet) {
@@ -25,8 +25,17 @@ export default function KeyFeaturesBlock() {
     spacing = 2;
   }
   return (
-    <div css={keyfeaturescss.container}>
-      <h3>Unlock the Power of Data with Dataxplorer</h3>
+    <section
+      aria-label="Key Features of dataxplorer"
+      css={keyfeaturescss.container}
+    >
+      <h2>
+        {getCMSDataField(
+          cmsData,
+          "pagesWhyDataxplorer.keyFeaturesTitle",
+          "Unlock the Power of Data with Dataxplorer"
+        )}
+      </h2>
       <div css={keyfeaturescss.flexContainer(false)}>
         <div
           css={`
@@ -34,6 +43,7 @@ export default function KeyFeaturesBlock() {
           `}
         >
           <SearchImg
+            role="presentation"
             css={`
               border-radius: 16px;
               box-shadow: 0px 13.449px 20.173px 0px rgba(0, 0, 0, 0.05),
@@ -49,15 +59,29 @@ export default function KeyFeaturesBlock() {
           `}
         >
           <div css={keyfeaturescss.text}>
-            <p>All-in-One Stack</p>
+            <h3>
+              {getCMSDataField(
+                cmsData,
+                "pagesWhyDataxplorer.keyFeature1Title",
+                "All-in-One Stack"
+              )}
+            </h3>
             <p>
-              Dataxplorer consolidates all your data management needs into a
+              {getCMSDataField(
+                cmsData,
+                "pagesWhyDataxplorer.keyFeature1Text1",
+                `Dataxplorer consolidates all your data management needs into a
               single, integrated stack. Whether it's data integration,
               visualization, or story creation, you'll find it all here. No more
-              juggling multiple tools or struggling to maintain compatibility.{" "}
+              juggling multiple tools or struggling to maintain compatibility.`
+              )}
               <br /> <br />
-              Our open-source platform simplifies your workflow, making your
-              mission more efficient, and saving you time and resources
+              {getCMSDataField(
+                cmsData,
+                "pagesWhyDataxplorer.keyFeature1Text2",
+                `Our open-source platform simplifies your workflow, making your
+              mission more efficient, and saving you time and resources`
+              )}
             </p>
           </div>
         </div>
@@ -84,14 +108,24 @@ export default function KeyFeaturesBlock() {
           `}
         >
           <div css={keyfeaturescss.text}>
-            <p>Connect Data with Ease</p>
+            <h3>
+              {getCMSDataField(
+                cmsData,
+                "pagesWhyDataxplorer.keyFeature2Title",
+                "Connect Data with Ease"
+              )}
+            </h3>
             <p>
-              Dataxplorer simplifies the complex task of data integration,
+              {getCMSDataField(
+                cmsData,
+                "pagesWhyDataxplorer.keyFeature2Text",
+                `Dataxplorer simplifies the complex task of data integration,
               enabling you to seamlessly centralize your crucial datasets. Gone
               are the days of laborious manual data manipulation; we've
               streamlined the process for your convenience. <br /> <br />
               Spend less time on data wrangling and more on what matters most -
-              making informed decisions.
+              making informed decisions.`
+              )}
             </p>
           </div>
         </div>
@@ -101,6 +135,7 @@ export default function KeyFeaturesBlock() {
           `}
         >
           <AIPoweredImg
+            role="presentation"
             css={`
               box-shadow: 0px 14.97px 22.455px 0px rgba(0, 0, 0, 0.05),
                 0px 4.491px 7.485px 0px rgba(0, 0, 0, 0.05),
@@ -128,6 +163,7 @@ export default function KeyFeaturesBlock() {
           `}
         >
           <CharVizImg
+            role="presentation"
             css={`
               border-radius: 16px;
               background: #fbfbfb;
@@ -143,14 +179,24 @@ export default function KeyFeaturesBlock() {
           `}
         >
           <div css={keyfeaturescss.text}>
-            <p>Visualize Your Impact</p>
+            <h3>
+              {getCMSDataField(
+                cmsData,
+                "pagesWhyDataxplorer.keyFeature3Title",
+                "Visualize Your Impact"
+              )}
+            </h3>
             <p>
-              Your data is a valuable resource, and Dataxplorer empowers you to
+              {getCMSDataField(
+                cmsData,
+                "pagesWhyDataxplorer.keyFeature3Text",
+                `Your data is a valuable resource, and Dataxplorer empowers you to
               make the most of it. Our AI-driven agents are at your disposal,
               ready to generate the most pertinent charts for your specific
               dataset. With just a few clicks, you'll unlock insightful
               visualizations that vividly narrate your data's story, helping you
-              uncover trends and patterns.
+              uncover trends and patterns.`
+              )}
             </p>
           </div>
         </div>
@@ -173,15 +219,30 @@ export default function KeyFeaturesBlock() {
           `}
         >
           <div css={keyfeaturescss.text}>
-            <p>Interactive Stories </p>
+            <h3>
+              {getCMSDataField(
+                cmsData,
+                "pagesWhyDataxplorer.keyFeature4Title",
+                "Interactive Stories"
+              )}{" "}
+            </h3>
             <p>
-              Transform your data-driven insights into engaging narratives that
+              {getCMSDataField(
+                cmsData,
+                "pagesWhyDataxplorer.keyFeature4Text1",
+                `Transform your data-driven insights into engaging narratives that
               captivate and inform your stakeholders. Dataxplorer allows you to
               effortlessly create interactive stories that captivate and inform
-              your stakeholders. <br /> <br />
-              Incorporate charts, text, images, and videos seamlessly. Your
+              your stakeholders.`
+              )}
+              <br /> <br />
+              {getCMSDataField(
+                cmsData,
+                "pagesWhyDataxplorer.keyFeature4Text2",
+                `Incorporate charts, text, images, and videos seamlessly. Your
               ability to convey your findings with impact is now within reach,
-              enhancing your ability to drive positive change.
+              enhancing your ability to drive positive change.`
+              )}
             </p>
           </div>
         </div>
@@ -191,6 +252,7 @@ export default function KeyFeaturesBlock() {
           `}
         >
           <OpenSourceImg
+            role="presentation"
             css={`
               border-radius: 16px;
               background: #fbfbfb;
@@ -217,6 +279,7 @@ export default function KeyFeaturesBlock() {
           `}
         >
           <StoriesImg
+            role="presentation"
             css={`
               border-radius: 16px;
               background: #fbfbfb;
@@ -232,19 +295,34 @@ export default function KeyFeaturesBlock() {
           `}
         >
           <div css={keyfeaturescss.text}>
-            <p>Join The Data Revolution</p>
+            <h3>
+              {getCMSDataField(
+                cmsData,
+                "pagesWhyDataxplorer.keyFeature5Title",
+                "Join The Data Revolution"
+              )}
+            </h3>
             <p>
-              Become a pioneer in the realm of data-driven decision-making.
+              {getCMSDataField(
+                cmsData,
+                "pagesWhyDataxplorer.keyFeature5Text1",
+                `Become a pioneer in the realm of data-driven decision-making.
               Embrace the future with Dataxplorer and experience the
               transformative power of streamlined data management. Sign up today
               and take the first step towards making a significant impact in the
-              international aid development sector. <br /> <br />
-              With Dataxplorer, your journey to data-driven excellence begins
-              now.
+              international aid development sector. `
+              )}
+              <br /> <br />
+              {getCMSDataField(
+                cmsData,
+                "pagesWhyDataxplorer.keyFeature5Text2",
+                `With Dataxplorer, your journey to data-driven excellence begins
+              now.`
+              )}
             </p>
           </div>
         </div>
       </div>
-    </div>
+    </section>
   );
 }

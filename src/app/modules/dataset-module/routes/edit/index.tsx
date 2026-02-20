@@ -1,13 +1,13 @@
 import { Container } from "@material-ui/core";
-import MetaData from "app/modules/dataset-module/routes/upload-module/upload-steps/metaData";
-import { APPLICATION_JSON } from "app/state/api";
-import { allAssetsSortBy } from "app/state/recoil/atoms";
-import { useStoreActions, useStoreState } from "app/state/store/hooks";
+import { APPLICATION_JSON } from "@app/state/api";
+import { allAssetsSortBy } from "@app/state/recoil/atoms";
+import { useStoreActions, useStoreState } from "@app/state/store/hooks";
 import axios from "axios";
 import React from "react";
 import { useHistory, useParams } from "react-router-dom";
 import { useTitle } from "react-use";
 import { useRecoilValue } from "recoil";
+import DescribeAndSave from "@app/modules/dataset-module/routes/upload-module/upload-steps/step3";
 interface IDatasetDetail {
   name: string;
   description: string;
@@ -66,9 +66,9 @@ export default function EditMetaData() {
   }, [loadedDataset]);
 
   const onSubmit = async () => {
-    axios
+    await axios
       .patch(
-        `${process.env.REACT_APP_API}/datasets/${page}`,
+        `${import.meta.env.VITE_API}/datasets/${page}`,
         { ...formDetails },
         {
           headers: {
@@ -103,11 +103,12 @@ export default function EditMetaData() {
             height: 108px;
           `}
         />
-        <MetaData
-          formDetails={formDetails}
-          handleBack={handleBack}
-          onSubmit={onSubmit}
-          setFormDetails={setFormDetails}
+        <DescribeAndSave
+          metadata={{
+            formDetails,
+            setFormDetails,
+            onSubmit: onSubmit,
+          }}
         />
       </Container>
     </>

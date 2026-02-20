@@ -6,19 +6,18 @@ import useTitle from "react-use/lib/useTitle";
 import { useHistory, useParams } from "react-router-dom";
 import Skeleton from "@material-ui/lab/Skeleton";
 /* project */
-import { useStoreActions, useStoreState } from "app/state/store/hooks";
-import { useDataThemesEchart } from "app/hooks/useDataThemesEchart";
-import { ChartBuilderPreviewThemeProps } from "app/modules/chart-module/routes/preview-theme/data";
-import WarningDialog from "app/modules/chart-module/components/dialog/warningDialog";
-import GeomapLegend from "app/modules/chart-module/components/geomap-legend";
-import ErrorComponent from "app/modules/chart-module/components/dialog/errrorComponent";
-import { DatasetListItemAPIModel } from "app/modules/dataset-module/data";
-import { getDatasetDetailsSource } from "app/modules/chart-module/util/getDatasetDetailsSource";
-import { mobileDescriptioncss } from "app/modules/dataset-module/routes/upload-module/style";
+import { useStoreActions, useStoreState } from "@app/state/store/hooks";
+import { useDataThemesEchart } from "@app/hooks/useDataThemesEchart";
+import { ChartBuilderPreviewThemeProps } from "@app/modules/chart-module/routes/preview-theme/data";
+import WarningDialog from "@app/modules/chart-module/components/dialog/warningDialog";
+import GeomapLegend from "@app/modules/chart-module/components/geomap-legend";
+import ErrorComponent from "@app/modules/chart-module/components/dialog/errrorComponent";
+import { DatasetListItemAPIModel } from "@app/modules/dataset-module/data";
+import { mobileDescriptioncss } from "@app/modules/dataset-module/routes/upload-module/style";
 import moment from "moment";
-import AIIcon from "app/assets/icons/AIIcon";
-import ChartArea from "app/modules/chart-module/components/chart-area";
-import { MOBILE_BREAKPOINT } from "app/theme";
+import AIIcon from "@app/assets/icons/AIIcon";
+import ChartArea from "@app/modules/chart-module/components/chart-area";
+import { MOBILE_BREAKPOINT } from "@app/theme";
 
 export function ChartBuilderPreviewTheme(props: ChartBuilderPreviewThemeProps) {
   useTitle("Dataxplorer - Preview Chart");
@@ -28,7 +27,7 @@ export function ChartBuilderPreviewTheme(props: ChartBuilderPreviewThemeProps) {
   const { page } = useParams<{ page: string; view: string }>();
   const dataset = useStoreState((state) => state.charts.dataset.value);
   const history = useHistory();
-  const { render } = useDataThemesEchart();
+  const { render } = useDataThemesEchart({ readOnly: true });
   const mapping = useStoreState((state) => state.charts.mapping.value);
   const selectedChartType = useStoreState(
     (state) => state.charts.chartType.value
@@ -40,10 +39,7 @@ export function ChartBuilderPreviewTheme(props: ChartBuilderPreviewThemeProps) {
     (state) =>
       (state.dataThemes.DatasetGet.crudData ?? {}) as DatasetListItemAPIModel
   );
-  const { sourceUrl, filename } = getDatasetDetailsSource(
-    datasetDetails,
-    undefined
-  );
+
   React.useEffect(() => {
     if (token) {
       loadDataset({
@@ -72,7 +68,8 @@ export function ChartBuilderPreviewTheme(props: ChartBuilderPreviewThemeProps) {
       domRef &&
       domRef.current &&
       !isEmpty(mapping) &&
-      !isEmpty(visualOptions)
+      !isEmpty(visualOptions) &&
+      !isEmpty(props.renderedChartMappedData)
     ) {
       const loader = document.getElementById("chart-placeholder");
       if (loader) {

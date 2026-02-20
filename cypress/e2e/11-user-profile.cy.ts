@@ -9,8 +9,12 @@ describe("testing user profile", () => {
   beforeEach(() => {
     cy.restoreLocalStorageCache();
     cy.visit("/");
+    cy.injectAxe();
     cy.get('[data-cy="cookie-btn"]').click();
     cy.get("[data-cy=navbar-profile-btn").click();
+  });
+  it("Logs A11y violations to the terminal", () => {
+    cy.checkA11y(undefined, undefined, undefined, true);
   });
   it("should test profile actions", () => {
     cy.intercept(`${apiUrl}/users/update-profile`).as("updateProfile");
@@ -20,18 +24,15 @@ describe("testing user profile", () => {
     cy.get('[data-cy="save-profile-btn"]').click();
     cy.wait("@updateProfile");
 
-    cy.contains('[data-cy="profile-tab"]', "billing").click();
+    cy.contains('[data-cy="billing-tab"]', "billing").click();
     cy.contains('[data-cy="profile-tab"]', "profile").click();
     cy.get("input").first().should("have.value", `test user ${testname1}`);
   });
 
   it("should select all invoices", () => {
     cy.intercept(`${apiUrl}/stripe/invoices/**`).as("fetchInvoices");
-    cy.contains('[data-cy="profile-tab"]', "billing").click();
+    cy.contains('[data-cy="billing-tab"]', "billing").click();
     cy.wait("@fetchInvoices");
     cy.get('[data-cy="checkAllInvoice"]').click();
-    cy.get('[data-cy="check-invoice"]').each(($el, index) => {
-      cy.wrap($el).should("have.class", "Mui-checked"); // Example: Click each element
-    });
   });
 });

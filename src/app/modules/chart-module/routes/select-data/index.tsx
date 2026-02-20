@@ -1,15 +1,15 @@
 /* third-party */
 import React from "react";
 import useTitle from "react-use/lib/useTitle";
-import { useStoreActions } from "app/state/store/hooks";
+import { useStoreActions, useStoreState } from "@app/state/store/hooks";
 import { useParams, useHistory } from "react-router-dom";
 /* project */
-import { datasetCategories } from "app/modules/dataset-module/routes/upload-module/upload-steps/metaData";
-import DatasetsGrid from "app/modules/home-module/components/AssetCollection/Datasets/datasetsGrid";
-import { styles as commonStyles } from "app/modules/chart-module/routes/common/styles";
-import DatasetCategoryList from "app/modules/home-module/components/AssetCollection/Datasets/datasetCategoryList";
-import { ChartRenderedItem } from "app/modules/chart-module/data";
-import Filter from "app/modules/home-module/components/Filter";
+import { datasetCategories } from "@app/modules/dataset-module/routes/upload-module/upload-steps/step3/metaData";
+import DatasetsGrid from "@app/modules/home-module/components/AssetCollection/Datasets/datasetsGrid";
+import { styles as commonStyles } from "@app/modules/chart-module/routes/common/styles";
+import DatasetCategoryList from "@app/modules/home-module/components/AssetCollection/Datasets/datasetCategoryList";
+import { ChartRenderedItem } from "@app/modules/chart-module/data";
+import Filter from "@app/modules/home-module/components/Filter";
 
 function ChartModuleDataView(
   props: Readonly<{
@@ -36,11 +36,15 @@ function ChartModuleDataView(
   const setDataset = useStoreActions(
     (actions) => actions.charts.dataset.setValue
   );
+  const token = useStoreState((state) => state.AuthToken.value);
 
   const handleItemClick = (id: string) => {
+    const loadDatasetAPI = `${import.meta.env.VITE_API}/chart/sample-data${
+      token ? "" : "/public"
+    }/${id}`;
     setDataset(id);
     props.setChartFromAPI(null);
-    props.loadDataset(id).then(() => {
+    props.loadDataset(loadDatasetAPI).then(() => {
       history.push(`/chart/${page}/preview-data`);
     });
   };
@@ -57,7 +61,10 @@ function ChartModuleDataView(
         openSearch={openSearch}
         setOpenSearch={setOpenSearch}
         searchIconCypressId="open-search-button"
-        hasSearch
+        hasSearchButton
+        setFilterValue={() => {}}
+        filterValue={null as unknown as string}
+        terminateSearch={() => {}}
       />
       <DatasetCategoryList
         categories={categories}
@@ -74,7 +81,9 @@ function ChartModuleDataView(
         onItemClick={handleItemClick}
         md={props.toolboxOpen ? 4 : 6}
         lg={props.toolboxOpen ? 4 : 3}
-        userOnly
+        filterValue="myAssets"
+        gridId="datasets-grid"
+        hideCreateChartButton
       />
     </div>
   );

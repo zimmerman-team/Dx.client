@@ -1,7 +1,7 @@
 import React from "react";
-import { ReactComponent as GFLogo } from "app/modules/home-module/assets/gf-logo.svg";
-import { ReactComponent as MFALogo } from "app/modules/home-module/assets/mfa-finland-logo.svg";
-import IatiLogo from "app/modules/home-module/assets/iati-logo.png";
+import GFLogo from "@app/modules/home-module/assets/gf-logo.svg?react";
+import MFALogo from "@app/modules/home-module/assets/mfa-finland-logo.svg?react";
+import IatiLogo from "@app/modules/home-module/assets/iati-logo.png";
 import { Container } from "@material-ui/core";
 export default function OurPartnersBlock() {
   return (
@@ -48,11 +48,11 @@ export default function OurPartnersBlock() {
             }
           `}
         >
-          <MFALogo />
+          <MFALogo aria-label="Ministry of foreign affairs" />
 
-          <GFLogo />
+          <GFLogo aria-label="The Global Fund" />
 
-          <img src={IatiLogo} alt="iati-logo" />
+          <img src={IatiLogo} alt="International Aid Transparency Initiative" />
         </div>
       </Container>
     </div>

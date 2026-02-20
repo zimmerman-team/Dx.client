@@ -2,8 +2,8 @@ import {
   DESKTOP_BREAKPOINT,
   MOBILE_BREAKPOINT,
   TABLET_STARTPOINT,
-} from "app/theme";
-import { css } from "styled-components/macro";
+} from "@app/theme";
+import { css } from "styled-components";
 
 export const benefitscss = css`
   position: relative;
@@ -52,7 +52,7 @@ export const keyfeaturescss = {
         margin: unset;
       }
     }
-    h3 {
+    h2 {
       font-size: 48px;
       line-height: 43px;
       text-align: center;
@@ -70,7 +70,7 @@ export const keyfeaturescss = {
         margin-bottom: 48px;
       }
     }
-    p:nth-of-type(1) {
+    h3 {
       font-size: 40px;
       line-height: 20px;
       font-family: "GothamNarrow-Bold", sans-serif;
@@ -88,7 +88,7 @@ export const keyfeaturescss = {
         text-align: left;
       }
     }
-    p:nth-of-type(2) {
+    p:nth-of-type(1) {
       margin: 0;
       font-family: "GothamNarrow-Book", sans-serif;
       line-height: 30px;

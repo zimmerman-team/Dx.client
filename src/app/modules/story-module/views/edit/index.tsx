@@ -8,35 +8,36 @@ import Container from "@material-ui/core/Container";
 import { EditorState, convertFromRaw } from "draft-js";
 import { useTitle } from "react-use";
 import { useAuth0 } from "@auth0/auth0-react";
-import { useStoreActions, useStoreState } from "app/state/store/hooks";
-import { StoryModel, emptyStory } from "app/modules/story-module/data";
-import { StoryEditViewProps } from "app/modules/story-module/views/edit/data";
-import HeaderBlock from "app/modules/story-module/components/headerBlock";
-import { NotAuthorizedMessageModule } from "app/modules/common/not-authorized-message";
-import { ItemComponent } from "app/modules/story-module/components/order-container";
-import { StoryElementsType } from "app/modules/story-module/components/right-panel-create-view";
-import AddRowFrameButton from "app/modules/story-module/components/rowStructure/addRowFrameButton";
-import { GridColumns } from "app/modules/story-module/components/grid-columns";
+import { useStoreActions, useStoreState } from "@app/state/store/hooks";
+import { StoryModel, emptyStory } from "@app/modules/story-module/data";
+import { StoryEditViewProps } from "@app/modules/story-module/views/edit/data";
+import HeaderBlock from "@app/modules/story-module/components/headerBlock";
+import { NotAuthorizedMessageModule } from "@app/modules/common/not-authorized-message";
+import { ItemComponent } from "@app/modules/story-module/components/order-container";
+import { StoryElementsType } from "@app/modules/story-module/components/right-panel-create-view";
+import AddRowFrameButton from "@app/modules/story-module/components/rowStructure/addRowFrameButton";
+import { GridColumns } from "@app/modules/story-module/components/grid-columns";
 
 import {
   IRowFrameStructure,
   storyContentContainerWidth,
-} from "app/state/recoil/atoms";
-import { IFramesArray } from "app/modules/story-module/views/create/data";
-import RowFrame from "app/modules/story-module/components/rowStructure";
-import TourGuide from "app/components/Dialogs/TourGuide";
+} from "@app/state/recoil/atoms";
+import { IFramesArray } from "@app/modules/story-module/views/create/data";
+import RowFrame from "@app/modules/story-module/components/rowStructure";
+import TourGuide from "@app/components/Dialogs/TourGuide";
 import useCookie from "@devhammed/use-cookie";
 import get from "lodash/get";
-import { PageLoader } from "app/modules/common/page-loader";
-import { handleDragOverScroll } from "app/utils/handleAutoScroll";
+import { PageLoader } from "@app/modules/common/page-loader";
+import { handleDragOverScroll } from "@app/utils/handleAutoScroll";
 import {
   compareFramesArrayState,
   compareHeaderDetailsState,
-} from "app/modules/story-module/views/edit/compareStates";
-import PlaceHolder from "app/modules/story-module/components/placeholder";
-import useAutosave from "app/hooks/useAutoSave";
-import { TABLET_STARTPOINT } from "app/theme";
-import { decorators } from "app/modules/common/RichEditor/decorators";
+} from "@app/modules/story-module/views/edit/compareStates";
+import PlaceHolder from "@app/modules/story-module/components/placeholder";
+import useAutosave from "@app/hooks/useAutoSave";
+import { TABLET_STARTPOINT } from "@app/theme";
+import { decorators } from "@app/modules/common/RichEditor/decorators";
+import { useUndoRedo } from "@app/hooks/useUndoRedo";
 import { useMediaQuery } from "@material-ui/core";
 
 function StoryEditView(props: Readonly<StoryEditViewProps>) {
@@ -55,8 +56,15 @@ function StoryEditView(props: Readonly<StoryEditViewProps>) {
   const [containerWidth, setContainerWidth] = useRecoilState(
     storyContentContainerWidth
   );
-  const [isStoryHeadingModified, setIsStoryHeadingModified] =
-    React.useState(false);
+  const { store } = useUndoRedo(
+    props.framesArray,
+    props.updateFramesArray,
+    props.undoStack,
+    props.setUndoStack,
+    props.redoStack,
+    props.setRedoStack
+  );
+  const [isStoryHydrated, setIsStoryHydrated] = React.useState(false);
   const [rowStructureType, setRowStructuretype] =
     React.useState<IRowFrameStructure>({
       index: 0,
@@ -99,6 +107,7 @@ function StoryEditView(props: Readonly<StoryEditViewProps>) {
   );
 
   function deleteFrame(id: string) {
+    store();
     props.updateFramesArray((draft) => {
       const frameId = draft.findIndex((frame) => frame.id === id);
 
@@ -114,20 +123,6 @@ function StoryEditView(props: Readonly<StoryEditViewProps>) {
       clearStoryData();
     };
   }, [page, token]);
-
-  React.useEffect(() => {
-    if (storyData.id !== page) {
-      return;
-    }
-    const items = storyData.rows.map((rowFrame, index) =>
-      rowFrame.items.filter((item) => typeof item === "string")
-    ) as string[][];
-    let pickedItems: string[] = [];
-
-    for (const element of items) {
-      pickedItems = [...pickedItems, ...element];
-    }
-  }, [storyData]);
 
   React.useEffect(() => {
     if (width && width !== containerWidth) {
@@ -163,6 +158,10 @@ function StoryEditView(props: Readonly<StoryEditViewProps>) {
     }
   };
 
+  const uniformBlockTypeStyleFromStoryData = (story: StoryModel) => {
+    return story.uniformBlockTypeStyle;
+  };
+
   const framesArrayFromStoryData = (story: StoryModel): IFramesArray[] => {
     return story.rows?.map((rowFrame, index) => {
       const contentTypes = rowFrame.items.map(getContentType);
@@ -193,11 +192,6 @@ function StoryEditView(props: Readonly<StoryEditViewProps>) {
         content,
         contentWidths: [...rowFrame.contentWidths?.widths],
         contentHeights: [...rowFrame.contentHeights?.heights],
-        textEditorHeights: [
-          ...rowFrame.contentHeights?.heights.map((height, i) =>
-            contentTypes[i] === "text" ? height : 0
-          ),
-        ],
         contentTypes,
       };
     });
@@ -229,7 +223,7 @@ function StoryEditView(props: Readonly<StoryEditViewProps>) {
     };
   };
 
-  const hasChangesBeenMadeCheck = () => {
+  const handleSave = () => {
     if (storyData.id !== page) {
       return;
     }
@@ -253,9 +247,10 @@ function StoryEditView(props: Readonly<StoryEditViewProps>) {
       props.onSave("edit");
     }
   };
+
   useAutosave(
     () => {
-      hasChangesBeenMadeCheck();
+      handleSave();
     },
     2 * 1000,
     props.autoSave,
@@ -270,7 +265,15 @@ function StoryEditView(props: Readonly<StoryEditViewProps>) {
     props.setHasStoryNameFocused(storyData.name !== "Untitled story");
     props.setStoryName(storyData.name);
     props.setHeaderDetails(headerDetailsFromStoryData(storyData));
+    if (!isStoryHydrated) {
+      store(); // Push to undo stack on initial load only
+      setIsStoryHydrated(true);
+    }
+
     props.updateFramesArray(framesArrayFromStoryData(storyData));
+    props.setUniformBlockTypeStyle(
+      uniformBlockTypeStyleFromStoryData(storyData)
+    );
   };
 
   React.useEffect(() => {
@@ -331,7 +334,7 @@ function StoryEditView(props: Readonly<StoryEditViewProps>) {
           transition: all cubic-bezier(0.4, 0, 0.2, 1) 0.2s;
         `}
       />
-      <HeaderBlock
+      {/* <HeaderBlock
         previewMode={false}
         headerDetails={{
           ...props.headerDetails,
@@ -341,30 +344,26 @@ function StoryEditView(props: Readonly<StoryEditViewProps>) {
         hasStoryNameFocused={props.hasStoryNameFocused}
         sethasStoryNameFocused={props.setHasStoryNameFocused}
         setHeaderDetails={props.setHeaderDetails}
-        setPlugins={props.setPlugins}
+        setPluginsState={props.setPluginsState}
         isToolboxOpen={props.rightPanelOpen}
         handleRightPanelOpen={props.handleRightPanelOpen}
         isStoryHeadingModified={isStoryHeadingModified}
-      />
+      /> */}
       <Container maxWidth="lg">
         <div
           ref={ref}
           id="content-container"
           css={`
             transition: width 225ms cubic-bezier(0, 0, 0.2, 1) 0ms;
-            width: ${
-              props.rightPanelOpen
-                ? "calc(100vw - ((100vw - 1280px) / 2) - 400px - 50px)"
-                : "100%"
-            };
+            width: ${props.rightPanelOpen
+              ? "calc(100vw - ((100vw - 1280px) / 2) - 400px - 50px)"
+              : "100%"};
             position: relative;
             @media (min-width: ${TABLET_STARTPOINT}) and (max-width: 1260px) {
-             width: ${
-               props.rightPanelOpen
-                 ? `calc(100% - ${RIGHT_PANEL_WIDTH})`
-                 : "100%"
-             }
-
+              width: ${props.rightPanelOpen
+                ? `calc(100% - ${RIGHT_PANEL_WIDTH})`
+                : "100%"};
+            }
           `}
         >
           <Box height={50} />
@@ -385,6 +384,10 @@ function StoryEditView(props: Readonly<StoryEditViewProps>) {
                     deleteFrame={deleteFrame}
                     framesArray={props.framesArray}
                     updateFramesArray={props.updateFramesArray}
+                    redoStack={props.redoStack}
+                    setRedoStack={props.setRedoStack}
+                    undoStack={props.undoStack}
+                    setUndoStack={props.setUndoStack}
                   />
                 )}
                 <Box height={8} />
@@ -400,15 +403,21 @@ function StoryEditView(props: Readonly<StoryEditViewProps>) {
                   >
                     <RowFrame
                       {...frame.frame}
+                      rowIndex={index}
                       framesArray={props.framesArray}
                       updateFramesArray={props.updateFramesArray}
                       view={props.view}
                       rowContentHeights={frame.contentHeights}
                       rowContentWidths={frame.contentWidths}
-                      setPlugins={props.setPlugins}
+                      setPluginsState={props.setPluginsState}
                       onSave={props.onSave}
                       endStoryTour={handleEndStoryTour}
                       rightPanelOpen={props.rightPanelOpen}
+                      redoStack={props.redoStack}
+                      setRedoStack={props.setRedoStack}
+                      undoStack={props.undoStack}
+                      setUndoStack={props.setUndoStack}
+                      previewItems={undefined}
                     />
                   </div>
                 </ItemComponent>
@@ -423,6 +432,10 @@ function StoryEditView(props: Readonly<StoryEditViewProps>) {
                   deleteFrame={deleteFrame}
                   framesArray={props.framesArray}
                   updateFramesArray={props.updateFramesArray}
+                  redoStack={props.redoStack}
+                  setRedoStack={props.setRedoStack}
+                  undoStack={props.undoStack}
+                  setUndoStack={props.setUndoStack}
                 />
               </div>
             );
@@ -436,6 +449,10 @@ function StoryEditView(props: Readonly<StoryEditViewProps>) {
             setRowStructureType={setRowStructuretype}
             endTour={handleEndStoryTour}
             rightPanelOpen={props.rightPanelOpen}
+            redoStack={props.redoStack}
+            setRedoStack={props.setRedoStack}
+            undoStack={props.undoStack}
+            setUndoStack={props.setUndoStack}
           />
           <Box height={45} />
           <GridColumns />

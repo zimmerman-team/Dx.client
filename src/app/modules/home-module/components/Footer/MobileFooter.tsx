@@ -1,12 +1,9 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { ReactComponent as LogoIcon } from "app/modules/home-module/components/Footer/asset/logo.svg";
-import { ReactComponent as CopyIcon } from "app/modules/home-module/components/Footer/asset/copy.svg";
+import CopyIcon from "@app/modules/home-module/components/Footer/asset/copy.svg?react";
 import moment from "moment";
-import {
-  PRIVACY_POLICY_LINK,
-  TERMS_AND_CONDITION_LINK,
-} from "app/modules/chart-module/util/constants/links";
+import { PRIVACY_POLICY_LINK, TERMS_AND_CONDITION_LINK } from "@app/constants";
+import Logo from "@app/assets/icons/Logo";
 
 export default function MobileFooter() {
   return (
@@ -21,7 +18,7 @@ export default function MobileFooter() {
       `}
     >
       <Link to="/">
-        <LogoIcon />
+        <Logo />
       </Link>
       <div
         css={`
@@ -87,7 +84,7 @@ export default function MobileFooter() {
           `}
         >
           <CopyIcon />
-          {moment(new Date()).format("YYYY")} Dataxplorer All Rights Reserved
+          {moment(new Date()).format("YYYY")} Dataxplorerjbk All Rights Reserved
         </p>
       </div>
     </div>

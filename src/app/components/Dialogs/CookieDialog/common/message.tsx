@@ -1,11 +1,8 @@
 import Box from "@material-ui/core/Box";
-import styled from "styled-components/macro";
+import styled from "styled-components";
 import Typography from "@material-ui/core/Typography";
-import { PrimaryButton } from "app/components/Styled/button";
-import {
-  COOKIE_POLICY_LINK,
-  DATA_POLICY_LINK,
-} from "app/modules/chart-module/util/constants/links";
+import { PrimaryButton } from "@app/components/Styled/button";
+import { COOKIE_POLICY_LINK, DATA_POLICY_LINK } from "@app/constants";
 
 const MessageContainer = styled((props) => <Box {...props} />)`
   align-items: center;

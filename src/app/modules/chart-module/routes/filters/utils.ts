@@ -1,4 +1,4 @@
-import { FilterGroupOptionModel } from "app/components/ToolBoxPanel/components/filters/data";
+import { FilterGroupOptionModel } from "@app/components/ToolBoxPanel/components/filters/data";
 
 export const getAllOptionsCount = (options: FilterGroupOptionModel[]) => {
   let allOptionsCount = 0;

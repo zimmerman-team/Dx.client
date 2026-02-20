@@ -1,7 +1,7 @@
 import React from "react";
-import InlineLogo from "app/modules/home-module/assets/inline-logo";
-import { navLinkcss } from "app/components/AppBar/style";
-import { DropDownNav } from "app/components/AppBar/components/drop-down-nav";
+import InlineLogo from "@app/modules/home-module/assets/inline-logo";
+import { navLinkcss } from "@app/components/AppBar/style";
+import { DropDownNav } from "@app/components/AppBar/components/drop-down-nav";
 import { NavLink } from "react-router-dom";
 
 export const NavList = (props: {
@@ -20,7 +20,7 @@ export const NavList = (props: {
             gap: 6px;
           `}
         >
-          About <InlineLogo width={103} />
+          About DATAXPLORER
         </b>
       ),
       path: ".",
@@ -40,7 +40,7 @@ export const NavList = (props: {
                 gap: 6px;
               `}
             >
-              Why <InlineLogo width={103} />
+              Why DATAXPLORER
             </b>
           ),
           path: "/why-dataxplorer",
@@ -52,6 +52,7 @@ export const NavList = (props: {
           cy: "nav-partners",
         },
       ],
+      cy: "nav-about-group",
     },
     { name: "Pricing", path: "/pricing", cy: "nav-pricing", class: "pricing" },
     { name: "Contact", path: "/contact", cy: "nav-contact", class: "contact" },
@@ -63,7 +64,7 @@ export const NavList = (props: {
     <>
       {list.map((item) => (
         <div
-          key={item.cy}
+          key={item.path}
           css={`
             ${navLinkcss(item.class ?? item.path, props.navLocation)}
             ${props.mobile

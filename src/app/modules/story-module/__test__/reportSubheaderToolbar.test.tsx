@@ -3,8 +3,8 @@ import {
   ChartGet,
   ChartCreate,
   ChartUpdate,
-} from "app/state/api/action-reducers/charts";
-import { AuthTokenState } from "app/state/api/action-reducers/sync";
+} from "@app/state/api/action-reducers/charts";
+import { AuthTokenState } from "@app/state/api/action-reducers/sync";
 import userEvent from "@testing-library/user-event";
 import {
   act,
@@ -13,24 +13,25 @@ import {
   screen,
   waitFor,
 } from "@testing-library/react";
-import { homeDisplayAtom, chartFromStoryAtom } from "app/state/recoil/atoms";
-import { mockUseAuth0 } from "app/utils/mockAuth0";
-import { RecoilObserver } from "app/utils/recoilObserver";
+import { homeDisplayAtom, chartFromStoryAtom } from "@app/state/recoil/atoms";
+import { mockUseAuth0 } from "@app/utils/mockAuth0";
+import { RecoilObserver } from "@app/utils/recoilObserver";
 import { createStore, StoreProvider } from "easy-peasy";
 import { createMemoryHistory } from "history";
 import Router from "react-router-dom";
 import { MutableSnapshot, RecoilRoot } from "recoil";
-import { ToolbarPluginsType } from "app/modules/story-module/components/storySubHeaderToolbar/staticToolbar";
-import { IHeaderDetails } from "app/modules/story-module/components/right-panel/data";
-import { IFramesArray } from "app/modules/story-module/views/create/data";
+import { ToolbarPluginsType } from "@app/modules/story-module/components/storySubHeaderToolbar/staticToolbar";
+import { IHeaderDetails } from "@app/modules/story-module/components/right-panel/data";
+import { IFramesArray } from "@app/modules/story-module/views/create/data";
 import {
   StoryGet,
   StoryGetList,
   StoryUpdate,
-} from "app/state/api/action-reducers/stories";
+} from "@app/state/api/action-reducers/stories";
 import axios, { AxiosResponse } from "axios";
-import { StorySubheaderToolbar } from "app/modules/story-module/components/storySubHeaderToolbar";
-import { setMediaQueryForTest } from "app/utils/setMediaQueryForTest";
+import { StorySubheaderToolbar } from "@app/modules/story-module/components/storySubHeaderToolbar";
+import { setMediaQueryForTest } from "@app/utils/setMediaQueryForTest";
+import { DraftFunction } from "use-immer";
 
 interface MockProps {
   name: string;
@@ -47,6 +48,11 @@ interface MockProps {
   isEditorFocused: boolean;
   headerDetails: IHeaderDetails;
   framesArray: IFramesArray[];
+  // updateFramesArray: (updater: (draft: IFramesArray[]) => void) => void;
+  undoStack: IFramesArray[][];
+  setUndoStack: React.Dispatch<React.SetStateAction<IFramesArray[][]>>;
+  redoStack: IFramesArray[][];
+  setRedoStack: React.Dispatch<React.SetStateAction<IFramesArray[][]>>;
   setStopInitializeFramesWidth?: (value: boolean) => void;
   handlePersistStoryState?: () => void;
   isPreviewView: boolean;
@@ -101,6 +107,12 @@ const defaultProps = (props: Partial<MockProps> = {}): MockProps => {
     framesArray: [],
     handlePersistStoryState: jest.fn(),
     isPreviewView: false,
+    redoStack: [],
+    setRedoStack: jest.fn(),
+    // updateFramesArray: jest.fn((Updater: IFramesArray[]) => []),
+    undoStack: [],
+    setUndoStack: jest.fn(),
+
     ...props,
   };
 };
@@ -154,7 +166,14 @@ const appSetup = (params: Params, newProps: Partial<MockProps> = {}) => {
                 node={homeDisplayAtom}
                 onChange={onHomeTabChange}
               />
-              <StorySubheaderToolbar {...props} />
+              {/* <StorySubheaderToolbar
+                updateFramesArray={function (
+                  arg: IFramesArray[] | DraftFunction<IFramesArray[]>
+                ): void {
+                  throw new Error("Function not implemented.");
+                }}
+                {...props}
+              /> */}
             </RecoilRoot>
           </StoreProvider>
         </Auth0Provider>

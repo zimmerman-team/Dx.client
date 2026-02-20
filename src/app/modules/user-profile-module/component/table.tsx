@@ -10,10 +10,11 @@ import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
 import { Tooltip as SpeechBubble } from "react-tooltip";
 import TableContainer from "@material-ui/core/TableContainer";
-import { PrintIcon } from "app/modules/user-profile-module/component/icons";
-import { ReactComponent as InfoIcon } from "app/modules/user-profile-module/asset/info-icon.svg";
-import { InfoSnackbar } from "app/modules/story-module/components/storySubHeaderToolbar/infosnackbar";
-import { ISnackbarState } from "app/modules/dataset-module/routes/upload-module/upload-steps/previewFragment";
+import { PrintIcon } from "@app/modules/user-profile-module/component/icons";
+import InfoIcon from "@app/modules/user-profile-module/asset/info-icon.svg?react";
+import { InfoSnackbar } from "@app/modules/story-module/components/storySubHeaderToolbar/infosnackbar";
+import { ISnackbarState } from "@app/modules/dataset-module/routes/upload-module/style";
+import { FOCUS_VISIBLE_STYLE_LIGHT } from "@app/theme";
 
 const dataCols = [
   { key: "date", label: "Date" },
@@ -115,7 +116,7 @@ export function InvoiceTable(props: InvoiceTableProps) {
     return (
       <Table
         id="invoice-table"
-        data-cy="homepage-table"
+        data-cy="invoice-table"
         css={`
           border-spacing: 0;
           border-style: hidden;
@@ -233,16 +234,22 @@ export function InvoiceTable(props: InvoiceTableProps) {
             display: flex;
             align-items: center;
             font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
-            span {
+            button {
               display: flex;
               align-items: center;
+              border: none;
+              background: transparent;
+              outline: none;
+              :focus-visible {
+                ${FOCUS_VISIBLE_STYLE_LIGHT}
+              }
             }
           `}
         >
           <p>Invoices</p>
-          <span className="invoice-info">
-            <InfoIcon />
-          </span>
+          <button className="invoice-info">
+            <InfoIcon aria-label="more info" />
+          </button>
           <SpeechBubble
             anchorSelect=".invoice-info"
             place="right"
@@ -273,6 +280,9 @@ export function InvoiceTable(props: InvoiceTableProps) {
               border: none;
               outline: none;
               cursor: pointer;
+              :focus-visible {
+                ${FOCUS_VISIBLE_STYLE_LIGHT}
+              }
             }
           `}
         >

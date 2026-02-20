@@ -1,9 +1,10 @@
 import { Action, Thunk } from "easy-peasy";
 import {
   AuthTokenModel,
+  CMSDataModel,
   DataSourceSnackbarVisibilityStateModel,
   DataSourceStateModel,
-} from "app/state/api/action-reducers/sync";
+} from "@app/state/api/action-reducers/sync";
 import {
   ChartsActivePanelsStateModel,
   ChartsChartTypeStateModel,
@@ -11,8 +12,8 @@ import {
   ChartsEnabledFilterOptionGroupsStateModel,
   ChartsMappingStateModel,
   SelectedAIChartModel,
-} from "app/state/api/action-reducers/sync/charts";
-import { ChartsAppliedFiltersStateModel } from "app/state/api/action-reducers/sync/charts/filters";
+} from "@app/state/api/action-reducers/sync/charts";
+import { ChartsAppliedFiltersStateModel } from "@app/state/api/action-reducers/sync/charts/filters";
 
 export interface RequestValues<T> {
   values?: T;
@@ -91,6 +92,14 @@ export type ApiCallModel = ApiModel<
   ApiResponseModel
 >;
 
+export interface CMSApiResponseModel {
+  data: any;
+}
+
+export type CMSApiCallModel = ApiModel<
+  ApiCallParams | ApiCallParams[] | string,
+  CMSApiResponseModel
+>;
 export interface StoreModel {
   // global search
   GlobalSearch: ApiCallModel;
@@ -145,4 +154,18 @@ export interface StoreModel {
     stories: ApiCallModel;
     datasets: ApiCallModel;
   };
+  cms: {
+    componentsFooter: CMSApiCallModel;
+    componentsHeader: CMSApiCallModel;
+    pagesHome: CMSApiCallModel;
+    pagesDashboard: CMSApiCallModel;
+    pagesAbout: CMSApiCallModel;
+    pagesWhyDataxplorer: CMSApiCallModel;
+    pagesPricing: CMSApiCallModel;
+    pagesPartners: CMSApiCallModel;
+    pagesContact: CMSApiCallModel;
+    pagesWebinar: CMSApiCallModel;
+  };
+  logging: ApiCallModel;
+  CMSData: CMSDataModel;
 }

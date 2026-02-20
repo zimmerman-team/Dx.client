@@ -7,16 +7,20 @@ import { useRecoilState, useSetRecoilState } from "recoil";
 import { useImmer } from "use-immer";
 import { useAuth0 } from "@auth0/auth0-react";
 import { HTML5Backend } from "react-dnd-html5-backend";
-import { NoMatchPage } from "app/modules/common/no-match-page";
-import StoryEditView from "app/modules/story-module/views/edit";
-import AITemplate from "app/modules/story-module/views/ai-template";
+import { NoMatchPage } from "@app/modules/common/no-match-page";
+import StoryEditView from "@app/modules/story-module/views/edit";
+import AITemplate from "@app/modules/story-module/views/ai-template";
 import { EditorState, convertToRaw } from "draft-js";
-import { useStoreActions, useStoreState } from "app/state/store/hooks";
-import { StoryModel, emptyStory } from "app/modules/story-module/data";
-import { StoryPreviewView } from "app/modules/story-module/views/preview";
-import StoryInitialView from "app/modules/story-module/views/initial";
-import { IFramesArray } from "app/modules/story-module/views/create/data";
-import { StoryRightPanel } from "app/modules/story-module/components/right-panel";
+import { useStoreActions, useStoreState } from "@app/state/store/hooks";
+import {
+  IUniformBlockTypeStyle,
+  StoryModel,
+  emptyStory,
+} from "@app/modules/story-module/data";
+import { StoryPreviewView } from "@app/modules/story-module/views/preview";
+import StoryInitialView from "@app/modules/story-module/views/initial";
+import { IFramesArray } from "@app/modules/story-module/views/create/data";
+import { StoryRightPanel } from "@app/modules/story-module/components/right-panel";
 import {
   Route,
   Switch,
@@ -27,15 +31,16 @@ import {
 import {
   planDialogAtom,
   storyRightPanelViewAtom,
-} from "app/state/recoil/atoms";
-import { StorySubheaderToolbar } from "app/modules/story-module/components/storySubHeaderToolbar";
-import { ToolbarPluginsType } from "app/modules/story-module/components/storySubHeaderToolbar/staticToolbar";
+} from "@app/state/recoil/atoms";
+import { StorySubheaderToolbar } from "@app/modules/story-module/components/storySubHeaderToolbar";
+import { ToolbarPluginsType } from "@app/modules/story-module/components/storySubHeaderToolbar/staticToolbar";
 import DownloadedView from "./views/downloaded-view";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
-import NotAvailableOnMobile from "app/modules/common/not-available";
-import { MOBILE_BREAKPOINT } from "app/theme";
-import { decorators } from "app/modules/common/RichEditor/decorators";
-import { createHeadingEditorState } from "app/utils/draftjs/createEditorStateWithBlockType";
+import NotAvailableOnMobile from "@app/modules/common/not-available";
+import { MOBILE_BREAKPOINT } from "@app/theme";
+import { decorators } from "@app/modules/common/RichEditor/decorators";
+import { createHeadingEditorState } from "@app/utils/draftjs/createEditorStateWithBlockType";
+import { useEditorPlugins } from "@app/hooks/useEditorPlugins";
 
 export default function StoryModule() {
   const { user, isAuthenticated } = useAuth0();
@@ -52,7 +57,7 @@ export default function StoryModule() {
   }>({ isAutoSaveEnabled: false });
 
   const setPlanDialog = useSetRecoilState(planDialogAtom);
-  const [plugins, setPlugins] = React.useState<ToolbarPluginsType>([]);
+  const [plugins, setPluginsState] = React.useState<ToolbarPluginsType>([]);
   const token = useStoreState((state) => state.AuthToken.value);
   const [_rightPanelView, setRightPanelView] = useRecoilState(
     storyRightPanelViewAtom
@@ -116,6 +121,35 @@ export default function StoryModule() {
   const storyCreateData = useStoreState(
     (state) => state.stories.StoryCreate.crudData as any
   );
+  const [uniformBlockTypeStyle, setUniformBlockTypeStyle] =
+    React.useState<IUniformBlockTypeStyle>({
+      unstyled: {
+        css: null,
+        inlineStyles: [],
+      },
+      title: {
+        css: null,
+        inlineStyles: [],
+      },
+      "header-one": {
+        css: null,
+        inlineStyles: [],
+      },
+      "header-two": {
+        css: null,
+        inlineStyles: [],
+      },
+      "header-three": {
+        css: null,
+        inlineStyles: [],
+      },
+      "header-five": {
+        css: null,
+        inlineStyles: [],
+      },
+    });
+
+  const { plugins: localPlugins } = useEditorPlugins();
 
   React.useEffect(() => {
     if (storyCreateData?.error && storyCreateData?.errorType === "planError") {
@@ -131,6 +165,10 @@ export default function StoryModule() {
   const storyPlanWarning = useStoreState(
     (state) => state.stories.StoryCreate.planWarning
   );
+
+  React.useEffect(() => {
+    setPluginsState(localPlugins);
+  }, []);
 
   React.useEffect(() => {
     if (isSmallScreen && view === "edit") {
@@ -173,27 +211,18 @@ export default function StoryModule() {
     };
   }, [hasStoryNameBlurred]);
 
-  const deleteFrame = (id: string) => {
-    updateFramesArray((draft) => {
-      const frameId = draft.findIndex((frame) => frame.id === id);
-      draft.splice(frameId, 1);
-    });
-  };
-
   const basicStoryInitialState = () => {
     const id = v4();
     return [
       {
         id,
         frame: {
-          rowIndex: 0,
           rowId: id,
           type: "rowFrame",
         },
         content: [],
         contentWidths: [],
         contentHeights: [],
-        textEditorHeights: [],
         contentTypes: [],
         structure: null,
       },
@@ -209,7 +238,6 @@ export default function StoryModule() {
         id: rowOne,
         frame: {
           rowId: rowOne,
-          rowIndex: 0,
           forceSelectedType: "oneByFive",
 
           type: "rowFrame",
@@ -217,7 +245,6 @@ export default function StoryModule() {
         content: [null, null, null, null, null],
         contentWidths: [20, 20, 20, 20, 20],
         contentHeights: [121, 121, 121, 121, 121],
-        textEditorHeights: [null, null, null, null, null],
         contentTypes: [null, null, null, null, null],
         structure: "oneByFive",
       },
@@ -225,14 +252,12 @@ export default function StoryModule() {
         id: rowTwo,
         frame: {
           rowId: rowTwo,
-          rowIndex: 1,
           forceSelectedType: "oneByOne",
 
           type: "rowFrame",
         },
         content: [null],
         contentWidths: [100],
-        textEditorHeights: [null],
         contentHeights: [400],
         contentTypes: [null],
         structure: "oneByOne",
@@ -242,7 +267,6 @@ export default function StoryModule() {
         id: rowFive,
         frame: {
           rowId: rowFive,
-          rowIndex: 2,
           forceSelectedType: "oneByThree",
 
           type: "rowFrame",
@@ -250,7 +274,6 @@ export default function StoryModule() {
         content: [null, null, null],
         contentWidths: [33, 33, 33],
         contentHeights: [460, 460, 460],
-        textEditorHeights: [null, null, null],
         contentTypes: [null, null, null],
         structure: "oneByThree",
       },
@@ -268,6 +291,8 @@ export default function StoryModule() {
 
   const [framesArray, updateFramesArray] =
     useImmer<IFramesArray[]>(initialFramesArray);
+  const [undoStack, setUndoStack] = React.useState<IFramesArray[][]>([]);
+  const [redoStack, setRedoStack] = React.useState<IFramesArray[][]>([]);
 
   React.useEffect(() => {
     if (view === "edit" && !rightPanelOpen) {
@@ -346,6 +371,9 @@ export default function StoryModule() {
         titleColor: headerDetails.titleColor,
         descriptionColor: headerDetails.descriptionColor,
         dateColor: headerDetails.dateColor,
+        uniformBlockTypeStyle: {
+          ...uniformBlockTypeStyle,
+        },
       },
     });
     fetchStoryData({ token, getId: page, silent: true });
@@ -408,10 +436,17 @@ export default function StoryModule() {
             isSaveEnabled={isSaveEnabled}
             name={page !== "new" && !view ? storyGetData.name : storyName}
             framesArray={framesArray}
+            updateFramesArray={updateFramesArray}
             headerDetails={headerDetails}
             setStopInitializeFramesWidth={setStopInitializeFramesWidth}
             isPreviewView={isPreviewView}
             plugins={plugins}
+            undoStack={undoStack}
+            setUndoStack={setUndoStack}
+            redoStack={redoStack}
+            setRedoStack={setRedoStack}
+            setUniformBlockTypeStyle={setUniformBlockTypeStyle}
+            uniformBlockTypeStyle={uniformBlockTypeStyle}
           />
         )}
       {view && !storyError401 && view === "edit" && canEditDeleteStory && (
@@ -485,10 +520,15 @@ export default function StoryModule() {
               view={view}
               hasStoryNameFocused={hasStoryNameFocused}
               setHasStoryNameFocused={setHasStoryNameFocused}
-              setPlugins={setPlugins}
+              setPluginsState={setPluginsState}
               setAutoSave={setAutoSave}
               isSaveEnabled={isSaveEnabled}
               onSave={onSave}
+              redoStack={redoStack}
+              setRedoStack={setRedoStack}
+              undoStack={undoStack}
+              setUndoStack={setUndoStack}
+              setUniformBlockTypeStyle={setUniformBlockTypeStyle}
             />
           </section>
         </Route>

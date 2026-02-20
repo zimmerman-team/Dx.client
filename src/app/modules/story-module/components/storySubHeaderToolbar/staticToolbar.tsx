@@ -5,8 +5,8 @@ import { StaticToolBarPlugin } from "@draft-js-plugins/static-toolbar";
 import { TextAlignmentPlugin } from "@draft-js-plugins/text-alignment";
 import { UndoRedoButtonProps } from "@draft-js-plugins/undo";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
-import ColorModal from "app/modules/common/RichEditor/ColorModal";
-import FontSizeController from "app/modules/common/RichEditor/fontSizeHandler";
+import ColorModal from "@app/modules/common/RichEditor/ColorModal";
+import FontSizeController from "@app/modules/common/RichEditor/fontSizeHandler";
 import {
   HiglightPicker,
   BGHiglightPicker,
@@ -19,17 +19,23 @@ import {
   UnorderedListButton,
   OrderedListButton,
   BlockquoteButton,
-} from "app/modules/common/RichEditor/button/basicButtons";
-import { styles as commonstyles } from "app/modules/story-module/components/storySubHeaderToolbar/styles";
-import { ReactComponent as MoreIcon } from "app/modules/story-module/asset/more-icon.svg";
+  UndoButton,
+  RedoButton,
+} from "@app/modules/common/RichEditor/button/basicButtons";
+import { styles as commonstyles } from "@app/modules/story-module/components/storySubHeaderToolbar/styles";
+import MoreIcon from "@app/modules/story-module/asset/more-icon.svg?react";
 import React from "react";
-import { FontStyleHandler } from "app/modules/common/RichEditor/fontStyleHandler/fontStyleHandler";
-import { FontFamilyHandler } from "app/modules/common/RichEditor/fontStyleHandler/fontFamilyHandler";
+import { FontStyleHandler } from "@app/modules/common/RichEditor/fontStyleHandler/fontStyleHandler";
+import { FontFamilyHandler } from "@app/modules/common/RichEditor/fontStyleHandler/fontFamilyHandler";
 import {
   DecreaseIndentButton,
   IncreaseIndentButton,
-} from "app/modules/common/RichEditor/button/indentButtons";
+} from "@app/modules/common/RichEditor/button/indentButtons";
 import Tooltip from "@material-ui/core/Tooltip";
+import { useUndoRedo } from "@app/hooks/useUndoRedo";
+import { IFramesArray } from "@app/modules/story-module/views/create/data";
+import { Updater } from "use-immer";
+import { IUniformBlockTypeStyle } from "@app/modules/story-module/data";
 
 type UndoRedoType = {
   UndoButton: React.ComponentType<UndoRedoButtonProps>;
@@ -44,16 +50,38 @@ export type ToolbarPluginsType = (
   | EditorPlugin
 )[];
 
-export default function StaticToolbar(props: { plugins: ToolbarPluginsType }) {
+export default function StaticToolbar(props: {
+  plugins: ToolbarPluginsType;
+  updateFramesArray: Updater<IFramesArray[]>;
+  framesArray: IFramesArray[];
+  undoStack: IFramesArray[][];
+  setUndoStack: React.Dispatch<React.SetStateAction<IFramesArray[][]>>;
+  redoStack: IFramesArray[][];
+  setRedoStack: React.Dispatch<React.SetStateAction<IFramesArray[][]>>;
+  uniformBlockTypeStyle: IUniformBlockTypeStyle;
+  setUniformBlockTypeStyle: React.Dispatch<
+    React.SetStateAction<IUniformBlockTypeStyle>
+  >;
+}) {
+  const { redo, undo } = useUndoRedo(
+    props.framesArray,
+    props.updateFramesArray,
+    props.undoStack,
+    props.setUndoStack,
+    props.redoStack,
+    props.setRedoStack
+  );
   const isDesktop = useMediaQuery("(min-width: 1219px)");
   //control modals for color and background color pickers
-  const [anchorEl, setAnchorEl] = React.useState<HTMLDivElement | null>(null);
+  const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(
+    null
+  );
   const [activeColorModal, setActiveColorModal] = React.useState<
     "bg" | "color" | null
   >(null);
   const [displayRestIcons, setDisplayRestIcons] = React.useState(false);
   const handleClick = (
-    event: React.MouseEvent<HTMLDivElement>,
+    event: React.MouseEvent<HTMLButtonElement, MouseEvent>,
     modalType: "bg" | "color"
   ) => {
     setActiveColorModal(modalType);
@@ -76,10 +104,10 @@ export default function StaticToolbar(props: { plugins: ToolbarPluginsType }) {
 
   const Toolbar = (props.plugins[0] as StaticToolBarPlugin)?.Toolbar;
   const LinkButton = (props.plugins[1] as AnchorPlugin)?.LinkButton;
-  const UndoButton = (props.plugins[2] as EditorPlugin & UndoRedoType)
-    ?.UndoButton;
-  const RedoButton = (props.plugins[2] as EditorPlugin & UndoRedoType)
-    ?.RedoButton;
+  // const UndoButton = (props.plugins[2] as EditorPlugin & UndoRedoType)
+  //   ?.UndoButton;
+  // const RedoButton = (props.plugins[2] as EditorPlugin & UndoRedoType)
+  //   ?.RedoButton;
 
   const linkInputComponent = document.querySelector(
     "input[placeholder='Enter a URL and press enter']"
@@ -94,7 +122,6 @@ export default function StaticToolbar(props: { plugins: ToolbarPluginsType }) {
       `}
     />
   );
-
   return (
     <div>
       {props.plugins.length > 0 && (
@@ -130,22 +157,34 @@ export default function StaticToolbar(props: { plugins: ToolbarPluginsType }) {
               <React.Fragment>
                 <Tooltip title="Undo" placement="bottom">
                   <div onMouseDown={(e) => e.preventDefault()}>
-                    <UndoButton {...externalProps} />
+                    <UndoButton
+                      handleClick={undo}
+                      disabled={props.undoStack.length === 1}
+                    />
                   </div>
                 </Tooltip>
                 <Tooltip title="Redo" placement="bottom">
                   <div onMouseDown={(e) => e.preventDefault()}>
-                    <RedoButton {...externalProps} />
+                    <RedoButton
+                      handleClick={redo}
+                      disabled={props.redoStack.length === 0}
+                    />
                   </div>
                 </Tooltip>
                 {divider}
-                <FontStyleHandler {...externalProps} />
+                <FontStyleHandler
+                  {...externalProps}
+                  framesArray={props.framesArray}
+                  updateFramesArray={props.updateFramesArray}
+                  setUniformBlockTypeStyle={props.setUniformBlockTypeStyle}
+                  uniformBlockTypeStyle={props.uniformBlockTypeStyle}
+                />
 
                 {divider}
                 <FontFamilyHandler {...externalProps} />
                 {divider}
                 <div>
-                  <FontSizeController {...externalProps} />
+                  <FontSizeController {...externalProps} />{" "}
                 </div>
                 {divider}
                 <BoldButton {...externalProps} />
@@ -153,11 +192,10 @@ export default function StaticToolbar(props: { plugins: ToolbarPluginsType }) {
                 <ItalicButton {...externalProps} />
                 <UnderlineButton {...externalProps} />
                 <Tooltip title="Text color" placement="bottom">
-                  <div
+                  <button
                     onMouseDown={(e) => e.preventDefault()}
                     onClick={(e) => handleClick(e, "color")}
                     id={colorId}
-                    tabIndex={0} // Add tabIndex attribute to make the div focusable
                     css={`
                       ${commonstyles.highlightPicker} ${commonstyles.colorPicker(
                         color
@@ -165,14 +203,13 @@ export default function StaticToolbar(props: { plugins: ToolbarPluginsType }) {
                     `}
                   >
                     {HiglightPicker}
-                  </div>
+                  </button>
                 </Tooltip>
                 <Tooltip title="Highlight color" placement="bottom">
-                  <div
+                  <button
                     onMouseDown={(e) => e.preventDefault()}
                     onClick={(e) => handleClick(e, "bg")}
                     id={bgId}
-                    tabIndex={0} // Add tabIndex attribute to make the div focusable
                     css={`
                       ${commonstyles.highlightPicker} ${commonstyles.bgHighlightPicker(
                         bgColor
@@ -180,31 +217,34 @@ export default function StaticToolbar(props: { plugins: ToolbarPluginsType }) {
                     `}
                   >
                     {BGHiglightPicker}
-                  </div>
+                  </button>
                 </Tooltip>
-                <ColorModal
-                  {...externalProps}
-                  anchorEl={anchorEl}
-                  handleClose={handleClose}
-                  id={colorId}
-                  open={colorOpen}
-                  hex={color}
-                  setHex={setColor}
-                  defaultColor={defaultColor}
-                  prefix="COLOR-"
-                />
-
-                <ColorModal
-                  {...externalProps}
-                  anchorEl={anchorEl}
-                  handleClose={handleClose}
-                  id={bgId}
-                  open={bgOpen}
-                  hex={bgColor}
-                  setHex={setBgColor}
-                  defaultColor={defaultBgColor}
-                  prefix="BG-COLOR-"
-                />
+                {externalProps.getEditorState !== undefined && (
+                  <ColorModal
+                    {...externalProps}
+                    anchorEl={anchorEl}
+                    handleClose={handleClose}
+                    id={colorId}
+                    open={colorOpen}
+                    hex={color}
+                    setHex={setColor}
+                    defaultColor={defaultColor}
+                    prefix="COLOR-"
+                  />
+                )}
+                {externalProps.getEditorState !== undefined && (
+                  <ColorModal
+                    {...externalProps}
+                    anchorEl={anchorEl}
+                    handleClose={handleClose}
+                    id={bgId}
+                    open={bgOpen}
+                    hex={bgColor}
+                    setHex={setBgColor}
+                    defaultColor={defaultBgColor}
+                    prefix="BG-COLOR-"
+                  />
+                )}
 
                 {divider}
 

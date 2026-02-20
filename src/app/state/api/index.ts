@@ -7,7 +7,7 @@ import {
   Errors,
   RequestValues,
   ResponseData,
-} from "app/state/api/interfaces";
+} from "@app/state/api/interfaces";
 
 export const APPLICATION_JSON = "application/json";
 
@@ -83,11 +83,11 @@ export const APIModel = <QueryModel, ResponseModel>(
       actions.onRequest();
     }
 
-    let Authorization: string | undefined = `Bearer ${get(
-      query,
-      "token",
-      undefined
-    )}`;
+    let Authorization: string | undefined = `Bearer ${
+      import.meta.env.VITE_CMS_API && url.includes(import.meta.env.VITE_CMS_API)
+        ? import.meta.env.VITE_CMS_TOKEN
+        : get(query, "token", undefined)
+    }`;
     if (query.nonAuthCall) {
       Authorization = undefined;
     }

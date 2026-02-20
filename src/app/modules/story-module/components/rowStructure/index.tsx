@@ -11,30 +11,33 @@ import { useHistory, useLocation, useParams } from "react-router-dom";
 import {
   itemSpacing,
   containerGap,
-} from "app/modules/story-module/components/rowStructure/data";
-import RowstructureDisplay from "app/modules/story-module/components/rowStructure/rowStructureDisplay";
-import { ReactComponent as CloseIcon } from "app/modules/story-module/asset/closeIcon.svg";
-import { ReactComponent as DeleteIcon } from "app/modules/story-module/asset/deleteIcon.svg";
+} from "@app/modules/story-module/components/rowStructure/data";
+import RowstructureDisplay from "@app/modules/story-module/components/rowStructure/rowStructureDisplay";
+import CloseIcon from "@app/modules/story-module/asset/closeIcon.svg?react";
+import DeleteIcon from "@app/modules/story-module/asset/deleteIcon.svg?react";
 import {
   isDividerOrRowFrameDraggingAtom,
   storyContentContainerWidth,
   storyCreationTourStepAtom,
-} from "app/state/recoil/atoms";
+} from "@app/state/recoil/atoms";
 import {
   blockcss,
   containercss,
-} from "app/modules/story-module/components/rowStructure/style";
-import { IFramesArray } from "app/modules/story-module/views/create/data";
+} from "@app/modules/story-module/components/rowStructure/style";
+import { IFramesArray } from "@app/modules/story-module/views/create/data";
 import { useOnClickOutside } from "usehooks-ts";
-import { ToolbarPluginsType } from "app/modules/story-module/components/storySubHeaderToolbar/staticToolbar";
+import { ToolbarPluginsType } from "@app/modules/story-module/components/storySubHeaderToolbar/staticToolbar";
 import { useDrag } from "react-dnd";
-import { StoryElementsType } from "app/modules/story-module/components/right-panel-create-view";
-import { usehandleRowFrameItemResize } from "app/hooks/useHandleRowFrameItemResize";
+import { StoryElementsType } from "@app/modules/story-module/components/right-panel-create-view";
+import { usehandleRowFrameItemResize } from "@app/hooks/useHandleRowFrameItemResize";
 import { Updater } from "use-immer";
 import { useMediaQuery } from "@material-ui/core";
 import { rowStructureHeights } from "./data";
+import { isEmpty } from "lodash";
+import { useUndoRedo } from "@app/hooks/useUndoRedo";
+import { FOCUS_VISIBLE_STYLE_LIGHT } from "@app/theme";
 
-const _rowStructureDetailItems = [
+const rowStructureDetailItems = [
   [{ rowType: "oneByOne", rowId: "oneByOne-1", width: "100%", factor: 1 }],
   [
     {
@@ -150,12 +153,18 @@ interface RowFrameProps {
   forceSelectedType?: string;
   updateFramesArray: Updater<IFramesArray[]>;
   framesArray: IFramesArray[];
+  undoStack: IFramesArray[][];
+  setUndoStack: React.Dispatch<React.SetStateAction<IFramesArray[][]>>;
+  redoStack: IFramesArray[][];
+  setRedoStack: React.Dispatch<React.SetStateAction<IFramesArray[][]>>;
   type: "rowFrame" | "divider";
   view: "initial" | "edit" | "create" | "preview" | "ai-template";
-  previewItems?: (string | object)[];
+  previewItems?: {
+    items: (string | object)[];
+  };
   rowContentHeights: number[];
   rowContentWidths: number[];
-  setPlugins: React.Dispatch<React.SetStateAction<ToolbarPluginsType>>;
+  setPluginsState: React.Dispatch<React.SetStateAction<ToolbarPluginsType>>;
   endStoryTour: () => void;
   onSave: (type: "create" | "edit") => Promise<void>;
   rightPanelOpen: boolean;
@@ -179,8 +188,17 @@ export default function RowFrame(props: RowFrameProps) {
   const history = useHistory();
   const isTablet = useMediaQuery("(max-width: 1110px)");
 
+  const { store } = useUndoRedo(
+    props.framesArray,
+    props.updateFramesArray,
+    props.undoStack,
+    props.setUndoStack,
+    props.redoStack,
+    props.setRedoStack
+  );
   const { handleRowFrameItemResize } = usehandleRowFrameItemResize(
-    props.updateFramesArray
+    props.updateFramesArray,
+    store
   );
   const [selectedType, setSelectedType] = React.useState<string>(
     props.forceSelectedType ?? ""
@@ -198,18 +216,15 @@ export default function RowFrame(props: RowFrameProps) {
   );
   const containerWidth = useRecoilValue(storyContentContainerWidth);
 
-  const [selectedTypeHistory, setSelectedTypeHistory] = React.useState<
-    string[]
-  >([""]);
-
-  const [rowStructureDetailItems, setRowStructureDetailItems] = React.useState<
-    {
-      rowId: string;
-      width: number;
-      rowType: string;
-      factor: number;
-    }[][]
-  >([]);
+  const [rowStructureDetailItemsState, setRowStructureDetailItemsState] =
+    React.useState<
+      {
+        rowId: string;
+        width: number;
+        rowType: string;
+        factor: number;
+      }[][]
+    >([]);
 
   const contentContainerId = "content-container";
 
@@ -217,16 +232,15 @@ export default function RowFrame(props: RowFrameProps) {
     const contentContainer = document.getElementById(contentContainerId);
     if (contentContainer) {
       const contentContainerWidth = contentContainer.offsetWidth;
-      const newItems = _rowStructureDetailItems.map((item) => {
+      const newItems = rowStructureDetailItems.map((item) => {
         return item.map((subitem) => ({
           ...subitem,
           width: contentContainerWidth * subitem.factor,
         }));
       });
-      setRowStructureDetailItems(newItems);
+      setRowStructureDetailItemsState(newItems);
     }
   };
-
   const onlyView = React.useMemo(() => {
     return (
       !history.location.pathname.includes("/edit") &&
@@ -245,6 +259,7 @@ export default function RowFrame(props: RowFrameProps) {
   };
 
   const deleteFrame = (id: string) => {
+    store();
     props.updateFramesArray((draft) => {
       const frameId = draft.findIndex((frame) => frame.id === id);
       draft.splice(frameId, 1);
@@ -309,9 +324,10 @@ export default function RowFrame(props: RowFrameProps) {
       default:
         break;
     }
+    store();
     props.updateFramesArray((draft) => {
       //the first time you select a row structure, framesArray is set to default values
-      if (selectedTypeHistory.length === 1) {
+      if (isEmpty(tempRowState)) {
         draft[rowIndex] = {
           ...draft[rowIndex],
           content,
@@ -354,7 +370,9 @@ export default function RowFrame(props: RowFrameProps) {
           contentTypes: draftContentTypes,
           content: draftContent,
           contentWidths,
-          contentHeights,
+          contentHeights: Array(content.length).fill(
+            tempRowState.contentHeights[0]
+          ),
           structure,
           frame: {
             ...draft[rowIndex].frame,
@@ -363,11 +381,8 @@ export default function RowFrame(props: RowFrameProps) {
         };
       }
     });
+    setTempRowState({} as IFramesArray); // Reset tempRowState after updating framesArray
   };
-
-  React.useEffect(() => {
-    setSelectedType(selectedTypeHistory[selectedTypeHistory.length - 1]);
-  }, [selectedTypeHistory]);
 
   React.useEffect(() => {
     const contentContainer = document.getElementById(contentContainerId);
@@ -406,7 +421,7 @@ export default function RowFrame(props: RowFrameProps) {
   }, [props.forceSelectedType]);
 
   const contentContainer = document.getElementById(contentContainerId);
-  if (!contentContainer || rowStructureDetailItems.length === 0)
+  if (!contentContainer || rowStructureDetailItemsState.length === 0)
     return <div>loading</div>;
 
   const desktopHeight =
@@ -429,16 +444,18 @@ export default function RowFrame(props: RowFrameProps) {
         rowContentHeights={props.rowContentHeights}
         rowContentWidths={props.rowContentWidths}
         deleteFrame={deleteFrame}
-        selectedTypeHistory={selectedTypeHistory}
-        setSelectedTypeHistory={setSelectedTypeHistory}
-        rowStructureDetailItems={rowStructureDetailItems[0]}
+        rowStructureDetailItems={rowStructureDetailItemsState[0]}
         previewItems={props.previewItems}
         onRowBoxItemResize={onRowBoxItemResize}
-        setPlugins={props.setPlugins}
+        setPluginsState={props.setPluginsState}
         onSave={props.onSave}
         forceSelectedType={props.forceSelectedType}
         setTempRowState={setTempRowState}
         rightPanelOpen={props.rightPanelOpen}
+        redoStack={props.redoStack}
+        setRedoStack={props.setRedoStack}
+        undoStack={props.undoStack}
+        setUndoStack={props.setUndoStack}
       />
     ),
     oneByTwo: (
@@ -454,16 +471,18 @@ export default function RowFrame(props: RowFrameProps) {
         rowContentHeights={props.rowContentHeights}
         rowContentWidths={props.rowContentWidths}
         deleteFrame={deleteFrame}
-        selectedTypeHistory={selectedTypeHistory}
-        setSelectedTypeHistory={setSelectedTypeHistory}
-        rowStructureDetailItems={rowStructureDetailItems[1]}
+        rowStructureDetailItems={rowStructureDetailItemsState[1]}
         previewItems={props.previewItems}
         onRowBoxItemResize={onRowBoxItemResize}
-        setPlugins={props.setPlugins}
+        setPluginsState={props.setPluginsState}
         onSave={props.onSave}
         forceSelectedType={props.forceSelectedType}
         setTempRowState={setTempRowState}
         rightPanelOpen={props.rightPanelOpen}
+        redoStack={props.redoStack}
+        setRedoStack={props.setRedoStack}
+        undoStack={props.undoStack}
+        setUndoStack={props.setUndoStack}
       />
     ),
     oneByThree: (
@@ -479,16 +498,18 @@ export default function RowFrame(props: RowFrameProps) {
         rowContentHeights={props.rowContentHeights}
         rowContentWidths={props.rowContentWidths}
         deleteFrame={deleteFrame}
-        selectedTypeHistory={selectedTypeHistory}
-        setSelectedTypeHistory={setSelectedTypeHistory}
-        rowStructureDetailItems={rowStructureDetailItems[2]}
+        rowStructureDetailItems={rowStructureDetailItemsState[2]}
         previewItems={props.previewItems}
         onRowBoxItemResize={onRowBoxItemResize}
-        setPlugins={props.setPlugins}
+        setPluginsState={props.setPluginsState}
         onSave={props.onSave}
         forceSelectedType={props.forceSelectedType}
         setTempRowState={setTempRowState}
         rightPanelOpen={props.rightPanelOpen}
+        redoStack={props.redoStack}
+        setRedoStack={props.setRedoStack}
+        undoStack={props.undoStack}
+        setUndoStack={props.setUndoStack}
       />
     ),
     oneByFour: (
@@ -497,9 +518,7 @@ export default function RowFrame(props: RowFrameProps) {
         height={desktopHeight}
         tabletHeight={tabletHeight}
         selectedType={selectedType}
-        selectedTypeHistory={selectedTypeHistory}
-        setSelectedTypeHistory={setSelectedTypeHistory}
-        rowStructureDetailItems={rowStructureDetailItems[3]}
+        rowStructureDetailItems={rowStructureDetailItemsState[3]}
         onRowBoxItemResize={onRowBoxItemResize}
         rowId={props.rowId}
         rowIndex={props.rowIndex}
@@ -508,12 +527,16 @@ export default function RowFrame(props: RowFrameProps) {
         rowContentHeights={props.rowContentHeights}
         rowContentWidths={props.rowContentWidths}
         deleteFrame={deleteFrame}
-        setPlugins={props.setPlugins}
+        setPluginsState={props.setPluginsState}
         onSave={props.onSave}
         previewItems={props.previewItems}
         forceSelectedType={props.forceSelectedType}
         setTempRowState={setTempRowState}
         rightPanelOpen={props.rightPanelOpen}
+        redoStack={props.redoStack}
+        setRedoStack={props.setRedoStack}
+        undoStack={props.undoStack}
+        setUndoStack={props.setUndoStack}
       />
     ),
     oneByFive: (
@@ -529,21 +552,27 @@ export default function RowFrame(props: RowFrameProps) {
         rowContentHeights={props.rowContentHeights}
         rowContentWidths={props.rowContentWidths}
         deleteFrame={deleteFrame}
-        selectedTypeHistory={selectedTypeHistory}
-        setSelectedTypeHistory={setSelectedTypeHistory}
-        rowStructureDetailItems={rowStructureDetailItems[4]}
+        rowStructureDetailItems={rowStructureDetailItemsState[4]}
         previewItems={props.previewItems}
         onRowBoxItemResize={onRowBoxItemResize}
-        setPlugins={props.setPlugins}
+        setPluginsState={props.setPluginsState}
         onSave={props.onSave}
         forceSelectedType={props.forceSelectedType}
         setTempRowState={setTempRowState}
         rightPanelOpen={props.rightPanelOpen}
+        redoStack={props.redoStack}
+        setRedoStack={props.setRedoStack}
+        undoStack={props.undoStack}
+        setUndoStack={props.setUndoStack}
       />
     ),
   };
+  let selectedTypeFromFramesArray: any = props.framesArray[rowIndex]?.structure;
+  if (props.framesArray[rowIndex]?.structure === undefined) {
+    selectedTypeFromFramesArray = props.forceSelectedType;
+  }
 
-  if (onlyView && !selectedType) {
+  if (onlyView && !selectedTypeFromFramesArray) {
     return <div></div>;
   }
 
@@ -551,11 +580,11 @@ export default function RowFrame(props: RowFrameProps) {
     <>
       {props.type === "rowFrame" ? (
         <>
-          {selectedType ? (
+          {selectedTypeFromFramesArray ? (
             <>
               {
                 checkSelectedType[
-                  selectedType as keyof typeof checkSelectedType
+                  selectedTypeFromFramesArray as keyof typeof checkSelectedType
                 ]
               }
             </>
@@ -575,6 +604,9 @@ export default function RowFrame(props: RowFrameProps) {
                   top: -5px;
                   right: -5px;
                   position: absolute;
+                  :focus-visible {
+                    ${FOCUS_VISIBLE_STYLE_LIGHT}
+                  }
                 `}
                 onClick={() => {
                   if (
@@ -664,7 +696,7 @@ const OneByOne = (props: IRowStructureType) => {
     }
   };
   return (
-    <div css={blockcss} onClick={handleClick} data-cy="one-by-one-type">
+    <button css={blockcss} onClick={handleClick} data-cy="one-by-one-type">
       <p>1/1</p>
       <div>
         <div
@@ -675,7 +707,7 @@ const OneByOne = (props: IRowStructureType) => {
           `}
         />
       </div>
-    </div>
+    </button>
   );
 };
 
@@ -689,7 +721,7 @@ const OneByTwo = (props: IRowStructureType) => {
     props.handleRowFrameStructureTypeSelection("oneByTwo");
   };
   return (
-    <div css={blockcss} onClick={handleClick} data-cy="one-by-two-type">
+    <button css={blockcss} onClick={handleClick} data-cy="one-by-two-type">
       <p>1/2</p>
       <div
         css={`
@@ -706,7 +738,7 @@ const OneByTwo = (props: IRowStructureType) => {
         <div />
         <div />
       </div>
-    </div>
+    </button>
   );
 };
 
@@ -720,7 +752,7 @@ const OneByThree = (props: IRowStructureType) => {
     }
   };
   return (
-    <div css={blockcss} onClick={handleClick}>
+    <button css={blockcss} onClick={handleClick}>
       <p>1/3</p>
       <div
         css={`
@@ -738,7 +770,7 @@ const OneByThree = (props: IRowStructureType) => {
         <div />
         <div />
       </div>
-    </div>
+    </button>
   );
 };
 
@@ -752,7 +784,7 @@ const OneByFour = (props: IRowStructureType) => {
     }
   };
   return (
-    <div css={blockcss} onClick={handleClick}>
+    <button css={blockcss} onClick={handleClick}>
       <p>1/4</p>
       <div
         css={`
@@ -771,7 +803,7 @@ const OneByFour = (props: IRowStructureType) => {
         <div />
         <div />
       </div>
-    </div>
+    </button>
   );
 };
 
@@ -785,7 +817,7 @@ const OneByFive = (props: IRowStructureType) => {
     }
   };
   return (
-    <div css={blockcss} onClick={handleClick}>
+    <button css={blockcss} onClick={handleClick}>
       <p>1/5</p>
       <div
         css={`
@@ -805,7 +837,7 @@ const OneByFive = (props: IRowStructureType) => {
         <div />
         <div />
       </div>
-    </div>
+    </button>
   );
 };
 
@@ -899,6 +931,9 @@ function Divider(props: {
                       fill: #fff;
                     }
                   }
+                }
+                :focus-visible {
+                  ${FOCUS_VISIBLE_STYLE_LIGHT}
                 }
               }
             `}

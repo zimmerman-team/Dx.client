@@ -1,6 +1,6 @@
 import { atom } from "recoil";
 import { recoilPersist } from "recoil-persist";
-import { DatasetListItemAPIModel } from "app/modules/dataset-module/data";
+import { DatasetListItemAPIModel } from "@app/modules/dataset-module/data";
 
 export interface IRowFrameStructure {
   rowType:
@@ -42,7 +42,9 @@ export const allAssetsSortBy = atom<"name" | "updatedDate" | "createdDate">({
   effects_UNSTABLE: [persistAtom],
 });
 
-export const allAssetsFilterBy = atom<"allAssets" | "myAssets">({
+export const allAssetsFilterBy = atom<
+  "allAssets" | "myAssets" | "dataxplorerAssets"
+>({
   key: "allAssetsFilterBy",
   default: "allAssets",
   effects_UNSTABLE: [persistAtom],
@@ -104,7 +106,7 @@ export const isDividerOrRowFrameDraggingAtom = atom<{
 });
 export const isChartAIAgentActive = atom<boolean>({
   key: "isChartAIAgentActiveAtom",
-  default: true,
+  default: false,
 });
 
 export const isChartAutoMappedAtom = atom<boolean>({
