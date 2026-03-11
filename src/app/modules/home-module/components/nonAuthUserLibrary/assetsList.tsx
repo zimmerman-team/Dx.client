@@ -20,6 +20,12 @@ export default function AssetsList() {
         view={"grid"}
         noAuth
         gridId="assets-grid"
+        selectedItems={[]}
+        setSelectedItems={() => {}}
+        allStoriesSelected={false}
+        allDatasetsSelected={false}
+        allChartsSelected={false}
+        selectActive={false}
       />
     </div>
   );

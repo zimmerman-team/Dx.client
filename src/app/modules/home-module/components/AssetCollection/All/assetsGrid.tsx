@@ -33,6 +33,12 @@ interface Props {
   md?: GridSize;
   lg?: GridSize;
   noAuth?: boolean;
+  selectActive?: boolean;
+  allChartsSelected?: boolean;
+  allDatasetsSelected?: boolean;
+  allStoriesSelected?: boolean;
+  selectedItems: { assetType: string; id: string }[];
+  setSelectedItems: (items: { assetType: string; id: string }[]) => void;
 }
 export type AssetType = "chart" | "dataset" | "story";
 
@@ -268,7 +274,7 @@ export default function AssetsGrid(props: Props) {
 
   React.useEffect(() => {
     reloadData();
-  }, [props.sortBy, token, props.filterValue]);
+  }, [props.sortBy, token, props.filterValue, props.selectActive]);
 
   const [,] = useDebounce(
     () => {
@@ -304,7 +310,29 @@ export default function AssetsGrid(props: Props) {
         <div id={props.gridId}>
           <Grid container spacing={2}>
             {loadedAssets.map((d) => (
-              <Grid item key={d.id} xs={12} sm={6} md={4} lg={3}>
+              <Grid
+                item
+                key={d.id}
+                xs={12}
+                sm={6}
+                md={4}
+                lg={3}
+                onClick={(e) => {
+                  if (props.selectActive) {
+                    e.stopPropagation();
+                    if (props.selectedItems.some((item) => item.id === d.id)) {
+                      props.setSelectedItems(
+                        props.selectedItems.filter((item) => item.id !== d.id)
+                      );
+                    } else {
+                      props.setSelectedItems([
+                        ...props.selectedItems,
+                        { id: d.id, assetType: d.assetType },
+                      ]);
+                    }
+                  }
+                }}
+              >
                 {
                   <RenderAsset
                     data={d}
@@ -313,6 +341,12 @@ export default function AssetsGrid(props: Props) {
                     setActiveAssetType={setActiveAssetType}
                     inChartBuilder={props.inChartBuilder}
                     activeAssetType={d.assetType as AssetType}
+                    selectedItems={props.selectedItems}
+                    setSelectedItems={props.setSelectedItems}
+                    selectActive={props.selectActive}
+                    allChartsSelected={props.allChartsSelected}
+                    allDatasetsSelected={props.allDatasetsSelected}
+                    allStoriesSelected={props.allStoriesSelected}
                   />
                 }
 

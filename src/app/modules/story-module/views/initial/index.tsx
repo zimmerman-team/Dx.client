@@ -160,6 +160,10 @@ function StoryInitialView(props: Readonly<StoryInitialViewProps>) {
         showMenuButton
         gridId="stories-grid"
         filterValue={filterValue}
+        selectActive={false}
+        selectedItems={[]}
+        setSelectedItems={() => {}}
+        allSelected={false}
       />
     </Container>
   );

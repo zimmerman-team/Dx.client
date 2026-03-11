@@ -389,6 +389,7 @@ describe("Testing create chart on DX", () => {
     cy.get('[data-cy="story-sub-header-title-input"]').type(
       `{selectall}{backspace}${testname2}`,
     );
+
     cy.contains('[data-cy="nonstatic-dimension-container"]', "Category").within(
       () => {
         cy.get('[data-cy="chart-dimension-select"]').first().click();
@@ -2132,8 +2133,6 @@ describe("Edit, duplicate and delete chart", () => {
 
     cy.wait("@fetchCharts");
 
-    cy.get("[data-cy=home-search-button]").click();
-    cy.wait(2000);
     cy.get("[data-cy=filter-search-input]").type(
       `{selectall}{backspace}${testname1}`,
     );
@@ -2164,7 +2163,7 @@ describe("Edit, duplicate and delete chart", () => {
     cy.get('[data-cy="export-chart-button"]').should("be.visible").click();
   });
 
-  it("Can Delete a chart", () => {
+  it("Can Delete charts", () => {
     cy.get("[data-cy=home-search-button]").click();
     cy.wait(2000);
     cy.get("[data-cy=filter-search-input]").type(
@@ -2193,28 +2192,36 @@ describe("Edit, duplicate and delete chart", () => {
     //   .contains("Soccer Players (Copy)")
     //   .should("not.exist");
 
-    cy.get("[data-cy=home-search-button]").click();
-    cy.wait(2000);
     cy.get("[data-cy=filter-search-input]").type(
       `{selectall}{backspace}${testname2}`,
     );
     cy.wait("@fetchCharts");
 
+    cy.get('[data-cy="home-actions-button"]').click();
+    cy.wait(1000);
+    cy.get('[data-cy="delete-assets-button"]').click();
+
     cy.contains('[data-cy="chart-grid-item"]', `${testname2}`)
       .first()
       .scrollIntoView()
-      .within(() => {
-        cy.get('[data-cy="chart-grid-item-menu-btn"]').click();
-      });
+      .click();
+    cy.get('[data-cy="chart-grid-item"]').eq(1).scrollIntoView().click();
 
-    cy.get('[data-cy="chart-grid-item-delete-btn"]').click();
-    cy.intercept("DELETE", `${apiUrl}/chart/*`).as("deleteChart");
+    cy.get('[data-cy="chart-grid-item"]').eq(2).scrollIntoView().click();
 
-    cy.get('[data-cy="delete-chart-item-form"]').within(() => {
-      cy.get('[data-cy="delete-chart-item-input"]').type("DELETE{enter}");
+    cy.get('[data-cy="select-assets-snackbar"]').should("be.visible");
+
+    cy.get('[data-cy="select-assets-snackbar"]').within(() => {
+      cy.get('[data-cy="delete-selected-button"]').click();
     });
 
-    cy.wait("@deleteChart");
+    cy.intercept("POST", `${apiUrl}/assets/delete`).as("deleteAssets");
+
+    cy.get('[data-cy="delete-assets-form"]').within(() => {
+      cy.get('[data-cy="delete-assets-input"]').type("DELETE{enter}");
+    });
+
+    cy.wait("@deleteAssets");
 
     cy.wait("@fetchCharts");
 

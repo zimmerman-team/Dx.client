@@ -128,12 +128,12 @@ describe("Testing connecting data on DX", () => {
       cy.wait("@getDefaultData");
       cy.get('[data-cy="external-search-card-WHO"]').should(
         "have.length.greaterThan",
-        1
+        1,
       );
     });
 
     cy.intercept(
-      `${apiUrl}/external-sources/search?q=Exclusive%20breastfeeding*`
+      `${apiUrl}/external-sources/search?q=Exclusive%20breastfeeding*`,
     ).as("getDefaultData2");
     cy.wait(2000);
     cy.get('[data-cy="external-search-input"]').type("Exclusive breastfeeding");
@@ -141,7 +141,7 @@ describe("Testing connecting data on DX", () => {
     cy.wait("@getDefaultData2").then((interception) => {
       cy.get('[data-cy="external-search-card-WHO"]').should(
         "have.length.greaterThan",
-        1
+        1,
       );
     });
 
@@ -155,16 +155,16 @@ describe("Testing connecting data on DX", () => {
     cy.wait("@downloadData");
 
     cy.get('[data-cy="dataset-metadata-title"]').type(
-      `{selectall}{backspace}${testname1}`
+      `{selectall}{backspace}${testname1}`,
     );
     cy.get('[data-cy="dataset-metadata-description"]').type(
-      `{selectall}{backspace}${testname1}`
+      `{selectall}{backspace}${testname1}`,
     );
     cy.get('[data-cy="dataset-metadata-source"]').type(
-      "{selectall}{backspace}Rawgraphs"
+      "{selectall}{backspace}Rawgraphs",
     );
     cy.get('[data-cy="dataset-metadata-link"]').type(
-      "{selectall}{backspace}https://notavailableexternal.com"
+      "{selectall}{backspace}https://notavailableexternal.com",
     );
     cy.get('[data-cy="dataset-metadata-category"]').click();
     cy.get('[data-value="Social"]').click();
@@ -184,12 +184,12 @@ describe("Testing connecting data on DX", () => {
       cy.wait("@getDefaultData");
       cy.get('[data-cy="external-search-card-HDX"]').should(
         "have.length.greaterThan",
-        1
+        1,
       );
     });
 
     cy.intercept(`${apiUrl}/external-sources/search?q=n*`).as(
-      "getDefaultData2"
+      "getDefaultData2",
     );
     cy.wait(2000);
     cy.get('[data-cy="external-search-input"]').type("n");
@@ -198,7 +198,7 @@ describe("Testing connecting data on DX", () => {
     cy.wait("@getDefaultData2").then((interception) => {
       cy.get('[data-cy="external-search-card-HDX"]').should(
         "have.length.greaterThan",
-        0
+        0,
       );
     });
 
@@ -212,16 +212,16 @@ describe("Testing connecting data on DX", () => {
     cy.wait("@downloadData");
 
     cy.get('[data-cy="dataset-metadata-title"]').type(
-      `{selectall}{backspace}${testname1}`
+      `{selectall}{backspace}${testname1}`,
     );
     cy.get('[data-cy="dataset-metadata-description"]').type(
-      `{selectall}{backspace}${testname1}`
+      `{selectall}{backspace}${testname1}`,
     );
     cy.get('[data-cy="dataset-metadata-source"]').type(
-      "{selectall}{backspace}Rawgraphs"
+      "{selectall}{backspace}Rawgraphs",
     );
     cy.get('[data-cy="dataset-metadata-link"]').type(
-      "{selectall}{backspace}https://notavailableexternal.com"
+      "{selectall}{backspace}https://notavailableexternal.com",
     );
     cy.get('[data-cy="dataset-metadata-category"]').click();
     cy.get('[data-value="Social"]').click();
@@ -240,12 +240,12 @@ describe("Testing connecting data on DX", () => {
       cy.wait("@getDefaultData");
       cy.get('[data-cy="external-search-card-World Bank"]').should(
         "have.length.greaterThan",
-        1
+        1,
       );
     });
 
     cy.intercept(`${apiUrl}/external-sources/search?q=Voice%20and*`).as(
-      "getDefaultData2"
+      "getDefaultData2",
     );
 
     cy.wait(2000);
@@ -255,7 +255,7 @@ describe("Testing connecting data on DX", () => {
     cy.wait("@getDefaultData2").then((interception) => {
       cy.get('[data-cy="external-search-card-World Bank"]').should(
         "have.length.greaterThan",
-        1
+        1,
       );
     });
 
@@ -269,16 +269,16 @@ describe("Testing connecting data on DX", () => {
     cy.wait("@downloadData");
 
     cy.get('[data-cy="dataset-metadata-title"]').type(
-      `{selectall}{backspace}${testname1}`
+      `{selectall}{backspace}${testname1}`,
     );
     cy.get('[data-cy="dataset-metadata-description"]').type(
-      `{selectall}{backspace}${testname1}`
+      `{selectall}{backspace}${testname1}`,
     );
     cy.get('[data-cy="dataset-metadata-source"]').type(
-      "{selectall}{backspace}Rawgraphs"
+      "{selectall}{backspace}Rawgraphs",
     );
     cy.get('[data-cy="dataset-metadata-link"]').type(
-      "{selectall}{backspace}https://notavailableexternal.com"
+      "{selectall}{backspace}https://notavailableexternal.com",
     );
     cy.get('[data-cy="dataset-metadata-category"]').click();
     cy.get('[data-value="Social"]').click();
@@ -298,12 +298,12 @@ describe("Testing connecting data on DX", () => {
       cy.wait("@getDefaultData");
       cy.get('[data-cy="external-search-card-Kaggle"]').should(
         "have.length.greaterThan",
-        1
+        1,
       );
     });
 
     cy.intercept(`${apiUrl}/external-sources/search?q=men*`).as(
-      "getDefaultData2"
+      "getDefaultData2",
     );
     cy.wait(2000);
 
@@ -313,7 +313,7 @@ describe("Testing connecting data on DX", () => {
     cy.wait("@getDefaultData2").then((interception) => {
       cy.get('[data-cy="external-search-card-Kaggle"]').should(
         "have.length.greaterThan",
-        1
+        1,
       );
     });
 
@@ -327,16 +327,16 @@ describe("Testing connecting data on DX", () => {
     cy.wait("@downloadData");
 
     cy.get('[data-cy="dataset-metadata-title"]').type(
-      `{selectall}{backspace}${testname1}`
+      `{selectall}{backspace}${testname1}`,
     );
     cy.get('[data-cy="dataset-metadata-description"]').type(
-      `{selectall}{backspace}${testname1}`
+      `{selectall}{backspace}${testname1}`,
     );
     cy.get('[data-cy="dataset-metadata-source"]').type(
-      "{selectall}{backspace}Rawgraphs"
+      "{selectall}{backspace}Rawgraphs",
     );
     cy.get('[data-cy="dataset-metadata-link"]').type(
-      "{selectall}{backspace}https://notavailableexternal.com"
+      "{selectall}{backspace}https://notavailableexternal.com",
     );
     cy.get('[data-cy="dataset-metadata-category"]').click();
     cy.get('[data-value="Social"]').click();
@@ -402,16 +402,16 @@ describe("Testing connecting data on DX", () => {
     cy.get('[data-cy="describe-and-save-button"]').click();
     cy.get('[data-cy="dataset-metadata-title"]').type("Football Players");
     cy.get('[data-cy="dataset-metadata-description"]').type(
-      "Football Players Data"
+      "Football Players Data",
     );
     cy.get('[data-cy="dataset-metadata-source"]').type("Rawgraphs");
     cy.get('[data-cy="dataset-metadata-link"]').type(
-      "{selectall}{backspace}https://notavailabledata.com"
+      "{selectall}{backspace}https://notavailabledata.com",
     );
     cy.get('[data-cy="dataset-metadata-category"]').click();
     cy.contains(
       '[data-cy="dataset-metadata-category-option"]',
-      "Social"
+      "Social",
     ).click();
     cy.get('[data-cy="dataset-metadata-submit"]').scrollIntoView();
     cy.intercept(`${apiUrl}/datasets`).as("submitData");
@@ -435,16 +435,16 @@ describe("Testing connecting data on DX", () => {
     cy.get('[data-cy="describe-and-save-button"]').click();
     cy.get('[data-cy="dataset-metadata-title"]').type("ChartDataset");
     cy.get('[data-cy="dataset-metadata-description"]').type(
-      "ChartDataset Data"
+      "ChartDataset Data",
     );
     cy.get('[data-cy="dataset-metadata-source"]').type("Rawgraphs");
     cy.get('[data-cy="dataset-metadata-link"]').type(
-      "{selectall}{backspace}https://notavailabledataset.com"
+      "{selectall}{backspace}https://notavailabledataset.com",
     );
     cy.get('[data-cy="dataset-metadata-category"]').click();
     cy.contains(
       '[data-cy="dataset-metadata-category-option"]',
-      "Social"
+      "Social",
     ).click();
     cy.get('[data-cy="dataset-metadata-submit"]').scrollIntoView();
     cy.intercept(`${apiUrl}/datasets`).as("submitData");
@@ -455,8 +455,7 @@ describe("Testing connecting data on DX", () => {
     cy.contains("ChartDataset").should("be.visible");
   });
 
-
-    it("Can import a third dataset through local upload", () => {
+  it("Can import a third dataset through local upload", () => {
     cy.get('[data-cy="upload-option-button"').first().click();
     cy.get('[data-cy="local-upload-input"]').as("fileInput");
     cy.fixture("simple-series.csv").then((fileContent) => {
@@ -468,17 +467,15 @@ describe("Testing connecting data on DX", () => {
     });
     cy.get('[data-cy="describe-and-save-button"]').click();
     cy.get('[data-cy="dataset-metadata-title"]').type("TimeCharset");
-    cy.get('[data-cy="dataset-metadata-description"]').type(
-      "TimeCharset Data"
-    );
+    cy.get('[data-cy="dataset-metadata-description"]').type("TimeCharset Data");
     cy.get('[data-cy="dataset-metadata-source"]').type("Rawgraphs");
     cy.get('[data-cy="dataset-metadata-link"]').type(
-      "{selectall}{backspace}https://notavailabledataset.com"
+      "{selectall}{backspace}https://notavailabledataset.com",
     );
     cy.get('[data-cy="dataset-metadata-category"]').click();
     cy.contains(
       '[data-cy="dataset-metadata-category-option"]',
-      "Social"
+      "Social",
     ).click();
     cy.get('[data-cy="dataset-metadata-submit"]').scrollIntoView();
     cy.intercept(`${apiUrl}/datasets`).as("submitData");
@@ -489,10 +486,6 @@ describe("Testing connecting data on DX", () => {
     cy.contains("TimeCharset").should("be.visible");
   });
 });
-
-
-
-
 
 describe("Edit, Delete and Duplicate Dataset", () => {
   const apiUrl = Cypress.env("api_url");
@@ -529,21 +522,21 @@ describe("Edit, Delete and Duplicate Dataset", () => {
     cy.wait("@fetchDataset");
 
     cy.get('[data-cy="dataset-metadata-title"]').type(
-      `{selectall}{backspace}${testname2}`
+      `{selectall}{backspace}${testname2}`,
     );
     cy.get('[data-cy="dataset-metadata-description"]').type(
-      "{selectall}{backspace} Soccer"
+      "{selectall}{backspace} Soccer",
     );
     cy.get('[data-cy="dataset-metadata-source"]').type(
-      "{selectall}{backspace} Rawgraphs"
+      "{selectall}{backspace} Rawgraphs",
     );
     cy.get('[data-cy="dataset-metadata-link"]').type(
-      "{selectall}{backspace}https://notavailableedit.com"
+      "{selectall}{backspace}https://notavailableedit.com",
     );
     cy.get('[data-cy="dataset-metadata-category"]').click();
     cy.contains(
       '[data-cy="dataset-metadata-category-option"]',
-      "Social"
+      "Social",
     ).click();
     cy.get('[data-cy="dataset-metadata-submit"]').scrollIntoView();
     cy.intercept("PATCH", `${apiUrl}/datasets/*`).as("editData");
@@ -624,10 +617,8 @@ describe("Edit, Delete and Duplicate Dataset", () => {
 
     /// Delete main test dataset
 
-    cy.get("[data-cy=home-search-button]").first().click();
-    cy.wait(2000);
     cy.get("[data-cy=filter-search-input]").type(
-      `{selectall}{backspace}${testname2}`
+      `{selectall}{backspace}${testname2}`,
     );
 
     cy.wait("@fetchDatasets");
