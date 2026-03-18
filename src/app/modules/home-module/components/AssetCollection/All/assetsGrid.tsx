@@ -37,6 +37,9 @@ interface Props {
   allChartsSelected?: boolean;
   allDatasetsSelected?: boolean;
   allStoriesSelected?: boolean;
+  setAllChartsSelected?: React.Dispatch<React.SetStateAction<boolean>>;
+  setAllDatasetsSelected?: React.Dispatch<React.SetStateAction<boolean>>;
+  setAllStoriesSelected?: React.Dispatch<React.SetStateAction<boolean>>;
   selectedItems: { assetType: string; id: string }[];
   setSelectedItems: (items: { assetType: string; id: string }[]) => void;
 }
@@ -301,9 +304,39 @@ export default function AssetsGrid(props: Props) {
           cellWidths={[50, 300, 350, 142, 142, 142, 138, 150]}
           tableData={{
             columns: getColumns(),
-            data: loadedAssets.map((data) =>
-              renderAssetTableData(data, data.assetType)
-            ),
+            data: loadedAssets.map((data) => ({
+              ...renderAssetTableData(data, data.assetType),
+              selected:
+                props.selectedItems.some((item) => item.id === data.id) ||
+                (data.assetType === "chart"
+                  ? props.allChartsSelected
+                  : data.assetType === "dataset"
+                  ? props.allDatasetsSelected
+                  : props.allStoriesSelected),
+            })),
+          }}
+          selectable={props.selectActive}
+          setAllSelected={(v) => {
+            props.setAllChartsSelected?.(v);
+            props.setAllDatasetsSelected?.(v);
+            props.setAllStoriesSelected?.(v);
+          }}
+          allSelected={
+            props.allChartsSelected &&
+            props.allDatasetsSelected &&
+            props.allStoriesSelected
+          }
+          onSelect={(id, type) => {
+            if (props.selectedItems.some((item) => item.id === id)) {
+              props.setSelectedItems(
+                props.selectedItems.filter((item) => item.id !== id)
+              );
+            } else {
+              props.setSelectedItems([
+                ...props.selectedItems,
+                { id: id, assetType: type },
+              ]);
+            }
           }}
         />
       ) : (

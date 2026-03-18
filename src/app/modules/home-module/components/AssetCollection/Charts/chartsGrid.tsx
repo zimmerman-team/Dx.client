@@ -34,6 +34,7 @@ interface Props {
   gridId: string;
   selectActive?: boolean;
   allSelected?: boolean;
+  setAllSelected?: React.Dispatch<React.SetStateAction<boolean>>;
   selectedItems: { assetType: string; id: string }[];
   setSelectedItems: (items: { assetType: string; id: string }[]) => void;
 }
@@ -356,7 +357,25 @@ export default function ChartsGrid(props: Props) {
               ownerName: data.ownerName.split(" ")[0],
               vizType: echartTypes(false).find((e) => e.id === data.vizType)
                 ?.label,
+              selected:
+                props.selectedItems.some((item) => item.id === data.id) ||
+                props.allSelected,
             })),
+          }}
+          allSelected={props.allSelected}
+          setAllSelected={props.setAllSelected}
+          selectable={props.selectActive}
+          onSelect={(id, type) => {
+            if (props.selectedItems.some((item) => item.id === id)) {
+              props.setSelectedItems(
+                props.selectedItems.filter((item) => item.id !== id)
+              );
+            } else {
+              props.setSelectedItems([
+                ...props.selectedItems,
+                { id: id, assetType: type },
+              ]);
+            }
           }}
         />
       )}

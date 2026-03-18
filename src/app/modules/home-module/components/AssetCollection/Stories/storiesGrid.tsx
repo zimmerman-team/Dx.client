@@ -29,6 +29,7 @@ interface Props {
   gridId: string;
   selectActive?: boolean;
   allSelected?: boolean;
+  setAllSelected?: React.Dispatch<React.SetStateAction<boolean>>;
   selectedItems: { assetType: string; id: string }[];
   setSelectedItems: (items: { assetType: string; id: string }[]) => void;
 }
@@ -321,7 +322,25 @@ export default function StoriesGrid(props: Readonly<Props>) {
                     .getPlainText()
                 : EditorState.createEmpty().getCurrentContent().getPlainText(),
               type: "story",
+              selected:
+                props.selectedItems.some((item) => item.id === data.id) ||
+                props.allSelected,
             })),
+          }}
+          selectable={props.selectActive}
+          allSelected={props.allSelected}
+          setAllSelected={props.setAllSelected}
+          onSelect={(id, type) => {
+            if (props.selectedItems.some((item) => item.id === id)) {
+              props.setSelectedItems(
+                props.selectedItems.filter((item) => item.id !== id)
+              );
+            } else {
+              props.setSelectedItems([
+                ...props.selectedItems,
+                { id: id, assetType: type },
+              ]);
+            }
           }}
         />
       )}

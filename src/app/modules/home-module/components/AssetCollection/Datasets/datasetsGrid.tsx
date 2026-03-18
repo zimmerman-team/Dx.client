@@ -33,6 +33,7 @@ interface Props {
   hideCreateChartButton?: boolean;
   selectActive?: boolean;
   allSelected?: boolean;
+  setAllSelected?: React.Dispatch<React.SetStateAction<boolean>>;
   selectedItems: { assetType: string; id: string }[];
   setSelectedItems: (items: { assetType: string; id: string }[]) => void;
 }
@@ -357,8 +358,26 @@ export default function DatasetsGrid(props: Readonly<Props>) {
               ...data,
               type: "dataset",
               ownerName: data.ownerName.split(" ")[0],
+              selected:
+                props.selectedItems.some((item) => item.id === data.id) ||
+                props.allSelected,
             })),
           }}
+          selectable={props.selectActive}
+          onSelect={(id: string) => {
+            if (props.selectedItems.some((item) => item.id === id)) {
+              props.setSelectedItems(
+                props.selectedItems.filter((item) => item.id !== id)
+              );
+            } else {
+              props.setSelectedItems([
+                ...props.selectedItems,
+                { id, assetType: "dataset" },
+              ]);
+            }
+          }}
+          allSelected={props.allSelected}
+          setAllSelected={props.setAllSelected}
         />
       )}
       <Box height={80} />

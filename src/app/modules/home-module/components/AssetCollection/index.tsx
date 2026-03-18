@@ -201,6 +201,7 @@ function AssetsCollection() {
             gridId={gridId}
             selectActive={deleteActive}
             allSelected={allDatasetsSelected}
+            setAllSelected={setAllDatasetsSelected}
             selectedItems={selectedItems}
             setSelectedItems={setSelectedItems}
           />
@@ -215,6 +216,7 @@ function AssetsCollection() {
             gridId={gridId}
             selectActive={deleteActive}
             allSelected={allChartsSelected}
+            setAllSelected={setAllChartsSelected}
             selectedItems={selectedItems}
             setSelectedItems={setSelectedItems}
           />
@@ -229,6 +231,7 @@ function AssetsCollection() {
             gridId={gridId}
             selectActive={deleteActive}
             allSelected={allStoriesSelected}
+            setAllSelected={setAllStoriesSelected}
             selectedItems={selectedItems}
             setSelectedItems={setSelectedItems}
           />
@@ -246,6 +249,9 @@ function AssetsCollection() {
             allStoriesSelected={allStoriesSelected}
             allDatasetsSelected={allDatasetsSelected}
             allChartsSelected={allChartsSelected}
+            setAllChartsSelected={setAllChartsSelected}
+            setAllDatasetsSelected={setAllDatasetsSelected}
+            setAllStoriesSelected={setAllStoriesSelected}
             selectActive={deleteActive}
           />
         );
