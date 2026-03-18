@@ -407,7 +407,7 @@ export default function DesktopFooter(props: Props) {
                   ? "Thank you for subscribing!"
                   : isSubscriptionFailed
                   ? "Oops! Something went wrong with the request! Please fill your email again."
-                  : "You will receive occasional emails from DataXplorer. You can unsubscribe anytime."}
+                  : "You will receive occasional emails from Dataxplorer. You can unsubscribe anytime."}
               </p>
             </div>
           </div>

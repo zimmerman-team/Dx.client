@@ -120,7 +120,7 @@ export default function Card() {
             {getCMSDataField(
               cmsData,
               "pagesHome.meetDataxplorerDescription",
-              `DataXplorer aims to help governments, nonprofits, and communities
+              `Dataxplorer aims to help governments, nonprofits, and communities
             work with data in a single place. Upload datasets, create
             visualisations, and share insights without needing extra tools or
             technical expertise. No more patchwork solutions. Just a single,

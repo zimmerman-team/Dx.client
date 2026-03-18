@@ -46,7 +46,7 @@ const ctaCards = [
   {
     title: "Create Charts",
     description:
-      "Once you have dataset(s) connected, you can use them to build charts and visualisations, all assisted and eased by DataXplorer.",
+      "Once you have dataset(s) connected, you can use them to build charts and visualisations, all assisted and eased by Dataxplorer.",
     type: "chart",
     link: "/chart/new/data",
     cypressId: "create-chart-cta",
