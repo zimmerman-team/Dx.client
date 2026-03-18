@@ -10,10 +10,16 @@ import {
   FOCUS_VISIBLE_STYLE_LIGHT,
   MOBILE_BREAKPOINT,
 } from "@app/theme";
-import { ChevronLeft, ChevronRight } from "@material-ui/icons";
+import {
+  ChevronLeft,
+  ChevronRight,
+  Pause,
+  PlayArrow,
+} from "@material-ui/icons";
 import { StyledTab, StyledTabs } from "./style";
 import SwipeableViews from "react-swipeable-views";
 import { autoPlay } from "react-swipeable-views-utils";
+import IconButton from "@material-ui/core/IconButton";
 
 const AutoPlaySwipeableViews = autoPlay(SwipeableViews);
 
@@ -23,46 +29,80 @@ export const Pagination = (props: {
   dots: number;
   bottom: string;
   color: string;
+  handleAutoPlayToggle: () => void;
+  autoPlay: boolean;
 }) => (
   <div
     css={`
+      gap: 20px;
       display: flex;
       justify-content: center;
       align-items: center;
       width: 100%;
-      gap: 8px;
       top: unset;
       left: 0%;
       bottom: ${props.bottom};
       position: absolute;
     `}
   >
-    {new Array(props.dots).fill(0).map((_, i) => (
-      <button
-        key={i}
-        aria-label={`Go to slide ${i + 1} of ${props.dots}`}
-        aria-current={props.index === i ? "true" : "false"}
-        css={`
-          padding: 0;
-          margin: 0;
-          width: 8px;
-          height: 8px;
-          border-radius: 50%;
-          border: none;
-          outline: none;
-          background: ${props.index === i ? props.color : "#fff"};
-          cursor: pointer;
-          /* Tooltip */
-          box-shadow: 0px 0px 10px 0px rgba(152, 161, 170, 0.6);
-          :focus-visible {
-            ${FOCUS_VISIBLE_STYLE_LIGHT}
-          }
-        `}
-        onClick={() => props.onChangeIndex(i)}
-      />
-    ))}
+    <IconButton
+      onClick={props.handleAutoPlayToggle}
+      css={`
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background: #cfd0f4;
+        border: 1px solid #a0a0e9;
+        box-shadow: 0 0 10px 0 rgba(152, 161, 170, 0.6);
+      `}
+    >
+      {props.autoPlay ? (
+        <Pause fontSize="medium" htmlColor={props.color} />
+      ) : (
+        <PlayArrow fontSize="medium" htmlColor={props.color} />
+      )}
+    </IconButton>
+    <div
+      css={`
+        gap: 8px;
+        display: flex;
+        padding: 14px 12px;
+        border-radius: 19px;
+        align-items: center;
+        background: #cfd0f4;
+        justify-content: center;
+        border: 1px solid #a0a0e9;
+        box-shadow: 0 0 10px 0 rgba(152, 161, 170, 0.6);
+      `}
+    >
+      {new Array(props.dots).fill(0).map((_, i) => (
+        <button
+          key={i}
+          aria-label={`Go to slide ${i + 1} of ${props.dots}`}
+          aria-current={props.index === i ? "true" : "false"}
+          css={`
+            padding: 0;
+            margin: 0;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            border: none;
+            outline: none;
+            background: ${props.index === i ? props.color : "#fff"};
+            cursor: pointer;
+            /* Tooltip */
+            box-shadow: 0px 0px 10px 0px rgba(152, 161, 170, 0.6);
+            :focus-visible {
+              ${FOCUS_VISIBLE_STYLE_LIGHT}
+            }
+          `}
+          onClick={() => props.onChangeIndex(i)}
+        />
+      ))}
+    </div>
   </div>
 );
+
 export default function PartnerCarousel() {
   const tabRef = React.useRef<HTMLDivElement>(null);
 
@@ -75,6 +115,8 @@ export default function PartnerCarousel() {
   };
 
   const [autoPlay, setAutoPlay] = React.useState<boolean>(false);
+  const handleAutoPlayToggle = () => setAutoPlay((prev) => !prev);
+
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === "ArrowRight")
       handleChange(null, (displayTab + 1) % cards.length);
@@ -110,8 +152,6 @@ export default function PartnerCarousel() {
   return (
     <>
       <div
-        // onMouseEnter={() => setAutoPlay(false)}
-        // onMouseLeave={() => setAutoPlay(true)}
         css={`
           width: 100%;
           position: relative;
@@ -289,8 +329,10 @@ export default function PartnerCarousel() {
             dots={4}
             index={displayTab}
             onChangeIndex={(index) => handleChange(null, index)}
-            bottom="25px"
+            bottom="55px"
             color="#231D2C"
+            autoPlay={autoPlay}
+            handleAutoPlayToggle={handleAutoPlayToggle}
           />
         </div>
       </div>

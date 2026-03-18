@@ -10,9 +10,14 @@ import { DESKTOP_BREAKPOINT, MOBILE_BREAKPOINT } from "@app/theme";
 import { Pagination } from "@app/modules/home-module/sub-modules/partners/components/partnerCarousel/partnerCarousel";
 
 const AutoPlaySwipeableViews = autoPlay(SwipeableViews);
+
 export default function DashboardCarousel() {
   const cards = [CardA, CardB, CardC, CardD];
   const [displayTab, setDisplayTab] = React.useState<number>(0);
+  const [autoPlay, setAutoPlay] = React.useState<boolean>(false);
+
+  const handleAutoPlayToggle = () => setAutoPlay((prev) => !prev);
+
   const handleChange = (
     event: React.ChangeEvent<{}> | null,
     newValue: number
@@ -20,13 +25,13 @@ export default function DashboardCarousel() {
     setDisplayTab(newValue);
   };
 
-  const [autoPlay, setAutoPlay] = React.useState<boolean>(false);
   return (
     <div
       role="presentation"
       css={`
         width: 100%;
         position: relative;
+        margin-bottom: 50px;
         @media (max-width: ${DESKTOP_BREAKPOINT}) {
           justify-content: center;
         }
@@ -43,8 +48,6 @@ export default function DashboardCarousel() {
       >
         {cards.map((card, index) => (
           <div
-            onMouseEnter={() => setAutoPlay(false)}
-            onMouseLeave={() => setAutoPlay(true)}
             css={`
               height: 100%;
               width: 100%;
@@ -75,8 +78,10 @@ export default function DashboardCarousel() {
         dots={4}
         index={displayTab}
         onChangeIndex={(index) => handleChange(null, index)}
-        bottom="-15px"
+        bottom="-55px"
         color="#6061E5"
+        autoPlay={autoPlay}
+        handleAutoPlayToggle={handleAutoPlayToggle}
       />
     </div>
   );
