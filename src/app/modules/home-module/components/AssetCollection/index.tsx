@@ -260,6 +260,21 @@ function AssetsCollection() {
     }
   };
 
+  React.useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape" && deleteActive) {
+        setDeleteActive(false);
+        setSelectedItems([]);
+        setAllChartsSelected(false);
+        setAllDatasetsSelected(false);
+        setAllStoriesSelected(false);
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [deleteActive]);
+
   const handleTabSwitch = (tab: string) => {
     setDisplay(tab as "all" | "data" | "charts" | "stories");
   };
@@ -582,6 +597,8 @@ function AssetsCollection() {
               searchIconCypressId="home-search-button"
               filterValue={filterValue}
               setFilterValue={setFilterValue}
+              deleteActive={deleteActive}
+              setDeleteActive={setDeleteActive}
               hasSearchButton
               terminateSearch={() => {}}
             />

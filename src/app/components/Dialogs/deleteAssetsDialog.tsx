@@ -109,10 +109,17 @@ export default function DeleteAssetsDialog(props: Props) {
                 {props.datasetCount + props.chartsCount + props.storiesCount}{" "}
                 assets.
                 <br /> This includes:
-                <br /> {props.datasetCount} datasets <br />
-                {props.chartsCount} charts
-                <br /> {props.storiesCount} stories
-                <br /> <br /> <b>This action is irreversible.</b>
+                <ul
+                  css={`
+                    padding-left: 30px;
+                    margin: 0;
+                  `}
+                >
+                  <li>{props.datasetCount} datasets</li>
+                  <li>{props.chartsCount} charts</li>
+                  <li>{props.storiesCount} stories</li>
+                </ul>
+                <b>This action is irreversible.</b>
               </p>
 
               <input
@@ -142,15 +149,24 @@ export default function DeleteAssetsDialog(props: Props) {
                   display: flex;
                   justify-content: flex-end;
                   margin-top: 36px;
+                  gap: 16px;
                 `}
               >
                 <PrimaryButton
-                  bg="dark"
+                  bg="light"
                   size="big"
                   type="submit"
                   disabled={!enableButton}
                 >
                   Delete
+                </PrimaryButton>
+                <PrimaryButton
+                  bg="dark"
+                  size="big"
+                  type="submit"
+                  onClick={() => props.setModalDisplay(false)}
+                >
+                  Not Now
                 </PrimaryButton>
               </div>
             </div>
