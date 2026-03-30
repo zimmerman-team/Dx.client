@@ -22,7 +22,7 @@ const WhatYouLearn = () => {
         description: getCMSDataField(
           cmsData,
           "pagesWebinar.feature1Description",
-          "Discover the DataXplorer tools and capabilities to enhance your workflow"
+          "Discover the Dataxplorer tools and capabilities to enhance your workflow"
         ),
       },
       {

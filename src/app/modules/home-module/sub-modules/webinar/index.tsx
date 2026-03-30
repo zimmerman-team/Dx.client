@@ -67,7 +67,7 @@ const WebinarPage = () => {
             {getCMSDataField(
               cmsData,
               "pagesWebinar.heroDescription2",
-              `exclusive deep-dive into our DataXplorer walkthrough, explore
+              `exclusive deep-dive into our Dataxplorer walkthrough, explore
             the features, and upcoming roadmap.`
             )}
             <br />{" "}

@@ -79,14 +79,14 @@ describe("testing footer for valid links", () => {
         cy.contains("a", "Contact Us").scrollIntoView().click();
       });
     cy.contains(
-      "We like to get out and know about you to see our clients – we're more than happy to sit down and discuss a project. If you'd like to meet up, talk through a project, feel free to get in touch."
+      "We like to get out and know about you to see our clients – we're more than happy to sit down and discuss a project. If you'd like to meet up, talk through a project, feel free to get in touch.",
     );
   });
 
   it("should subscibe to email", () => {
     cy.contains("Stay Up To Date");
     cy.contains(
-      "You will receive occasional emails from DataXplorer. You can unsubscribe anytime."
+      "You will receive occasional emails from Dataxplorer. You can unsubscribe anytime.",
     );
 
     // Commenting this out since we disabled intercom on the test environment

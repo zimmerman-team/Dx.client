@@ -82,7 +82,7 @@ export default function NonAuthUserLibrary() {
               {getCMSDataField(
                 cmsData,
                 "pagesHome.defaultAssetsSubtitle",
-                `Explore ready-made assets from DataXplorer. Sign in to create your
+                `Explore ready-made assets from Dataxplorer. Sign in to create your
               own data stories.`
               )}
             </p>

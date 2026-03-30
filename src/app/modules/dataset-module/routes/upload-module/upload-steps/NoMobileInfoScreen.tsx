@@ -55,7 +55,7 @@ export default function NoMobileInfoScreen() {
       <h1>DATAXPLORER isn't available on mobile yet.</h1>
       <div>
         <p>
-          For the best experience, please access DataXplorer from a desktop,
+          For the best experience, please access Dataxplorer from a desktop,
           laptop or tablet device. Our tools are designed for larger screens to
           support advanced data exploration and story building features.
         </p>
@@ -92,7 +92,7 @@ export default function NoMobileInfoScreen() {
           }
         `}
       >
-        <a href="/why-dataxplorer">Learn more about DataXplorer</a>
+        <a href="/why-dataxplorer">Learn more about Dataxplorer</a>
 
         <button onClick={handleCopyToClipboard}>Try a demo on desktop</button>
         <a href="/contact">Contact us</a>
