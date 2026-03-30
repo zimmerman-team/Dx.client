@@ -8,6 +8,7 @@ import { EditorState } from "draft-js";
 import MenuPopover from "@app/modules/home-module/components/AssetCollection/All/menuPopover";
 import { FOCUS_VISIBLE_STYLE_LIGHT } from "@app/theme";
 import Logo from "@app/assets/icons/Logo";
+import { Checkbox } from "@material-ui/core";
 
 interface Props {
   date: Date;
@@ -21,19 +22,24 @@ interface Props {
   showMenuButton?: boolean;
   owner: string;
   ownerName: string;
+  selectable?: boolean;
+  selected?: boolean;
 }
 
 export default function GridItem(props: Readonly<Props>) {
   const { isAuthenticated } = useAuth0();
 
+  const selected = props.selectable && props.selected;
+
   return (
     <div
       css={`
         position: relative;
+        user-select: ${props.selectable ? "auto" : "none"};
       `}
     >
       <Link
-        to={`/story/${props.id}`}
+        to={props.selectable ? "" : `/story/${props.id}`}
         css={`
           width: 100%;
           height: 162px;
@@ -43,7 +49,7 @@ export default function GridItem(props: Readonly<Props>) {
           background: #fff;
           text-decoration: none;
           flex-direction: column;
-          border: 1px solid #fff;
+          border: ${selected ? "1.5px solid #6061E5" : "1px solid #fff"};
           align-items: space-between;
           justify-content: space-between;
           transition: box-shadow 0.2s ease-in-out;
@@ -86,6 +92,18 @@ export default function GridItem(props: Readonly<Props>) {
             }
           `}
         >
+          {props.selectable && (
+            <div
+              css={`
+                & .MuiCheckbox-root {
+                  font-size: 14px;
+                  padding: 0;
+                }
+              `}
+            >
+              <Checkbox color="primary" checked={selected} />
+            </div>
+          )}
           <p>Story</p>
           <MenuPopover
             handleDelete={() => props.handleDelete?.(props.id as string)}

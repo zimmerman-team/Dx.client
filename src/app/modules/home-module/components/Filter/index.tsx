@@ -10,6 +10,7 @@ import { useOnClickOutside } from "usehooks-ts";
 import { SearchInput } from "./SearchInput";
 import FilterPopover from "./FilterPopover";
 import SortPopover from "./SortPopover";
+import ActionPopover from "./ActionsPopover";
 
 export const CustomGridIcon = ({ isActive }: { isActive?: boolean }) => (
   <Tooltip title="List View" placement="bottom">
@@ -59,13 +60,17 @@ export default function Filter(
     searchIconCypressId: string;
     hasSearchButton: boolean;
     onKeyPress?: (e: React.KeyboardEvent<HTMLInputElement>) => void;
+    deleteActive?: boolean;
+    setDeleteActive?: React.Dispatch<React.SetStateAction<boolean>>;
   }>
 ) {
   const inputRef = React.useRef<HTMLDivElement>(null);
 
   useOnClickOutside(inputRef, () => {
     props.terminateSearch && props.terminateSearch();
-    props.setOpenSearch?.(false);
+    if (!props.searchValue?.trim()) {
+      props.setOpenSearch?.(false);
+    }
   });
 
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -159,21 +164,12 @@ export default function Filter(
           terminateSearch={props.terminateSearch}
         />
         <AddAssetDropdown />
-        <div
-          css={`
-            display: flex;
-            flex-shrink: 0;
-            width: 40px;
-            height: 40px;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            border-radius: 10px;
-            background: #f1f3f5;
-          `}
-        >
-          <MenuIcon role="presentation" />
-        </div>
+        <ActionPopover
+          deleteAction={() => {
+            props.setDeleteActive?.(!props.deleteActive);
+          }}
+          deleteActive={!!props.deleteActive}
+        />
       </div>
     </div>
   );

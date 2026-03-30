@@ -31,6 +31,11 @@ interface Props {
   gridId: string;
   filterValue?: "allAssets" | "myAssets" | "dataxplorerAssets";
   hideCreateChartButton?: boolean;
+  selectActive?: boolean;
+  allSelected?: boolean;
+  setAllSelected?: React.Dispatch<React.SetStateAction<boolean>>;
+  selectedItems: { assetType: string; id: string }[];
+  setSelectedItems: (items: { assetType: string; id: string }[]) => void;
 }
 
 export const getLimit = () => {
@@ -230,7 +235,13 @@ export default function DatasetsGrid(props: Readonly<Props>) {
 
   React.useEffect(() => {
     reloadData();
-  }, [props.sortBy, token, props.categories, props.filterValue]);
+  }, [
+    props.sortBy,
+    token,
+    props.categories,
+    props.filterValue,
+    props.selectActive,
+  ]);
 
   const [,] = useDebounce(
     () => {
@@ -270,6 +281,25 @@ export default function DatasetsGrid(props: Readonly<Props>) {
               `
                     : ""
                 }
+                onClick={(e) => {
+                  if (props.selectActive && !props.inChartBuilder) {
+                    e.stopPropagation();
+                    if (
+                      props.selectedItems.some((item) => item.id === data.id)
+                    ) {
+                      props.setSelectedItems(
+                        props.selectedItems.filter(
+                          (item) => item.id !== data.id
+                        )
+                      );
+                    } else {
+                      props.setSelectedItems([
+                        ...props.selectedItems,
+                        { id: data.id, assetType: "dataset" },
+                      ]);
+                    }
+                  }
+                }}
               >
                 <GridItem
                   editPath={`/dataset/${data.id}/edit`}
@@ -291,6 +321,11 @@ export default function DatasetsGrid(props: Readonly<Props>) {
                   source={data.source}
                   sourceURL={data.sourceUrl}
                   hideCreateChartButton={props.hideCreateChartButton}
+                  selected={
+                    props.selectedItems.some((item) => item.id === data.id) ||
+                    props.allSelected
+                  }
+                  selectable={props.selectActive}
                 />
 
                 {!props.inChartBuilder && <Box height={{ xs: 0, lg: 8 }} />}
@@ -323,8 +358,26 @@ export default function DatasetsGrid(props: Readonly<Props>) {
               ...data,
               type: "dataset",
               ownerName: data.ownerName.split(" ")[0],
+              selected:
+                props.selectedItems.some((item) => item.id === data.id) ||
+                props.allSelected,
             })),
           }}
+          selectable={props.selectActive}
+          onSelect={(id: string) => {
+            if (props.selectedItems.some((item) => item.id === id)) {
+              props.setSelectedItems(
+                props.selectedItems.filter((item) => item.id !== id)
+              );
+            } else {
+              props.setSelectedItems([
+                ...props.selectedItems,
+                { id, assetType: "dataset" },
+              ]);
+            }
+          }}
+          allSelected={props.allSelected}
+          setAllSelected={props.setAllSelected}
         />
       )}
       <Box height={80} />

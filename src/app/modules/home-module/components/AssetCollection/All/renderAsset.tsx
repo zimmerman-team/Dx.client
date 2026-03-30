@@ -20,6 +20,12 @@ export default function RenderAsset(
     handleDuplicate: (id: string, assetType: AssetType) => void;
     setActiveAssetType: (assetType: AssetType) => void;
     inChartBuilder?: boolean;
+    selectActive?: boolean;
+    allChartsSelected?: boolean;
+    allDatasetsSelected?: boolean;
+    allStoriesSelected?: boolean;
+    selectedItems: { assetType: string; id: string }[];
+    setSelectedItems: (items: { assetType: string; id: string }[]) => void;
   }>
 ) {
   const {
@@ -58,6 +64,11 @@ export default function RenderAsset(
           owner={data.owner}
           isAIAssisted={data.isAIAssisted}
           ownerName={data.ownerName.split(" ")[0]}
+          selected={
+            props.selectedItems.some((item) => item.id === data.id) ||
+            props.allChartsSelected
+          }
+          selectable={props.selectActive}
         />
       );
 
@@ -82,6 +93,11 @@ export default function RenderAsset(
           ownerName={data.ownerName.split(" ")[0]}
           source={data.source}
           sourceURL={data.sourceUrl}
+          selected={
+            props.selectedItems.some((item) => item.id === data.id) ||
+            props.allDatasetsSelected
+          }
+          selectable={props.selectActive}
         />
       );
 
@@ -108,6 +124,11 @@ export default function RenderAsset(
           }
           owner={data.owner}
           ownerName={data.ownerName.split(" ")[0]}
+          selected={
+            props.selectedItems.some((item) => item.id === data.id) ||
+            props.allStoriesSelected
+          }
+          selectable={props.selectActive}
         />
       );
   }

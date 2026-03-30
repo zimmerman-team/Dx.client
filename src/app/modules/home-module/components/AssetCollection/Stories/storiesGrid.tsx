@@ -27,6 +27,11 @@ interface Props {
   showMenuButton?: boolean;
   addCard?: boolean;
   gridId: string;
+  selectActive?: boolean;
+  allSelected?: boolean;
+  setAllSelected?: React.Dispatch<React.SetStateAction<boolean>>;
+  selectedItems: { assetType: string; id: string }[];
+  setSelectedItems: (items: { assetType: string; id: string }[]) => void;
 }
 
 export default function StoriesGrid(props: Readonly<Props>) {
@@ -211,7 +216,7 @@ export default function StoriesGrid(props: Readonly<Props>) {
 
   React.useEffect(() => {
     reloadData();
-  }, [props.sortBy, token, props.filterValue]);
+  }, [props.sortBy, token, props.filterValue, props.selectActive]);
 
   const [,] = useDebounce(
     () => {
@@ -232,7 +237,33 @@ export default function StoriesGrid(props: Readonly<Props>) {
           <Grid container spacing={2}>
             {props.addCard ? <StoryAddnewCard /> : null}
             {loadedStories.map((data, index) => (
-              <Grid item key={data.id} xs={12} sm={6} md={4} lg={3}>
+              <Grid
+                item
+                key={data.id}
+                xs={12}
+                sm={6}
+                md={4}
+                lg={3}
+                onClick={(e) => {
+                  if (props.selectActive) {
+                    e.stopPropagation();
+                    if (
+                      props.selectedItems.some((item) => item.id === data.id)
+                    ) {
+                      props.setSelectedItems(
+                        props.selectedItems.filter(
+                          (item) => item.id !== data.id
+                        )
+                      );
+                    } else {
+                      props.setSelectedItems([
+                        ...props.selectedItems,
+                        { id: data.id, assetType: "story" },
+                      ]);
+                    }
+                  }
+                }}
+              >
                 <ReformedGridItem
                   id={data.id}
                   key={data.id}
@@ -252,6 +283,11 @@ export default function StoriesGrid(props: Readonly<Props>) {
                   }
                   owner={data.owner}
                   ownerName={data.ownerName.split(" ")[0]}
+                  selected={
+                    props.selectedItems.some((item) => item.id === data.id) ||
+                    props.allSelected
+                  }
+                  selectable={props.selectActive}
                 />
                 <Box height={16} />
               </Grid>
@@ -286,7 +322,25 @@ export default function StoriesGrid(props: Readonly<Props>) {
                     .getPlainText()
                 : EditorState.createEmpty().getCurrentContent().getPlainText(),
               type: "story",
+              selected:
+                props.selectedItems.some((item) => item.id === data.id) ||
+                props.allSelected,
             })),
+          }}
+          selectable={props.selectActive}
+          allSelected={props.allSelected}
+          setAllSelected={props.setAllSelected}
+          onSelect={(id, type) => {
+            if (props.selectedItems.some((item) => item.id === id)) {
+              props.setSelectedItems(
+                props.selectedItems.filter((item) => item.id !== id)
+              );
+            } else {
+              props.setSelectedItems([
+                ...props.selectedItems,
+                { id: id, assetType: type },
+              ]);
+            }
           }}
         />
       )}

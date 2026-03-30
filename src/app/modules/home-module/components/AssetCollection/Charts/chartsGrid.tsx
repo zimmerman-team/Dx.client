@@ -32,6 +32,11 @@ interface Props {
   view: "grid" | "table";
   addCard?: boolean;
   gridId: string;
+  selectActive?: boolean;
+  allSelected?: boolean;
+  setAllSelected?: React.Dispatch<React.SetStateAction<boolean>>;
+  selectedItems: { assetType: string; id: string }[];
+  setSelectedItems: (items: { assetType: string; id: string }[]) => void;
 }
 
 export interface IChartAsset {
@@ -50,6 +55,7 @@ export default function ChartsGrid(props: Props) {
   const [loadedCharts, setLoadedCharts] = React.useState<any[]>([]);
   const [modalDisplay, setModalDisplay] = React.useState<boolean>(false);
   const [enableButton, setEnableButton] = React.useState<boolean>(false);
+
   const token = useStoreState((state) => state.AuthToken.value);
   const initialRender = React.useRef(true);
   const limit = getLimit();
@@ -254,7 +260,7 @@ export default function ChartsGrid(props: Props) {
 
   React.useEffect(() => {
     reloadData();
-  }, [props.sortBy, token, props.filterValue]);
+  }, [props.sortBy, token, props.filterValue, props.selectActive]);
 
   const [,] = useDebounce(
     () => {
@@ -275,7 +281,29 @@ export default function ChartsGrid(props: Props) {
           <Grid container spacing={2}>
             {props.addCard ? <ChartAddnewCard /> : null}
             {loadedCharts.map((c, index) => (
-              <Grid item key={c.id} xs={12} sm={6} md={4} lg={3}>
+              <Grid
+                item
+                key={c.id}
+                xs={12}
+                sm={6}
+                md={4}
+                lg={3}
+                onClick={(e) => {
+                  if (props.selectActive) {
+                    e.stopPropagation();
+                    if (props.selectedItems.some((item) => item.id === c.id)) {
+                      props.setSelectedItems(
+                        props.selectedItems.filter((item) => item.id !== c.id)
+                      );
+                    } else {
+                      props.setSelectedItems([
+                        ...props.selectedItems,
+                        { id: c.id, assetType: "chart" },
+                      ]);
+                    }
+                  }
+                }}
+              >
                 <GridItem
                   id={c.id}
                   title={c.name}
@@ -288,6 +316,11 @@ export default function ChartsGrid(props: Props) {
                   owner={c.owner}
                   isAIAssisted={c.isAIAssisted}
                   ownerName={c.ownerName.split(" ")[0]}
+                  selected={
+                    props.selectedItems.some((item) => item.id === c.id) ||
+                    props.allSelected
+                  }
+                  selectable={props.selectActive}
                 />
                 <div
                   css={`
@@ -324,7 +357,25 @@ export default function ChartsGrid(props: Props) {
               ownerName: data.ownerName.split(" ")[0],
               vizType: echartTypes(false).find((e) => e.id === data.vizType)
                 ?.label,
+              selected:
+                props.selectedItems.some((item) => item.id === data.id) ||
+                props.allSelected,
             })),
+          }}
+          allSelected={props.allSelected}
+          setAllSelected={props.setAllSelected}
+          selectable={props.selectActive}
+          onSelect={(id, type) => {
+            if (props.selectedItems.some((item) => item.id === id)) {
+              props.setSelectedItems(
+                props.selectedItems.filter((item) => item.id !== id)
+              );
+            } else {
+              props.setSelectedItems([
+                ...props.selectedItems,
+                { id: id, assetType: type },
+              ]);
+            }
           }}
         />
       )}

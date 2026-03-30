@@ -84,6 +84,9 @@ function ChartModuleDataView(
         filterValue="myAssets"
         gridId="datasets-grid"
         hideCreateChartButton
+        selectActive={false}
+        selectedItems={[]}
+        setSelectedItems={() => {}}
       />
     </div>
   );

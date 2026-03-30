@@ -8,6 +8,7 @@ import AIIcon from "@app/assets/icons/AIIcon";
 import { useAuth0 } from "@auth0/auth0-react";
 import { FOCUS_VISIBLE_STYLE_LIGHT } from "@app/theme";
 import Logo from "@app/assets/icons/Logo";
+import { Checkbox } from "@material-ui/core";
 
 interface Props {
   id: string;
@@ -21,19 +22,24 @@ interface Props {
   owner: string;
   isAIAssisted: boolean;
   ownerName: string;
+  selectable?: boolean;
+  selected?: boolean;
 }
 
 export default function GridItem(props: Props) {
   const { isAuthenticated } = useAuth0();
 
+  const selected = props.selectable && props.selected;
+
   return (
     <div
       css={`
         position: relative;
+        user-select: ${props.selectable ? "auto" : "none"};
       `}
     >
       <Link
-        to={`/chart/${props.id}`}
+        to={props.selectable ? "" : `/chart/${props.id}`}
         title={props.title}
         css={`
           width: 100%;
@@ -44,7 +50,7 @@ export default function GridItem(props: Props) {
           position: relative;
           text-decoration: none;
           flex-direction: column;
-          border: 1px solid #fff;
+          border: ${selected ? "1.5px solid #6061E5" : "1px solid #fff"};
           transition: box-shadow 0.2s ease-in-out;
           padding: 10px;
           box-shadow: 0px 1px 14px 0px rgba(0, 0, 0, 0.12);
@@ -68,7 +74,7 @@ export default function GridItem(props: Props) {
             margin-bottom: 5px;
             p {
               border-radius: 5px;
-              background: #ededff;
+              /* background: #ededff; */
               box-shadow: 0px 0px 10px 0px rgba(152, 161, 170, 0.05);
               display: flex;
               padding: 0px 6px;
@@ -92,6 +98,18 @@ export default function GridItem(props: Props) {
               gap: 5px;
             `}
           >
+            {props.selectable && (
+              <div
+                css={`
+                  & .MuiCheckbox-root {
+                    font-size: 14px;
+                    padding: 0;
+                  }
+                `}
+              >
+                <Checkbox color="primary" checked={selected} />
+              </div>
+            )}
             <p>chart</p>
             {props.isAIAssisted ? <AIIcon /> : null}
           </div>

@@ -18,6 +18,7 @@ import MenuPopover from "@app/modules/home-module/components/AssetCollection/All
 
 import { FOCUS_VISIBLE_STYLE_LIGHT } from "@app/theme";
 import Logo from "@app/assets/icons/Logo";
+import { Checkbox } from "@material-ui/core";
 
 interface Props {
   editPath: string;
@@ -35,6 +36,8 @@ interface Props {
   onItemClick?: (id: string) => void;
   ownerName: string;
   hideCreateChartButton?: boolean;
+  selectable?: boolean;
+  selected?: boolean;
 }
 
 export default function GridItem(props: Readonly<Props>) {
@@ -44,6 +47,8 @@ export default function GridItem(props: Readonly<Props>) {
   const setDataset = useStoreActions(
     (actions) => actions.charts.dataset.setValue
   );
+  const selectable = props.selectable && !props.inChartBuilder;
+  const selected = selectable && props.selected;
   const [displayCreateChartButton, setDisplayCreateChartButton] =
     React.useState(false);
   const { user, isAuthenticated } = useAuth0();
@@ -124,6 +129,9 @@ export default function GridItem(props: Readonly<Props>) {
       <button
         aria-label={`data-card`}
         onClick={(e) => {
+          if (selectable) {
+            return;
+          }
           e.preventDefault();
           e.stopPropagation();
           if (props.inChartBuilder && props.onItemClick) {
@@ -152,11 +160,12 @@ export default function GridItem(props: Readonly<Props>) {
           position: relative;
           text-decoration: none;
           flex-direction: column;
-          border: 1px solid #fff;
+          border: ${selected ? "1.5px solid #6061E5" : "1px solid #fff"};
           transition: box-shadow 0.2s ease-in-out;
           padding: 10px;
           box-shadow: 0px 1px 14px 0px rgba(0, 0, 0, 0.12);
           border-radius: 10px;
+          user-select: ${selectable ? "auto" : "none"};
           ${highlightedId === props.id ? "border: 1.5px solid #6061E5;" : ""}
 
           &:hover {
@@ -173,6 +182,8 @@ export default function GridItem(props: Readonly<Props>) {
             display: flex;
             align-items: center;
             height: 20px;
+            margin-bottom: 5px;
+            gap: 5px;
             p {
               border-radius: 5px;
               background: ${highlightedId === props.id ? "#6061E5" : "#ededff"};
@@ -189,10 +200,21 @@ export default function GridItem(props: Readonly<Props>) {
               margin: 0;
               height: 20px;
               text-transform: capitalize;
-              margin-bottom: 5px;
             }
           `}
         >
+          {selectable && (
+            <div
+              css={`
+                & .MuiCheckbox-root {
+                  font-size: 14px;
+                  padding: 0;
+                }
+              `}
+            >
+              <Checkbox color="primary" checked={selected} />
+            </div>
+          )}
           <p>Dataset</p>
           {props.showMenu && (
             <MenuPopover
@@ -336,48 +358,50 @@ export default function GridItem(props: Readonly<Props>) {
           >
             Your Dataset is here!
           </ReactTooltip>
-          {displayCreateChartButton && !props.hideCreateChartButton && (
-            <Tooltip
-              title={
-                canEditDelete
-                  ? ""
-                  : "You do not have permission to create a chart from this dataset"
-              }
-            >
-              <span>
-                <button
-                  id="create-chart-from-dataset"
-                  disabled={!canEditDelete}
-                  onClick={handleCreateNewChart}
-                  css={`
-                    cursor: ${canEditDelete ? "pointer" : "not-allowed"};
-                    color: #fff;
-                    font-family: "GothamNarrow-Bold", "Helvetica Neue",
-                      sans-serif;
-                    font-size: 12px;
-                    font-style: normal;
-                    font-weight: 400;
-                    line-height: normal;
-                    border-radius: 10px;
-                    background: ${canEditDelete ? "#6061e5" : "#A1A4B2"};
-                    height: 28px;
-                    width: 118px;
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
-                    gap: 12px;
-                    border: none;
-                    outline: none;
-                    :focus-visible {
-                      ${FOCUS_VISIBLE_STYLE_LIGHT}
-                    }
-                  `}
-                >
-                  Create Chart <ChevronRight role="presentation" />
-                </button>
-              </span>
-            </Tooltip>
-          )}
+          {!selectable &&
+            displayCreateChartButton &&
+            !props.hideCreateChartButton && (
+              <Tooltip
+                title={
+                  canEditDelete
+                    ? ""
+                    : "You do not have permission to create a chart from this dataset"
+                }
+              >
+                <span>
+                  <button
+                    id="create-chart-from-dataset"
+                    disabled={!canEditDelete}
+                    onClick={handleCreateNewChart}
+                    css={`
+                      cursor: ${canEditDelete ? "pointer" : "not-allowed"};
+                      color: #fff;
+                      font-family: "GothamNarrow-Bold", "Helvetica Neue",
+                        sans-serif;
+                      font-size: 12px;
+                      font-style: normal;
+                      font-weight: 400;
+                      line-height: normal;
+                      border-radius: 10px;
+                      background: ${canEditDelete ? "#6061e5" : "#A1A4B2"};
+                      height: 28px;
+                      width: 118px;
+                      display: flex;
+                      align-items: center;
+                      justify-content: center;
+                      gap: 12px;
+                      border: none;
+                      outline: none;
+                      :focus-visible {
+                        ${FOCUS_VISIBLE_STYLE_LIGHT}
+                      }
+                    `}
+                  >
+                    Create Chart <ChevronRight role="presentation" />
+                  </button>
+                </span>
+              </Tooltip>
+            )}
         </div>
       </button>
     </div>

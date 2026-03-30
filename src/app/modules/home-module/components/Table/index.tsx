@@ -17,6 +17,7 @@ import {
   FOCUS_VISIBLE_STYLE_LIGHT,
 } from "@app/theme";
 import { capitalize } from "lodash";
+import { Checkbox } from "@material-ui/core";
 
 interface IData {
   id: string;
@@ -54,6 +55,10 @@ interface TableComponentProps {
   handleDuplicate?: (id: string, type: AssetType) => void;
   setActiveAssetType?: React.Dispatch<React.SetStateAction<AssetType | null>>;
   cellWidths: number[];
+  selectable?: boolean;
+  onSelect?: (id: string, type: string) => void;
+  allSelected?: boolean;
+  setAllSelected?: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 interface ActionsCellProps {
@@ -211,6 +216,10 @@ export function HomepageTable(props: Readonly<TableComponentProps>) {
     data: any
   ) => {
     e.stopPropagation();
+    if (props.selectable && props.onSelect) {
+      props.onSelect(data.id, data.type);
+      return;
+    }
     if (!props.inChartBuilder) {
       history.push(getDestinationPath(data));
     } else if (props.inChartBuilder && props.onItemClick) {
@@ -262,6 +271,29 @@ export function HomepageTable(props: Readonly<TableComponentProps>) {
           `}
         >
           <TableRow>
+            {props.selectable ? (
+              <TableCell style={{ minWidth: "10px" }}>
+                <div
+                  css={`
+                    & .MuiCheckbox-root {
+                      font-size: 14px;
+                      padding: 0;
+                    }
+                  `}
+                >
+                  <Checkbox
+                    color="primary"
+                    checked={props.allSelected}
+                    onChange={(e) => {
+                      if (props.setAllSelected) {
+                        props.setAllSelected(e.target.checked);
+                      }
+                    }}
+                  />
+                </div>
+              </TableCell>
+            ) : null}
+
             <TableCell style={{ minWidth: "10px" }}></TableCell>
             {props.tableData.columns.map((val, i) => (
               <TableCell
@@ -301,6 +333,24 @@ export function HomepageTable(props: Readonly<TableComponentProps>) {
               `}
               data-cy={`table-row-${data.type}`}
             >
+              {props.selectable ? (
+                <TableCell style={{ minWidth: "10px" }}>
+                  <div
+                    css={`
+                      & .MuiCheckbox-root {
+                        font-size: 14px;
+                        padding: 0;
+                      }
+                    `}
+                  >
+                    <Checkbox
+                      color="primary"
+                      checked={data.selected || false}
+                    />
+                  </div>
+                </TableCell>
+              ) : null}
+
               {/* Row number cell */}
               <TableCell style={{ minWidth: "10px", maxWidth: "10px" }}>
                 {" "}

@@ -30,8 +30,12 @@ import { MultiSwitch } from "@app/modules/home-module/components/TabSwitch";
 import { useStoreActions, useStoreState } from "@app/state/store/hooks";
 import get from "lodash/get";
 import MobileControls from "@app/modules/home-module/components/MobileAssetsControls";
-import { useMediaQuery } from "@material-ui/core";
+import { Select, useMediaQuery } from "@material-ui/core";
 import { useDebounce } from "react-use";
+import { SelectAssetsSnackBar } from "@app/modules/home-module/components/SelectAssetsSnackBar";
+import DeleteAssetsDialog from "@app/components/Dialogs/deleteAssetsDialog";
+import useDeleteAssets from "@app/hooks/useDeleteAssets";
+import { PageLoader } from "@app/modules/common/page-loader";
 
 const ctaCards = [
   {
@@ -78,6 +82,18 @@ function AssetsCollection() {
   const [openSearch, setOpenSearch] = React.useState(false);
   const [sortValue, setSortValue] = useRecoilState(allAssetsSortBy);
   const [filterValue, setFilterValue] = useRecoilState(allAssetsFilterBy);
+  const [deleteActive, setDeleteActive] = React.useState(false);
+  const [selectedItems, setSelectedItems] = React.useState<
+    { assetType: string; id: string }[]
+  >([]);
+  const [allChartsSelected, setAllChartsSelected] =
+    React.useState<boolean>(false);
+  const [allDatasetsSelected, setAllDatasetsSelected] =
+    React.useState<boolean>(false);
+  const [allStoriesSelected, setAllStoriesSelected] =
+    React.useState<boolean>(false);
+
+  const [deleteAssetsDialog, setDeleteAssetsDialog] = React.useState(false);
   const [display, setDisplay] = useRecoilState(homeDisplayAtom);
   const token = useStoreState((state) => state.AuthToken.value);
   const gridId = "assets-grid";
@@ -96,6 +112,15 @@ function AssetsCollection() {
   const loadAssetsCount = useStoreActions(
     (actions) => actions.assets.AssetsCount.fetch
   );
+  const loadDatasets = useStoreActions(
+    (actions) => actions.dataThemes.DatasetGetList.fetch
+  );
+  const loadCharts = useStoreActions(
+    (actions) => actions.charts.ChartGetList.fetch
+  );
+  const loadStories = useStoreActions(
+    (actions) => actions.stories.StoryGetList.fetch
+  );
   const datasetCount = useStoreState(
     (state) => get(state, "dataThemes.DatasetCount.data.count", 0) as number
   );
@@ -108,6 +133,9 @@ function AssetsCollection() {
   const assetsCount = useStoreState(
     (state) => get(state, "assets.AssetsCount.data.count", 0) as number
   );
+
+  const { mutate: deleteAssets, loading: deleteAssetsLoading } =
+    useDeleteAssets();
 
   // React.useEffect(() => {
   //   if (token) {
@@ -130,6 +158,10 @@ function AssetsCollection() {
   //     });
   //   }
   // }, [token, filterValue, searchValue]);
+
+  React.useEffect(() => {
+    setSelectedItems([]);
+  }, [deleteActive]);
 
   useDebounce(
     () => {
@@ -167,6 +199,11 @@ function AssetsCollection() {
             categories={categories}
             filterValue={filterValue}
             gridId={gridId}
+            selectActive={deleteActive}
+            allSelected={allDatasetsSelected}
+            setAllSelected={setAllDatasetsSelected}
+            selectedItems={selectedItems}
+            setSelectedItems={setSelectedItems}
           />
         );
       case "charts":
@@ -177,6 +214,11 @@ function AssetsCollection() {
             view={assetsView}
             filterValue={filterValue}
             gridId={gridId}
+            selectActive={deleteActive}
+            allSelected={allChartsSelected}
+            setAllSelected={setAllChartsSelected}
+            selectedItems={selectedItems}
+            setSelectedItems={setSelectedItems}
           />
         );
       case "stories":
@@ -187,6 +229,11 @@ function AssetsCollection() {
             view={assetsView}
             filterValue={filterValue}
             gridId={gridId}
+            selectActive={deleteActive}
+            allSelected={allStoriesSelected}
+            setAllSelected={setAllStoriesSelected}
+            selectedItems={selectedItems}
+            setSelectedItems={setSelectedItems}
           />
         );
       case "all":
@@ -197,6 +244,15 @@ function AssetsCollection() {
             view={assetsView}
             filterValue={filterValue}
             gridId={gridId}
+            selectedItems={selectedItems}
+            setSelectedItems={setSelectedItems}
+            allStoriesSelected={allStoriesSelected}
+            allDatasetsSelected={allDatasetsSelected}
+            allChartsSelected={allChartsSelected}
+            setAllChartsSelected={setAllChartsSelected}
+            setAllDatasetsSelected={setAllDatasetsSelected}
+            setAllStoriesSelected={setAllStoriesSelected}
+            selectActive={deleteActive}
           />
         );
       default:
@@ -204,9 +260,62 @@ function AssetsCollection() {
     }
   };
 
+  React.useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape" && deleteActive) {
+        setDeleteActive(false);
+        setSelectedItems([]);
+        setAllChartsSelected(false);
+        setAllDatasetsSelected(false);
+        setAllStoriesSelected(false);
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [deleteActive]);
+
   const handleTabSwitch = (tab: string) => {
     setDisplay(tab as "all" | "data" | "charts" | "stories");
   };
+  console.log(assetsCount, chartsCount, datasetCount, storiesCount);
+
+  const selectedCount = React.useMemo(() => {
+    let count = selectedItems.length;
+    if (allChartsSelected && allStoriesSelected && allDatasetsSelected) {
+      count = assetsCount;
+      return count;
+    }
+    if (allChartsSelected) {
+      count -= selectedItems.filter(
+        (item) => item.assetType === "chart"
+      ).length;
+      count += chartsCount;
+    }
+    if (allStoriesSelected) {
+      count -= selectedItems.filter(
+        (item) => item.assetType === "story"
+      ).length;
+      count += storiesCount;
+    }
+    if (allDatasetsSelected) {
+      count -= selectedItems.filter(
+        (item) => item.assetType === "dataset"
+      ).length;
+      count += datasetCount;
+    }
+    return count;
+  }, [
+    assetsCount,
+    chartsCount,
+    datasetCount,
+    storiesCount,
+    display,
+    allChartsSelected,
+    allStoriesSelected,
+    allDatasetsSelected,
+    selectedItems,
+  ]);
 
   return (
     <Container
@@ -417,6 +526,8 @@ function AssetsCollection() {
               searchIconCypressId="home-search-button"
               filterValue={filterValue}
               setFilterValue={setFilterValue}
+              deleteActive={deleteActive}
+              setDeleteActive={setDeleteActive}
               hasSearchButton
               terminateSearch={() => {}}
             />
@@ -486,6 +597,8 @@ function AssetsCollection() {
               searchIconCypressId="home-search-button"
               filterValue={filterValue}
               setFilterValue={setFilterValue}
+              deleteActive={deleteActive}
+              setDeleteActive={setDeleteActive}
               hasSearchButton
               terminateSearch={() => {}}
             />
@@ -520,6 +633,68 @@ function AssetsCollection() {
       >
         {displayGrid(searchValue as string, sortValue)}
       </div>
+      <SelectAssetsSnackBar
+        count={selectedCount}
+        open={deleteActive}
+        onClose={() => {
+          setDeleteActive(false);
+          setSelectedItems([]);
+          setAllChartsSelected(false);
+          setAllDatasetsSelected(false);
+          setAllStoriesSelected(false);
+        }}
+        onSelectAll={() => {
+          if (display === "charts") {
+            setAllChartsSelected(true);
+          } else if (display === "data") {
+            setAllDatasetsSelected(true);
+          } else if (display === "stories") {
+            setAllStoriesSelected(true);
+          } else {
+            setAllChartsSelected(true);
+            setAllDatasetsSelected(true);
+            setAllStoriesSelected(true);
+          }
+        }}
+        onDelete={() => {
+          setDeleteAssetsDialog(true);
+        }}
+      />
+      <DeleteAssetsDialog
+        modalDisplay={deleteAssetsDialog}
+        setModalDisplay={setDeleteAssetsDialog}
+        handleDelete={async () => {
+          await deleteAssets({
+            assets: selectedItems,
+            deleteAllCharts: allChartsSelected,
+            deleteAllStories: allStoriesSelected,
+            deleteAllDatasets: allDatasetsSelected,
+          });
+          setDeleteActive(false);
+          setSelectedItems([]);
+          setAllChartsSelected(false);
+          setAllDatasetsSelected(false);
+          setAllStoriesSelected(false);
+          setDeleteAssetsDialog(false);
+        }}
+        chartsCount={
+          allChartsSelected
+            ? chartsCount
+            : selectedItems.filter((item) => item.assetType === "chart").length
+        }
+        storiesCount={
+          allStoriesSelected
+            ? storiesCount
+            : selectedItems.filter((item) => item.assetType === "story").length
+        }
+        datasetCount={
+          allDatasetsSelected
+            ? datasetCount
+            : selectedItems.filter((item) => item.assetType === "dataset")
+                .length
+        }
+      />
+      {deleteAssetsLoading && <PageLoader />}
     </Container>
   );
 }
