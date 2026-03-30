@@ -115,9 +115,18 @@ export default function DeleteAssetsDialog(props: Props) {
                     margin: 0;
                   `}
                 >
-                  <li>{props.datasetCount} datasets</li>
-                  <li>{props.chartsCount} charts</li>
-                  <li>{props.storiesCount} stories</li>
+                  <li>
+                    {props.datasetCount} dataset
+                    {props.datasetCount !== 1 ? "s" : ""}
+                  </li>
+                  <li>
+                    {props.chartsCount} chart
+                    {props.chartsCount !== 1 ? "s" : ""}
+                  </li>
+                  <li>
+                    {props.storiesCount} stor
+                    {props.storiesCount !== 1 ? "ies" : "y"}
+                  </li>
                 </ul>
                 <b>This action is irreversible.</b>
               </p>
