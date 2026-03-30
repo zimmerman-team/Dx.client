@@ -1,211 +1,10 @@
 import React from "react";
-import BackupIcon from "@app/modules/home-module/sub-modules/pricing/assets/backup";
-import AddChartIcon from "@app/modules/home-module/sub-modules/pricing/assets/add-chart";
 import GoodIcon from "@app/modules/home-module/sub-modules/pricing/assets/good-icon";
-import StoryIcon from "@app/modules/home-module/sub-modules/pricing/assets/story";
-import UserShieldIcon from "@app/modules/home-module/sub-modules/pricing/assets/user-shied";
-import SupportIcon from "@app/modules/home-module/sub-modules/pricing/assets/support";
 import InfoIcon from "@app/modules/home-module/sub-modules/pricing/assets/info-icon";
 import { Tooltip } from "react-tooltip";
+import { features } from "./data";
 
 const Features = () => {
-  const features = [
-    {
-      title: "Connect Data",
-      subtitle:
-        "Effortlessly integrate your data from multiple sources with our comprehensive data connection features.",
-      color: "#DADAF8",
-      icon: BackupIcon,
-      options: [
-        {
-          name: "Number of  datasets or data size",
-          info: "The amount of datasets you can manage",
-          values: [
-            "5 datasets / 1GB",
-            "100 datasets / 10GB",
-            "1.000 datasets / 25GB",
-            "10.000 datasets / 100GB",
-          ],
-        },
-        {
-          name: "External search",
-          info: "Access to datasources like Worldbank, Kaggle, WHO, HDX and more.",
-          values: ["Max 12 results", "Unlimited", "Unlimited", "Unlimited"],
-        },
-
-        {
-          name: "Availability",
-          info: "How long Dataxplorer will keep your assets",
-          values: ["180 days", "Unlimited", "Unlimited", "Unlimited"],
-        },
-        {
-          name: "Connect Data",
-          info: "Bring your own data via CSV, SQL, noSQL or connect your REST services",
-          values: ["available", "available", "available", "available"],
-        },
-        {
-          name: "Data export (CSV)",
-          info: "Export your view in a nice CSV file",
-          values: ["", "available", "available", "available"],
-        },
-        {
-          name: "Connect your own data source",
-          info: "Connect data from your database",
-          values: ["", "available", "available", "available"],
-        },
-        {
-          name: "Microsoft Drive data connect",
-          info: "Connect data from your Microsoft Drive",
-          values: ["", "available", "available", "available"],
-        },
-        {
-          name: "Google Drive data connect",
-          info: "Connect data from your Google Drive",
-          values: ["", "available", "available", "available"],
-        },
-      ],
-    },
-    {
-      title: "Create charts",
-      subtitle:
-        "Create charts for impact with ease using our comprehensive Chartbuilder..",
-      color: "rgba(223, 227, 229, 0.50)",
-      icon: AddChartIcon,
-      options: [
-        {
-          name: "Number of charts",
-          info: "The amount of charts you can manage.",
-          values: [10, 100, "5.000", "50.000"],
-        },
-        {
-          name: "Access to the Chartbuilder",
-          info: "Create charts from your datasets",
-          values: ["available", "available", "available", "available"],
-        },
-        {
-          name: "Share Chart Powered by\n Dataxplorer",
-          info: "Sharing charts standalone as link AND embed code",
-          values: ["available", "available", "available", "available"],
-        },
-        {
-          name: "Basic Charting",
-          values: ["available", "available", "available", "available"],
-        },
-        {
-          name: "Advanced Charting",
-          info: "Advanced charting all CB charting features",
-          values: ["", "available", "available", "available"],
-        },
-        {
-          name: "AI Agent",
-          info: "Use AI Agent to help you chart",
-          values: ["", "available", "available", "available"],
-        },
-        {
-          name: "Custom Charting",
-          info: "",
-          button: true,
-          values: ["", "available", "available", "available"],
-        },
-      ],
-    },
-    {
-      title: "Create story",
-      subtitle:
-        "Create comprehensive stories effortlessly with our versatile story creation tools.",
-      color: "#E492BD",
-      icon: StoryIcon,
-      options: [
-        {
-          name: "Number of stories",
-          info: "The amount of stories you can manage.",
-          values: [5, 100, "1.000", "10.000"],
-        },
-        {
-          name: "Basic Templates",
-          info: "Access to Basic templates",
-          values: ["available", "available", "available", "available"],
-        },
-        {
-          name: "Advanced Templates",
-          info: "Access to Advanced templates",
-          values: ["available", "available", "available", "available"],
-        },
-        {
-          name: "Media / Video support",
-          info: "Add images and video",
-          values: ["", "available", "available", "available"],
-        },
-        {
-          name: "Story AI Chat",
-          info: "Talk to your data",
-          button: true,
-          values: ["", "available", "available", "available"],
-        },
-        {
-          name: "Story AI Builder",
-          info: "Use AI Agent to draft your Story",
-          button: true,
-          values: ["", "available", "available", "available"],
-        },
-      ],
-    },
-    {
-      title: "User management",
-      subtitle:
-        "Manage your users effectively with our robust user management.",
-      color: "#6061E5",
-      icon: UserShieldIcon,
-      options: [
-        {
-          name: "User Management",
-          values: [1, 1, 5, 100],
-        },
-        {
-          name: "Pricing Management",
-          values: ["available", "available", "available", "available"],
-        },
-        {
-          name: "Team Management",
-          values: ["", "available", "available", "available"],
-        },
-      ],
-    },
-    {
-      title: "Support",
-      subtitle:
-        "Get comprehensive support to ensure your success with our dedicated resources.",
-      color: "#63A7E4",
-      icon: SupportIcon,
-      options: [
-        {
-          name: "Ticketing support",
-          info: "Access to a ticketing system",
-          values: ["", "available", "available", "available"],
-        },
-        {
-          name: "Webinars",
-          info: "Access to monthly webinars",
-          values: ["", "available", "available", "available"],
-        },
-        {
-          name: "Live chat",
-          info: "Chat with support",
-          values: ["", "available", "available", "available"],
-        },
-        {
-          name: "Dedicated support",
-          info: "Dedicated support only",
-          values: ["", "", "", "5/8 CET"],
-        },
-        {
-          name: "Service Level Agreement",
-          info: "Custom Service Level",
-          values: ["", "", "", "5/8 CET"],
-        },
-      ],
-    },
-  ];
   const planMap = {
     1: "Free plan",
     2: "Pro plan",
@@ -213,12 +12,83 @@ const Features = () => {
     4: "Enterprise plan",
   };
 
+  const renderSingleValue = (value: any, index: number, beta: any) => {
+    if (beta && index === 0 && value !== "available") {
+      const betaItem = beta === "available" ? <GoodIcon /> : beta;
+
+      return (
+        <p css={``}>
+          <span>
+            {value ? (
+              <span
+                css={`
+                  text-decoration: line-through;
+                `}
+              >
+                {value}
+              </span>
+            ) : null}{" "}
+            {betaItem}
+          </span>
+          <span
+            css={`
+              border-radius: 16px;
+              padding: 2px 12px;
+              border: 0.5px solid #a1aebd;
+              display: block;
+              width: max-content;
+              font-style: italic;
+              font-size: 12px;
+              font-family: "GothamNarrow-Book", "Helvetica Neue", sans-serif;
+            `}
+          >
+            Only During Beta
+          </span>
+        </p>
+      );
+    }
+    return (
+      <p aria-hidden="true">
+        {value === ">" || value === "<" ? (
+          <span
+            css={`
+              position: absolute;
+              width: 24px;
+              height: 100%;
+              top: 0;
+              ${value === ">" ? "right" : "left"}: -24px;
+              background: rgba(202, 202, 202, 0.1);
+            `}
+          />
+        ) : value === "coming" ? (
+          <span
+            css={`
+              font-size: 14px;
+              font-style: italic;
+              font-family: "GothamNarrow-Book", "Helvetica Neue", sans-serif;
+              line-height: 20px;
+              color: #868e96;
+            `}
+          >
+            Coming Soon!
+          </span>
+        ) : value === "available" ? (
+          <GoodIcon />
+        ) : value === false ? (
+          "-"
+        ) : (
+          value
+        )}
+      </p>
+    );
+  };
   const renderFeatureOptions = (
     option: {
       name: string;
       values: any[];
       button?: boolean;
       info?: string;
+      beta?: any;
     },
     optionIndex: number,
     idx: number
@@ -251,17 +121,17 @@ const Features = () => {
             border: none;
             background: none;
             outline: none;
-            width: 88px;
-            height: 17px;
+            padding: 2px 12px;
             flex-shrink: 0;
-            border-radius: 30px;
-            border: 1px solid #252c34;
+            border-radius: 16px;
+            border: 0.5px solid #a1aebd;
             display: flex;
             justify-content: center;
             align-items: center;
-            text-transform: uppercase;
             font-size: 10px;
             font-family: "GothamNarrow-Book", "Helvetica Neue", sans-serif;
+            font-style: italic;
+            color: #231d2c;
           }
           button {
             all: unset;
@@ -273,11 +143,14 @@ const Features = () => {
           css={`
             flex-shrink: 0;
             cursor: pointer;
+            svg {
+              margin-top: 4px;
+            }
           `}
           className={`feature-${idx}-option-${optionIndex}`}
         >
           {option.button ? (
-            <span aria-label="coming Soon!">Coming soon!</span>
+            <span aria-label="coming Soon!">Coming Soon!</span>
           ) : (
             <InfoIcon />
           )}
@@ -331,32 +204,17 @@ const Features = () => {
               }
               p {
                 all: unset;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
               }
             `}
             aria-label={
               value + "for the" + planMap[(index + 1) as keyof typeof planMap]
             }
           >
-            <p aria-hidden="true">
-              {value === ">" || value === "<" ? (
-                <span
-                  css={`
-                    position: absolute;
-                    width: 24px;
-                    height: 100%;
-                    top: 0;
-                    ${value === ">" ? "right" : "left"}: -24px;
-                    background: rgba(202, 202, 202, 0.1);
-                  `}
-                />
-              ) : value === "available" ? (
-                <GoodIcon />
-              ) : value === false ? (
-                "-"
-              ) : (
-                value
-              )}
-            </p>
+            {renderSingleValue(value, index, option.beta)}
           </div>
         ))}
       </div>

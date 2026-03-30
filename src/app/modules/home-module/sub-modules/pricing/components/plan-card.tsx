@@ -19,6 +19,7 @@ interface PlanCardProps {
   onButtonClick: (key: string) => void;
 }
 
+// eslint-disable-next-line sonarjs/cognitive-complexity
 export default function PlanCard({
   activeView,
   plan,
@@ -85,12 +86,16 @@ export default function PlanCard({
         css={`
           width: 100%;
           height: 100%;
-          padding: 42.3px 13px 26px 22px;
+          padding: 16px 10px;
           border-radius: 20px;
-          background: ${plan.current ? "#6061E5" : "#FFFFFF"};
+          background: ${plan.current || plan.recommended
+            ? "#6061E5"
+            : "#FFFFFF"};
           box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.15);
-          color: ${plan.current ? "#FFFFFF" : "#231D2C"};
+          color: ${plan.current || plan.recommended ? "#FFFFFF" : "#231D2C"};
           position: relative;
+          display: flex;
+          flex-direction: column;
           @media (max-width: 1300px) {
             padding: 19px 20px 19.5px 19px;
           }
@@ -111,37 +116,72 @@ export default function PlanCard({
         >
           {plan.name}
         </p>
-        <p
-          css={`
-            margin: 0;
-            padding: 0;
-            margin-top: 4.3px;
-            font-size: 40px;
-            font-weight: 400;
-            line-height: normal;
-            font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
-            @media (max-width: 1300px) {
-              font-size: 32px;
-            }
-          `}
-        >
-          {activeView === "monthly" ? plan.monthlyPrice : plan.yearlyPrice}
-        </p>
-        {["free", "enterprise"].includes(plan.key) ? (
-          <div
+        {["free", "enterprise"].includes(plan.key) || plan.available ? (
+          <p
             css={`
-              height: ${plan.key === "free" ? "5px" : "20px"};
+              margin: 0;
+              padding: 0;
+              margin-top: 4.3px;
+              font-size: 40px;
+              font-weight: 400;
+              line-height: normal;
+              font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
+              @media (max-width: 1300px) {
+                font-size: 32px;
+              }
             `}
-          />
-        ) : (
+          >
+            {activeView === "monthly" ? plan.monthlyPrice : plan.yearlyPrice}
+          </p>
+        ) : null}
+        {["free", "enterprise"].includes(plan.key) ? (
+          plan.key === "free" ? (
+            <div
+              css={`
+                height: 13px;
+              `}
+            />
+          ) : (
+            <p
+              css={`
+                margin: 0;
+                padding: 0;
+                font-size: 16px;
+                line-height: 19.2px;
+                font-weight: 325;
+                padding-top: 3px;
+                padding-bottom: 12px;
+                font-family: "GothamNarrow-Book", "Helvetica Neue", sans-serif;
+                @media (max-width: 1300px) {
+                  font-size: 12px;
+                }
+              `}
+            >
+              per {activeView === "monthly" ? "month" : "year"}
+            </p>
+          )
+        ) : plan.available ? (
           centerContent
+        ) : (
+          <p
+            css={`
+              margin: 0;
+              padding: 0;
+              color: #98a1aa;
+              line-height: normal;
+              font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
+              font-size: 40px;
+            `}
+          >
+            Coming Soon
+          </p>
         )}
 
         <p
           css={`
             margin: 0;
             padding: 0;
-            margin-top: 18.08px;
+            margin-top: 3px;
             font-size: 14px;
             font-weight: 325;
             font-family: "GothamNarrow-Book", "Helvetica Neue", sans-serif;
@@ -157,26 +197,26 @@ export default function PlanCard({
 
         <button
           css={`
-            position: absolute;
-            bottom: 23px;
-            left: 23px;
             border-radius: 12px;
-            border: 1px solid ${plan.current ? "transparent" : "#231D2C"};
+            border: none;
             line-height: normal;
             font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
             font-size: 16px;
             font-style: normal;
             font-weight: 400;
             line-height: normal;
-            color: ${plan.current ? "#FFFFFF" : "#231D2C"};
-            background: ${plan.current ? "#33347B" : "#FFFFFF"};
+            color: ${plan.current || plan.recommended ? "#231D2C" : "#FFF"};
+            background: ${plan.current || plan.recommended
+              ? "#F2F7FD"
+              : "#6061E5"};
             height: 48px;
-            width: 175px;
-            display: flex;
+            width: 100%;
+            margin-top: auto;
+            display: block;
             justify-content: center;
             align-items: center;
             &:hover {
-              background: ${plan.current ? "#fff" : "#6061E5"};
+              background: ${plan.current ? "#BFC0F1" : "#4849B7"};
               color: ${plan.current ? "#231D2C" : "#fff"};
               cursor: pointer;
               border: none;
@@ -188,8 +228,8 @@ export default function PlanCard({
               cursor: not-allowed;
               ${plan.current &&
               `
-              background:#231D2C; 
-              color: #ffffff;  
+              background:#F2F7FD; 
+              color: #231D2C;  
               border: none;
               `}
             }
@@ -200,14 +240,14 @@ export default function PlanCard({
               width: 77.4%;
             }
           `}
-          disabled={plan.current || !plan.available}
+          disabled={plan.current}
           onClick={() => onButtonClick(plan.key)}
           data-cy="plan-button"
         >
           {plan.current
             ? "Current Plan"
-            : !plan.available
-            ? "Coming soon"
+            : !plan.available && plan.key !== "enterprise"
+            ? "Join Waitlist"
             : plan.buttonText}
         </button>
         {plan.recommended ? (
@@ -223,8 +263,8 @@ export default function PlanCard({
               border-radius: 30px;
               padding: 1.63px 7.8px 3.33px 8.2px;
               text-transform: uppercase;
-              top: 19.79px;
-              right: 15.5px;
+              top: 16px;
+              right: 10px;
             `}
           >
             recommended{" "}

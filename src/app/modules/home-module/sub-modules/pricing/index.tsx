@@ -5,6 +5,9 @@ import { useAuth0 } from "@auth0/auth0-react";
 import { useStoreState } from "@app/state/store/hooks";
 import { Box, Container, useMediaQuery } from "@material-ui/core";
 import PlanCard from "./components/plan-card";
+import HeroEllipses from "@app/modules/home-module/assets/hero-ellipses.png";
+import HeroEllipsesTablet from "@app/modules/home-module/assets/hero-ellipses-tablet.svg";
+import HeroEllipsesMobile from "@app/modules/home-module/assets/hero-ellipses-mobile.svg";
 
 import HomeFooter from "@app/modules/home-module/components/Footer";
 import Features from "./components/features";
@@ -16,7 +19,7 @@ import MobilePlanCard from "./components/mobile-plan-card";
 import { APPLICATION_JSON } from "@app/state/api";
 import { PageLoader } from "@app/modules/common/page-loader";
 import { useCheckPricingActive } from "@app/hooks/useCheckPricingActive";
-import { DESKTOP_BREAKPOINT } from "@app/theme";
+import { DESKTOP_BREAKPOINT, MOBILE_BREAKPOINT } from "@app/theme";
 import useBackgroundColor from "@app/hooks/useBackgroundColor";
 import SubscriptionToggle from "./components/subscription-toggle";
 import { useCMSData } from "@app/hooks/useCMSData";
@@ -72,7 +75,11 @@ export default function PricingModule() {
   const PLANS = React.useMemo(
     () => [
       {
-        name: getCMSDataField(cmsData, "pagesPricing.freePlanName", "Free"),
+        name: getCMSDataField(
+          cmsData,
+          "pagesPricing.freePlanName",
+          "Free Plan"
+        ),
         yearlyPrice: getCMSDataField(
           cmsData,
           "pagesPricing.freePlanYearlyPrice",
@@ -93,7 +100,7 @@ export default function PricingModule() {
         buttonText: getCMSDataField(
           cmsData,
           "pagesPricing.freePlanButtonText",
-          "Activate"
+          "Sign up to Activate"
         ),
         discount: "",
         key: "free",
@@ -189,7 +196,7 @@ export default function PricingModule() {
         buttonText: getCMSDataField(
           cmsData,
           "pagesPricing.enterprisePlanButtonText",
-          "Contact us"
+          "Contact Sales"
         ),
         discount: "",
         key: "enterprise",
@@ -270,7 +277,7 @@ export default function PricingModule() {
           ? plan.key === "free"
           : false,
         available: plan.key === "free" ? true : pricingActive,
-        recommended: pricingActive ? plan.key === "pro" : false,
+        recommended: pricingActive ? plan.key === "pro" : plan.key === "free",
       };
     });
   }, [currentPlan, pricingActive, PLANS]);
@@ -322,6 +329,26 @@ export default function PricingModule() {
         justify-content: space-between;
         margin-top: 50px; // AppBar height
         min-height: calc(100vh - 50px);
+        background: url(${HeroEllipses}),
+          linear-gradient(180deg, #f2f7fd 0%, #fff 100%);
+        background-color: #f2f7fd;
+        background-repeat: no-repeat;
+        background-size: contain;
+        background-position: top;
+        @media (max-width: ${DESKTOP_BREAKPOINT}) {
+          background: url(${HeroEllipsesTablet}),
+            linear-gradient(180deg, #f2f7fd 0%, #fff 100%);
+          background-repeat: no-repeat;
+          background-size: contain;
+          background-position: top;
+        }
+        @media (max-width: ${MOBILE_BREAKPOINT}) {
+          background: url(${HeroEllipsesMobile}),
+            linear-gradient(180deg, #f2f7fd 0%, #fff 100%);
+          background-repeat: no-repeat;
+          background-size: contain;
+          background-position: top;
+        }
       `}
     >
       {(loading || pricingActiveLoading) && <PageLoader />}
@@ -337,8 +364,8 @@ export default function PricingModule() {
             line-height: normal;
             color: #231d2c;
             text-align: center;
-            @media (max-width: 1300px) {
-              font-size: 40px;
+            @media (max-width: ${DESKTOP_BREAKPOINT}) {
+              font-size: 48px;
             }
           `}
         >
@@ -352,18 +379,18 @@ export default function PricingModule() {
           css={`
             margin: 0;
             padding: 0;
-            font-size: 16px;
-            font-weight: 325;
-            font-family: "GothamNarrow-Book", "Helvetica Neue", sans-serif;
+            font-size: 24px;
+            font-weight: 400;
+            font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
             line-height: normal;
             letter-spacing: 0.5px;
             color: #231d2c;
             text-align: center;
-            margin-top: 10px;
-            @media (max-width: 1300px) {
-              font-size: 18px;
+            margin-top: 40px;
+            @media (max-width: ${DESKTOP_BREAKPOINT}) {
+              font-size: 24px;
             }
-            @media (max-width: 600px) {
+            @media (max-width: ${MOBILE_BREAKPOINT}) {
               font-size: 16px;
               b {
                 font-weight: 350;
@@ -377,16 +404,16 @@ export default function PricingModule() {
             "Dataxplorer simplifies and empowers visual data storytelling for all. Free for all."
           )}
         </p>
-        <Box height={65} />
+        <Box height={60} />
         <div
           css={`
             display: flex;
             justify-content: center;
             align-items: center;
-            column-gap: 20px;
-            @media (max-width: 600px) {
+            column-gap: 50px;
+            @media (max-width: ${DESKTOP_BREAKPOINT}) {
               flex-direction: column;
-              row-gap: 8px;
+              row-gap: 20px;
             }
           `}
         >
@@ -397,7 +424,7 @@ export default function PricingModule() {
                 padding: 0;
                 font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
                 color: #231d2c;
-                font-size: 18px;
+                font-size: 24px;
                 font-weight: 400;
                 line-height: normal;
               `}
@@ -413,7 +440,7 @@ export default function PricingModule() {
                 margin: 0;
                 padding: 0;
                 font-family: "GothamNarrow-Book", "Helvetica Neue", sans-serif;
-                font-size: 14px;
+                font-size: 24px;
                 font-style: normal;
                 font-weight: 325;
                 line-height: normal;
@@ -434,7 +461,7 @@ export default function PricingModule() {
             setSubscriptionPlan={setSubscriptionPlan}
           />
         </div>
-        <Box height={65} />
+        <Box height={60} />
         {isMobile ? (
           <>
             <MobilePlanCard
@@ -475,7 +502,7 @@ export default function PricingModule() {
         <div>
           <h2
             css={`
-              font-size: 18px;
+              font-size: 48px;
               font-style: normal;
               font-weight: 400;
               line-height: 160%;
@@ -483,23 +510,27 @@ export default function PricingModule() {
               color: #262c34;
               text-align: center;
               margin: 0;
+              @media (max-width: ${DESKTOP_BREAKPOINT}) {
+                font-size: 34px;
+              }
             `}
           >
             Trusted by
           </h2>
           <div
             css={`
-              margin-top: 24px;
+              margin-top: 80px;
               display: flex;
               justify-content: center;
               align-items: center;
-              column-gap: 200px;
+              column-gap: 70.7px;
 
-              @media (max-width: 1024px) {
-                column-gap: 85px;
+              @media (max-width: ${DESKTOP_BREAKPOINT}) {
+                column-gap: 66px;
               }
-              @media (max-width: 600px) {
-                column-gap: 42.5px;
+              @media (max-width: ${MOBILE_BREAKPOINT}) {
+                flex-direction: column;
+                row-gap: 20px;
               }
             `}
           >
