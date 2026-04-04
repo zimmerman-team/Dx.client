@@ -331,6 +331,20 @@ export default function StoryModule() {
     setAutoSave({ isAutoSaveEnabled: false });
   };
 
+  const onSetIsPublic = async (isPublic: boolean) => {
+    if (page === "new") {
+      return;
+    }
+    await storyEdit({
+      token,
+      patchId: page === "new" ? "public" : page,
+      values: {
+        public: isPublic,
+      },
+    });
+    fetchStoryData({ token, getId: page, silent: true });
+  };
+
   const onSave = async (type: "create" | "edit") => {
     const action = type === "create" ? storyCreate : storyEdit;
     await action({
@@ -441,6 +455,7 @@ export default function StoryModule() {
             setStopInitializeFramesWidth={setStopInitializeFramesWidth}
             isPreviewView={isPreviewView}
             plugins={plugins}
+            onSetIsPublic={onSetIsPublic}
             undoStack={undoStack}
             setUndoStack={setUndoStack}
             redoStack={redoStack}

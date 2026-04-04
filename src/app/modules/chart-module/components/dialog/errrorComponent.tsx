@@ -107,8 +107,13 @@ export default function ErrorComponent(props: {
           {(props.chartError || props.dataError) && (
             <p>{props.chartErrorMessage}</p>
           )}
+          {props.dataError &&
+          props.chartErrorMessage === "Unauthorized" ? null : (
+            <button onClick={handleModal}>
+              Check Supported Datetime Format
+            </button>
+          )}
 
-          <button onClick={handleModal}>Check Supported Datetime Format</button>
           <div
             css={`
               gap: 16px;

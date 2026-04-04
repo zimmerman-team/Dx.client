@@ -45,6 +45,8 @@ import { PrimaryButton } from "@app/components/Styled/button";
 import { ArrowBack } from "@material-ui/icons";
 import { FOCUS_VISIBLE_STYLE_LIGHT, MOBILE_BREAKPOINT } from "@app/theme";
 import { ClickAwayListener } from "@material-ui/core";
+import ShareComponent from "@app/components/ShareComponent";
+import { APPLICATION_JSON } from "@app/state/api";
 import { ISnackbarState } from "@app/modules/dataset-module/routes/upload-module/style";
 import { ExportChartButton } from "./exportButton";
 
@@ -59,12 +61,9 @@ export function ChartSubheaderToolbar(
   const token = useStoreState((state) => state.AuthToken.value);
   const titleRef = React.useRef<HTMLDivElement>(null);
   const innerContainerRef = React.useRef<HTMLDivElement>(null);
-  const [isShareModalOpen, setIsShareModalOpen] =
-    React.useState<boolean>(false);
   const { page, view } = useParams<{ page: string; view?: string }>();
   const [showDeleteDialog, setShowDeleteDialog] = React.useState(false);
   const [enableButton, setEnableButton] = React.useState<boolean>(false);
-  const [displayEmbedModal, setDisplayEmbedModal] = React.useState(false);
   const [openSnackbar, setOpenSnackbar] = React.useState(false);
   const [inputSpanVisibiltiy, setInputSpanVisibility] = React.useState(true);
   const [duplicatedChartId, setDuplicatedChartId] = React.useState<
@@ -93,10 +92,17 @@ export function ChartSubheaderToolbar(
   const loadCharts = useStoreActions(
     (actions) => actions.charts.ChartGetList.fetch
   );
+
+  const loadChart = useStoreActions((actions) => actions.charts.ChartGet.fetch);
   const loadedChart = useStoreState(
     (state) =>
       (state.charts.ChartGet.crudData ?? emptyChartAPI) as ChartAPIModel
   );
+
+  const chartTempData = useStoreState(
+    (state) => (state.charts.ChartGet.tempData ?? {}) as ChartAPIModel
+  );
+
   const shareURL = `${window.location.origin}/chart/${loadedChart.id}`;
 
   const editChartCrudData = useStoreState(
@@ -183,14 +189,6 @@ export function ChartSubheaderToolbar(
     }
   };
 
-  const handleShare = () => {
-    if (isSmallScreen) {
-      setIsShareModalOpen(true);
-    } else {
-      setDisplayEmbedModal(true);
-    }
-  };
-
   const handleClose = () => {
     setAnchorEl(null);
   };
@@ -214,6 +212,24 @@ export function ChartSubheaderToolbar(
     } else {
       history.push(`/chart/${page}/customize`);
     }
+  };
+
+  const onSetIsPublic = async (isPublic: boolean) => {
+    await axios.patch(
+      `${import.meta.env.VITE_API}/chart/${page}`,
+      { public: isPublic },
+      {
+        headers: {
+          "Content-Type": APPLICATION_JSON,
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    await loadChart({
+      token,
+      getId: page as string,
+      silent: true,
+    });
   };
 
   const open = Boolean(anchorEl);
@@ -568,11 +584,16 @@ export function ChartSubheaderToolbar(
                       </IconButton>
                     </Tooltip>
                   )}
-                  <Tooltip title="Share">
-                    <IconButton onClick={handleShare} aria-label="share-button">
-                      <ShareIcon htmlColor="#262c34" />
-                    </IconButton>
-                  </Tooltip>
+                  <ShareComponent
+                    shareURL={shareURL}
+                    itemName={chartTempData.name}
+                    isPublic={chartTempData.public}
+                    setIsPublic={onSetIsPublic}
+                    itemType="chart"
+                    embedLink={`<iframe src="${
+                      window.location.origin
+                    }/chart-embed/${page}/${loadedChart.datasetId!}" width="600" height="600"></iframe>`}
+                  />
 
                   {canChartEditDelete && (
                     <Tooltip title="Edit">
@@ -661,14 +682,16 @@ export function ChartSubheaderToolbar(
                         </Tooltip>
                       )}
 
-                      <Tooltip title="Share">
-                        <IconButton
-                          onClick={handleShare}
-                          aria-label="share-button"
-                        >
-                          <ShareIcon htmlColor="#262c34" />
-                        </IconButton>
-                      </Tooltip>
+                      <ShareComponent
+                        shareURL={shareURL}
+                        itemName={chartTempData.name}
+                        isPublic={chartTempData.public}
+                        setIsPublic={onSetIsPublic}
+                        itemType="chart"
+                        embedLink={`<iframe src="${
+                          window.location.origin
+                        }/chart-embed/${page}/${loadedChart.datasetId!}" width="600" height="600"></iframe>`}
+                      />
                     </div>
                   </div>
                 </ClickAwayListener>
@@ -762,13 +785,6 @@ export function ChartSubheaderToolbar(
         message="Link copied to clipboard"
         data-testid="copied-link-snackbar"
       />
-      <ShareModal
-        datasetDetails={loadedChart}
-        isShareModalOpen={isShareModalOpen}
-        setIsShareModalOpen={setIsShareModalOpen}
-        handleCopy={handleCopy}
-        url={shareURL}
-      />
       <DeleteChartDialog
         modalDisplay={showDeleteDialog}
         enableButton={enableButton}
@@ -776,15 +792,6 @@ export function ChartSubheaderToolbar(
         setModalDisplay={setShowDeleteDialog}
         handleInputChange={handleDeleteModalInputChange}
       />
-      {displayEmbedModal && (
-        <EmbedChartDialog
-          modalDisplay={displayEmbedModal}
-          setModalDisplay={setDisplayEmbedModal}
-          chartId={page}
-          chartName={props.name}
-          datasetId={loadedChart.datasetId!}
-        />
-      )}
     </div>
   );
 }
