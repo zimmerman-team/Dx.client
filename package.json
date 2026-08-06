@@ -33,8 +33,8 @@
     "@types/react-color": "^3.0.13",
     "@types/react-copy-to-clipboard": "^5.0.1",
     "@types/react-router-hash-link": "^2.4.0",
-    "auth0-js": "^9.23.3",
-    "axios": "0.24.0",
+    "auth0-js": "10.2.0",
+    "axios": "1.18.1",
     "css-mediaquery": "^0.1.2",
     "d3-hierarchy": "^3.1.2",
     "detect-it": "^4.0.1",
@@ -50,7 +50,7 @@
     "html-to-image": "^1.11.13",
     "husky": "8.0.3",
     "immer": "^10.1.1",
-    "jspdf": "^4.0.0",
+    "jspdf": "^4.2.1",
     "linaria": "^6.3.0",
     "lodash": "^4.17.21",
     "moment": "^2.29.4",
@@ -145,6 +145,11 @@
     "docker-test": "cp -r /app/client/build /app/client/test && tail -f /dev/null",
     "docker-prod": "cp -r /app/client/build /app/client/prod && tail -f /dev/null",
     "prepare": "husky install"
+  },
+  "resolutions": {
+    "handlebars": "4.7.9",
+    "shell-quote": "1.8.4",
+    "websocket-driver": "0.7.5"
   },
   "browserslist": {
     "production": [
