@@ -2,6 +2,7 @@ import React from "react";
 import uniqBy from "lodash/uniqBy";
 import sortBy from "lodash/sortBy";
 import * as echarts from "echarts/core";
+import "echarts/theme/v5";
 import { CanvasRenderer } from "echarts/renderers";
 import { formatFinancialValue } from "@app/utils/formatFinancialValue";
 import {
@@ -1883,7 +1884,7 @@ export function useDataThemesEchart({
         node
       );
 
-      const chart = echarts.init(node, undefined, {
+      const chart = echarts.init(node, "v5", {
         renderer: "canvas",
         height: visualOptions.height,
       });
